@@ -7,7 +7,9 @@ public partial class MainWindow : Form
 {
 
     private PlayerState playerState;
-
+    private bool isAttackOnCooldown;
+    private ItemContainer itemContainer;
+    
 
     public MainWindow()
     {
@@ -17,6 +19,7 @@ public partial class MainWindow : Form
         playerState = new PlayerState();
         panelMonster.Visible = false;
         StoryProgress storyProgress = new StoryProgress();
+        itemContainer = new ItemContainer(); // this is more correct?
 
 
         //      Setting the progress bar and label player health
@@ -35,7 +38,7 @@ public partial class MainWindow : Form
         labelPlayerDodge.Text = $"Dodge: {playerState.Player.DodgeChance}%";
         labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket}";
         labelLevel.Text = $"Level: {playerState.Player.Level}";
-        labelExperience.Text = $"Experience: {playerState.Player.Experience}";
+        labelExperience.Text = $"Experience: {playerState.Player.Experience}/{10 * (playerState.Player.Level + playerState.Player.Level)}";
 
         this.KeyPreview = true;
     }
@@ -48,7 +51,7 @@ public partial class MainWindow : Form
         Rectangle rect = new Rectangle(0, 0, this.Width, this.Height);
 
         // Create two colors for the gradient (lighter gray and darker gray)
-        Color lightGray = Color.FromArgb(100, 100, 100);
+        Color lightGray = Color.FromArgb(110, 110, 110);
         Color darkGray = Color.FromArgb(25, 25, 25);
 
         // Create a linear gradient brush for the background
@@ -63,29 +66,44 @@ public partial class MainWindow : Form
 
     }
 
-    private void btn_attack_Click(object sender, EventArgs e)
+    private async void btn_attack_Click(object sender, EventArgs e)
     {
-        Encounter.PlayerAttacks(playerState, textBox1);
-        //Encounter.MonsterAttacks(playerState, textBox1); // delete
+        List<Item> items = new List<Item>();
+        Encounter.PlayerAttacks(playerState, itemContainer.items1);
+
+        await ShakeControl(MainWindow.pictureBoxMonster1);
+
+        btn_attack.Enabled = false;
+        await Task.Delay(500);
+        btn_attack.Enabled = true;
 
     }
 
-    protected override void OnKeyDown(KeyEventArgs e)
+    // This method lets the player attack using the space key
+    protected override async void OnKeyDown(KeyEventArgs e)
     {
         base.OnKeyDown(e);
 
-        if (e.KeyCode == Keys.Space)
+        if (e.KeyCode == Keys.Space && !isAttackOnCooldown)
         {
+            isAttackOnCooldown = true;
             btn_attack_Click(this, EventArgs.Empty);
             e.SuppressKeyPress = true;
+            btn_attack.Enabled = false;
+            await Task.Delay(200);
+            btn_attack.Enabled = true;
+
+            isAttackOnCooldown = false;
         }
 
       
         if (e.KeyCode == Keys.Enter)
         {
             button1_Click_1(this, EventArgs.Empty);
-            e.SuppressKeyPress = true; //
+            e.SuppressKeyPress = true;
         }
+
+        
     }
 
 

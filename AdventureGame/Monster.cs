@@ -11,16 +11,17 @@ internal class Monster
 
     public string Name { get; set; }
     public int MaxHealth { get; set; }
-    public int CurrentHealth { get; set; }  
+    public int CurrentHealth { get; set; }
     public int MinDamage { get; set; }
     public int MaxDamage { get; set; }
     public int RandomDamageModifier { get; set; }
     public int MonsterExperience { get; set; }
-    public int MonsterGold {  get; set; }
-    public Image MonsterImage { get; set; }   
+    public int MonsterGold { get; set; }
+    public Image MonsterImage { get; set; }
+    private Random randomMonsterDamage = new Random();
 
 
-    public Monster(string name, int maxHealth, int currentHealth, int minDamage, int maxDamage, int randomDamageModifier, 
+    public Monster(string name, int maxHealth, int currentHealth, int minDamage, int maxDamage, int randomDamageModifier,
         int monsterExperience, int monsterGold)
     {
         Name = name;
@@ -52,4 +53,26 @@ internal class Monster
     {
         return $"Monster: {Name}, Health: {MaxHealth}";
     }
+
+    public int CalculateMonsterDamage(Monster encounteredMonster)
+    {
+        return encounteredMonster.MinDamage + encounteredMonster.randomMonsterDamage.Next(encounteredMonster.RandomDamageModifier + 1);
+    }
+
+    //// // this works if you want to clone the list of monsters
+    //public Monster Clone()
+    //{
+    //    return new Monster(
+
+    //        Name,
+    //        MaxHealth,
+    //        CurrentHealth,
+    //        MaxDamage,
+    //        MinDamage,
+    //        RandomDamageModifier,
+    //        MonsterExperience,
+    //        MonsterGold,
+    //        MonsterImage
+    //    );
+    //    }
 }

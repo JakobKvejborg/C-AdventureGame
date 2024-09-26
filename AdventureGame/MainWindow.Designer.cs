@@ -56,6 +56,7 @@ partial class MainWindow
         progressBarMonsterHP = new ProgressBar();
         labelMonsterHp = new Label();
         labelMonsterName = new Label();
+        buttonEquipUnequip = new Button();
         panelMonster.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).BeginInit();
         SuspendLayout();
@@ -85,7 +86,7 @@ partial class MainWindow
         // comboBox1
         // 
         comboBox1.FormattingEnabled = true;
-        comboBox1.Location = new Point(47, 213);
+        comboBox1.Location = new Point(46, 466);
         comboBox1.Name = "comboBox1";
         comboBox1.Size = new Size(151, 28);
         comboBox1.TabIndex = 2;
@@ -93,7 +94,7 @@ partial class MainWindow
         // label1
         // 
         label1.AutoSize = true;
-        label1.Location = new Point(47, 190);
+        label1.Location = new Point(46, 443);
         label1.Name = "label1";
         label1.Size = new Size(70, 20);
         label1.TabIndex = 3;
@@ -101,7 +102,7 @@ partial class MainWindow
         // 
         // button2
         // 
-        button2.Location = new Point(47, 247);
+        button2.Location = new Point(46, 535);
         button2.Name = "button2";
         button2.Size = new Size(151, 29);
         button2.TabIndex = 4;
@@ -110,7 +111,7 @@ partial class MainWindow
         // 
         // btn_attack
         // 
-        btn_attack.Location = new Point(161, 431);
+        btn_attack.Location = new Point(137, 309);
         btn_attack.Name = "btn_attack";
         btn_attack.Size = new Size(94, 29);
         btn_attack.TabIndex = 5;
@@ -120,7 +121,7 @@ partial class MainWindow
         // 
         // btn_useMagic
         // 
-        btn_useMagic.Location = new Point(161, 466);
+        btn_useMagic.Location = new Point(137, 344);
         btn_useMagic.Name = "btn_useMagic";
         btn_useMagic.Size = new Size(94, 29);
         btn_useMagic.TabIndex = 6;
@@ -129,7 +130,7 @@ partial class MainWindow
         // 
         // btn_block
         // 
-        btn_block.Location = new Point(161, 501);
+        btn_block.Location = new Point(137, 379);
         btn_block.Name = "btn_block";
         btn_block.Size = new Size(94, 29);
         btn_block.TabIndex = 7;
@@ -139,7 +140,7 @@ partial class MainWindow
         // progressBarPlayerHP
         // 
         progressBarPlayerHP.ForeColor = Color.Blue;
-        progressBarPlayerHP.Location = new Point(47, 323);
+        progressBarPlayerHP.Location = new Point(23, 201);
         progressBarPlayerHP.Name = "progressBarPlayerHP";
         progressBarPlayerHP.Size = new Size(212, 29);
         progressBarPlayerHP.TabIndex = 8;
@@ -148,7 +149,7 @@ partial class MainWindow
         // labelPlayerHP
         // 
         labelPlayerHP.AutoSize = true;
-        labelPlayerHP.Location = new Point(47, 300);
+        labelPlayerHP.Location = new Point(23, 178);
         labelPlayerHP.Name = "labelPlayerHP";
         labelPlayerHP.Size = new Size(28, 20);
         labelPlayerHP.TabIndex = 9;
@@ -158,7 +159,7 @@ partial class MainWindow
         // labelPlayerArmor
         // 
         labelPlayerArmor.AutoSize = true;
-        labelPlayerArmor.Location = new Point(47, 465);
+        labelPlayerArmor.Location = new Point(23, 343);
         labelPlayerArmor.Name = "labelPlayerArmor";
         labelPlayerArmor.Size = new Size(49, 20);
         labelPlayerArmor.TabIndex = 11;
@@ -167,7 +168,7 @@ partial class MainWindow
         // labelPlayerDamage
         // 
         labelPlayerDamage.AutoSize = true;
-        labelPlayerDamage.Location = new Point(47, 367);
+        labelPlayerDamage.Location = new Point(23, 245);
         labelPlayerDamage.Name = "labelPlayerDamage";
         labelPlayerDamage.Size = new Size(64, 20);
         labelPlayerDamage.TabIndex = 12;
@@ -176,7 +177,7 @@ partial class MainWindow
         // labelPlayerDodge
         // 
         labelPlayerDodge.AutoSize = true;
-        labelPlayerDodge.Location = new Point(47, 495);
+        labelPlayerDodge.Location = new Point(23, 373);
         labelPlayerDodge.Name = "labelPlayerDodge";
         labelPlayerDodge.Size = new Size(53, 20);
         labelPlayerDodge.TabIndex = 13;
@@ -185,7 +186,7 @@ partial class MainWindow
         // labelHeroNAme
         // 
         labelHeroNAme.AutoSize = true;
-        labelHeroNAme.Location = new Point(47, 280);
+        labelHeroNAme.Location = new Point(23, 158);
         labelHeroNAme.Name = "labelHeroNAme";
         labelHeroNAme.Size = new Size(42, 20);
         labelHeroNAme.TabIndex = 14;
@@ -194,7 +195,7 @@ partial class MainWindow
         // labelPlayerStrength
         // 
         labelPlayerStrength.AutoSize = true;
-        labelPlayerStrength.Location = new Point(47, 399);
+        labelPlayerStrength.Location = new Point(23, 277);
         labelPlayerStrength.Name = "labelPlayerStrength";
         labelPlayerStrength.Size = new Size(63, 20);
         labelPlayerStrength.TabIndex = 15;
@@ -203,7 +204,7 @@ partial class MainWindow
         // labelPlayerLifeSteal
         // 
         labelPlayerLifeSteal.AutoSize = true;
-        labelPlayerLifeSteal.Location = new Point(47, 431);
+        labelPlayerLifeSteal.Location = new Point(23, 309);
         labelPlayerLifeSteal.Name = "labelPlayerLifeSteal";
         labelPlayerLifeSteal.Size = new Size(61, 20);
         labelPlayerLifeSteal.TabIndex = 16;
@@ -212,7 +213,7 @@ partial class MainWindow
         // labelGoldInPocket
         // 
         labelGoldInPocket.AutoSize = true;
-        labelGoldInPocket.Location = new Point(47, 524);
+        labelGoldInPocket.Location = new Point(23, 402);
         labelGoldInPocket.Name = "labelGoldInPocket";
         labelGoldInPocket.Size = new Size(40, 20);
         labelGoldInPocket.TabIndex = 17;
@@ -221,7 +222,7 @@ partial class MainWindow
         // labelLevel
         // 
         labelLevel.AutoSize = true;
-        labelLevel.Location = new Point(167, 367);
+        labelLevel.Location = new Point(143, 245);
         labelLevel.Name = "labelLevel";
         labelLevel.Size = new Size(43, 20);
         labelLevel.TabIndex = 18;
@@ -230,7 +231,7 @@ partial class MainWindow
         // labelExperience
         // 
         labelExperience.AutoSize = true;
-        labelExperience.Location = new Point(167, 399);
+        labelExperience.Location = new Point(143, 277);
         labelExperience.Name = "labelExperience";
         labelExperience.Size = new Size(81, 20);
         labelExperience.TabIndex = 19;
@@ -243,14 +244,14 @@ partial class MainWindow
         panelMonster.Controls.Add(progressBarMonsterHP);
         panelMonster.Controls.Add(labelMonsterHp);
         panelMonster.Controls.Add(labelMonsterName);
-        panelMonster.Location = new Point(304, 280);
+        panelMonster.Location = new Point(270, 158);
         panelMonster.Name = "panelMonster";
-        panelMonster.Size = new Size(305, 264);
+        panelMonster.Size = new Size(305, 291);
         panelMonster.TabIndex = 20;
         // 
         // pictureBoxMonster1
         // 
-        pictureBoxMonster1.Location = new Point(24, 78);
+        pictureBoxMonster1.Location = new Point(24, 90);
         pictureBoxMonster1.Name = "pictureBoxMonster1";
         pictureBoxMonster1.Size = new Size(257, 174);
         pictureBoxMonster1.TabIndex = 21;
@@ -281,11 +282,21 @@ partial class MainWindow
         labelMonsterName.TabIndex = 0;
         labelMonsterName.Text = "monsterName";
         // 
+        // buttonEquipUnequip
+        // 
+        buttonEquipUnequip.Location = new Point(46, 500);
+        buttonEquipUnequip.Name = "buttonEquipUnequip";
+        buttonEquipUnequip.Size = new Size(151, 29);
+        buttonEquipUnequip.TabIndex = 21;
+        buttonEquipUnequip.Text = "Equip/unequip";
+        buttonEquipUnequip.UseVisualStyleBackColor = true;
+        // 
         // MainWindow
         // 
         AutoScaleDimensions = new SizeF(8F, 20F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(621, 592);
+        ClientSize = new Size(593, 592);
+        Controls.Add(buttonEquipUnequip);
         Controls.Add(panelMonster);
         Controls.Add(labelExperience);
         Controls.Add(labelLevel);
@@ -332,27 +343,77 @@ partial class MainWindow
     #endregion
 
     private Button btn_next;
-    public TextBox textBox1;
     private ComboBox comboBox1;
     private Label label1;
     private Button button2;
     private Button btn_attack;
     private Button btn_useMagic;
     private Button btn_block;
-    public ProgressBar progressBarPlayerHP;
-    public Label labelPlayerHP;
-    private Label labelPlayerArmor;
-    private Label labelPlayerDamage;
-    private Label labelPlayerDodge;
-    private Label labelHeroNAme;
-    public Label labelPlayerStrength;
-    private Label labelPlayerLifeSteal;
-    private Label labelGoldInPocket;
-    private Label labelLevel;
-    public PictureBox pictureBoxMonster1;
-    public Label labelExperience;
-    public Panel panelMonster;
-    public ProgressBar progressBarMonsterHP;
-    public Label labelMonsterHp;
-    public Label labelMonsterName;
+
+    public static async Task ShakeControl(Control control, int duration = 100, int shakeAmount = 5)
+    {
+        // Store the original location of the control
+        var originalLocation = control.Location;
+        var rand = new Random();
+
+        int shakeTime = 0;
+
+        // Shake the control for the specified duration
+        while (shakeTime < duration)
+        {
+            // Generate random offsets within the shake range
+            int offsetX = rand.Next(-shakeAmount, shakeAmount + 1);
+            int offsetY = rand.Next(-shakeAmount, shakeAmount + 1);
+
+            // Apply the shake effect by moving the control
+            control.Location = new Point(originalLocation.X + offsetX, originalLocation.Y + offsetY);
+
+            // Wait for a short period of time before the next shake
+            await Task.Delay(20);  // Adjust delay for a faster or slower shake
+
+            shakeTime += 20;
+        }
+
+        // Restore the control to its original location
+        control.Location = originalLocation;
+    }
+
+    public static Button buttonEquipUnequip;
+    public static TextBox textBox1;
+    public static ProgressBar progressBarPlayerHP;
+    private static Label labelPlayerArmor;
+    private static Label labelPlayerDamage;
+    private static Label labelPlayerDodge;
+    private static Label labelHeroNAme;
+    public static Label labelPlayerHP;
+    public static Label labelPlayerStrength;
+    public static Label labelPlayerLifeSteal;
+    public static Label labelGoldInPocket;
+    public static Label labelLevel;
+    public static PictureBox pictureBoxMonster1;
+    public static Label labelExperience;
+    public static Panel panelMonster;
+    public static ProgressBar progressBarMonsterHP;
+    public static Label labelMonsterHp;
+    public static Label labelMonsterName;
+    //public static Button buttonEquipUnequip;
+    //public static TextBox textBox1;
+    //public static ProgressBar progressBarPlayerHP;
+    //private static Label labelPlayerArmor;
+    //private static Label labelPlayerDamage;
+    //private static Label labelPlayerDodge;
+    //private static Label labelHeroNAme;
+    //public static Label labelPlayerHP;
+    //public static Label labelPlayerStrength;
+    //public static Label labelPlayerLifeSteal;
+    //public static Label labelGoldInPocket;
+    //public static Label labelLevel;
+    //public static PictureBox pictureBoxMonster1;
+    //public static Label labelExperience;
+    //public static Panel panelMonster;
+    //public static ProgressBar progressBarMonsterHP;
+    //public static Label labelMonsterHp;
+    //public static Label labelMonsterName;
+
+
 }

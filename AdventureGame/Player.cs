@@ -36,17 +36,23 @@ internal class Player
         Experience = experience;
         Level = level;
     }
-
-    public void LevelUp()
+       
+    public void LevelUp(PlayerState playerState)
     {
         MainWindow.labelExperience.Text = $"Experience: {Experience.ToString()}/{10 * (Level + Level)}";
 
         if (Experience >= 10 * (Level + Level))
         {
             Level++;
-            Experience = 0;
+            playerState.Player.Experience = 0;
+            MainWindow.textBox1.Text = $"You have leveled up to level {playerState.Player.Level}!";
+            MainWindow.labelExperience.Text = $"Experience: {Experience.ToString()}/{10 * (Level + Level)}";
+            MainWindow.labelLevel.Text = $"Level: {playerState.Player.Level.ToString()}";
         }
     }
 
-    
+    internal int CalculateTotalDamage(PlayerState playerState)
+    {
+        return playerState.Player.Damage + ((playerState.Player.Strength / 2) * playerState.Player.Level / 3);
+    }
 }

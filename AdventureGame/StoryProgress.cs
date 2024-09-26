@@ -13,14 +13,15 @@ internal class StoryProgress
     public int StoryState;
     public MonsterContainer monsterContainer = new MonsterContainer();
     public ItemContainer itemContainer = new ItemContainer();
+    
     public static bool progressFlag { get; set; }
 
-    public String GetFirstText()
+    public string GetFirstText()
     {
         return "Hello, welcome to game";
     }
 
-    public String GetSecondText()
+    public string GetSecondText()
     {
         return "Oh noes, a monster - slay it";
     }
@@ -45,9 +46,8 @@ internal class StoryProgress
                 break;
             case 2:
                 textBox1.Clear();
-                textBox1.Text = "case 2";
                 panelMonster.Visible = true;
-                Encounter.PerformEncounter(textBox1, monsterContainer.listOfMonsters1);
+                Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1);
                 textBox1.AppendText("");
                 StoryState++;
                 break;
@@ -57,7 +57,7 @@ internal class StoryProgress
                     progressFlag = false;
                     textBox1.Clear();
                     MainWindow.panelMonster.Visible = true;
-                    Encounter.PerformEncounter(textBox1, monsterContainer.listOfMonsters1);
+                    Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items2);
                     StoryState++;
                 }
                 break;
@@ -66,7 +66,8 @@ internal class StoryProgress
                 {
                     progressFlag = false;
                     textBox1.Clear();
-                    textBox1.Text = "case 4";
+                    MainWindow.panelMonster.Visible = true;
+                    Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items2);
                     StoryState++;
                 }
                 break;
