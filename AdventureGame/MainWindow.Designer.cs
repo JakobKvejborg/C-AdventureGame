@@ -8,6 +8,7 @@ partial class MainWindow
     ///  Required designer variable.
     /// </summary>
     private System.ComponentModel.IContainer components = null;
+    private ToolTip toolTip;
 
     StoryProgress storyProgress = new StoryProgress();
 
@@ -32,11 +33,12 @@ partial class MainWindow
     /// </summary>
     private void InitializeComponent()
     {
+        toolTip = new ToolTip();
         btn_next = new Button();
         textBox1 = new TextBox();
-        comboBox1 = new ComboBox();
-        label1 = new Label();
-        button2 = new Button();
+        comboBoxInventory = new ComboBox();
+        labelInventory = new Label();
+        buttonDiscardItem = new Button();
         btn_attack = new Button();
         btn_useMagic = new Button();
         btn_block = new Button();
@@ -45,7 +47,7 @@ partial class MainWindow
         labelPlayerArmor = new Label();
         labelPlayerDamage = new Label();
         labelPlayerDodge = new Label();
-        labelHeroNAme = new Label();
+        labelHeroName = new Label();
         labelPlayerStrength = new Label();
         labelPlayerLifeSteal = new Label();
         labelGoldInPocket = new Label();
@@ -57,71 +59,86 @@ partial class MainWindow
         labelMonsterHp = new Label();
         labelMonsterName = new Label();
         buttonEquipUnequip = new Button();
+        panelEncounter = new Panel();
+        panelStartScreen = new Panel();
+        buttonPlayGame = new Button();
+        labelGameTitle = new Label();
         panelMonster.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).BeginInit();
+        panelEncounter.SuspendLayout();
+        panelStartScreen.SuspendLayout();
         SuspendLayout();
         // 
         // btn_next
         // 
-        btn_next.Location = new Point(12, 108);
+        btn_next.Location = new Point(3, 105);
         btn_next.Name = "btn_next";
         btn_next.Size = new Size(94, 29);
         btn_next.TabIndex = 0;
         btn_next.Text = "->";
         btn_next.UseVisualStyleBackColor = true;
         btn_next.Click += button1_Click_1;
+        toolTip.SetToolTip(btn_next, "Enter");
         // 
         // textBox1
         // 
-        textBox1.Location = new Point(12, 12);
+        textBox1.BackColor = Color.FromArgb(195, 195, 195);
+        textBox1.BorderStyle = BorderStyle.None;
+        textBox1.Font = new Font("Microsoft Sans Serif", 12F);
+        textBox1.Location = new Point(3, 9);
         textBox1.Multiline = true;
         textBox1.Name = "textBox1";
         textBox1.ReadOnly = true;
         textBox1.ScrollBars = ScrollBars.Vertical;
-        textBox1.Size = new Size(597, 90);
+        textBox1.Size = new Size(519, 90);
         textBox1.TabIndex = 1;
-        textBox1.Text = "                                              Welcome to this adventure game!\r\n                                           Press the -> button to start the game.\r\n\r\n- Made by Jakob Kvejborg 2024\r\n\r\n";
         textBox1.TextChanged += textBox1_TextChanged;
+        textBox1.Text = "'Press Enter to progress the story.'";
         // 
-        // comboBox1
+        // comboBoxInventory
         // 
-        comboBox1.FormattingEnabled = true;
-        comboBox1.Location = new Point(46, 466);
-        comboBox1.Name = "comboBox1";
-        comboBox1.Size = new Size(151, 28);
-        comboBox1.TabIndex = 2;
+        comboBoxInventory.DropDownStyle = ComboBoxStyle.DropDownList;
+        comboBoxInventory.FormattingEnabled = true;
+        comboBoxInventory.Location = new Point(37, 463);
+        comboBoxInventory.Name = "comboBoxInventory";
+        comboBoxInventory.Size = new Size(151, 28);
+        comboBoxInventory.TabIndex = 2;
         // 
-        // label1
+        // labelInventory
         // 
-        label1.AutoSize = true;
-        label1.Location = new Point(46, 443);
-        label1.Name = "label1";
-        label1.Size = new Size(70, 20);
-        label1.TabIndex = 3;
-        label1.Text = "Inventory";
+        labelInventory.AutoSize = true;
+        labelInventory.BackColor = Color.Transparent;
+        labelInventory.ForeColor = Color.White;
+        labelInventory.Location = new Point(37, 440);
+        labelInventory.Name = "labelInventory";
+        labelInventory.Size = new Size(70, 20);
+        labelInventory.TabIndex = 3;
+        labelInventory.Text = "Inventory";
         // 
-        // button2
+        // buttonDiscardItem
         // 
-        button2.Location = new Point(46, 535);
-        button2.Name = "button2";
-        button2.Size = new Size(151, 29);
-        button2.TabIndex = 4;
-        button2.Text = "Discard item";
-        button2.UseVisualStyleBackColor = true;
+        buttonDiscardItem.Location = new Point(37, 532);
+        buttonDiscardItem.Name = "buttonDiscardItem";
+        buttonDiscardItem.Size = new Size(151, 29);
+        buttonDiscardItem.TabIndex = 4;
+        buttonDiscardItem.Text = "Discard item";
+        buttonDiscardItem.UseVisualStyleBackColor = true;
+        buttonDiscardItem.Click += buttonDiscardItem_Click;
         // 
         // btn_attack
         // 
-        btn_attack.Location = new Point(137, 309);
+        btn_attack.Location = new Point(128, 306);
         btn_attack.Name = "btn_attack";
         btn_attack.Size = new Size(94, 29);
         btn_attack.TabIndex = 5;
         btn_attack.Text = "Attack";
         btn_attack.UseVisualStyleBackColor = true;
         btn_attack.Click += btn_attack_Click;
+        toolTip.SetToolTip(btn_attack, "Space");
         // 
         // btn_useMagic
         // 
-        btn_useMagic.Location = new Point(137, 344);
+        btn_useMagic.Location = new Point(128, 341);
         btn_useMagic.Name = "btn_useMagic";
         btn_useMagic.Size = new Size(94, 29);
         btn_useMagic.TabIndex = 6;
@@ -130,7 +147,7 @@ partial class MainWindow
         // 
         // btn_block
         // 
-        btn_block.Location = new Point(137, 379);
+        btn_block.Location = new Point(128, 376);
         btn_block.Name = "btn_block";
         btn_block.Size = new Size(94, 29);
         btn_block.TabIndex = 7;
@@ -140,7 +157,7 @@ partial class MainWindow
         // progressBarPlayerHP
         // 
         progressBarPlayerHP.ForeColor = Color.Blue;
-        progressBarPlayerHP.Location = new Point(23, 201);
+        progressBarPlayerHP.Location = new Point(14, 198);
         progressBarPlayerHP.Name = "progressBarPlayerHP";
         progressBarPlayerHP.Size = new Size(212, 29);
         progressBarPlayerHP.TabIndex = 8;
@@ -149,9 +166,12 @@ partial class MainWindow
         // labelPlayerHP
         // 
         labelPlayerHP.AutoSize = true;
-        labelPlayerHP.Location = new Point(23, 178);
+        labelPlayerHP.BackColor = Color.Transparent;
+        labelPlayerHP.Font = new Font("Impact", 11F);
+        labelPlayerHP.ForeColor = Color.White;
+        labelPlayerHP.Location = new Point(14, 175);
         labelPlayerHP.Name = "labelPlayerHP";
-        labelPlayerHP.Size = new Size(28, 20);
+        labelPlayerHP.Size = new Size(31, 23);
         labelPlayerHP.TabIndex = 9;
         labelPlayerHP.Text = "HP";
         labelPlayerHP.Click += label2_Click;
@@ -159,7 +179,9 @@ partial class MainWindow
         // labelPlayerArmor
         // 
         labelPlayerArmor.AutoSize = true;
-        labelPlayerArmor.Location = new Point(23, 343);
+        labelPlayerArmor.BackColor = Color.Transparent;
+        labelPlayerArmor.ForeColor = Color.White;
+        labelPlayerArmor.Location = new Point(14, 340);
         labelPlayerArmor.Name = "labelPlayerArmor";
         labelPlayerArmor.Size = new Size(49, 20);
         labelPlayerArmor.TabIndex = 11;
@@ -168,7 +190,9 @@ partial class MainWindow
         // labelPlayerDamage
         // 
         labelPlayerDamage.AutoSize = true;
-        labelPlayerDamage.Location = new Point(23, 245);
+        labelPlayerDamage.BackColor = Color.Transparent;
+        labelPlayerDamage.ForeColor = Color.White;
+        labelPlayerDamage.Location = new Point(14, 242);
         labelPlayerDamage.Name = "labelPlayerDamage";
         labelPlayerDamage.Size = new Size(64, 20);
         labelPlayerDamage.TabIndex = 12;
@@ -177,25 +201,31 @@ partial class MainWindow
         // labelPlayerDodge
         // 
         labelPlayerDodge.AutoSize = true;
-        labelPlayerDodge.Location = new Point(23, 373);
+        labelPlayerDodge.BackColor = Color.Transparent;
+        labelPlayerDodge.ForeColor = Color.White;
+        labelPlayerDodge.Location = new Point(14, 370);
         labelPlayerDodge.Name = "labelPlayerDodge";
         labelPlayerDodge.Size = new Size(53, 20);
         labelPlayerDodge.TabIndex = 13;
         labelPlayerDodge.Text = "dodge";
         // 
-        // labelHeroNAme
+        // labelHeroName
         // 
-        labelHeroNAme.AutoSize = true;
-        labelHeroNAme.Location = new Point(23, 158);
-        labelHeroNAme.Name = "labelHeroNAme";
-        labelHeroNAme.Size = new Size(42, 20);
-        labelHeroNAme.TabIndex = 14;
-        labelHeroNAme.Text = "Hero";
+        labelHeroName.AutoSize = true;
+        labelHeroName.BackColor = Color.Transparent;
+        labelHeroName.ForeColor = Color.DarkSeaGreen;
+        labelHeroName.Location = new Point(14, 155);
+        labelHeroName.Name = "labelHeroName";
+        labelHeroName.Size = new Size(42, 20);
+        labelHeroName.TabIndex = 14;
+        labelHeroName.Text = "Hero";
         // 
         // labelPlayerStrength
         // 
         labelPlayerStrength.AutoSize = true;
-        labelPlayerStrength.Location = new Point(23, 277);
+        labelPlayerStrength.BackColor = Color.Transparent;
+        labelPlayerStrength.ForeColor = Color.White;
+        labelPlayerStrength.Location = new Point(14, 274);
         labelPlayerStrength.Name = "labelPlayerStrength";
         labelPlayerStrength.Size = new Size(63, 20);
         labelPlayerStrength.TabIndex = 15;
@@ -204,7 +234,9 @@ partial class MainWindow
         // labelPlayerLifeSteal
         // 
         labelPlayerLifeSteal.AutoSize = true;
-        labelPlayerLifeSteal.Location = new Point(23, 309);
+        labelPlayerLifeSteal.BackColor = Color.Transparent;
+        labelPlayerLifeSteal.ForeColor = Color.White;
+        labelPlayerLifeSteal.Location = new Point(14, 306);
         labelPlayerLifeSteal.Name = "labelPlayerLifeSteal";
         labelPlayerLifeSteal.Size = new Size(61, 20);
         labelPlayerLifeSteal.TabIndex = 16;
@@ -213,7 +245,9 @@ partial class MainWindow
         // labelGoldInPocket
         // 
         labelGoldInPocket.AutoSize = true;
-        labelGoldInPocket.Location = new Point(23, 402);
+        labelGoldInPocket.BackColor = Color.Transparent;
+        labelGoldInPocket.ForeColor = Color.Gold;
+        labelGoldInPocket.Location = new Point(14, 399);
         labelGoldInPocket.Name = "labelGoldInPocket";
         labelGoldInPocket.Size = new Size(40, 20);
         labelGoldInPocket.TabIndex = 17;
@@ -222,7 +256,9 @@ partial class MainWindow
         // labelLevel
         // 
         labelLevel.AutoSize = true;
-        labelLevel.Location = new Point(143, 245);
+        labelLevel.BackColor = Color.Transparent;
+        labelLevel.ForeColor = Color.White;
+        labelLevel.Location = new Point(134, 242);
         labelLevel.Name = "labelLevel";
         labelLevel.Size = new Size(43, 20);
         labelLevel.TabIndex = 18;
@@ -231,7 +267,9 @@ partial class MainWindow
         // labelExperience
         // 
         labelExperience.AutoSize = true;
-        labelExperience.Location = new Point(143, 277);
+        labelExperience.BackColor = Color.Transparent;
+        labelExperience.ForeColor = Color.White;
+        labelExperience.Location = new Point(134, 274);
         labelExperience.Name = "labelExperience";
         labelExperience.Size = new Size(81, 20);
         labelExperience.TabIndex = 19;
@@ -239,21 +277,22 @@ partial class MainWindow
         // 
         // panelMonster
         // 
-        panelMonster.BackColor = Color.FromArgb(60, 60, 60);
+        panelMonster.BackColor = Color.Transparent;
         panelMonster.Controls.Add(pictureBoxMonster1);
         panelMonster.Controls.Add(progressBarMonsterHP);
         panelMonster.Controls.Add(labelMonsterHp);
         panelMonster.Controls.Add(labelMonsterName);
-        panelMonster.Location = new Point(270, 158);
+        panelMonster.Location = new Point(264, 155);
         panelMonster.Name = "panelMonster";
-        panelMonster.Size = new Size(305, 291);
+        panelMonster.Size = new Size(258, 264);
         panelMonster.TabIndex = 20;
         // 
         // pictureBoxMonster1
         // 
-        pictureBoxMonster1.Location = new Point(24, 90);
+        pictureBoxMonster1.BackgroundImageLayout = ImageLayout.Stretch;
+        pictureBoxMonster1.Location = new Point(3, 78);
         pictureBoxMonster1.Name = "pictureBoxMonster1";
-        pictureBoxMonster1.Size = new Size(257, 174);
+        pictureBoxMonster1.Size = new Size(311, 210);
         pictureBoxMonster1.TabIndex = 21;
         pictureBoxMonster1.TabStop = false;
         // 
@@ -267,6 +306,8 @@ partial class MainWindow
         // labelMonsterHp
         // 
         labelMonsterHp.AutoSize = true;
+        labelMonsterHp.BackColor = Color.Transparent;
+        labelMonsterHp.ForeColor = Color.White;
         labelMonsterHp.Location = new Point(24, 20);
         labelMonsterHp.Name = "labelMonsterHp";
         labelMonsterHp.Size = new Size(31, 20);
@@ -276,6 +317,8 @@ partial class MainWindow
         // labelMonsterName
         // 
         labelMonsterName.AutoSize = true;
+        labelMonsterName.BackColor = Color.Transparent;
+        labelMonsterName.ForeColor = Color.White;
         labelMonsterName.Location = new Point(24, 0);
         labelMonsterName.Name = "labelMonsterName";
         labelMonsterName.Size = new Size(103, 20);
@@ -284,47 +327,124 @@ partial class MainWindow
         // 
         // buttonEquipUnequip
         // 
-        buttonEquipUnequip.Location = new Point(46, 500);
+        buttonEquipUnequip.Location = new Point(37, 497);
         buttonEquipUnequip.Name = "buttonEquipUnequip";
         buttonEquipUnequip.Size = new Size(151, 29);
         buttonEquipUnequip.TabIndex = 21;
         buttonEquipUnequip.Text = "Equip/unequip";
         buttonEquipUnequip.UseVisualStyleBackColor = true;
         // 
+        // panelEncounter
+        // 
+        panelEncounter.BackColor = Color.Transparent;
+        panelEncounter.Controls.Add(textBox1);
+        panelEncounter.Controls.Add(buttonEquipUnequip);
+        panelEncounter.Controls.Add(btn_next);
+        panelEncounter.Controls.Add(panelMonster);
+        panelEncounter.Controls.Add(comboBoxInventory);
+        panelEncounter.Controls.Add(labelExperience);
+        panelEncounter.Controls.Add(labelInventory);
+        panelEncounter.Controls.Add(labelLevel);
+        panelEncounter.Controls.Add(buttonDiscardItem);
+        panelEncounter.Controls.Add(labelGoldInPocket);
+        panelEncounter.Controls.Add(btn_attack);
+        panelEncounter.Controls.Add(labelPlayerLifeSteal);
+        panelEncounter.Controls.Add(btn_useMagic);
+        panelEncounter.Controls.Add(labelPlayerStrength);
+        panelEncounter.Controls.Add(btn_block);
+        panelEncounter.Controls.Add(labelHeroName);
+        panelEncounter.Controls.Add(progressBarPlayerHP);
+        panelEncounter.Controls.Add(labelPlayerDodge);
+        panelEncounter.Controls.Add(labelPlayerHP);
+        panelEncounter.Controls.Add(labelPlayerDamage);
+        panelEncounter.Controls.Add(labelPlayerArmor);
+        panelEncounter.Location = new Point(7, 6);
+        panelEncounter.Name = "panelEncounter";
+        panelEncounter.Size = new Size(550, 978);
+        panelEncounter.TabIndex = 22;
+        // 
+        // panelStartScreen
+        // 
+        panelStartScreen.BackColor = Color.Transparent;
+        panelStartScreen.Controls.Add(buttonPlayGame);
+        panelStartScreen.Controls.Add(labelGameTitle);
+        panelStartScreen.Location = new Point(-3, -6);
+        panelStartScreen.Name = "panelStartScreen";
+        panelStartScreen.Size = new Size(557, 750);
+        panelStartScreen.TabIndex = 22;
+        // 
+        // buttonPlayGame
+        // 
+        buttonPlayGame.BackColor = Color.DarkRed;
+        buttonPlayGame.FlatAppearance.BorderSize = 0;
+        buttonPlayGame.FlatStyle = FlatStyle.Flat;
+        buttonPlayGame.Font = new Font("Impact", 20F, FontStyle.Bold);
+        buttonPlayGame.ForeColor = Color.White;
+        buttonPlayGame.Location = new Point(180, 488);
+        buttonPlayGame.Name = "buttonPlayGame";
+        buttonPlayGame.Size = new Size(195, 55);
+        buttonPlayGame.TabIndex = 1;
+        buttonPlayGame.Text = "Play Game";
+        buttonPlayGame.UseVisualStyleBackColor = false;
+        buttonPlayGame.Click += buttonPlayGame_Click;
+        // 
+        // labelGameTitle
+        // 
+        labelGameTitle.AutoSize = true;
+        labelGameTitle.Font = new Font("Impact", 67F, FontStyle.Bold | FontStyle.Italic);
+        labelGameTitle.ForeColor = Color.FromArgb(178, 34, 34);
+        labelGameTitle.Location = new Point(61, 98);
+        labelGameTitle.Name = "labelGameTitle";
+        labelGameTitle.Size = new Size(435, 274);
+        labelGameTitle.TabIndex = 0;
+        labelGameTitle.Text = "Horrors \n\rAwoken";
+        // 
         // MainWindow
         // 
         AutoScaleDimensions = new SizeF(8F, 20F);
         AutoScaleMode = AutoScaleMode.Font;
-        ClientSize = new Size(593, 592);
-        Controls.Add(buttonEquipUnequip);
-        Controls.Add(panelMonster);
-        Controls.Add(labelExperience);
-        Controls.Add(labelLevel);
-        Controls.Add(labelGoldInPocket);
-        Controls.Add(labelPlayerLifeSteal);
-        Controls.Add(labelPlayerStrength);
-        Controls.Add(labelHeroNAme);
-        Controls.Add(labelPlayerDodge);
-        Controls.Add(labelPlayerDamage);
-        Controls.Add(labelPlayerArmor);
-        Controls.Add(labelPlayerHP);
-        Controls.Add(progressBarPlayerHP);
-        Controls.Add(btn_block);
-        Controls.Add(btn_useMagic);
-        Controls.Add(btn_attack);
-        Controls.Add(button2);
-        Controls.Add(label1);
-        Controls.Add(comboBox1);
-        Controls.Add(textBox1);
-        Controls.Add(btn_next);
+        BackColor = SystemColors.ActiveCaptionText;
+        BackgroundImage = Properties.Resources.castle1;
+        BackgroundImageLayout = ImageLayout.Stretch;
+        ClientSize = new Size(549, 743);
+        Controls.Add(panelStartScreen);
+        Controls.Add(panelEncounter);
+        DoubleBuffered = true;
         Name = "MainWindow";
-        Text = "RPG made by Jakob Kvejborg";
+        Text = "Horrors Awoken";
         Load += MainWindow_Load;
         panelMonster.ResumeLayout(false);
         panelMonster.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).EndInit();
+        panelEncounter.ResumeLayout(false);
+        panelEncounter.PerformLayout();
+        panelStartScreen.ResumeLayout(false);
+        panelStartScreen.PerformLayout();
         ResumeLayout(false);
-        PerformLayout();
+    }
+
+    async void FadeTitle()
+    {
+        Color startColor = Color.FromArgb(128, 3, 3);
+        Color endColor = Color.Red;
+        int steps = 50;  // Number of steps for the color transition
+
+        for (int i = 0; i < steps; i++)
+        {
+            // Interpolate between startColor and endColor
+            int r = startColor.R + (endColor.R - startColor.R) * i / steps;
+            int g = startColor.G + (endColor.G - startColor.G) * i / steps;
+            int b = startColor.B + (endColor.B - startColor.B) * i / steps;
+
+            // Apply the interpolated color to the label
+            labelGameTitle.ForeColor = Color.FromArgb(r, g, b);
+
+            // Delay to make the transition smooth
+            await Task.Delay(50);
+        }
+
+        // Optionally loop the effect
+        FadeTitle();
     }
 
     private void textBox1_TextChanged(object sender, EventArgs e)
@@ -337,15 +457,14 @@ partial class MainWindow
         storyProgress.ProgressStory(textBox1, panelMonster);
     }
 
-  
-  
+
+
 
     #endregion
 
     private Button btn_next;
-    private ComboBox comboBox1;
-    private Label label1;
-    private Button button2;
+    private Label labelInventory;
+    private Button buttonDiscardItem;
     private Button btn_attack;
     private Button btn_useMagic;
     private Button btn_block;
@@ -368,23 +487,30 @@ partial class MainWindow
             // Apply the shake effect by moving the control
             control.Location = new Point(originalLocation.X + offsetX, originalLocation.Y + offsetY);
 
+            // Redraw the control to apply background
+            control.Invalidate();
+            control.Update();
+
             // Wait for a short period of time before the next shake
             await Task.Delay(20);  // Adjust delay for a faster or slower shake
 
             shakeTime += 20;
         }
 
-        // Restore the control to its original location
+        // Restore the control's original position after shaking
         control.Location = originalLocation;
     }
 
+    public static Panel panelStartScreen;
+    public static Panel panelEncounter;
+    public static ComboBox comboBoxInventory;
     public static Button buttonEquipUnequip;
     public static TextBox textBox1;
     public static ProgressBar progressBarPlayerHP;
-    private static Label labelPlayerArmor;
-    private static Label labelPlayerDamage;
-    private static Label labelPlayerDodge;
-    private static Label labelHeroNAme;
+    public static Label labelPlayerArmor;
+    public static Label labelPlayerDamage;
+    public static Label labelPlayerDodge;
+    public static Label labelHeroName;
     public static Label labelPlayerHP;
     public static Label labelPlayerStrength;
     public static Label labelPlayerLifeSteal;
@@ -396,13 +522,19 @@ partial class MainWindow
     public static ProgressBar progressBarMonsterHP;
     public static Label labelMonsterHp;
     public static Label labelMonsterName;
+    public static Button buttonPlayGame;
+    public static Label labelGameTitle;
+
+    //public static Panel panelStartScreen;
+    //public static Panel panelEncounter;
+    //public static ComboBox comboBoxInventory;
     //public static Button buttonEquipUnequip;
     //public static TextBox textBox1;
     //public static ProgressBar progressBarPlayerHP;
-    //private static Label labelPlayerArmor;
-    //private static Label labelPlayerDamage;
-    //private static Label labelPlayerDodge;
-    //private static Label labelHeroNAme;
+    //public static Label labelPlayerArmor;
+    //public static Label labelPlayerDamage;
+    //public static Label labelPlayerDodge;
+    //public static Label labelHeroName;
     //public static Label labelPlayerHP;
     //public static Label labelPlayerStrength;
     //public static Label labelPlayerLifeSteal;
@@ -414,6 +546,8 @@ partial class MainWindow
     //public static ProgressBar progressBarMonsterHP;
     //public static Label labelMonsterHp;
     //public static Label labelMonsterName;
+    //public static Button buttonPlayGame;
+    //public static Label labelGameTitle;
 
 
 }

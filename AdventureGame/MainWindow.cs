@@ -8,8 +8,8 @@ public partial class MainWindow : Form
 
     private PlayerState playerState;
     private bool isAttackOnCooldown;
-    private ItemContainer itemContainer;
-    
+    //private ItemContainer itemContainer;
+
 
     public MainWindow()
     {
@@ -18,10 +18,31 @@ public partial class MainWindow : Form
         this.DoubleBuffered = true; // helps flickering
         playerState = new PlayerState();
         panelMonster.Visible = false;
+        panelEncounter.Visible = false;
         StoryProgress storyProgress = new StoryProgress();
-        itemContainer = new ItemContainer(); // this is more correct?
+        InitializePlayerLabels();
 
+        buttonPlayGame.MouseEnter += buttonPlayGame_MouseEnter;
+        buttonPlayGame.MouseLeave += buttonPlayGame_MouseLeave;
 
+        FadeTitle();
+
+        this.KeyPreview = true;
+    }
+
+    private void buttonPlayGame_MouseEnter(object sender, EventArgs e)
+    {
+        buttonPlayGame.BackColor = Color.Red;  // Change to bright red on hover
+    }
+
+    // Event handler for MouseLeave
+    private void buttonPlayGame_MouseLeave(object sender, EventArgs e)
+    {
+        buttonPlayGame.BackColor = Color.DarkRed;  // Revert to dark red when the mouse leaves
+    }
+
+    private void InitializePlayerLabels()
+    {
         //      Setting the progress bar and label player health
         int currentHealth = playerState.Player.CurrentHealth;
         int maxHealth = playerState.Player.MaxHealth;
@@ -39,43 +60,34 @@ public partial class MainWindow : Form
         labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket}";
         labelLevel.Text = $"Level: {playerState.Player.Level}";
         labelExperience.Text = $"Experience: {playerState.Player.Experience}/{10 * (playerState.Player.Level + playerState.Player.Level)}";
-
-        this.KeyPreview = true;
     }
 
-    protected override void OnPaint(PaintEventArgs e)
-    {
-        base.OnPaint(e);
-
-        // Create the rectangle for the form
-        Rectangle rect = new Rectangle(0, 0, this.Width, this.Height);
-
-        // Create two colors for the gradient (lighter gray and darker gray)
-        Color lightGray = Color.FromArgb(110, 110, 110);
-        Color darkGray = Color.FromArgb(25, 25, 25);
-
-        // Create a linear gradient brush for the background
-        using (LinearGradientBrush brush = new LinearGradientBrush(rect, lightGray, darkGray, 45f)) // 45f for diagonal gradient
-        {
-            e.Graphics.FillRectangle(brush, rect);
-        }
-    }
 
     private void progressBar1_Click(object sender, EventArgs e)
-    { 
+    {
 
     }
 
     private async void btn_attack_Click(object sender, EventArgs e)
     {
-        List<Item> items = new List<Item>();
-        Encounter.PlayerAttacks(playerState, itemContainer.items1);
+        Encounter.PlayerAttacks(playerState);
+        MonsterIsDead();
 
         await ShakeControl(MainWindow.pictureBoxMonster1);
 
         btn_attack.Enabled = false;
         await Task.Delay(500);
         btn_attack.Enabled = true;
+
+    }
+
+    private void MonsterIsDead()
+    {
+        Encounter.MonsterIsDefeated(playerState);
+        if (Encounter.Monster == null) // This is wrong for sure
+        {
+            Encounter.PlayerFindsItemFromMonster(playerState);
+        }
 
     }
 
@@ -96,14 +108,14 @@ public partial class MainWindow : Form
             isAttackOnCooldown = false;
         }
 
-      
+
         if (e.KeyCode == Keys.Enter)
         {
             button1_Click_1(this, EventArgs.Empty);
             e.SuppressKeyPress = true;
         }
 
-        
+
     }
 
 
@@ -120,5 +132,26 @@ public partial class MainWindow : Form
     private void label2_Click_1(object sender, EventArgs e)
     {
 
+    }
+
+    private void buttonDiscardItem_Click(object sender, EventArgs e)
+    {
+        {
+            if (comboBoxInventory.SelectedItem != null)
+            {
+                // Remove the selected item
+                MainWindow.textBox1.Text = $"You throw away the item {comboBoxInventory.SelectedItem.ToString()}.";
+                comboBoxInventory.Items.Remove(comboBoxInventory.SelectedItem);
+                comboBoxInventory.SelectedItem = null;
+
+            }
+        }
+    }
+
+    private void buttonPlayGame_Click(object sender, EventArgs e)
+    {
+        panelStartScreen.Visible = false;
+        panelEncounter.Visible = true;
+        btn_next.Focus();
     }
 }

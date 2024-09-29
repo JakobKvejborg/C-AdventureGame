@@ -18,12 +18,14 @@ internal class StoryProgress
 
     public string GetFirstText()
     {
-        return "Hello, welcome to game";
+        return "You have just returned from a long journey to far realms." +
+            "\n\rThe roads are littered with corpses. \n\rDo you have the will to survive the Horrors of the lands?";
     }
 
     public string GetSecondText()
     {
-        return "Oh noes, a monster - slay it";
+        return "You ride through the thickening fog, the air heavy with dread." +
+            " A chill sweeps over you as a deadly fiend emerges. It blocks your path - deny it its life.";
     }
 
     public void ProgressStory(TextBox textBox1, Panel panelMonster)
@@ -57,7 +59,7 @@ internal class StoryProgress
                     progressFlag = false;
                     textBox1.Clear();
                     MainWindow.panelMonster.Visible = true;
-                    Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items2);
+                    Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1);
                     StoryState++;
                 }
                 break;
@@ -67,7 +69,7 @@ internal class StoryProgress
                     progressFlag = false;
                     textBox1.Clear();
                     MainWindow.panelMonster.Visible = true;
-                    Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items2);
+                    Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1);
                     StoryState++;
                 }
                 break;

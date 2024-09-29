@@ -20,6 +20,8 @@ internal class Player
     public int GoldInPocket { get; set; }
     public int Experience { get; set; }
     public int Level { get; set; }
+    public List<Item> Inventory { get; set; }
+    public List<Item> EquippedItems { get; set; }
 
     public Player(string name, int maxHealth, int currentHealth, int damage, int strength, int lifesteal, 
         int armor, int dodgeChance, int goldInPocket, int experience, int level)
@@ -35,6 +37,8 @@ internal class Player
         GoldInPocket = goldInPocket;
         Experience = experience;
         Level = level;
+        Inventory = new List<Item>();
+        EquippedItems = new List<Item>();
     }
        
     public void LevelUp(PlayerState playerState)
@@ -54,5 +58,10 @@ internal class Player
     internal int CalculateTotalDamage(PlayerState playerState)
     {
         return playerState.Player.Damage + ((playerState.Player.Strength / 2) * playerState.Player.Level / 3);
+    }
+
+    public void AddItemToInventory(Item foundItem)
+    {
+        Inventory.Add(foundItem);
     }
 }

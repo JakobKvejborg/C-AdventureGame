@@ -28,9 +28,9 @@ internal class MonsterContainer
         Image normalOrcImage = GetMonsterImage("orc.png");
         Image normalSkeletonImage = GetMonsterImage("skeleton.png");
 
-        Monster normalGoblin = new("Goblin", 10, 10, 0, 1, 1, 5, 1, normalGoblinImage);
-        Monster normalOrc = new("Orc", 7, 7, 0, 1, 1, 9, 0, normalOrcImage);
-        Monster normalSkeleton = new("Skeleton", 8, 8, 0, 0, 4, 7, 0, normalSkeletonImage);
+        Monster normalGoblin = new("Goblin", 10, 10, 0, 1, 1, 6, 1, normalGoblinImage);
+        Monster normalOrc = new("Orc", 7, 7, 0, 1, 2, 9, 0, normalOrcImage);
+        Monster normalSkeleton = new("Skeleton", 8, 8, 0, 0, 3, 7, 0, normalSkeletonImage);
 
         listOfMonsters1.Add(normalGoblin);
         listOfMonsters1.Add(normalOrc);

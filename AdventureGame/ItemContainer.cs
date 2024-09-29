@@ -20,18 +20,19 @@ internal class ItemContainer
 
     public void AddItemsToList()
     {
-        // weapons string name, int damage, int strength, int fireDamage, int poisonDamage, int skillLevel, int strengthRequirement, int levelRequirement
-        Item item1 = new Item("Normal Axe", 1, 0, 0, 0, 0, 0, 2);
+        // WEAPONS string name, int damage, int strength, int fireDamage, int poisonDamage, int skillLevel, int strengthRequirement, int levelRequirement
+        Item item1a = new Item("Normal Axe", 1, 0, 0, 0, 0, 0, 2);
         
-        // armor string name, int dodgeChance, int armor, int skillLevel, int strengthRequirement, int levelRequirement
-        Item item2 = new Item("Rusty Armor", 1, 2, 0, 2, 0);
+        
+        // ARMORS string name, int dodgeChance, int armor, int skillLevel, int strengthRequirement, int levelRequirement
+        Item item2a = new Item("Rusty Armor", 1, 2, 0, 2, 0);
 
-        items1.Add(item1);
+        items1.Add(item1a);
+        items1.Add(item2a);
         items1.Add(null);
-        items1.Add(null);
-        items1.Add(null);
+       
 
-        items2.Add(item2);
+        
 
     }
 
