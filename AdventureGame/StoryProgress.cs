@@ -1,11 +1,4 @@
-﻿using Microsoft.VisualBasic;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AdventureGame;
+﻿namespace AdventureGame;
 
 internal class StoryProgress
 {
@@ -13,8 +6,14 @@ internal class StoryProgress
     public int StoryState;
     public MonsterContainer monsterContainer = new MonsterContainer();
     public ItemContainer itemContainer = new ItemContainer();
-    
     public static bool progressFlag { get; set; }
+    public static bool townEncountersEnabled { get; set; } = false;
+    private MainWindow _mainWindow;
+
+    public StoryProgress(MainWindow mainWindow)
+    {
+        _mainWindow = mainWindow;
+    }
 
     public string GetFirstText()
     {
@@ -28,15 +27,11 @@ internal class StoryProgress
             " A chill sweeps over you as a deadly fiend emerges. It blocks your path - deny it its life.";
     }
 
-    public void ProgressStory(TextBox textBox1, Panel panelMonster)
+    public void ProgressStory(TextBox textBox1)
     {
-
-
-
         switch (StoryState)
         {
             case 0:
-
                 textBox1.Clear();
                 textBox1.AppendText(GetFirstText());
                 StoryState++;
@@ -47,30 +42,34 @@ internal class StoryProgress
                 StoryState++;
                 break;
             case 2:
-                textBox1.Clear();
-                panelMonster.Visible = true;
-                Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1);
+                Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, _mainWindow);
                 textBox1.AppendText("");
                 StoryState++;
                 break;
             case 3:
-                if (progressFlag == true)
-                {
-                    progressFlag = false;
-                    textBox1.Clear();
-                    MainWindow.panelMonster.Visible = true;
-                    Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1);
-                    StoryState++;
-                }
-                break;
             case 4:
                 if (progressFlag == true)
                 {
-                    progressFlag = false;
-                    textBox1.Clear();
-                    MainWindow.panelMonster.Visible = true;
-                    Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1);
+                    Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, _mainWindow);
                     StoryState++;
+                }
+                break;
+            case 5:
+                if (progressFlag == true)
+                {
+                    textBox1.Clear();
+                    textBox1.AppendText("You have arrived at a nearly abandoned town. \r\nWhat comes next is up to you.");
+                    StoryState++;
+                    progressFlag = true;
+                }
+                break;
+            case 6:
+                if (progressFlag == true)
+                {
+                    textBox1.Clear();
+                    textBox1.AppendText("While the town isn’t completely deserted, it's very quit. \r\nChoose a path.");
+                    _mainWindow.panelTown.Visible = true;
+                    townEncountersEnabled = true;
                 }
                 break;
         }

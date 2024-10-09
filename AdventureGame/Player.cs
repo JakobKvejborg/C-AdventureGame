@@ -1,10 +1,4 @@
-﻿using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Text;
-using System.Threading.Tasks;
-
-namespace AdventureGame;
+﻿namespace AdventureGame;
 
 internal class Player
 {
@@ -22,6 +16,7 @@ internal class Player
     public int Level { get; set; }
     public List<Item> Inventory { get; set; }
     public List<Item> EquippedItems { get; set; }
+    public event Action LevelUpEvent;
 
     public Player(string name, int maxHealth, int currentHealth, int damage, int strength, int lifesteal, 
         int armor, int dodgeChance, int goldInPocket, int experience, int level)
@@ -43,15 +38,12 @@ internal class Player
        
     public void LevelUp(PlayerState playerState)
     {
-        MainWindow.labelExperience.Text = $"Experience: {Experience.ToString()}/{10 * (Level + Level)}";
-
         if (Experience >= 10 * (Level + Level))
         {
             Level++;
             playerState.Player.Experience = 0;
-            MainWindow.textBox1.Text = $"You have leveled up to level {playerState.Player.Level}!";
-            MainWindow.labelExperience.Text = $"Experience: {Experience.ToString()}/{10 * (Level + Level)}";
-            MainWindow.labelLevel.Text = $"Level: {playerState.Player.Level.ToString()}";
+            
+            LevelUpEvent?.Invoke();
         }
     }
 

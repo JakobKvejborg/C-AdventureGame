@@ -10,7 +10,6 @@ partial class MainWindow
     private System.ComponentModel.IContainer components = null;
     private ToolTip toolTip;
 
-    StoryProgress storyProgress = new StoryProgress();
 
     /// <summary>
     ///  Clean up any resources being used.
@@ -33,13 +32,15 @@ partial class MainWindow
     /// </summary>
     private void InitializeComponent()
     {
-        toolTip = new ToolTip();
+        components = new System.ComponentModel.Container();
+        toolTip = new ToolTip(components);
         btn_next = new Button();
+        btn_attack = new Button();
+        buttonWest = new Button();
         textBox1 = new TextBox();
         comboBoxInventory = new ComboBox();
         labelInventory = new Label();
         buttonDiscardItem = new Button();
-        btn_attack = new Button();
         btn_useMagic = new Button();
         btn_block = new Button();
         progressBarPlayerHP = new ProgressBar();
@@ -60,13 +61,23 @@ partial class MainWindow
         labelMonsterName = new Label();
         buttonEquipUnequip = new Button();
         panelEncounter = new Panel();
+        panelTown = new Panel();
+        buttonEast = new Button();
+        buttonNorth = new Button();
+        buttonSouth = new Button();
+        pictureBoxTown = new PictureBox();
         panelStartScreen = new Panel();
         buttonPlayGame = new Button();
         labelGameTitle = new Label();
+        panelGameOver = new Panel();
+        labelGameOverText = new Label();
         panelMonster.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).BeginInit();
         panelEncounter.SuspendLayout();
+        panelTown.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxTown).BeginInit();
         panelStartScreen.SuspendLayout();
+        panelGameOver.SuspendLayout();
         SuspendLayout();
         // 
         // btn_next
@@ -76,9 +87,31 @@ partial class MainWindow
         btn_next.Size = new Size(94, 29);
         btn_next.TabIndex = 0;
         btn_next.Text = "->";
+        toolTip.SetToolTip(btn_next, "\"Enter\"");
         btn_next.UseVisualStyleBackColor = true;
         btn_next.Click += button1_Click_1;
-        toolTip.SetToolTip(btn_next, "Enter");
+        // 
+        // btn_attack
+        // 
+        btn_attack.Location = new Point(128, 306);
+        btn_attack.Name = "btn_attack";
+        btn_attack.Size = new Size(94, 29);
+        btn_attack.TabIndex = 5;
+        btn_attack.Text = "Attack";
+        toolTip.SetToolTip(btn_attack, "\"Space\"");
+        btn_attack.UseVisualStyleBackColor = true;
+        btn_attack.Click += btn_attack_Click;
+        // 
+        // buttonWest
+        // 
+        buttonWest.Location = new Point(51, 55);
+        buttonWest.Name = "buttonWest";
+        buttonWest.Size = new Size(56, 38);
+        buttonWest.TabIndex = 3;
+        buttonWest.Text = "West";
+        toolTip.SetToolTip(buttonWest, "\"A\"");
+        buttonWest.UseVisualStyleBackColor = true;
+        buttonWest.Click += buttonWest_Click;
         // 
         // textBox1
         // 
@@ -92,8 +125,8 @@ partial class MainWindow
         textBox1.ScrollBars = ScrollBars.Vertical;
         textBox1.Size = new Size(519, 90);
         textBox1.TabIndex = 1;
+        textBox1.Text = "Press 'Enter' to progress the story.";
         textBox1.TextChanged += textBox1_TextChanged;
-        textBox1.Text = "'Press Enter to progress the story.'";
         // 
         // comboBoxInventory
         // 
@@ -124,17 +157,6 @@ partial class MainWindow
         buttonDiscardItem.Text = "Discard item";
         buttonDiscardItem.UseVisualStyleBackColor = true;
         buttonDiscardItem.Click += buttonDiscardItem_Click;
-        // 
-        // btn_attack
-        // 
-        btn_attack.Location = new Point(128, 306);
-        btn_attack.Name = "btn_attack";
-        btn_attack.Size = new Size(94, 29);
-        btn_attack.TabIndex = 5;
-        btn_attack.Text = "Attack";
-        btn_attack.UseVisualStyleBackColor = true;
-        btn_attack.Click += btn_attack_Click;
-        toolTip.SetToolTip(btn_attack, "Space");
         // 
         // btn_useMagic
         // 
@@ -289,10 +311,11 @@ partial class MainWindow
         // 
         // pictureBoxMonster1
         // 
+        pictureBoxMonster1.Anchor = AnchorStyles.Left | AnchorStyles.Right;
         pictureBoxMonster1.BackgroundImageLayout = ImageLayout.Stretch;
         pictureBoxMonster1.Location = new Point(3, 78);
         pictureBoxMonster1.Name = "pictureBoxMonster1";
-        pictureBoxMonster1.Size = new Size(311, 210);
+        pictureBoxMonster1.Size = new Size(252, 210);
         pictureBoxMonster1.TabIndex = 21;
         pictureBoxMonster1.TabStop = false;
         // 
@@ -337,10 +360,11 @@ partial class MainWindow
         // panelEncounter
         // 
         panelEncounter.BackColor = Color.Transparent;
+        panelEncounter.Controls.Add(panelTown);
+        panelEncounter.Controls.Add(panelMonster);
         panelEncounter.Controls.Add(textBox1);
         panelEncounter.Controls.Add(buttonEquipUnequip);
         panelEncounter.Controls.Add(btn_next);
-        panelEncounter.Controls.Add(panelMonster);
         panelEncounter.Controls.Add(comboBoxInventory);
         panelEncounter.Controls.Add(labelExperience);
         panelEncounter.Controls.Add(labelInventory);
@@ -362,6 +386,56 @@ partial class MainWindow
         panelEncounter.Name = "panelEncounter";
         panelEncounter.Size = new Size(550, 978);
         panelEncounter.TabIndex = 22;
+        // 
+        // panelTown
+        // 
+        panelTown.Controls.Add(buttonEast);
+        panelTown.Controls.Add(buttonWest);
+        panelTown.Controls.Add(buttonNorth);
+        panelTown.Controls.Add(buttonSouth);
+        panelTown.Controls.Add(pictureBoxTown);
+        panelTown.Location = new Point(0, 140);
+        panelTown.Name = "panelTown";
+        panelTown.Size = new Size(700, 699);
+        panelTown.TabIndex = 22;
+        // 
+        // buttonEast
+        // 
+        buttonEast.Location = new Point(175, 55);
+        buttonEast.Name = "buttonEast";
+        buttonEast.Size = new Size(56, 38);
+        buttonEast.TabIndex = 4;
+        buttonEast.Text = "East";
+        buttonEast.UseVisualStyleBackColor = true;
+        buttonEast.Click += buttonEast_Click;
+        // 
+        // buttonNorth
+        // 
+        buttonNorth.Location = new Point(113, 33);
+        buttonNorth.Name = "buttonNorth";
+        buttonNorth.Size = new Size(56, 38);
+        buttonNorth.TabIndex = 2;
+        buttonNorth.Text = "North";
+        buttonNorth.UseVisualStyleBackColor = true;
+        buttonNorth.Click += buttonNorth_Click;
+        // 
+        // buttonSouth
+        // 
+        buttonSouth.Location = new Point(113, 85);
+        buttonSouth.Name = "buttonSouth";
+        buttonSouth.Size = new Size(56, 38);
+        buttonSouth.TabIndex = 1;
+        buttonSouth.Text = "South";
+        buttonSouth.UseVisualStyleBackColor = true;
+        buttonSouth.Click += buttonSouth_Click;
+        // 
+        // pictureBoxTown
+        // 
+        pictureBoxTown.Location = new Point(89, 193);
+        pictureBoxTown.Name = "pictureBoxTown";
+        pictureBoxTown.Size = new Size(525, 362);
+        pictureBoxTown.TabIndex = 0;
+        pictureBoxTown.TabStop = false;
         // 
         // panelStartScreen
         // 
@@ -393,11 +467,31 @@ partial class MainWindow
         labelGameTitle.AutoSize = true;
         labelGameTitle.Font = new Font("Impact", 67F, FontStyle.Bold | FontStyle.Italic);
         labelGameTitle.ForeColor = Color.FromArgb(178, 34, 34);
-        labelGameTitle.Location = new Point(61, 98);
+        labelGameTitle.Location = new Point(61, 111);
         labelGameTitle.Name = "labelGameTitle";
         labelGameTitle.Size = new Size(435, 274);
         labelGameTitle.TabIndex = 0;
         labelGameTitle.Text = "Horrors \n\rAwoken";
+        // 
+        // panelGameOver
+        // 
+        panelGameOver.Controls.Add(labelGameOverText);
+        panelGameOver.ForeColor = Color.FromArgb(94, 94, 94);
+        panelGameOver.Location = new Point(0, 0);
+        panelGameOver.Name = "panelGameOver";
+        panelGameOver.Size = new Size(549, 738);
+        panelGameOver.TabIndex = 5;
+        // 
+        // labelGameOverText
+        // 
+        labelGameOverText.AutoSize = true;
+        labelGameOverText.Font = new Font("Impact", 51F, FontStyle.Bold);
+        labelGameOverText.ForeColor = Color.FromArgb(178, 34, 34);
+        labelGameOverText.Location = new Point(25, 161);
+        labelGameOverText.Name = "labelGameOverText";
+        labelGameOverText.Size = new Size(501, 309);
+        labelGameOverText.TabIndex = 0;
+        labelGameOverText.Text = "You Are Dead\n\r\n\r  Game Over";
         // 
         // MainWindow
         // 
@@ -407,8 +501,9 @@ partial class MainWindow
         BackgroundImage = Properties.Resources.castle1;
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(549, 743);
-        Controls.Add(panelStartScreen);
         Controls.Add(panelEncounter);
+        Controls.Add(panelStartScreen);
+        Controls.Add(panelGameOver);
         DoubleBuffered = true;
         Name = "MainWindow";
         Text = "Horrors Awoken";
@@ -418,48 +513,19 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).EndInit();
         panelEncounter.ResumeLayout(false);
         panelEncounter.PerformLayout();
+        panelTown.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)pictureBoxTown).EndInit();
         panelStartScreen.ResumeLayout(false);
         panelStartScreen.PerformLayout();
+        panelGameOver.ResumeLayout(false);
+        panelGameOver.PerformLayout();
         ResumeLayout(false);
-    }
-
-    async void FadeTitle()
-    {
-        Color startColor = Color.FromArgb(128, 3, 3);
-        Color endColor = Color.Red;
-        int steps = 50;  // Number of steps for the color transition
-
-        for (int i = 0; i < steps; i++)
-        {
-            // Interpolate between startColor and endColor
-            int r = startColor.R + (endColor.R - startColor.R) * i / steps;
-            int g = startColor.G + (endColor.G - startColor.G) * i / steps;
-            int b = startColor.B + (endColor.B - startColor.B) * i / steps;
-
-            // Apply the interpolated color to the label
-            labelGameTitle.ForeColor = Color.FromArgb(r, g, b);
-
-            // Delay to make the transition smooth
-            await Task.Delay(50);
-        }
-
-        // Optionally loop the effect
-        FadeTitle();
     }
 
     private void textBox1_TextChanged(object sender, EventArgs e)
     {
 
     }
-
-    private void button1_Click_1(object sender, EventArgs e)
-    {
-        storyProgress.ProgressStory(textBox1, panelMonster);
-    }
-
-
-
-
     #endregion
 
     private Button btn_next;
@@ -469,85 +535,37 @@ partial class MainWindow
     private Button btn_useMagic;
     private Button btn_block;
 
-    public static async Task ShakeControl(Control control, int duration = 100, int shakeAmount = 5)
-    {
-        // Store the original location of the control
-        var originalLocation = control.Location;
-        var rand = new Random();
 
-        int shakeTime = 0;
-
-        // Shake the control for the specified duration
-        while (shakeTime < duration)
-        {
-            // Generate random offsets within the shake range
-            int offsetX = rand.Next(-shakeAmount, shakeAmount + 1);
-            int offsetY = rand.Next(-shakeAmount, shakeAmount + 1);
-
-            // Apply the shake effect by moving the control
-            control.Location = new Point(originalLocation.X + offsetX, originalLocation.Y + offsetY);
-
-            // Redraw the control to apply background
-            control.Invalidate();
-            control.Update();
-
-            // Wait for a short period of time before the next shake
-            await Task.Delay(20);  // Adjust delay for a faster or slower shake
-
-            shakeTime += 20;
-        }
-
-        // Restore the control's original position after shaking
-        control.Location = originalLocation;
-    }
-
-    public static Panel panelStartScreen;
-    public static Panel panelEncounter;
-    public static ComboBox comboBoxInventory;
-    public static Button buttonEquipUnequip;
-    public static TextBox textBox1;
-    public static ProgressBar progressBarPlayerHP;
-    public static Label labelPlayerArmor;
-    public static Label labelPlayerDamage;
-    public static Label labelPlayerDodge;
-    public static Label labelHeroName;
-    public static Label labelPlayerHP;
-    public static Label labelPlayerStrength;
-    public static Label labelPlayerLifeSteal;
-    public static Label labelGoldInPocket;
-    public static Label labelLevel;
-    public static PictureBox pictureBoxMonster1;
-    public static Label labelExperience;
-    public static Panel panelMonster;
-    public static ProgressBar progressBarMonsterHP;
-    public static Label labelMonsterHp;
-    public static Label labelMonsterName;
-    public static Button buttonPlayGame;
-    public static Label labelGameTitle;
-
-    //public static Panel panelStartScreen;
-    //public static Panel panelEncounter;
-    //public static ComboBox comboBoxInventory;
-    //public static Button buttonEquipUnequip;
-    //public static TextBox textBox1;
-    //public static ProgressBar progressBarPlayerHP;
-    //public static Label labelPlayerArmor;
-    //public static Label labelPlayerDamage;
-    //public static Label labelPlayerDodge;
-    //public static Label labelHeroName;
-    //public static Label labelPlayerHP;
-    //public static Label labelPlayerStrength;
-    //public static Label labelPlayerLifeSteal;
-    //public static Label labelGoldInPocket;
-    //public static Label labelLevel;
-    //public static PictureBox pictureBoxMonster1;
-    //public static Label labelExperience;
-    //public static Panel panelMonster;
-    //public static ProgressBar progressBarMonsterHP;
-    //public static Label labelMonsterHp;
-    //public static Label labelMonsterName;
-    //public static Button buttonPlayGame;
-    //public static Label labelGameTitle;
-
+    public Panel panelGameOver;
+    public Panel panelTown;
+    public Panel panelStartScreen;
+    public Panel panelEncounter;
+    public ComboBox comboBoxInventory;
+    public Button buttonEquipUnequip;
+    public TextBox textBox1;
+    public ProgressBar progressBarPlayerHP;
+    public Label labelPlayerArmor;
+    public Label labelPlayerDamage;
+    public Label labelPlayerDodge;
+    public Label labelHeroName;
+    public Label labelPlayerHP;
+    public Label labelPlayerStrength;
+    public Label labelPlayerLifeSteal;
+    public Label labelGoldInPocket;
+    public Label labelLevel;
+    public PictureBox pictureBoxMonster1;
+    public Label labelExperience;
+    public Panel panelMonster;
+    public ProgressBar progressBarMonsterHP;
+    public Label labelMonsterHp;
+    public Label labelMonsterName;
+    public Button buttonPlayGame;
+    public Label labelGameTitle;
+    public Button buttonSouth;
+    public PictureBox pictureBoxTown;
+    public Button buttonEast;
+    public Button buttonWest;
+    public Button buttonNorth;
+    public Label labelGameOverText;
 
 }

@@ -59,6 +59,11 @@ internal class Monster
         return encounteredMonster.MinDamage + encounteredMonster.randomMonsterDamage.Next(encounteredMonster.RandomDamageModifier + 1);
     }
 
+    public Monster CloneMonster()
+    {
+        return (Monster)this.MemberwiseClone();
+    }
+
     //// // this works if you want to clone the list of monsters
     //public Monster Clone()
     //{

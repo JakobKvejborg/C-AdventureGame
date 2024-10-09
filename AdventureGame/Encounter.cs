@@ -10,19 +10,25 @@ namespace AdventureGame;
 internal static class Encounter
 {
     public static Monster Monster { get; private set; } // Stores the monster encountered
-    //private static List<Monster> listOfMonsters = new List<Monster> { }; // this works if you want to clone the list of monsters
     private static readonly Random randomMonster = new Random();
     private static readonly Random randomItem = new Random();
     public static List<Item>? encounteredMonsterItems; // saves the list of items from the parameter til at property
 
-
-    public static void PerformEncounter(List<Monster> listOfMonsters, List<Item> listOfItems)
+    public static void PerformEncounter(List<Monster> listOfMonsters, List<Item> listOfItems, MainWindow mainWindow)
     {
+        // Disables encounters from town
+        StoryProgress.townEncountersEnabled = false;
+        StoryProgress.progressFlag = false;
+
+        // Prepares the GUI
+        mainWindow.textBox1.Clear();
+        mainWindow.panelMonster.Visible = true;
+
         encounteredMonsterItems = listOfItems; // saves the list of items from the parameter til at property
 
         // Finds a random monster from the list of monsters to fight against, and stores it in the Monster property
         Monster = GetRandomMonster(listOfMonsters);
-        SetEncounteredMonsterLabels(Monster);
+        SetEncounteredMonsterLabels(Monster, mainWindow);
     }
 
     public static Monster GetRandomMonster(List<Monster> listOfMonsters)
@@ -30,30 +36,34 @@ internal static class Encounter
         int randomMonsterIndex = randomMonster.Next(listOfMonsters.Count);
         Monster encounteredMonster = listOfMonsters[randomMonsterIndex];
 
-        return encounteredMonster;
+        // TEST Return a deep copy of monster
+        Monster monsterClone = encounteredMonster.CloneMonster();
+
+        //return encounteredMonster;
+        return monsterClone;
     }
 
     // This method sets all the labels to match the encountered monsters stats
-    private static void SetEncounteredMonsterLabels(Monster encounteredMonster)
+    private static void SetEncounteredMonsterLabels(Monster encounteredMonster, MainWindow mainWindow)
     {
-        MainWindow.textBox1.Text = $"You have encountered a {encounteredMonster.Name}! Kill it.";
+        mainWindow.textBox1.Text = $"You have encountered a {encounteredMonster.Name}! Kill it.";
 
         int monsterHealth = encounteredMonster.MaxHealth;
         int monsterAttack = encounteredMonster.MaxDamage;
 
-        MainWindow.labelMonsterName.Text = encounteredMonster.Name;
-        MainWindow.progressBarMonsterHP.Maximum = encounteredMonster.MaxHealth;
-        MainWindow.progressBarMonsterHP.Value = encounteredMonster.CurrentHealth;
-        MainWindow.labelMonsterHp.Text = $"HP: {encounteredMonster.CurrentHealth}/{encounteredMonster.MaxHealth}";
-        MainWindow.pictureBoxMonster1.Image = encounteredMonster.MonsterImage; // Sets the image to the encountered monster
-    }
+        mainWindow.labelMonsterName.Text = encounteredMonster.Name;
+        mainWindow.progressBarMonsterHP.Maximum = encounteredMonster.MaxHealth;
+        mainWindow.progressBarMonsterHP.Value = encounteredMonster.CurrentHealth;
+        mainWindow.labelMonsterHp.Text = $"HP: {encounteredMonster.CurrentHealth}/{encounteredMonster.MaxHealth}";
+        mainWindow.pictureBoxMonster1.Image = encounteredMonster.MonsterImage; // Sets the image to the encountered monster
+    }   
 
-    public static void PlayerAttacks(PlayerState playerState)
+    public static void PlayerAttacks(PlayerState playerState, MainWindow mainWindow)
     {
 
         if (Monster != null && Monster.CurrentHealth > 0)
         {
-            MainWindow.textBox1.Text = (""); // clears the textbox
+            mainWindow.textBox1.Text = (""); // clears the textbox
             int playerAttackDamageTotal = playerState.Player.CalculateTotalDamage(playerState); // The player deals damage
             Monster.CurrentHealth -= playerAttackDamageTotal;
 
@@ -63,40 +73,47 @@ internal static class Encounter
                 Monster.CurrentHealth = 0;
             }
 
-            MainWindow.progressBarMonsterHP.Value = Monster.CurrentHealth;
-            MainWindow.textBox1.AppendText($"You attack the {Monster.Name}, and deal {playerState.Player.Damage} damage. \r\n");
-            MainWindow.labelMonsterHp.Text = $"HP: {Monster.CurrentHealth}/{Monster.MaxHealth}";
+            mainWindow.progressBarMonsterHP.Value = Monster.CurrentHealth;
+            mainWindow.textBox1.AppendText($"You attack the {Monster.Name}, and deal {playerState.Player.Damage} damage. \r\n");
+            mainWindow.labelMonsterHp.Text = $"HP: {Monster.CurrentHealth}/{Monster.MaxHealth}";
 
             if (Monster.CurrentHealth > 0)
             {
-                MonsterAttacks(playerState); // Monster attacks back if still alive
+                MonsterAttacks(playerState, mainWindow); // Monster attacks back if still alive
             }
         }
 
     }
 
 
-    public static void MonsterAttacks(PlayerState playerState)
+    public static async void MonsterAttacks(PlayerState playerState, MainWindow mainWindow)
     {
         if (playerState.Player.CurrentHealth > 0)
         {
-            playerState.Player.CurrentHealth -= Monster.CalculateMonsterDamage(Monster);
+            // Stores the monsters damage dealt in a local variable to avoid the damage being calculated twice
+            int monsterDamageDealt = Monster.CalculateMonsterDamage(Monster);
+
+            playerState.Player.CurrentHealth -= monsterDamageDealt;
             playerState.Player.CurrentHealth = Math.Max(playerState.Player.CurrentHealth, 0);
-            MainWindow.progressBarPlayerHP.Value = playerState.Player.CurrentHealth;
-            MainWindow.labelPlayerHP.Text = $"HP: {playerState.Player.CurrentHealth.ToString()}/{playerState.Player.MaxHealth}";
-            MainWindow.textBox1.AppendText($"\r\nThe monster attacks you back and deals {Monster.CalculateMonsterDamage(Monster)} damage.");
+            mainWindow.progressBarPlayerHP.Value = playerState.Player.CurrentHealth;
+            mainWindow.labelPlayerHP.Text = $"HP: {playerState.Player.CurrentHealth.ToString()}/{playerState.Player.MaxHealth}";
+            mainWindow.textBox1.AppendText($"\r\nThe monster attacks you back and deals {monsterDamageDealt} damage.");
 
         }
 
         // Check if the player is defeated
         if (playerState.Player.CurrentHealth <= 0)
         {
-            MainWindow.textBox1.Text = "You are dead, game over.";
+            await Task.Delay(200);
+            Thread.Sleep(1000);
+            mainWindow.panelEncounter.Visible = false;
+            mainWindow.panelGameOver.Visible = true;
+            await Task.Delay(1200);
             Application.Exit();
         }
     }
 
-    public static void MonsterIsDefeated(PlayerState playerState)
+    public static void MonsterIsDefeated(PlayerState playerState, MainWindow mainWindow)
     {
         if (Monster == null)
         {
@@ -104,11 +121,11 @@ internal static class Encounter
         }
         if (Monster.CurrentHealth <= 0)
         {
-            MainWindow.textBox1.Text = $"You have defeated the monster. You gain {Monster.MonsterExperience}xp.";
-            MainWindow.panelMonster.Visible = false; // Hides the monster once it's defeated
-            PlayerGetsExperiencePoints(playerState);
-            PlayerGetsGoldFromMonster(playerState);
-            PlayerFindsItemFromMonster(playerState);
+            mainWindow.textBox1.Text = $"You have defeated the monster. You gain {Monster.MonsterExperience}xp.";
+            mainWindow.panelMonster.Visible = false; // Hides the monster once it's defeated
+            PlayerGetsExperiencePoints(playerState, mainWindow);
+            PlayerGetsGoldFromMonster(playerState, mainWindow);
+            PlayerFindsItemFromMonster(playerState, mainWindow);
             StoryProgress.progressFlag = true;
 
             // resets the monster object
@@ -118,7 +135,7 @@ internal static class Encounter
         }
     }
 
-    public static void PlayerFindsItemFromMonster(PlayerState playerState)
+    public static void PlayerFindsItemFromMonster(PlayerState playerState, MainWindow mainWindow)
     {
         if (Monster == null)
         {
@@ -129,26 +146,27 @@ internal static class Encounter
         Item foundItem = encounteredMonsterItems[randomItemIndex];
         if (foundItem != null)
         {
-            MainWindow.textBox1.AppendText($"\r\nYou find an item on the monster's corpse: {foundItem.ToString()}");
+            mainWindow.textBox1.AppendText($"\r\nYou find an item on the monster's corpse: {foundItem.ToString()}");
             playerState.Player.AddItemToInventory(foundItem); // this may do nothing, because the combobox can hold the items instead
-            MainWindow.comboBoxInventory.Items.Add(foundItem);
-            MainWindow.comboBoxInventory.SelectedItem = foundItem;
+            mainWindow.comboBoxInventory.Items.Add(foundItem);
+            mainWindow.comboBoxInventory.SelectedItem = foundItem;
         }
 
     }
 
 
 
-    private static void PlayerGetsGoldFromMonster(PlayerState playerState)
+    private static void PlayerGetsGoldFromMonster(PlayerState playerState, MainWindow mainWindow)
     {
         playerState.Player.GoldInPocket += Monster.MonsterGold;
-        MainWindow.labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket.ToString()}";
+        mainWindow.labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket.ToString()}";
     }
 
-    private static void PlayerGetsExperiencePoints(PlayerState playerState)
+    private static void PlayerGetsExperiencePoints(PlayerState playerState, MainWindow mainWindow)
     {
         // The player gets experience based on the monster
         playerState.Player.Experience += Monster.MonsterExperience;
+        mainWindow.labelExperience.Text = $"Experience: {playerState.Player.Experience}/{10 * (playerState.Player.Level + playerState.Player.Level)}";
         playerState.Player.LevelUp(playerState);
     }
 }

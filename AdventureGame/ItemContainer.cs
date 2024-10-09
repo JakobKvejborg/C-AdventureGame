@@ -28,11 +28,14 @@ internal class ItemContainer
         Item item2a = new Item("Rusty Armor", 1, 2, 0, 2, 0);
 
         items1.Add(item1a);
-        items1.Add(item2a);
         items1.Add(null);
-       
+        items1.Add(null);
+        items1.Add(null);
+        items1.Add(null);
+        items1.Add(null);
 
-        
+        items2.Add(item2a);
+
 
     }
 
