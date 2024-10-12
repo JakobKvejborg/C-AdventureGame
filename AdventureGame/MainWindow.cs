@@ -3,6 +3,10 @@ using Microsoft.VisualBasic.Devices;
 using System.Drawing.Drawing2D;
 using System.Drawing.Text;
 using System.Media;
+using System.Windows.Forms;
+using System.Windows.Media;
+using Color = System.Drawing.Color;
+using WMPLib;
 
 namespace AdventureGame;
 
@@ -14,17 +18,19 @@ public partial class MainWindow : Form
     private MonsterContainer monsterContainer = new MonsterContainer();
     private ItemContainer itemContainer = new ItemContainer();
     private StoryProgress storyProgress;
+    private SoundPlayer[] soundPlayers;
+    private WindowsMediaPlayer mediaPlayer1;
 
     public MainWindow()
     {
         InitializeComponent();
-        //this.BackColor = Color.FromArgb(80, 80, 90); // sets the color of the window to black
         this.DoubleBuffered = true; // helps flickering
         playerState = new PlayerState();
         panelMonster.Visible = false;
         panelEncounter.Visible = false;
         panelTown.Visible = false;
         panelGameOver.Visible = false;
+        pictureBoxHero.Visible = false;
         SetTownPictureBoxImage(); // places the "town.png" into the picturebox
         storyProgress = new StoryProgress(this);
         InitializePlayerLabels();
@@ -35,11 +41,40 @@ public partial class MainWindow : Form
         buttonPlayGame.MouseEnter += buttonPlayGame_MouseEnter;
         buttonPlayGame.MouseLeave += buttonPlayGame_MouseLeave;
 
+        // Make the window non-reziable
+        this.FormBorderStyle = FormBorderStyle.FixedSingle;
+        this.MaximizeBox = false;
 
         // Method to make the Game Title change colors slowly
         FadeTitle();
 
         this.KeyPreview = true;
+
+        SetInvisbleCompassLabels();
+    }
+
+    private void SetInvisbleCompassLabels()
+    {
+        var posW = labelCompassW.Parent.PointToScreen(labelCompassW.Location);
+        posW = pictureBoxCompass.PointToClient(posW);
+        labelCompassW.Parent = pictureBoxCompass;
+        labelCompassW.Location = posW;
+        labelCompassW.BackColor = Color.Transparent;
+        var posE = labelCompassE.Parent.PointToScreen(labelCompassE.Location);
+        posE = pictureBoxCompass.PointToClient(posE);
+        labelCompassE.Parent = pictureBoxCompass;
+        labelCompassE.Location = posE;
+        labelCompassE.BackColor = Color.Transparent;
+        var posN = labelCompassN.Parent.PointToScreen(labelCompassN.Location);
+        posN = pictureBoxCompass.PointToClient(posN);
+        labelCompassN.Parent = pictureBoxCompass;
+        labelCompassN.Location = posN;
+        labelCompassN.BackColor = Color.Transparent;
+        var posS = labelCompassS.Parent.PointToScreen(labelCompassS.Location);
+        posS = pictureBoxCompass.PointToClient(posS);
+        labelCompassS.Parent = pictureBoxCompass;
+        labelCompassS.Location = posS;
+        labelCompassS.BackColor = Color.Transparent;
     }
 
     async void FadeTitle()
@@ -61,7 +96,6 @@ public partial class MainWindow : Form
             // Delay to make the transition smooth
             await Task.Delay(40);
         }
-
         // Optionally loop the effect
         FadeTitle();
     }
@@ -71,7 +105,7 @@ public partial class MainWindow : Form
         try
         {
             var assembly = AppDomain.CurrentDomain.BaseDirectory;
-            var resourceName = "town.png";
+            var resourceName = "town2.png";
             var resourcePath = Path.Combine(assembly, "Images", resourceName);// $"AdventureGame.Images.{resourceName}";
 
             return Image.FromFile(resourcePath);
@@ -83,7 +117,7 @@ public partial class MainWindow : Form
         }
     }
 
-    public static async Task ShakeControl(Control control, int duration = 100, int shakeAmount = 5)
+    public static async Task ShakeControl(Control control, int duration = 80, int shakeAmount = 5)
     {
         // Store the original location of the control
         var originalLocation = control.Location;
@@ -129,14 +163,15 @@ public partial class MainWindow : Form
         textBox1.Text = $"You have leveled up to level {playerState.Player.Level}!";
         labelExperience.Text = $"Experience: {playerState.Player.Experience}/{10 * (playerState.Player.Level + playerState.Player.Level)}";
         labelLevel.Text = $"Level: {playerState.Player.Level.ToString()}";
+        UpdatePlayerHealthBar();
     }
 
 
-    private void PlayIntroSound()
-    {
-        SoundPlayer sound = new SoundPlayer("thunder.wav");
-        sound.Play();
-    }
+    //private void PlayIntroSound()
+    //{
+    //    SoundPlayer sound = new SoundPlayer("thunder.wav");
+    //    sound.Play();
+    //}
 
     private void buttonPlayGame_MouseEnter(object sender, EventArgs e)
     {
@@ -151,13 +186,7 @@ public partial class MainWindow : Form
 
     private void InitializePlayerLabels()
     {
-        //      Setting the progress bar and label player health
-        int currentHealth = playerState.Player.CurrentHealth;
-        int maxHealth = playerState.Player.MaxHealth;
-
-        progressBarPlayerHP.Maximum = maxHealth;
-        progressBarPlayerHP.Value = currentHealth;
-        labelPlayerHP.Text = $"HP: {currentHealth}/{maxHealth}";
+        UpdatePlayerHealthBar();
 
         // Setting the player stats labels
         labelPlayerDamage.Text = $"Damage: {playerState.Player.Damage}";
@@ -170,6 +199,16 @@ public partial class MainWindow : Form
         labelExperience.Text = $"Experience: {playerState.Player.Experience}/{10 * (playerState.Player.Level + playerState.Player.Level)}";
     }
 
+    private void UpdatePlayerHealthBar()
+    {
+        //      Setting the progress bar and label player health
+        int currentHealth = playerState.Player.CurrentHealth;
+        int maxHealth = playerState.Player.MaxHealth;
+
+        progressBarPlayerHP.Maximum = maxHealth;
+        progressBarPlayerHP.Value = currentHealth;
+        labelPlayerHP.Text = $"HP: {currentHealth}/{maxHealth}";
+    }
 
     private void progressBar1_Click(object sender, EventArgs e)
     {
@@ -178,58 +217,59 @@ public partial class MainWindow : Form
 
     private async void btn_attack_Click(object sender, EventArgs e)
     {
-        Encounter.PlayerAttacks(playerState, this);
-        MonsterIsDead();
-
-        await ShakeControl(pictureBoxMonster1);
-
-        btn_attack.Enabled = false;
-        await Task.Delay(500);
-        btn_attack.Enabled = true;
-
+        await ButtonAttack();
     }
 
-    private void MonsterIsDead()
+    private async Task ButtonAttack()
+    {
+        if (!isAttackOnCooldown)
+        {
+            isAttackOnCooldown = true;
+            Encounter.PlayerAttacks(playerState, this);
+            CheckIfMonsterIsDead();
+
+            await ShakeControl(pictureBoxMonster1);
+
+            btn_attack.Enabled = false;
+            await Task.Delay(80); // set this higher for a slower attackrate
+            btn_attack.Enabled = true;
+            isAttackOnCooldown = false;
+        }
+    }
+
+    private void CheckIfMonsterIsDead()
     {
         Encounter.MonsterIsDefeated(playerState, this);
         if (Encounter.Monster == null) // This is wrong for sure
         {
             Encounter.PlayerFindsItemFromMonster(playerState, this);
         }
-
     }
 
-    // This method lets the player use the buttons by pressing a key instead
+    // This method lets the player use the buttons by pressing a key instead of clicking
     protected override async void OnKeyDown(KeyEventArgs e)
     {
         base.OnKeyDown(e);
+        e.SuppressKeyPress = true; // suppress all key press actions
 
-        if (e.KeyCode == Keys.Space && !isAttackOnCooldown)
+        switch (e.KeyCode)
         {
-            isAttackOnCooldown = true;
-            btn_attack_Click(this, EventArgs.Empty);
-            e.SuppressKeyPress = true;
-            btn_attack.Enabled = false;
-            await Task.Delay(200);
-            btn_attack.Enabled = true;
-
-            isAttackOnCooldown = false;
+            case Keys.Space:
+                await ButtonAttack();
+                break;
+            case Keys.Enter:
+                ButtonContinue();
+                break;
+            case Keys.A:
+                ButtonWest();
+                break;
+            case Keys.D:
+                ButtonEast();
+                break;
+            case Keys.H:
+                ButtonHeal();
+                break;
         }
-
-
-        if (e.KeyCode == Keys.Enter)
-        {
-            //button1_Click_1(this, EventArgs.Empty);
-            //e.SuppressKeyPress = true;
-            ButtonContinue();
-        }
-
-        if (e.KeyCode == Keys.A)
-        {
-            buttonWest_Click(this, EventArgs.Empty);
-        }
-
-
     }
 
 
@@ -240,7 +280,21 @@ public partial class MainWindow : Form
 
     private void MainWindow_Load(object sender, EventArgs e)
     {
-        PlayIntroSound();
+        //PlayIntroSound();
+        soundPlayers = new SoundPlayer[]
+       {
+        new SoundPlayer("letmehealyou5db.wav"),  // index 0
+        //new SoundPlayer("thunder.wav"),  // index 1
+                                              // Add other sounds as needed
+       };
+        foreach (var soundPlayer in soundPlayers)
+        {
+            soundPlayer.Load();
+        }
+        //soundPlayers[0].Play(); // plays the intro thunder
+        mediaPlayer1 = new WindowsMediaPlayer();
+        mediaPlayer1.URL = "thunder.wav";
+        mediaPlayer1.controls.play();
     }
 
     private void label2_Click_1(object sender, EventArgs e)
@@ -250,15 +304,17 @@ public partial class MainWindow : Form
 
     private void buttonDiscardItem_Click(object sender, EventArgs e)
     {
-        {
-            if (comboBoxInventory.SelectedItem != null)
-            {
-                // Remove the selected item
-                textBox1.Text = $"You throw away the item {comboBoxInventory.SelectedItem.ToString()}.";
-                comboBoxInventory.Items.Remove(comboBoxInventory.SelectedItem);
-                comboBoxInventory.SelectedItem = null;
+        ButtonDiscardItem();
+    }
 
-            }
+    private void ButtonDiscardItem()
+    {
+        if (comboBoxInventory.SelectedItem != null)
+        {
+            // Remove the selected item
+            textBox1.Text = $"You throw away the item {comboBoxInventory.SelectedItem.ToString()}.";
+            comboBoxInventory.Items.Remove(comboBoxInventory.SelectedItem);
+            comboBoxInventory.SelectedItem = null;
         }
     }
 
@@ -274,33 +330,27 @@ public partial class MainWindow : Form
         btn_next.Focus();
     }
 
-    private void buttonSouth_Click(object sender, EventArgs e)
-    {
-
-    }
-
-    private void buttonWest_Click(object sender, EventArgs e)
-    {
-        ButtonWest();
-    }
 
     private void ButtonWest()
     {
-        panelTown.Visible = false;
-        if (StoryProgress.townEncountersEnabled == true)
         {
-            Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items2, this);
+            panelTown.Visible = false;
+            if (StoryProgress.playerIsInTown == true)
+            {
+                Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, this);
+                btn_next.Focus();
+            }
         }
     }
 
-    private void buttonNorth_Click(object sender, EventArgs e)
+
+    private void ButtonEast()
     {
-
-    }
-
-    private void buttonEast_Click(object sender, EventArgs e)
-    {
-
+        panelTown.Visible = false;
+        if (StoryProgress.playerIsInTown == true)
+        {
+            Encounter.PerformEncounter(monsterContainer.listOfMonsters2, itemContainer.items2, this);
+        }
     }
 
     private void button1_Click_1(object sender, EventArgs e)
@@ -312,4 +362,66 @@ public partial class MainWindow : Form
     {
         storyProgress.ProgressStory(textBox1);
     }
+
+    private void labelCompassW_Click(object sender, EventArgs e)
+    {
+        ButtonWest();
+    }
+
+    private void labelCompassE_Click(object sender, EventArgs e)
+    {
+        ButtonEast();
+    }
+
+    private void labelCompassN_Click(object sender, EventArgs e)
+    {
+        ButtonNorth();
+    }
+
+    private void ButtonNorth()
+    {
+    }
+
+    private void labelCompassS_Click(object sender, EventArgs e)
+    {
+        ButtonSouth();
+    }
+
+    private void ButtonSouth()
+    {
+        textBox1.Text = "You cannot turn back now. You have to move forward.";
+    }
+
+    private void buttonHeal_Click(object sender, EventArgs e)
+    {
+        ButtonHeal();
+    }
+
+    private void ButtonHeal()
+    {
+        if (StoryProgress.playerIsInTown)
+        {
+            playerState.Player.HealPlayer(playerState);
+            labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket}";
+            buttonHeal.Text = $"Healing {Player.priceToHeal.ToString()}G";
+            UpdatePlayerHealthBar(); // updates the players health bar after being healed
+            PlayHealingSound();
+        }
+    }
+
+    private void PlayHealingSound()
+    {
+        //SoundPlayer sound = new SoundPlayer("letmehealyou.wav");
+        //sound.Play();
+        try
+        {
+            soundPlayers[0].Play();
+        }
+        catch
+        {
+            throw new Exception("The sound file was not found");
+        }
+    }
+
+
 }

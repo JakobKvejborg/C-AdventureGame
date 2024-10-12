@@ -8,7 +8,7 @@ internal class Player
     public int CurrentHealth { get; set; }
     public int Damage { get; set; }
     public int Strength { get; set; }
-    public int Lifesteal {  get; set; }
+    public int Lifesteal { get; set; }
     public int Armor { get; set; }
     public int DodgeChance { get; set; }
     public int GoldInPocket { get; set; }
@@ -17,8 +17,9 @@ internal class Player
     public List<Item> Inventory { get; set; }
     public List<Item> EquippedItems { get; set; }
     public event Action LevelUpEvent;
+    public static int priceToHeal { get; set; } = 2; // 2 is the default value
 
-    public Player(string name, int maxHealth, int currentHealth, int damage, int strength, int lifesteal, 
+    public Player(string name, int maxHealth, int currentHealth, int damage, int strength, int lifesteal,
         int armor, int dodgeChance, int goldInPocket, int experience, int level)
     {
         Name = name;
@@ -35,19 +36,22 @@ internal class Player
         Inventory = new List<Item>();
         EquippedItems = new List<Item>();
     }
-       
+
     public void LevelUp(PlayerState playerState)
     {
         if (Experience >= 10 * (Level + Level))
         {
             Level++;
             playerState.Player.Experience = 0;
-            
+
+            playerState.Player.MaxHealth += playerState.Player.Level;
+            playerState.Player.CurrentHealth = playerState.Player.MaxHealth; // this heals the player to full hp on level up
+
             LevelUpEvent?.Invoke();
         }
     }
 
-    internal int CalculateTotalDamage(PlayerState playerState)
+    public int CalculateTotalDamage(PlayerState playerState)
     {
         return playerState.Player.Damage + ((playerState.Player.Strength / 2) * playerState.Player.Level / 3);
     }
@@ -55,5 +59,15 @@ internal class Player
     public void AddItemToInventory(Item foundItem)
     {
         Inventory.Add(foundItem);
+    }
+
+    public void HealPlayer(PlayerState playerState)
+    {
+        if (playerState.Player.GoldInPocket >= priceToHeal)
+        {
+            playerState.Player.CurrentHealth = MaxHealth;
+            playerState.Player.GoldInPocket -= priceToHeal;
+            priceToHeal += 2 * priceToHeal * priceToHeal;
+        } 
     }
 }

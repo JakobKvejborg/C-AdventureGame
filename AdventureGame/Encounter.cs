@@ -12,12 +12,13 @@ internal static class Encounter
     public static Monster Monster { get; private set; } // Stores the monster encountered
     private static readonly Random randomMonster = new Random();
     private static readonly Random randomItem = new Random();
+    private static readonly Random randomDodge = new Random();
     public static List<Item>? encounteredMonsterItems; // saves the list of items from the parameter til at property
 
     public static void PerformEncounter(List<Monster> listOfMonsters, List<Item> listOfItems, MainWindow mainWindow)
     {
         // Disables encounters from town
-        StoryProgress.townEncountersEnabled = false;
+        StoryProgress.playerIsInTown = false;
         StoryProgress.progressFlag = false;
 
         // Prepares the GUI
@@ -56,11 +57,10 @@ internal static class Encounter
         mainWindow.progressBarMonsterHP.Value = encounteredMonster.CurrentHealth;
         mainWindow.labelMonsterHp.Text = $"HP: {encounteredMonster.CurrentHealth}/{encounteredMonster.MaxHealth}";
         mainWindow.pictureBoxMonster1.Image = encounteredMonster.MonsterImage; // Sets the image to the encountered monster
-    }   
+    }
 
     public static void PlayerAttacks(PlayerState playerState, MainWindow mainWindow)
     {
-
         if (Monster != null && Monster.CurrentHealth > 0)
         {
             mainWindow.textBox1.Text = (""); // clears the textbox
@@ -74,7 +74,7 @@ internal static class Encounter
             }
 
             mainWindow.progressBarMonsterHP.Value = Monster.CurrentHealth;
-            mainWindow.textBox1.AppendText($"You attack the {Monster.Name}, and deal {playerState.Player.Damage} damage. \r\n");
+            mainWindow.textBox1.AppendText($"You attack the {Monster.Name}, and deal {playerState.Player.CalculateTotalDamage(playerState)} damage. \r\n");
             mainWindow.labelMonsterHp.Text = $"HP: {Monster.CurrentHealth}/{Monster.MaxHealth}";
 
             if (Monster.CurrentHealth > 0)
@@ -82,14 +82,18 @@ internal static class Encounter
                 MonsterAttacks(playerState, mainWindow); // Monster attacks back if still alive
             }
         }
-
     }
-
 
     public static async void MonsterAttacks(PlayerState playerState, MainWindow mainWindow)
     {
         if (playerState.Player.CurrentHealth > 0)
         {
+        int dodgeChanceRoll = randomDodge.Next(1, 101);
+        if (dodgeChanceRoll <= playerState.Player.DodgeChance)
+        {
+            mainWindow.textBox1.AppendText("\n\r You dodged the monster's attack!");
+            return; // Exit the method if the player dodges
+        }
             // Stores the monsters damage dealt in a local variable to avoid the damage being calculated twice
             int monsterDamageDealt = Monster.CalculateMonsterDamage(Monster);
 
@@ -98,10 +102,14 @@ internal static class Encounter
             mainWindow.progressBarPlayerHP.Value = playerState.Player.CurrentHealth;
             mainWindow.labelPlayerHP.Text = $"HP: {playerState.Player.CurrentHealth.ToString()}/{playerState.Player.MaxHealth}";
             mainWindow.textBox1.AppendText($"\r\nThe monster attacks you back and deals {monsterDamageDealt} damage.");
-
         }
 
         // Check if the player is defeated
+        await CheckIfPlayerIsDefeated(playerState, mainWindow);
+    }
+
+    private static async Task CheckIfPlayerIsDefeated(PlayerState playerState, MainWindow mainWindow)
+    {
         if (playerState.Player.CurrentHealth <= 0)
         {
             await Task.Delay(200);

@@ -7,7 +7,7 @@ internal class StoryProgress
     public MonsterContainer monsterContainer = new MonsterContainer();
     public ItemContainer itemContainer = new ItemContainer();
     public static bool progressFlag { get; set; }
-    public static bool townEncountersEnabled { get; set; } = false;
+    public static bool playerIsInTown { get; set; } = false;
     private MainWindow _mainWindow;
 
     public StoryProgress(MainWindow mainWindow)
@@ -42,6 +42,7 @@ internal class StoryProgress
                 StoryState++;
                 break;
             case 2:
+                _mainWindow.pictureBoxHero.Visible = true;
                 Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, _mainWindow);
                 textBox1.AppendText("");
                 StoryState++;
@@ -67,9 +68,9 @@ internal class StoryProgress
                 if (progressFlag == true)
                 {
                     textBox1.Clear();
-                    textBox1.AppendText("While the town isn’t completely deserted, it's very quit. \r\nChoose a path.");
+                    textBox1.AppendText("While the town isn’t completely deserted, it's dead quiet. \r\nChoose a path.");
                     _mainWindow.panelTown.Visible = true;
-                    townEncountersEnabled = true;
+                    playerIsInTown = true;
                 }
                 break;
         }
