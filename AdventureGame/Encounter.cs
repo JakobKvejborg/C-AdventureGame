@@ -17,13 +17,14 @@ internal static class Encounter
 
     public static void PerformEncounter(List<Monster> listOfMonsters, List<Item> listOfItems, MainWindow mainWindow)
     {
+
         // Disables encounters from town
         StoryProgress.playerIsInTown = false;
         StoryProgress.progressFlag = false;
 
         // Prepares the GUI
         mainWindow.textBox1.Clear();
-        mainWindow.panelMonster.Visible = true;
+        mainWindow.panelMonster.Show();
 
         encounteredMonsterItems = listOfItems; // saves the list of items from the parameter til at property
 
@@ -114,8 +115,8 @@ internal static class Encounter
         {
             await Task.Delay(200);
             Thread.Sleep(1000);
-            mainWindow.panelEncounter.Visible = false;
-            mainWindow.panelGameOver.Visible = true;
+            mainWindow.panelEncounter.Hide();
+            mainWindow.panelGameOver.Show();
             await Task.Delay(1200);
             Application.Exit();
         }
@@ -130,7 +131,7 @@ internal static class Encounter
         if (Monster.CurrentHealth <= 0)
         {
             mainWindow.textBox1.Text = $"You have defeated the monster. You gain {Monster.MonsterExperience}xp.";
-            mainWindow.panelMonster.Visible = false; // Hides the monster once it's defeated
+            mainWindow.panelMonster.Hide(); // Hides the monster once it's defeated
             PlayerGetsExperiencePoints(playerState, mainWindow);
             PlayerGetsGoldFromMonster(playerState, mainWindow);
             PlayerFindsItemFromMonster(playerState, mainWindow);

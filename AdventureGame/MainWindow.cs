@@ -20,20 +20,29 @@ public partial class MainWindow : Form
     private StoryProgress storyProgress;
     private SoundPlayer[] soundPlayers;
     private WindowsMediaPlayer mediaPlayer1;
+    private bool cooldownOnSound;
+    public List<Panel> panelsList;
+    public int panelsIndex;
 
     public MainWindow()
     {
         InitializeComponent();
         this.DoubleBuffered = true; // helps flickering
         playerState = new PlayerState();
-        panelMonster.Visible = false;
-        panelEncounter.Visible = false;
-        panelTown.Visible = false;
-        panelGameOver.Visible = false;
-        pictureBoxHero.Visible = false;
+        panelsList = new List<Panel>();
+        panelMonster.Hide();
+        panelEncounter.Hide();
+        panelTown.Hide();
+        panelGameOver.Hide();
+        pictureBoxHero.Hide();
         SetTownPictureBoxImage(); // places the "town.png" into the picturebox
         storyProgress = new StoryProgress(this);
         InitializePlayerLabels();
+        panelTown.Location = new Point(0, 0); // Example: position it at the top-left corner
+        panelTown.Size = new Size(400, 300);  // Example: set a proper size to make it visible
+        panelTown.BringToFront();
+        this.Controls.Add(panelTown);
+
 
         // Event that listens for player levelup
         playerState.Player.LevelUpEvent += OnPlayerLevelUp;
@@ -51,6 +60,16 @@ public partial class MainWindow : Form
         this.KeyPreview = true;
 
         SetInvisbleCompassLabels();
+    }
+
+    private void EnterTown()
+    {
+        if (StoryProgress.playerIsInTown)
+        {
+            panelTown.Show(); // Show the town panel when player enters the town
+            panelEncounter.Hide(); // Hide other panels if necessary
+            textBox1.Text = "Welcome to the Town!";
+        }
     }
 
     private void SetInvisbleCompassLabels()
@@ -295,6 +314,12 @@ public partial class MainWindow : Form
         mediaPlayer1 = new WindowsMediaPlayer();
         mediaPlayer1.URL = "thunder.wav";
         mediaPlayer1.controls.play();
+
+        panelsList.Add(panelEncounter);
+        panelsList.Add(panelStartScreen);
+        panelsList.Add(panelGameOver);
+        panelsList.Add(panelTown);
+        panelsList[panelsIndex].BringToFront();
     }
 
     private void label2_Click_1(object sender, EventArgs e)
@@ -325,20 +350,21 @@ public partial class MainWindow : Form
 
     private void ButtonPlayGame()
     {
-        panelStartScreen.Visible = false;
-        panelEncounter.Visible = true;
-        btn_next.Focus();
+        panelStartScreen.Hide();
+        panelEncounter.Show();
+        btn_continue.Focus();
     }
 
 
     private void ButtonWest()
     {
         {
-            panelTown.Visible = false;
+            panelTown.Hide();
+            panelEncounter.Show();
             if (StoryProgress.playerIsInTown == true)
             {
                 Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, this);
-                btn_next.Focus();
+                btn_continue.Focus();
             }
         }
     }
@@ -346,7 +372,8 @@ public partial class MainWindow : Form
 
     private void ButtonEast()
     {
-        panelTown.Visible = false;
+        panelTown.Hide();
+        panelEncounter.Show();
         if (StoryProgress.playerIsInTown == true)
         {
             Encounter.PerformEncounter(monsterContainer.listOfMonsters2, itemContainer.items2, this);
@@ -397,15 +424,21 @@ public partial class MainWindow : Form
         ButtonHeal();
     }
 
-    private void ButtonHeal()
+    private async void ButtonHeal()
     {
         if (StoryProgress.playerIsInTown)
         {
             playerState.Player.HealPlayer(playerState);
             labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket}";
-            buttonHeal.Text = $"Healing {Player.priceToHeal.ToString()}G";
+            buttonHeal.Text = $"Heal {Player.priceToHeal.ToString()}G";
             UpdatePlayerHealthBar(); // updates the players health bar after being healed
-            PlayHealingSound();
+            if (!cooldownOnSound)
+            {
+                PlayHealingSound();
+                cooldownOnSound = true;
+                await Task.Delay(5000);
+                cooldownOnSound = false;
+            }
         }
     }
 
@@ -423,5 +456,8 @@ public partial class MainWindow : Form
         }
     }
 
-
+    private void btn_Continuetown_Click(object sender, EventArgs e)
+    {
+        ButtonContinue();
+    }
 }

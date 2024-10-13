@@ -34,13 +34,14 @@ partial class MainWindow
     {
         components = new System.ComponentModel.Container();
         toolTip = new ToolTip(components);
-        btn_next = new Button();
+        btn_continue = new Button();
         btn_attack = new Button();
         labelCompassE = new Label();
         labelCompassW = new Label();
         labelCompassN = new Label();
         labelCompassS = new Label();
         buttonHeal = new Button();
+        btn_Continuetown = new Button();
         textBox1 = new TextBox();
         comboBoxInventory = new ComboBox();
         labelInventory = new Label();
@@ -65,11 +66,12 @@ partial class MainWindow
         labelMonsterName = new Label();
         buttonEquipUnequip = new Button();
         panelEncounter = new Panel();
+        pictureBoxHero = new PictureBox();
         panelTown = new Panel();
-        pictureBox1 = new PictureBox();
+        txtBox_Town = new TextBox();
         pictureBoxCompass = new PictureBox();
         pictureBoxTown = new PictureBox();
-        pictureBoxHero = new PictureBox();
+        pictureBoxHealer = new PictureBox();
         panelStartScreen = new Panel();
         buttonPlayGame = new Button();
         labelGameTitle = new Label();
@@ -78,29 +80,29 @@ partial class MainWindow
         panelMonster.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).BeginInit();
         panelEncounter.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxHero).BeginInit();
         panelTown.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)pictureBox1).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxCompass).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxTown).BeginInit();
-        ((System.ComponentModel.ISupportInitialize)pictureBoxHero).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxHealer).BeginInit();
         panelStartScreen.SuspendLayout();
         panelGameOver.SuspendLayout();
         SuspendLayout();
         // 
-        // btn_next
+        // btn_continue
         // 
-        btn_next.Location = new Point(3, 105);
-        btn_next.Name = "btn_next";
-        btn_next.Size = new Size(94, 29);
-        btn_next.TabIndex = 0;
-        btn_next.Text = "Continue";
-        toolTip.SetToolTip(btn_next, "\"Enter\"");
-        btn_next.UseVisualStyleBackColor = true;
-        btn_next.Click += button1_Click_1;
+        btn_continue.Location = new Point(9, 111);
+        btn_continue.Name = "btn_continue";
+        btn_continue.Size = new Size(94, 29);
+        btn_continue.TabIndex = 0;
+        btn_continue.Text = "Continue";
+        toolTip.SetToolTip(btn_continue, "\"Enter\"");
+        btn_continue.UseVisualStyleBackColor = true;
+        btn_continue.Click += button1_Click_1;
         // 
         // btn_attack
         // 
-        btn_attack.Location = new Point(128, 306);
+        btn_attack.Location = new Point(136, 306);
         btn_attack.Name = "btn_attack";
         btn_attack.Size = new Size(94, 29);
         btn_attack.TabIndex = 5;
@@ -113,7 +115,7 @@ partial class MainWindow
         // 
         labelCompassE.AutoSize = true;
         labelCompassE.ForeColor = Color.Transparent;
-        labelCompassE.Location = new Point(118, 74);
+        labelCompassE.Location = new Point(133, 221);
         labelCompassE.Name = "labelCompassE";
         labelCompassE.Size = new Size(89, 60);
         labelCompassE.TabIndex = 7;
@@ -125,7 +127,7 @@ partial class MainWindow
         // 
         labelCompassW.AutoSize = true;
         labelCompassW.ForeColor = Color.Transparent;
-        labelCompassW.Location = new Point(8, 74);
+        labelCompassW.Location = new Point(18, 224);
         labelCompassW.Name = "labelCompassW";
         labelCompassW.Size = new Size(89, 60);
         labelCompassW.TabIndex = 6;
@@ -137,11 +139,11 @@ partial class MainWindow
         // 
         labelCompassN.AutoSize = true;
         labelCompassN.ForeColor = Color.Transparent;
-        labelCompassN.Location = new Point(62, 0);
+        labelCompassN.Location = new Point(80, 142);
         labelCompassN.Name = "labelCompassN";
-        labelCompassN.Size = new Size(89, 60);
+        labelCompassN.Size = new Size(89, 80);
         labelCompassN.TabIndex = 8;
-        labelCompassN.Text = "            \r\n            \r\n                    \r\n";
+        labelCompassN.Text = "            \r\n            \r\n                    \r\n\r\n";
         toolTip.SetToolTip(labelCompassN, "\"W\"");
         labelCompassN.Click += labelCompassN_Click;
         // 
@@ -149,7 +151,7 @@ partial class MainWindow
         // 
         labelCompassS.AutoSize = true;
         labelCompassS.ForeColor = Color.Transparent;
-        labelCompassS.Location = new Point(62, 144);
+        labelCompassS.Location = new Point(80, 290);
         labelCompassS.Name = "labelCompassS";
         labelCompassS.Size = new Size(89, 60);
         labelCompassS.TabIndex = 9;
@@ -159,21 +161,32 @@ partial class MainWindow
         // 
         // buttonHeal
         // 
-        buttonHeal.Location = new Point(27, 448);
+        buttonHeal.Location = new Point(65, 596);
         buttonHeal.Name = "buttonHeal";
-        buttonHeal.Size = new Size(124, 29);
+        buttonHeal.Size = new Size(124, 31);
         buttonHeal.TabIndex = 11;
         buttonHeal.Text = "Receive Healing";
         toolTip.SetToolTip(buttonHeal, "\"H\"");
         buttonHeal.UseVisualStyleBackColor = true;
         buttonHeal.Click += buttonHeal_Click;
         // 
+        // btn_Continuetown
+        // 
+        btn_Continuetown.Location = new Point(9, 111);
+        btn_Continuetown.Name = "btn_Continuetown";
+        btn_Continuetown.Size = new Size(94, 29);
+        btn_Continuetown.TabIndex = 13;
+        btn_Continuetown.Text = "Continue";
+        toolTip.SetToolTip(btn_Continuetown, "\"Enter\"");
+        btn_Continuetown.UseVisualStyleBackColor = true;
+        btn_Continuetown.Click += btn_Continuetown_Click;
+        // 
         // textBox1
         // 
         textBox1.BackColor = Color.FromArgb(195, 195, 195);
         textBox1.BorderStyle = BorderStyle.None;
         textBox1.Font = new Font("Microsoft Sans Serif", 12F);
-        textBox1.Location = new Point(3, 9);
+        textBox1.Location = new Point(11, 15);
         textBox1.Multiline = true;
         textBox1.Name = "textBox1";
         textBox1.ReadOnly = true;
@@ -187,17 +200,16 @@ partial class MainWindow
         // 
         comboBoxInventory.DropDownStyle = ComboBoxStyle.DropDownList;
         comboBoxInventory.FormattingEnabled = true;
-        comboBoxInventory.Location = new Point(240, 397);
+        comboBoxInventory.Location = new Point(344, 571);
         comboBoxInventory.Name = "comboBoxInventory";
         comboBoxInventory.Size = new Size(151, 28);
         comboBoxInventory.TabIndex = 2;
         // 
         // labelInventory
         // 
-        labelInventory.AutoSize = true;
         labelInventory.BackColor = Color.Transparent;
         labelInventory.ForeColor = Color.White;
-        labelInventory.Location = new Point(240, 371);
+        labelInventory.Location = new Point(353, 548);
         labelInventory.Name = "labelInventory";
         labelInventory.Size = new Size(70, 20);
         labelInventory.TabIndex = 3;
@@ -205,7 +217,7 @@ partial class MainWindow
         // 
         // buttonDiscardItem
         // 
-        buttonDiscardItem.Location = new Point(240, 466);
+        buttonDiscardItem.Location = new Point(344, 641);
         buttonDiscardItem.Name = "buttonDiscardItem";
         buttonDiscardItem.Size = new Size(151, 29);
         buttonDiscardItem.TabIndex = 4;
@@ -215,7 +227,7 @@ partial class MainWindow
         // 
         // btn_useMagic
         // 
-        btn_useMagic.Location = new Point(128, 341);
+        btn_useMagic.Location = new Point(136, 341);
         btn_useMagic.Name = "btn_useMagic";
         btn_useMagic.Size = new Size(94, 29);
         btn_useMagic.TabIndex = 6;
@@ -224,7 +236,7 @@ partial class MainWindow
         // 
         // btn_block
         // 
-        btn_block.Location = new Point(128, 376);
+        btn_block.Location = new Point(136, 376);
         btn_block.Name = "btn_block";
         btn_block.Size = new Size(94, 29);
         btn_block.TabIndex = 7;
@@ -361,16 +373,16 @@ partial class MainWindow
         panelMonster.Controls.Add(labelMonsterName);
         panelMonster.Location = new Point(264, 155);
         panelMonster.Name = "panelMonster";
-        panelMonster.Size = new Size(258, 264);
+        panelMonster.Size = new Size(258, 344);
         panelMonster.TabIndex = 20;
         // 
         // pictureBoxMonster1
         // 
-        pictureBoxMonster1.Anchor = AnchorStyles.Left | AnchorStyles.Right;
         pictureBoxMonster1.BackgroundImageLayout = ImageLayout.Stretch;
         pictureBoxMonster1.Location = new Point(3, 78);
         pictureBoxMonster1.Name = "pictureBoxMonster1";
-        pictureBoxMonster1.Size = new Size(252, 210);
+        pictureBoxMonster1.Size = new Size(252, 263);
+        pictureBoxMonster1.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxMonster1.TabIndex = 21;
         pictureBoxMonster1.TabStop = false;
         // 
@@ -405,7 +417,7 @@ partial class MainWindow
         // 
         // buttonEquipUnequip
         // 
-        buttonEquipUnequip.Location = new Point(240, 431);
+        buttonEquipUnequip.Location = new Point(344, 606);
         buttonEquipUnequip.Name = "buttonEquipUnequip";
         buttonEquipUnequip.Size = new Size(151, 29);
         buttonEquipUnequip.TabIndex = 21;
@@ -415,12 +427,15 @@ partial class MainWindow
         // panelEncounter
         // 
         panelEncounter.BackColor = Color.Transparent;
-        panelEncounter.Controls.Add(panelTown);
+        panelEncounter.Controls.Add(buttonDiscardItem);
+        panelEncounter.Controls.Add(labelInventory);
+        panelEncounter.Controls.Add(buttonEquipUnequip);
         panelEncounter.Controls.Add(panelMonster);
         panelEncounter.Controls.Add(textBox1);
-        panelEncounter.Controls.Add(btn_next);
+        panelEncounter.Controls.Add(btn_continue);
         panelEncounter.Controls.Add(labelExperience);
         panelEncounter.Controls.Add(labelLevel);
+        panelEncounter.Controls.Add(comboBoxInventory);
         panelEncounter.Controls.Add(labelGoldInPocket);
         panelEncounter.Controls.Add(btn_attack);
         panelEncounter.Controls.Add(labelPlayerLifeSteal);
@@ -434,47 +449,59 @@ partial class MainWindow
         panelEncounter.Controls.Add(labelPlayerDamage);
         panelEncounter.Controls.Add(labelPlayerArmor);
         panelEncounter.Controls.Add(pictureBoxHero);
-        panelEncounter.Location = new Point(7, 6);
+        panelEncounter.Dock = DockStyle.Fill;
+        panelEncounter.Location = new Point(0, 0);
         panelEncounter.Name = "panelEncounter";
-        panelEncounter.Size = new Size(550, 978);
+        panelEncounter.Size = new Size(547, 743);
         panelEncounter.TabIndex = 22;
+        // 
+        // pictureBoxHero
+        // 
+        pictureBoxHero.Image = Properties.Resources.hero;
+        pictureBoxHero.Location = new Point(-13, 380);
+        pictureBoxHero.Name = "pictureBoxHero";
+        pictureBoxHero.Size = new Size(358, 359);
+        pictureBoxHero.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxHero.TabIndex = 22;
+        pictureBoxHero.TabStop = false;
         // 
         // panelTown
         // 
-        panelTown.Anchor = AnchorStyles.Bottom | AnchorStyles.Left;
         panelTown.BackColor = Color.Transparent;
-        panelTown.Controls.Add(buttonDiscardItem);
-        panelTown.Controls.Add(labelInventory);
-        panelTown.Controls.Add(buttonEquipUnequip);
+        panelTown.Controls.Add(btn_Continuetown);
+        panelTown.Controls.Add(txtBox_Town);
         panelTown.Controls.Add(buttonHeal);
-        panelTown.Controls.Add(comboBoxInventory);
-        panelTown.Controls.Add(pictureBox1);
         panelTown.Controls.Add(labelCompassS);
         panelTown.Controls.Add(labelCompassN);
         panelTown.Controls.Add(labelCompassE);
         panelTown.Controls.Add(labelCompassW);
         panelTown.Controls.Add(pictureBoxCompass);
         panelTown.Controls.Add(pictureBoxTown);
-        panelTown.Location = new Point(0, 140);
+        panelTown.Controls.Add(pictureBoxHealer);
+        panelTown.Dock = DockStyle.Fill;
+        panelTown.Location = new Point(0, 0);
         panelTown.Name = "panelTown";
-        panelTown.Size = new Size(545, 601);
-        panelTown.TabIndex = 22;
+        panelTown.Size = new Size(547, 743);
+        panelTown.TabIndex = 0;
         // 
-        // pictureBox1
+        // txtBox_Town
         // 
-        pictureBox1.Image = Properties.Resources.healer;
-        pictureBox1.Location = new Point(-20, 271);
-        pictureBox1.Name = "pictureBox1";
-        pictureBox1.Size = new Size(171, 192);
-        pictureBox1.SizeMode = PictureBoxSizeMode.Zoom;
-        pictureBox1.TabIndex = 10;
-        pictureBox1.TabStop = false;
+        txtBox_Town.BackColor = Color.FromArgb(195, 195, 195);
+        txtBox_Town.BorderStyle = BorderStyle.None;
+        txtBox_Town.Font = new Font("Microsoft Sans Serif", 12F);
+        txtBox_Town.Location = new Point(11, 15);
+        txtBox_Town.Multiline = true;
+        txtBox_Town.Name = "txtBox_Town";
+        txtBox_Town.ReadOnly = true;
+        txtBox_Town.ScrollBars = ScrollBars.Vertical;
+        txtBox_Town.Size = new Size(519, 90);
+        txtBox_Town.TabIndex = 12;
         // 
         // pictureBoxCompass
         // 
         pictureBoxCompass.BackgroundImageLayout = ImageLayout.Stretch;
         pictureBoxCompass.Image = Properties.Resources.compass;
-        pictureBoxCompass.Location = new Point(3, 0);
+        pictureBoxCompass.Location = new Point(18, 146);
         pictureBoxCompass.Name = "pictureBoxCompass";
         pictureBoxCompass.Size = new Size(204, 204);
         pictureBoxCompass.SizeMode = PictureBoxSizeMode.Zoom;
@@ -483,21 +510,23 @@ partial class MainWindow
         // 
         // pictureBoxTown
         // 
-        pictureBoxTown.Location = new Point(173, 210);
+        pictureBoxTown.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
+        pictureBoxTown.Location = new Point(202, 356);
         pictureBoxTown.Name = "pictureBoxTown";
-        pictureBoxTown.Size = new Size(377, 400);
+        pictureBoxTown.Size = new Size(345, 387);
         pictureBoxTown.TabIndex = 0;
         pictureBoxTown.TabStop = false;
         // 
-        // pictureBoxHero
+        // pictureBoxHealer
         // 
-        pictureBoxHero.Image = Properties.Resources.hero;
-        pictureBoxHero.Location = new Point(-20, 376);
-        pictureBoxHero.Name = "pictureBoxHero";
-        pictureBoxHero.Size = new Size(358, 359);
-        pictureBoxHero.SizeMode = PictureBoxSizeMode.Zoom;
-        pictureBoxHero.TabIndex = 22;
-        pictureBoxHero.TabStop = false;
+        pictureBoxHealer.Anchor = AnchorStyles.Bottom;
+        pictureBoxHealer.Image = Properties.Resources.healer;
+        pictureBoxHealer.Location = new Point(3, 402);
+        pictureBoxHealer.Name = "pictureBoxHealer";
+        pictureBoxHealer.Size = new Size(193, 206);
+        pictureBoxHealer.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxHealer.TabIndex = 10;
+        pictureBoxHealer.TabStop = false;
         // 
         // panelStartScreen
         // 
@@ -562,8 +591,9 @@ partial class MainWindow
         BackColor = SystemColors.ActiveCaptionText;
         BackgroundImage = Properties.Resources.castle1;
         BackgroundImageLayout = ImageLayout.Stretch;
-        ClientSize = new Size(549, 743);
+        ClientSize = new Size(547, 743);
         Controls.Add(panelEncounter);
+        Controls.Add(panelTown);
         Controls.Add(panelGameOver);
         Controls.Add(panelStartScreen);
         DoubleBuffered = true;
@@ -575,12 +605,12 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).EndInit();
         panelEncounter.ResumeLayout(false);
         panelEncounter.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxHero).EndInit();
         panelTown.ResumeLayout(false);
         panelTown.PerformLayout();
-        ((System.ComponentModel.ISupportInitialize)pictureBox1).EndInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxCompass).EndInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxTown).EndInit();
-        ((System.ComponentModel.ISupportInitialize)pictureBoxHero).EndInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxHealer).EndInit();
         panelStartScreen.ResumeLayout(false);
         panelStartScreen.PerformLayout();
         panelGameOver.ResumeLayout(false);
@@ -594,7 +624,7 @@ partial class MainWindow
     }
     #endregion
 
-    private Button btn_next;
+    private Button btn_continue;
     private Label labelInventory;
     private Button buttonDiscardItem;
     private Button btn_attack;
@@ -627,7 +657,6 @@ partial class MainWindow
     public Label labelMonsterName;
     public Button buttonPlayGame;
     public Label labelGameTitle;
-    public PictureBox pictureBoxTown;
     public Label labelGameOverText;
     public PictureBox pictureBoxHero;
     private PictureBox pictureBoxCompass;
@@ -636,5 +665,8 @@ partial class MainWindow
     private Label labelCompassN;
     private Label labelCompassS;
     private Button buttonHeal;
-    private PictureBox pictureBox1;
+    private PictureBox pictureBoxHealer;
+    public PictureBox pictureBoxTown;
+    public TextBox txtBox_Town;
+    private Button btn_Continuetown;
 }

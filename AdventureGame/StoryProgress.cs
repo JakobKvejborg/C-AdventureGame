@@ -9,6 +9,7 @@ internal class StoryProgress
     public static bool progressFlag { get; set; }
     public static bool playerIsInTown { get; set; } = false;
     private MainWindow _mainWindow;
+    bool oneTimeMessage;
 
     public StoryProgress(MainWindow mainWindow)
     {
@@ -19,6 +20,14 @@ internal class StoryProgress
     {
         return "You have just returned from a long journey to far realms." +
             "\n\rThe roads are littered with corpses. \n\rDo you have the will to survive the Horrors of the lands?";
+    }
+
+    private void NextPanel() // Currently unused
+    {
+        if (_mainWindow.panelsIndex < _mainWindow.panelsList.Count - 1)
+        {
+            _mainWindow.panelsList[++_mainWindow.panelsIndex].BringToFront();
+        }
     }
 
     public string GetSecondText()
@@ -42,7 +51,7 @@ internal class StoryProgress
                 StoryState++;
                 break;
             case 2:
-                _mainWindow.pictureBoxHero.Visible = true;
+                _mainWindow.pictureBoxHero.Show();
                 Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, _mainWindow);
                 textBox1.AppendText("");
                 StoryState++;
@@ -56,20 +65,24 @@ internal class StoryProgress
                 }
                 break;
             case 5:
-                if (progressFlag == true)
-                {
-                    textBox1.Clear();
-                    textBox1.AppendText("You have arrived at a nearly abandoned town. \r\nWhat comes next is up to you.");
-                    StoryState++;
-                    progressFlag = true;
-                }
-                break;
             case 6:
+            case 7:
                 if (progressFlag == true)
                 {
+                    if (oneTimeMessage == true)
+                    {
+                        _mainWindow.txtBox_Town.AppendText("You have arrived at a nearly abandoned town. \r\nWhat comes next is up to you.");
+                        oneTimeMessage = false;
+                    }
+                    else
+                    {
+                        _mainWindow.txtBox_Town.Text = "While the town isn’t completely deserted, it's dead quiet. \r\nChoose a path.";
+                    }
                     textBox1.Clear();
-                    textBox1.AppendText("While the town isn’t completely deserted, it's dead quiet. \r\nChoose a path.");
-                    _mainWindow.panelTown.Visible = true;
+                    _mainWindow.panelEncounter.Hide();
+                    _mainWindow.panelTown.Show();
+                    //StoryState++; // If this doesn't run, the story will loop here
+                    progressFlag = true;
                     playerIsInTown = true;
                 }
                 break;
