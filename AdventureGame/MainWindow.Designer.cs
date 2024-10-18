@@ -42,6 +42,7 @@ partial class MainWindow
         labelCompassS = new Label();
         buttonHeal = new Button();
         btn_Continuetown = new Button();
+        labelWeaponEquipped = new Label();
         textBox1 = new TextBox();
         comboBoxInventory = new ComboBox();
         labelInventory = new Label();
@@ -66,7 +67,10 @@ partial class MainWindow
         labelMonsterName = new Label();
         buttonEquipUnequip = new Button();
         panelEncounter = new Panel();
+        panelPopupPanel = new Panel();
+        labelWeaponEquippedInfo = new Label();
         pictureBoxHero = new PictureBox();
+        panelInventory = new Panel();
         panelTown = new Panel();
         txtBox_Town = new TextBox();
         pictureBoxCompass = new PictureBox();
@@ -80,7 +84,9 @@ partial class MainWindow
         panelMonster.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).BeginInit();
         panelEncounter.SuspendLayout();
+        panelPopupPanel.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHero).BeginInit();
+        panelInventory.SuspendLayout();
         panelTown.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxCompass).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxTown).BeginInit();
@@ -161,7 +167,7 @@ partial class MainWindow
         // 
         // buttonHeal
         // 
-        buttonHeal.Location = new Point(65, 596);
+        buttonHeal.Location = new Point(60, 596);
         buttonHeal.Name = "buttonHeal";
         buttonHeal.Size = new Size(124, 31);
         buttonHeal.TabIndex = 11;
@@ -180,6 +186,19 @@ partial class MainWindow
         toolTip.SetToolTip(btn_Continuetown, "\"Enter\"");
         btn_Continuetown.UseVisualStyleBackColor = true;
         btn_Continuetown.Click += btn_Continuetown_Click;
+        // 
+        // labelWeaponEquipped
+        // 
+        labelWeaponEquipped.AutoSize = true;
+        labelWeaponEquipped.ForeColor = Color.Transparent;
+        labelWeaponEquipped.Location = new Point(212, 544);
+        labelWeaponEquipped.Name = "labelWeaponEquipped";
+        labelWeaponEquipped.Size = new Size(89, 60);
+        labelWeaponEquipped.TabIndex = 24;
+        labelWeaponEquipped.Text = "            \r\n            \r\n                    \r\n";
+        labelWeaponEquipped.MouseEnter += labelWeaponEquipped_MouseEnter;
+        labelWeaponEquipped.MouseLeave += labelWeaponEquipped_MouseLeave;
+        labelWeaponEquipped.MouseHover += labelWeaponEquipped_MouseHover;
         // 
         // textBox1
         // 
@@ -200,7 +219,7 @@ partial class MainWindow
         // 
         comboBoxInventory.DropDownStyle = ComboBoxStyle.DropDownList;
         comboBoxInventory.FormattingEnabled = true;
-        comboBoxInventory.Location = new Point(344, 571);
+        comboBoxInventory.Location = new Point(4, 23);
         comboBoxInventory.Name = "comboBoxInventory";
         comboBoxInventory.Size = new Size(151, 28);
         comboBoxInventory.TabIndex = 2;
@@ -209,7 +228,7 @@ partial class MainWindow
         // 
         labelInventory.BackColor = Color.Transparent;
         labelInventory.ForeColor = Color.White;
-        labelInventory.Location = new Point(353, 548);
+        labelInventory.Location = new Point(13, 0);
         labelInventory.Name = "labelInventory";
         labelInventory.Size = new Size(70, 20);
         labelInventory.TabIndex = 3;
@@ -217,7 +236,7 @@ partial class MainWindow
         // 
         // buttonDiscardItem
         // 
-        buttonDiscardItem.Location = new Point(344, 641);
+        buttonDiscardItem.Location = new Point(4, 93);
         buttonDiscardItem.Name = "buttonDiscardItem";
         buttonDiscardItem.Size = new Size(151, 29);
         buttonDiscardItem.TabIndex = 4;
@@ -347,7 +366,7 @@ partial class MainWindow
         labelLevel.AutoSize = true;
         labelLevel.BackColor = Color.Transparent;
         labelLevel.ForeColor = Color.White;
-        labelLevel.Location = new Point(134, 242);
+        labelLevel.Location = new Point(132, 242);
         labelLevel.Name = "labelLevel";
         labelLevel.Size = new Size(43, 20);
         labelLevel.TabIndex = 18;
@@ -358,7 +377,7 @@ partial class MainWindow
         labelExperience.AutoSize = true;
         labelExperience.BackColor = Color.Transparent;
         labelExperience.ForeColor = Color.White;
-        labelExperience.Location = new Point(134, 274);
+        labelExperience.Location = new Point(132, 274);
         labelExperience.Name = "labelExperience";
         labelExperience.Size = new Size(81, 20);
         labelExperience.TabIndex = 19;
@@ -417,7 +436,7 @@ partial class MainWindow
         // 
         // buttonEquipUnequip
         // 
-        buttonEquipUnequip.Location = new Point(344, 606);
+        buttonEquipUnequip.Location = new Point(4, 58);
         buttonEquipUnequip.Name = "buttonEquipUnequip";
         buttonEquipUnequip.Size = new Size(151, 29);
         buttonEquipUnequip.TabIndex = 21;
@@ -427,15 +446,12 @@ partial class MainWindow
         // panelEncounter
         // 
         panelEncounter.BackColor = Color.Transparent;
-        panelEncounter.Controls.Add(buttonDiscardItem);
-        panelEncounter.Controls.Add(labelInventory);
-        panelEncounter.Controls.Add(buttonEquipUnequip);
+        panelEncounter.Controls.Add(panelPopupPanel);
         panelEncounter.Controls.Add(panelMonster);
         panelEncounter.Controls.Add(textBox1);
         panelEncounter.Controls.Add(btn_continue);
         panelEncounter.Controls.Add(labelExperience);
         panelEncounter.Controls.Add(labelLevel);
-        panelEncounter.Controls.Add(comboBoxInventory);
         panelEncounter.Controls.Add(labelGoldInPocket);
         panelEncounter.Controls.Add(btn_attack);
         panelEncounter.Controls.Add(labelPlayerLifeSteal);
@@ -448,12 +464,32 @@ partial class MainWindow
         panelEncounter.Controls.Add(labelPlayerHP);
         panelEncounter.Controls.Add(labelPlayerDamage);
         panelEncounter.Controls.Add(labelPlayerArmor);
+        panelEncounter.Controls.Add(labelWeaponEquipped);
         panelEncounter.Controls.Add(pictureBoxHero);
+        panelEncounter.Controls.Add(panelInventory);
         panelEncounter.Dock = DockStyle.Fill;
         panelEncounter.Location = new Point(0, 0);
         panelEncounter.Name = "panelEncounter";
         panelEncounter.Size = new Size(547, 743);
         panelEncounter.TabIndex = 22;
+        // 
+        // panelPopupPanel
+        // 
+        panelPopupPanel.BorderStyle = BorderStyle.Fixed3D;
+        panelPopupPanel.Controls.Add(labelWeaponEquippedInfo);
+        panelPopupPanel.Location = new Point(272, 500);
+        panelPopupPanel.Name = "panelPopupPanel";
+        panelPopupPanel.Size = new Size(160, 87);
+        panelPopupPanel.TabIndex = 25;
+        // 
+        // labelWeaponEquippedInfo
+        // 
+        labelWeaponEquippedInfo.AutoSize = true;
+        labelWeaponEquippedInfo.Location = new Point(16, 13);
+        labelWeaponEquippedInfo.Name = "labelWeaponEquippedInfo";
+        labelWeaponEquippedInfo.Size = new Size(57, 20);
+        labelWeaponEquippedInfo.TabIndex = 0;
+        labelWeaponEquippedInfo.Text = "toptext";
         // 
         // pictureBoxHero
         // 
@@ -464,6 +500,17 @@ partial class MainWindow
         pictureBoxHero.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxHero.TabIndex = 22;
         pictureBoxHero.TabStop = false;
+        // 
+        // panelInventory
+        // 
+        panelInventory.Controls.Add(labelInventory);
+        panelInventory.Controls.Add(buttonDiscardItem);
+        panelInventory.Controls.Add(comboBoxInventory);
+        panelInventory.Controls.Add(buttonEquipUnequip);
+        panelInventory.Location = new Point(340, 544);
+        panelInventory.Name = "panelInventory";
+        panelInventory.Size = new Size(164, 125);
+        panelInventory.TabIndex = 23;
         // 
         // panelTown
         // 
@@ -605,7 +652,10 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).EndInit();
         panelEncounter.ResumeLayout(false);
         panelEncounter.PerformLayout();
+        panelPopupPanel.ResumeLayout(false);
+        panelPopupPanel.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHero).EndInit();
+        panelInventory.ResumeLayout(false);
         panelTown.ResumeLayout(false);
         panelTown.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxCompass).EndInit();
@@ -669,4 +719,8 @@ partial class MainWindow
     public PictureBox pictureBoxTown;
     public TextBox txtBox_Town;
     private Button btn_Continuetown;
+    private Panel panelInventory;
+    private Label labelWeaponEquipped;
+    private Panel panelPopupPanel;
+    private Label labelWeaponEquippedInfo;
 }

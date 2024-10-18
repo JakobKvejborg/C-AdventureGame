@@ -13,11 +13,13 @@ internal class MonsterContainer
 
     public List<Monster> listOfMonsters1 { get; private set; }
     public List<Monster> listOfMonsters2 { get; private set; }
+    public List<Monster> listOfMonstersBossAct1 { get; private set; }
 
     public MonsterContainer()
     {
         listOfMonsters1 = new List<Monster>();
         listOfMonsters2 = new List<Monster>();
+        listOfMonstersBossAct1 = new List<Monster>();
         AddMonstersToList();
     }
 
@@ -39,6 +41,8 @@ internal class MonsterContainer
         Image horrorImage = GetMonsterImage("horror.png");
         Image starvedImage = GetMonsterImage("starved.png");
         Image batImage = GetMonsterImage("bat.png");
+
+        Image act1BossImage = GetMonsterImage("bossact1.png");
         
         // List of normal monsters NORMAL - NOPREFIX - NIGHTMARE - ELITE - HORROR - HELLISH - CORRUPTED
         Monster normalGoblin = new("Goblin", 10, 10, 0, 1, 1, 6, 1, normalGoblinImage);
@@ -55,6 +59,9 @@ internal class MonsterContainer
         Monster horror = new("Horror", 19, 19, 3, 0, 1, 13, 0, horrorImage);
         Monster starved = new("Starved", 13, 13, 1, 0, 6, 19, 0, starvedImage);
         Monster bat = new("Bat", 16, 16, 4, 0, 0, 12, 0, batImage);
+
+        // Act1 boss
+        Monster act1boss = new("Aldrus Thornfell", 40, 40, 5, 0, 5, 40, 5, act1BossImage);
 
         // List of Monsters 1
         listOfMonsters1.Add(normalGoblin);
@@ -73,6 +80,9 @@ internal class MonsterContainer
         listOfMonsters2.Add(horror);
         listOfMonsters2.Add(starved);
         listOfMonsters2.Add(bat);
+
+        // Act 1 boss
+        listOfMonstersBossAct1.Add(act1boss);
     }
 
     private Image GetMonsterImage(string resourceName)

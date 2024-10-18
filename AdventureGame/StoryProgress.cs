@@ -36,24 +36,24 @@ internal class StoryProgress
             " A chill sweeps over you as a deadly fiend emerges. It blocks your path - deny it its life.";
     }
 
-    public void ProgressStory(TextBox textBox1)
+    public void ProgressStory()
     {
         switch (StoryState)
         {
             case 0:
-                textBox1.Clear();
-                textBox1.AppendText(GetFirstText());
+                _mainWindow.textBox1.Clear();
+                _mainWindow.textBox1.AppendText(GetFirstText());
                 StoryState++;
                 break;
             case 1:
-                textBox1.Clear();
-                textBox1.AppendText(GetSecondText());
+                _mainWindow.textBox1.Clear();
+                _mainWindow.textBox1.AppendText(GetSecondText());
                 StoryState++;
                 break;
             case 2:
                 _mainWindow.pictureBoxHero.Show();
                 Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, _mainWindow);
-                textBox1.AppendText("");
+                _mainWindow.textBox1.AppendText("");
                 StoryState++;
                 break;
             case 3:
@@ -78,10 +78,10 @@ internal class StoryProgress
                     {
                         _mainWindow.txtBox_Town.Text = "While the town isn’t completely deserted, it's dead quiet. \r\nChoose a path.";
                     }
-                    textBox1.Clear();
+                    _mainWindow.textBox1.Clear();
                     _mainWindow.panelEncounter.Hide();
                     _mainWindow.panelTown.Show();
-                    //StoryState++; // If this doesn't run, the story will loop here
+                    //StoryState++; // When this line isn't excecuted, the story will loop here
                     progressFlag = true;
                     playerIsInTown = true;
                 }

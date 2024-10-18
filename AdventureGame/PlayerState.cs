@@ -4,15 +4,12 @@ using System.Linq;
 using System;
 using System.Threading.Tasks;
 
-namespace AdventureGame
+namespace AdventureGame;
+
+internal class PlayerState
 {
-    internal class PlayerState
-    {
 
-        private Player player = new Player("Hero", 35, 35, 10, 3, 0, 0, 1, 0, 0, 1);
-        public Player Player => player;
-       
-    }
-
-
+    private Player player = new Player("Hero", 35, 35, 11, 3, 0, 0, 1, 0, 0, 1);
+    public Player Player => player;
+   
 }

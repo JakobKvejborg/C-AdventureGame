@@ -7,7 +7,6 @@ using System.Windows.Forms;
 using System.Windows.Media;
 using Color = System.Drawing.Color;
 using WMPLib;
-
 namespace AdventureGame;
 
 public partial class MainWindow : Form
@@ -19,10 +18,13 @@ public partial class MainWindow : Form
     private ItemContainer itemContainer = new ItemContainer();
     private StoryProgress storyProgress;
     private SoundPlayer[] soundPlayers;
-    private WindowsMediaPlayer mediaPlayer1;
+    private WindowsMediaPlayer mediaPlayer1, mediaPlayer2;
     private bool cooldownOnSound;
     public List<Panel> panelsList;
     public int panelsIndex;
+    private System.Windows.Forms.Timer hoverTimer;
+    private Random random = new Random();
+    private bool Act1BossDefeatedFlag = false;
 
     public MainWindow()
     {
@@ -35,6 +37,7 @@ public partial class MainWindow : Form
         panelTown.Hide();
         panelGameOver.Hide();
         pictureBoxHero.Hide();
+        panelPopupPanel.Hide();
         SetTownPictureBoxImage(); // places the "town.png" into the picturebox
         storyProgress = new StoryProgress(this);
         InitializePlayerLabels();
@@ -42,7 +45,6 @@ public partial class MainWindow : Form
         panelTown.Size = new Size(400, 300);  // Example: set a proper size to make it visible
         panelTown.BringToFront();
         this.Controls.Add(panelTown);
-
 
         // Event that listens for player levelup
         playerState.Player.LevelUpEvent += OnPlayerLevelUp;
@@ -60,6 +62,30 @@ public partial class MainWindow : Form
         this.KeyPreview = true;
 
         SetInvisbleCompassLabels();
+        SetInisibleEquippedItemsLabels();
+
+        // Set how long equipped items info panels should be shown after mousehover
+        hoverTimer = new System.Windows.Forms.Timer();  // Create the timer instance
+        hoverTimer.Interval = 500;
+        hoverTimer.Tick += HoverTimer_Tick;
+
+    }
+
+    private void HoverTimer_Tick(object? sender, EventArgs e)
+    {
+        // Hide the panel
+        panelPopupPanel.Hide();
+        // Stop the timer to prevent it from ticking again
+        hoverTimer.Stop();
+    }
+
+    private void SetInisibleEquippedItemsLabels()
+    {
+        var posWeapon = labelWeaponEquipped.Parent.PointToScreen(labelWeaponEquipped.Location);
+        posWeapon = pictureBoxHero.PointToClient(posWeapon);
+        labelWeaponEquipped.Parent = pictureBoxHero;
+        labelWeaponEquipped.Location = posWeapon;
+        labelWeaponEquipped.BackColor = Color.Transparent;
     }
 
     private void EnterTown()
@@ -185,13 +211,6 @@ public partial class MainWindow : Form
         UpdatePlayerHealthBar();
     }
 
-
-    //private void PlayIntroSound()
-    //{
-    //    SoundPlayer sound = new SoundPlayer("thunder.wav");
-    //    sound.Play();
-    //}
-
     private void buttonPlayGame_MouseEnter(object sender, EventArgs e)
     {
         buttonPlayGame.BackColor = Color.Red;  // Change to bright red on hover
@@ -241,12 +260,12 @@ public partial class MainWindow : Form
 
     private async Task ButtonAttack()
     {
-        if (!isAttackOnCooldown)
+        if (!isAttackOnCooldown && Encounter.Monster != null)
         {
             isAttackOnCooldown = true;
             Encounter.PlayerAttacks(playerState, this);
             CheckIfMonsterIsDead();
-
+            PlaySwordAttackSound(); // plays the attack sound
             await ShakeControl(pictureBoxMonster1);
 
             btn_attack.Enabled = false;
@@ -285,6 +304,12 @@ public partial class MainWindow : Form
             case Keys.D:
                 ButtonEast();
                 break;
+            case Keys.S:
+                ButtonSouth();
+                break;
+            case Keys.W:
+                ButtonNorth();
+                break;
             case Keys.H:
                 ButtonHeal();
                 break;
@@ -299,18 +324,21 @@ public partial class MainWindow : Form
 
     private void MainWindow_Load(object sender, EventArgs e)
     {
-        //PlayIntroSound();
         soundPlayers = new SoundPlayer[]
        {
         new SoundPlayer("letmehealyou5db.wav"),  // index 0
-        //new SoundPlayer("thunder.wav"),  // index 1
-                                              // Add other sounds as needed
+        new SoundPlayer("sword1.wav"),  // index 1
+         new SoundPlayer("sword2.wav"),
+          new SoundPlayer("sword3.wav"),
+           new SoundPlayer("sword4.wav"),
+            new SoundPlayer("sword5.wav"), // 5
+             new SoundPlayer("sword6.wav"),
+        new SoundPlayer("act1boss.wav"),
        };
         foreach (var soundPlayer in soundPlayers)
         {
             soundPlayer.Load();
         }
-        //soundPlayers[0].Play(); // plays the intro thunder
         mediaPlayer1 = new WindowsMediaPlayer();
         mediaPlayer1.URL = "thunder.wav";
         mediaPlayer1.controls.play();
@@ -342,7 +370,6 @@ public partial class MainWindow : Form
             comboBoxInventory.SelectedItem = null;
         }
     }
-
     private void buttonPlayGame_Click(object sender, EventArgs e)
     {
         ButtonPlayGame();
@@ -355,28 +382,25 @@ public partial class MainWindow : Form
         btn_continue.Focus();
     }
 
-
     private void ButtonWest()
     {
+        if (StoryProgress.playerIsInTown == true)
         {
             panelTown.Hide();
             panelEncounter.Show();
-            if (StoryProgress.playerIsInTown == true)
-            {
-                Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, this);
-                btn_continue.Focus();
-            }
+            Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, this);
+            btn_continue.Focus();
         }
     }
 
-
     private void ButtonEast()
     {
-        panelTown.Hide();
-        panelEncounter.Show();
         if (StoryProgress.playerIsInTown == true)
         {
+            panelTown.Hide();
+            panelEncounter.Show();
             Encounter.PerformEncounter(monsterContainer.listOfMonsters2, itemContainer.items2, this);
+            btn_continue.Focus();
         }
     }
 
@@ -387,7 +411,7 @@ public partial class MainWindow : Form
 
     private void ButtonContinue()
     {
-        storyProgress.ProgressStory(textBox1);
+        storyProgress.ProgressStory();
     }
 
     private void labelCompassW_Click(object sender, EventArgs e)
@@ -407,6 +431,20 @@ public partial class MainWindow : Form
 
     private void ButtonNorth()
     {
+        if (StoryProgress.playerIsInTown == true)
+        {
+            panelTown.Hide();
+            panelEncounter.Show();
+            mediaPlayer2 = new WindowsMediaPlayer(); // play boss sound
+            mediaPlayer2.URL = "act1boss.wav";
+            mediaPlayer2.controls.play();
+            soundPlayers[7].Play(); 
+            Encounter.PerformEncounter(monsterContainer.listOfMonstersBossAct1, itemContainer.items2, this);
+            btn_continue.Focus();
+        }
+        Act1BossDefeatedFlag = true;
+        btn_continue.Focus();
+        
     }
 
     private void labelCompassS_Click(object sender, EventArgs e)
@@ -416,7 +454,8 @@ public partial class MainWindow : Form
 
     private void ButtonSouth()
     {
-        textBox1.Text = "You cannot turn back now. You have to move forward.";
+        txtBox_Town.Text = "You cannot turn back now. You must press on, your destiny awaits.";
+        btn_continue.Focus();
     }
 
     private void buttonHeal_Click(object sender, EventArgs e)
@@ -444,8 +483,6 @@ public partial class MainWindow : Form
 
     private void PlayHealingSound()
     {
-        //SoundPlayer sound = new SoundPlayer("letmehealyou.wav");
-        //sound.Play();
         try
         {
             soundPlayers[0].Play();
@@ -456,8 +493,39 @@ public partial class MainWindow : Form
         }
     }
 
+    private void PlaySwordAttackSound()
+    {
+        try
+        {
+            if (random.NextDouble() <= 0.85) // 80% chance to play a sound
+            {
+                int soundIndex = random.Next(1, 7);
+                soundPlayers[soundIndex].Play();
+            }
+        }
+        catch
+        {
+            throw new Exception("The sound file was not found");
+        }
+    }
+
     private void btn_Continuetown_Click(object sender, EventArgs e)
     {
         ButtonContinue();
+    }
+
+    private void labelWeaponEquipped_MouseHover(object sender, EventArgs e)
+    {
+    }
+
+    private void labelWeaponEquipped_MouseEnter(object sender, EventArgs e)
+    {
+        panelPopupPanel.Show();
+        hoverTimer.Stop();
+    }
+
+    private void labelWeaponEquipped_MouseLeave(object sender, EventArgs e)
+    {
+        hoverTimer.Start();
     }
 }
