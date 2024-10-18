@@ -14,10 +14,10 @@ internal static class Encounter
     private static readonly Random randomItem = new Random();
     private static readonly Random randomDodge = new Random();
     public static List<Item>? encounteredMonsterItems; // saves the list of items from the parameter til at property
+    public static event EventHandler EncounterCompleted;
 
     public static void PerformEncounter(List<Monster> listOfMonsters, List<Item> listOfItems, MainWindow mainWindow)
     {
-
         // Disables encounters from town
         StoryProgress.playerIsInTown = false;
         StoryProgress.progressFlag = false;
@@ -31,7 +31,9 @@ internal static class Encounter
         // Finds a random monster from the list of monsters to fight against, and stores it in the Monster property
         Monster = GetRandomMonster(listOfMonsters);
         SetEncounteredMonsterLabels(Monster, mainWindow);
+
     }
+   
 
     public static Monster GetRandomMonster(List<Monster> listOfMonsters)
     {
@@ -85,6 +87,7 @@ internal static class Encounter
         }
     }
 
+    // This method is called by MainWindow every time the player attacks
     public static async void MonsterAttacks(PlayerState playerState, MainWindow mainWindow)
     {
         if (playerState.Player.CurrentHealth > 0)
@@ -140,7 +143,7 @@ internal static class Encounter
             // resets the monster object
             Monster.CurrentHealth = Monster.MaxHealth;
             Monster = null;
-
+            EncounterCompleted?.Invoke(null, EventArgs.Empty); // TODO:
         }
     }
 

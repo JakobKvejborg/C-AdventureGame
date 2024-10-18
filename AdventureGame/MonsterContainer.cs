@@ -14,12 +14,14 @@ internal class MonsterContainer
     public List<Monster> listOfMonsters1 { get; private set; }
     public List<Monster> listOfMonsters2 { get; private set; }
     public List<Monster> listOfMonstersBossAct1 { get; private set; }
+    public List<Monster> listOfSnowMonsters1 { get; private set; }
 
     public MonsterContainer()
     {
         listOfMonsters1 = new List<Monster>();
         listOfMonsters2 = new List<Monster>();
         listOfMonstersBossAct1 = new List<Monster>();
+        listOfSnowMonsters1 = new List<Monster>();
         AddMonstersToList();
     }
 
@@ -41,10 +43,12 @@ internal class MonsterContainer
         Image horrorImage = GetMonsterImage("horror.png");
         Image starvedImage = GetMonsterImage("starved.png");
         Image batImage = GetMonsterImage("bat.png");
-
+        Image woodHorrorImage = GetMonsterImage("woodhorror.png");
         Image act1BossImage = GetMonsterImage("bossact1.png");
+
+        Image snowDemonImage = GetMonsterImage("snowdemon.png");
         
-        // List of normal monsters NORMAL - NOPREFIX - NIGHTMARE - ELITE - HORROR - HELLISH - CORRUPTED
+        // List of normal monsters NORMAL - NOPREFIX - SNOW - NIGHTMARE - ELITE - HORROR - HELLISH - CORRUPTED
         Monster normalGoblin = new("Goblin", 10, 10, 0, 1, 1, 6, 1, normalGoblinImage);
         Monster normalOrc = new("Orc", 7, 7, 0, 1, 2, 9, 0, normalOrcImage);
         Monster normalSkeleton = new("Skeleton", 8, 8, 1, 0, 0, 7, 0, normalSkeletonImage);
@@ -59,9 +63,13 @@ internal class MonsterContainer
         Monster horror = new("Horror", 19, 19, 3, 0, 1, 13, 0, horrorImage);
         Monster starved = new("Starved", 13, 13, 1, 0, 6, 19, 0, starvedImage);
         Monster bat = new("Bat", 16, 16, 4, 0, 0, 12, 0, batImage);
+        Monster woodHorror = new("Wood Horror", 15, 15, 0, 0, 8, 22, 3, woodHorrorImage);
 
         // Act1 boss
         Monster act1boss = new("Aldrus Thornfell", 40, 40, 5, 0, 5, 40, 5, act1BossImage);
+
+        // Act 2 Snow Monsters
+        Monster snowDemon = new("Snow Demon", 29, 29, 8, 0, 0, 22, 3, snowDemonImage);
 
         // List of Monsters 1
         listOfMonsters1.Add(normalGoblin);
@@ -80,9 +88,14 @@ internal class MonsterContainer
         listOfMonsters2.Add(horror);
         listOfMonsters2.Add(starved);
         listOfMonsters2.Add(bat);
+        listOfMonsters2.Add(woodHorror);
 
         // Act 1 boss
         listOfMonstersBossAct1.Add(act1boss);
+
+        // Act 2 list of snow monsters
+        listOfSnowMonsters1.Add(snowDemon);
+
     }
 
     private Image GetMonsterImage(string resourceName)

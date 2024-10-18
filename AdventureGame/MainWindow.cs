@@ -24,7 +24,8 @@ public partial class MainWindow : Form
     public int panelsIndex;
     private System.Windows.Forms.Timer hoverTimer;
     private Random random = new Random();
-    private bool Act1BossDefeatedFlag = false;
+    public bool Act1BossDefeatedFlag = false;
+    ImageSetter imageSetter = new ImageSetter();
 
     public MainWindow()
     {
@@ -38,7 +39,6 @@ public partial class MainWindow : Form
         panelGameOver.Hide();
         pictureBoxHero.Hide();
         panelPopupPanel.Hide();
-        SetTownPictureBoxImage(); // places the "town.png" into the picturebox
         storyProgress = new StoryProgress(this);
         InitializePlayerLabels();
         panelTown.Location = new Point(0, 0); // Example: position it at the top-left corner
@@ -145,23 +145,6 @@ public partial class MainWindow : Form
         FadeTitle();
     }
 
-    private Image SetTownImage()
-    {
-        try
-        {
-            var assembly = AppDomain.CurrentDomain.BaseDirectory;
-            var resourceName = "town2.png";
-            var resourcePath = Path.Combine(assembly, "Images", resourceName);// $"AdventureGame.Images.{resourceName}";
-
-            return Image.FromFile(resourcePath);
-        }
-        catch (FileNotFoundException ex)
-        {
-            MessageBox.Show("Image file not found.");
-            return null;
-        }
-    }
-
     public static async Task ShakeControl(Control control, int duration = 80, int shakeAmount = 5)
     {
         // Store the original location of the control
@@ -191,16 +174,6 @@ public partial class MainWindow : Form
         }
         // Restore the control's original position after shaking
         control.Location = originalLocation;
-    }
-
-    private void SetTownPictureBoxImage()
-    {
-        var townImage = SetTownImage();
-        if (townImage != null)
-        {
-            pictureBoxTown.Image = townImage;
-            pictureBoxTown.SizeMode = PictureBoxSizeMode.CenterImage; // This will center the image
-        }
     }
 
     private void OnPlayerLevelUp()
@@ -322,25 +295,43 @@ public partial class MainWindow : Form
 
     }
 
+    // Helper method to load media "sounds/music" from the "sounds" folder
+    private string MediaSoundPath(string soundName)
+    {
+        string soundDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sounds");
+        return Path.Combine(soundDirectory, soundName);
+    }
+    // Helper method to load the sounds from the folder "sounds" folder
+    private SoundPlayer GetSoundPath(string soundName)
+    {
+        string soundDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sounds");
+        return new SoundPlayer(Path.Combine(soundDirectory, soundName));
+    }
+
+    // This method runs after the entire layout of WinForms is loaded
     private void MainWindow_Load(object sender, EventArgs e)
     {
+        pictureBoxTown.Image = imageSetter.GetPictureBoxImage("act1town.png"); // places the "town2.png" into the picturebox
+        pictureBoxTown.SizeMode = PictureBoxSizeMode.Zoom; // This will center the image 
+
         soundPlayers = new SoundPlayer[]
-       {
-        new SoundPlayer("letmehealyou5db.wav"),  // index 0
-        new SoundPlayer("sword1.wav"),  // index 1
-         new SoundPlayer("sword2.wav"),
-          new SoundPlayer("sword3.wav"),
-           new SoundPlayer("sword4.wav"),
-            new SoundPlayer("sword5.wav"), // 5
-             new SoundPlayer("sword6.wav"),
-        new SoundPlayer("act1boss.wav"),
-       };
+ {
+        GetSoundPath("letmehealyou5db.wav"),  // index 0
+         GetSoundPath("sword1.wav"),  // index 1
+          GetSoundPath("sword2.wav"),
+           GetSoundPath("sword3.wav"),
+            GetSoundPath("sword4.wav"),
+             GetSoundPath("sword5.wav"),  // index 5
+              GetSoundPath("sword6.wav"),
+               GetSoundPath("sword7.wav"),
+        GetSoundPath("act1boss.wav"),
+ };
         foreach (var soundPlayer in soundPlayers)
         {
             soundPlayer.Load();
         }
         mediaPlayer1 = new WindowsMediaPlayer();
-        mediaPlayer1.URL = "thunder.wav";
+        mediaPlayer1.URL = MediaSoundPath("thunder.wav");
         mediaPlayer1.controls.play();
 
         panelsList.Add(panelEncounter);
@@ -431,20 +422,38 @@ public partial class MainWindow : Form
 
     private void ButtonNorth()
     {
-        if (StoryProgress.playerIsInTown == true)
+        if (StoryProgress.playerIsInTown == true && !Act1BossDefeatedFlag)
         {
             panelTown.Hide();
             panelEncounter.Show();
             mediaPlayer2 = new WindowsMediaPlayer(); // play boss sound
-            mediaPlayer2.URL = "act1boss.wav";
+            mediaPlayer2.URL = MediaSoundPath("act1boss.wav");
             mediaPlayer2.controls.play();
-            soundPlayers[7].Play(); 
-            Encounter.PerformEncounter(monsterContainer.listOfMonstersBossAct1, itemContainer.items2, this);
             btn_continue.Focus();
+            // Subscribe to the EncounterCompleted event
+            //Encounter.EncounterCompleted += OnEncounterCompleted;
+            Encounter.EncounterCompleted += OnAct1BossDefeated;
+
+            Encounter.PerformEncounter(monsterContainer.listOfMonstersBossAct1, itemContainer.items2, this);
+        } else
+        {
+            // act 2 boss logic here
         }
+    }
+
+    private void OnAct1BossDefeated(object sender, EventArgs e)
+    {
         Act1BossDefeatedFlag = true;
-        btn_continue.Focus();
-        
+        storyProgress.StoryState = 8; // Go to case 8.
+
+        // Unsubscribe from the event to avoid multiple invocations
+        Encounter.EncounterCompleted -= OnAct1BossDefeated;
+    }
+
+    public void SetAct2Backgroundimage()
+    {
+        Act1BossDefeatedFlag = true; // Set the defeated flag
+        BackgroundImage = imageSetter.GetPictureBoxImage("act2background.png");
     }
 
     private void labelCompassS_Click(object sender, EventArgs e)
@@ -467,10 +476,14 @@ public partial class MainWindow : Form
     {
         if (StoryProgress.playerIsInTown)
         {
-            playerState.Player.HealPlayer(playerState);
-            labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket}";
-            buttonHeal.Text = $"Heal {Player.priceToHeal.ToString()}G";
-            UpdatePlayerHealthBar(); // updates the players health bar after being healed
+            if (playerState.Player.GoldInPocket >= Player.priceToHeal)
+            {
+                playerState.Player.HealPlayer(playerState);
+                labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket}";
+                buttonHeal.Text = $"Heal {Player.priceToHeal.ToString()}G";
+                UpdatePlayerHealthBar(); // updates the players health bar after being healed
+                txtBox_Town.Text = storyProgress.GetHealingText();
+            }
             if (!cooldownOnSound)
             {
                 PlayHealingSound();
@@ -497,9 +510,9 @@ public partial class MainWindow : Form
     {
         try
         {
-            if (random.NextDouble() <= 0.85) // 80% chance to play a sound
+            if (random.NextDouble() <= 0.89) // 89% chance to play a sound
             {
-                int soundIndex = random.Next(1, 7);
+                int soundIndex = random.Next(1, 8);
                 soundPlayers[soundIndex].Play();
             }
         }

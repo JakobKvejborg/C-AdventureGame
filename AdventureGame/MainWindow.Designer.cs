@@ -203,7 +203,6 @@ partial class MainWindow
         // textBox1
         // 
         textBox1.BackColor = Color.FromArgb(195, 195, 195);
-        textBox1.BorderStyle = BorderStyle.None;
         textBox1.Font = new Font("Microsoft Sans Serif", 12F);
         textBox1.Location = new Point(11, 15);
         textBox1.Multiline = true;
@@ -288,10 +287,11 @@ partial class MainWindow
         // 
         labelPlayerArmor.AutoSize = true;
         labelPlayerArmor.BackColor = Color.Transparent;
+        labelPlayerArmor.Font = new Font("Impact", 10F);
         labelPlayerArmor.ForeColor = Color.White;
         labelPlayerArmor.Location = new Point(14, 340);
         labelPlayerArmor.Name = "labelPlayerArmor";
-        labelPlayerArmor.Size = new Size(49, 20);
+        labelPlayerArmor.Size = new Size(53, 21);
         labelPlayerArmor.TabIndex = 11;
         labelPlayerArmor.Text = "armor";
         // 
@@ -299,10 +299,11 @@ partial class MainWindow
         // 
         labelPlayerDamage.AutoSize = true;
         labelPlayerDamage.BackColor = Color.Transparent;
+        labelPlayerDamage.Font = new Font("Impact", 10F);
         labelPlayerDamage.ForeColor = Color.White;
         labelPlayerDamage.Location = new Point(14, 242);
         labelPlayerDamage.Name = "labelPlayerDamage";
-        labelPlayerDamage.Size = new Size(64, 20);
+        labelPlayerDamage.Size = new Size(68, 21);
         labelPlayerDamage.TabIndex = 12;
         labelPlayerDamage.Text = "damage";
         // 
@@ -310,10 +311,11 @@ partial class MainWindow
         // 
         labelPlayerDodge.AutoSize = true;
         labelPlayerDodge.BackColor = Color.Transparent;
+        labelPlayerDodge.Font = new Font("Impact", 10F);
         labelPlayerDodge.ForeColor = Color.White;
         labelPlayerDodge.Location = new Point(14, 370);
         labelPlayerDodge.Name = "labelPlayerDodge";
-        labelPlayerDodge.Size = new Size(53, 20);
+        labelPlayerDodge.Size = new Size(55, 21);
         labelPlayerDodge.TabIndex = 13;
         labelPlayerDodge.Text = "dodge";
         // 
@@ -321,10 +323,11 @@ partial class MainWindow
         // 
         labelHeroName.AutoSize = true;
         labelHeroName.BackColor = Color.Transparent;
-        labelHeroName.ForeColor = Color.DarkSeaGreen;
+        labelHeroName.Font = new Font("Showcard Gothic", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelHeroName.ForeColor = Color.Olive;
         labelHeroName.Location = new Point(14, 155);
         labelHeroName.Name = "labelHeroName";
-        labelHeroName.Size = new Size(42, 20);
+        labelHeroName.Size = new Size(56, 21);
         labelHeroName.TabIndex = 14;
         labelHeroName.Text = "Hero";
         // 
@@ -332,10 +335,11 @@ partial class MainWindow
         // 
         labelPlayerStrength.AutoSize = true;
         labelPlayerStrength.BackColor = Color.Transparent;
+        labelPlayerStrength.Font = new Font("Impact", 10F);
         labelPlayerStrength.ForeColor = Color.White;
         labelPlayerStrength.Location = new Point(14, 274);
         labelPlayerStrength.Name = "labelPlayerStrength";
-        labelPlayerStrength.Size = new Size(63, 20);
+        labelPlayerStrength.Size = new Size(70, 21);
         labelPlayerStrength.TabIndex = 15;
         labelPlayerStrength.Text = "strength";
         // 
@@ -343,10 +347,11 @@ partial class MainWindow
         // 
         labelPlayerLifeSteal.AutoSize = true;
         labelPlayerLifeSteal.BackColor = Color.Transparent;
+        labelPlayerLifeSteal.Font = new Font("Impact", 10F);
         labelPlayerLifeSteal.ForeColor = Color.White;
         labelPlayerLifeSteal.Location = new Point(14, 306);
         labelPlayerLifeSteal.Name = "labelPlayerLifeSteal";
-        labelPlayerLifeSteal.Size = new Size(61, 20);
+        labelPlayerLifeSteal.Size = new Size(70, 21);
         labelPlayerLifeSteal.TabIndex = 16;
         labelPlayerLifeSteal.Text = "lifesteal";
         // 
@@ -354,10 +359,11 @@ partial class MainWindow
         // 
         labelGoldInPocket.AutoSize = true;
         labelGoldInPocket.BackColor = Color.Transparent;
+        labelGoldInPocket.Font = new Font("Impact", 10F);
         labelGoldInPocket.ForeColor = Color.Gold;
         labelGoldInPocket.Location = new Point(14, 399);
         labelGoldInPocket.Name = "labelGoldInPocket";
-        labelGoldInPocket.Size = new Size(40, 20);
+        labelGoldInPocket.Size = new Size(42, 21);
         labelGoldInPocket.TabIndex = 17;
         labelGoldInPocket.Text = "gold";
         // 
@@ -365,10 +371,11 @@ partial class MainWindow
         // 
         labelLevel.AutoSize = true;
         labelLevel.BackColor = Color.Transparent;
+        labelLevel.Font = new Font("Impact", 10F);
         labelLevel.ForeColor = Color.White;
         labelLevel.Location = new Point(132, 242);
         labelLevel.Name = "labelLevel";
-        labelLevel.Size = new Size(43, 20);
+        labelLevel.Size = new Size(46, 21);
         labelLevel.TabIndex = 18;
         labelLevel.Text = "Level";
         // 
@@ -376,10 +383,11 @@ partial class MainWindow
         // 
         labelExperience.AutoSize = true;
         labelExperience.BackColor = Color.Transparent;
+        labelExperience.Font = new Font("Impact", 10F);
         labelExperience.ForeColor = Color.White;
         labelExperience.Location = new Point(132, 274);
         labelExperience.Name = "labelExperience";
-        labelExperience.Size = new Size(81, 20);
+        labelExperience.Size = new Size(88, 21);
         labelExperience.TabIndex = 19;
         labelExperience.Text = "Experience";
         // 
@@ -416,10 +424,11 @@ partial class MainWindow
         // 
         labelMonsterHp.AutoSize = true;
         labelMonsterHp.BackColor = Color.Transparent;
+        labelMonsterHp.Font = new Font("Impact", 10F);
         labelMonsterHp.ForeColor = Color.White;
         labelMonsterHp.Location = new Point(24, 20);
         labelMonsterHp.Name = "labelMonsterHp";
-        labelMonsterHp.Size = new Size(31, 20);
+        labelMonsterHp.Size = new Size(31, 21);
         labelMonsterHp.TabIndex = 1;
         labelMonsterHp.Text = "HP:";
         // 
@@ -427,10 +436,11 @@ partial class MainWindow
         // 
         labelMonsterName.AutoSize = true;
         labelMonsterName.BackColor = Color.Transparent;
+        labelMonsterName.Font = new Font("Impact", 10F);
         labelMonsterName.ForeColor = Color.White;
         labelMonsterName.Location = new Point(24, 0);
         labelMonsterName.Name = "labelMonsterName";
-        labelMonsterName.Size = new Size(103, 20);
+        labelMonsterName.Size = new Size(109, 21);
         labelMonsterName.TabIndex = 0;
         labelMonsterName.Text = "monsterName";
         // 

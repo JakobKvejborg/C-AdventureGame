@@ -67,7 +67,7 @@ internal class Player
         {
             playerState.Player.CurrentHealth = MaxHealth;
             playerState.Player.GoldInPocket -= priceToHeal;
-            priceToHeal += 2 * priceToHeal * priceToHeal;
+            priceToHeal += 3 * priceToHeal;
         } 
     }
 }
