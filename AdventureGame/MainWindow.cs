@@ -17,8 +17,8 @@ public partial class MainWindow : Form
     private MonsterContainer monsterContainer = new MonsterContainer();
     private ItemContainer itemContainer = new ItemContainer();
     private StoryProgress storyProgress;
-    private SoundPlayer[] soundPlayers;
-    private WindowsMediaPlayer mediaPlayer1, mediaPlayer2;
+    //private SoundPlayer[] soundPlayers;
+    //private WindowsMediaPlayer mediaPlayer1, mediaPlayer2;
     private bool cooldownOnSound;
     public List<Panel> panelsList;
     public int panelsIndex;
@@ -26,6 +26,7 @@ public partial class MainWindow : Form
     private Random random = new Random();
     public bool Act1BossDefeatedFlag = false;
     ImageSetter imageSetter = new ImageSetter();
+    MusicAndSound sounds = new MusicAndSound();
 
     public MainWindow()
     {
@@ -238,7 +239,7 @@ public partial class MainWindow : Form
             isAttackOnCooldown = true;
             Encounter.PlayerAttacks(playerState, this);
             CheckIfMonsterIsDead();
-            PlaySwordAttackSound(); // plays the attack sound
+            sounds.PlaySwordAttackSound(); // plays the attack sound
             await ShakeControl(pictureBoxMonster1);
 
             btn_attack.Enabled = false;
@@ -296,13 +297,13 @@ public partial class MainWindow : Form
     }
 
     // Helper method to load media "sounds/music" from the "sounds" folder
-    private string MediaSoundPath(string soundName)
+    public string MediaSoundPath(string soundName)
     {
         string soundDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sounds");
         return Path.Combine(soundDirectory, soundName);
     }
     // Helper method to load the sounds from the folder "sounds" folder
-    private SoundPlayer GetSoundPath(string soundName)
+    public SoundPlayer GetSoundPath(string soundName)
     {
         string soundDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sounds");
         return new SoundPlayer(Path.Combine(soundDirectory, soundName));
@@ -314,25 +315,8 @@ public partial class MainWindow : Form
         pictureBoxTown.Image = imageSetter.GetPictureBoxImage("act1town.png"); // places the "town2.png" into the picturebox
         pictureBoxTown.SizeMode = PictureBoxSizeMode.Zoom; // This will center the image 
 
-        soundPlayers = new SoundPlayer[]
- {
-        GetSoundPath("letmehealyou5db.wav"),  // index 0
-         GetSoundPath("sword1.wav"),  // index 1
-          GetSoundPath("sword2.wav"),
-           GetSoundPath("sword3.wav"),
-            GetSoundPath("sword4.wav"),
-             GetSoundPath("sword5.wav"),  // index 5
-              GetSoundPath("sword6.wav"),
-               GetSoundPath("sword7.wav"),
-        GetSoundPath("act1boss.wav"),
- };
-        foreach (var soundPlayer in soundPlayers)
-        {
-            soundPlayer.Load();
-        }
-        mediaPlayer1 = new WindowsMediaPlayer();
-        mediaPlayer1.URL = MediaSoundPath("thunder.wav");
-        mediaPlayer1.controls.play();
+        sounds.SetListOfSounds();
+        sounds.PlayThunderSound();
 
         panelsList.Add(panelEncounter);
         panelsList.Add(panelStartScreen);
@@ -426,9 +410,7 @@ public partial class MainWindow : Form
         {
             panelTown.Hide();
             panelEncounter.Show();
-            mediaPlayer2 = new WindowsMediaPlayer(); // play boss sound
-            mediaPlayer2.URL = MediaSoundPath("act1boss.wav");
-            mediaPlayer2.controls.play();
+            sounds.PlayAct1BossSound();
             btn_continue.Focus();
             // Subscribe to the EncounterCompleted event
             //Encounter.EncounterCompleted += OnEncounterCompleted;
@@ -486,7 +468,7 @@ public partial class MainWindow : Form
             }
             if (!cooldownOnSound)
             {
-                PlayHealingSound();
+                sounds.PlayHealingSound();
                 cooldownOnSound = true;
                 await Task.Delay(5000);
                 cooldownOnSound = false;
@@ -494,33 +476,6 @@ public partial class MainWindow : Form
         }
     }
 
-    private void PlayHealingSound()
-    {
-        try
-        {
-            soundPlayers[0].Play();
-        }
-        catch
-        {
-            throw new Exception("The sound file was not found");
-        }
-    }
-
-    private void PlaySwordAttackSound()
-    {
-        try
-        {
-            if (random.NextDouble() <= 0.89) // 89% chance to play a sound
-            {
-                int soundIndex = random.Next(1, 8);
-                soundPlayers[soundIndex].Play();
-            }
-        }
-        catch
-        {
-            throw new Exception("The sound file was not found");
-        }
-    }
 
     private void btn_Continuetown_Click(object sender, EventArgs e)
     {
