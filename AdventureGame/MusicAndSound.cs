@@ -91,7 +91,7 @@ public class MusicAndSound
     {
         try
         {
-            if (random.NextDouble() <= 0.89) // 89% chance to play a sound
+            if (random.NextDouble() <= 0.94) // % chance to play a sound
             {
                 int soundIndex = random.Next(1, 8);
                 soundPlayers[soundIndex].Play();

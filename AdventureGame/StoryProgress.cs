@@ -90,21 +90,42 @@ internal class StoryProgress
                     //StoryState++; // When this line isn't excecuted, the story will loop here
                     progressFlag = true; // The progressFlag is set to false in performEncounter
                 }
-
                 break;
             case 8:
-                _mainWindow.textBox1.Text = "After killing the demon tree, you venture forth, much further to the north. " +
-                    "The high mountains are cold, and you are close to freezing to death.";
+                _mainWindow.textBox1.Text = "After killing the demon tree, you venture forth, much further to the north. ";
                 StoryState++;
                 break;
             case 9:
                 _mainWindow.SetAct2Backgroundimage();
+                _mainWindow.textBox1.Text = "The high mountains are cold, and you are close to freezing to death. " +
+                    "But for some unknown reason you mindlessly continue - to face the horrors ahead.";
+                oneTimeMessage = (true); // Reusing the flag for act2
                 StoryState++;
                 break;
             case 10:
             case 11:
-                    Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items1, _mainWindow);
-                    StoryState++;
+                Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items1, _mainWindow);
+                StoryState++;
+                break;
+            case 12:
+                if (progressFlag == true)
+                {
+                    if (oneTimeMessage == true)
+                    {
+                        _mainWindow.txtBox_Town.Text = "A frozen town. Time almost stands still here. " +
+                            "The streets are buried under a thick blanket of snow, with not a footprint in sight.";
+                        _mainWindow.pictureBoxTown.Image = new ImageSetter().GetPictureBoxImage("act2town.png"); // Sets the town image to Act2Town
+                        oneTimeMessage = false;
+                    }
+                    else
+                    {
+                        _mainWindow.txtBox_Town.Text = "You return to the small frozen town. " +
+                            "\r\nMaybe the few people living here can help you.";
+                    }
+                    PlayerIsInTown();
+                    //StoryState++; // When this line isn't excecuted, the story will loop here
+                    progressFlag = true; // The progressFlag is set to false in performEncounter
+                }
                 break;
         }
     }
@@ -115,5 +136,6 @@ internal class StoryProgress
         _mainWindow.panelEncounter.Hide();
         _mainWindow.panelTown.Show();
         playerIsInTown = true;
+        //_mainWindow.SetAct1TownBackgroundimage();
     }
 }

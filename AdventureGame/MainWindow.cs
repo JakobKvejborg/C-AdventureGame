@@ -17,8 +17,6 @@ public partial class MainWindow : Form
     private MonsterContainer monsterContainer = new MonsterContainer();
     private ItemContainer itemContainer = new ItemContainer();
     private StoryProgress storyProgress;
-    //private SoundPlayer[] soundPlayers;
-    //private WindowsMediaPlayer mediaPlayer1, mediaPlayer2;
     private bool cooldownOnSound;
     public List<Panel> panelsList;
     public int panelsIndex;
@@ -39,13 +37,14 @@ public partial class MainWindow : Form
         panelTown.Hide();
         panelGameOver.Hide();
         pictureBoxHero.Hide();
-        panelPopupPanel.Hide();
+        panelPopupWeaponRightHand.Hide();
         storyProgress = new StoryProgress(this);
-        InitializePlayerLabels();
+        UpdatePlayerLabels();
         panelTown.Location = new Point(0, 0); // Example: position it at the top-left corner
         panelTown.Size = new Size(400, 300);  // Example: set a proper size to make it visible
         panelTown.BringToFront();
         this.Controls.Add(panelTown);
+        comboBoxInventory.DisplayMember = "Name"; // Makes the comboboxInventory only display the item.Name
 
         // Event that listens for player levelup
         playerState.Player.LevelUpEvent += OnPlayerLevelUp;
@@ -70,23 +69,45 @@ public partial class MainWindow : Form
         hoverTimer.Interval = 500;
         hoverTimer.Tick += HoverTimer_Tick;
 
+        buttonEquipUnequip.TabStop = false;
+        buttonDiscardItem.TabStop = false;
+    }
+
+    // This dream method stops a lot of flickering
+    protected override CreateParams CreateParams
+    {
+        get
+        {
+            CreateParams handleParam = base.CreateParams;
+            handleParam.ExStyle |= 0x02000000;   // WS_EX_COMPOSITED       
+            return handleParam;
+        }
+    }
+
+    // Preloads images (doesn't do much yet)
+    private void PreloadResources()
+    {
+        Image image = Properties.Resources.healer; // Preload images
+        image = Properties.Resources.compass;
+        Font font = new Font("Arial", 12); // Preload fonts
     }
 
     private void HoverTimer_Tick(object? sender, EventArgs e)
     {
         // Hide the panel
-        panelPopupPanel.Hide();
+        panelPopupWeaponRightHand.Hide();
         // Stop the timer to prevent it from ticking again
         hoverTimer.Stop();
     }
 
     private void SetInisibleEquippedItemsLabels()
     {
-        var posWeapon = labelWeaponEquipped.Parent.PointToScreen(labelWeaponEquipped.Location);
+        var posWeapon = labelInvisibleWeaponRightHandEquipped.Parent
+            .PointToScreen(labelInvisibleWeaponRightHandEquipped.Location);
         posWeapon = pictureBoxHero.PointToClient(posWeapon);
-        labelWeaponEquipped.Parent = pictureBoxHero;
-        labelWeaponEquipped.Location = posWeapon;
-        labelWeaponEquipped.BackColor = Color.Transparent;
+        labelInvisibleWeaponRightHandEquipped.Parent = pictureBoxHero;
+        labelInvisibleWeaponRightHandEquipped.Location = posWeapon;
+        labelInvisibleWeaponRightHandEquipped.BackColor = Color.Transparent;
     }
 
     private void EnterTown()
@@ -196,7 +217,7 @@ public partial class MainWindow : Form
         buttonPlayGame.BackColor = Color.DarkRed;  // Revert to dark red when the mouse leaves
     }
 
-    private void InitializePlayerLabels()
+    private void UpdatePlayerLabels()
     {
         UpdatePlayerHealthBar();
 
@@ -259,36 +280,38 @@ public partial class MainWindow : Form
     }
 
     // This method lets the player use the buttons by pressing a key instead of clicking
-    protected override async void OnKeyDown(KeyEventArgs e)
+    protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
     {
-        base.OnKeyDown(e);
-        e.SuppressKeyPress = true; // suppress all key press actions
-
-        switch (e.KeyCode)
+        // Check for specific key presses
+        switch (keyData)
         {
             case Keys.Space:
-                await ButtonAttack();
-                break;
+                ButtonAttack(); // Call your attack method
+                return true; // Indicate the key was handled
             case Keys.Enter:
-                ButtonContinue();
-                break;
+                ButtonPlayGame();
+                ButtonContinue(); // Call your continue method
+                return true;
+            case Keys.W:
+                ButtonNorth(); // Call your move north method
+                return true;
             case Keys.A:
                 ButtonWest();
-                break;
-            case Keys.D:
-                ButtonEast();
-                break;
+                return true;
             case Keys.S:
                 ButtonSouth();
-                break;
-            case Keys.W:
-                ButtonNorth();
-                break;
+                return true;
+            case Keys.D:
+                ButtonEast();
+                return true;
             case Keys.H:
                 ButtonHeal();
-                break;
+                return true;
+            default:
+                return base.ProcessCmdKey(ref msg, keyData); // Let the base method handle other keys
         }
     }
+
 
 
     private void label2_Click(object sender, EventArgs e)
@@ -340,9 +363,13 @@ public partial class MainWindow : Form
         if (comboBoxInventory.SelectedItem != null)
         {
             // Remove the selected item
-            textBox1.Text = $"You throw away the item {comboBoxInventory.SelectedItem.ToString()}.";
-            comboBoxInventory.Items.Remove(comboBoxInventory.SelectedItem);
-            comboBoxInventory.SelectedItem = null;
+            Item item = (Item)comboBoxInventory.SelectedItem;
+            textBox1.Text = $"You throw away the item {item.Name}.";
+            comboBoxInventory.Items.Remove(item);
+            //comboBoxInventory.SelectedItem = null;
+            //playerState.Player.AddItemToInventory(item);
+            playerState.Player.UnequipItem(item, comboBoxInventory);
+            UpdatePlayerLabels();
         }
     }
     private void buttonPlayGame_Click(object sender, EventArgs e)
@@ -354,7 +381,7 @@ public partial class MainWindow : Form
     {
         panelStartScreen.Hide();
         panelEncounter.Show();
-        btn_continue.Focus();
+        buttonPlayGame.Dispose();
     }
 
     private void ButtonWest()
@@ -364,18 +391,23 @@ public partial class MainWindow : Form
             panelTown.Hide();
             panelEncounter.Show();
             Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, this);
-            btn_continue.Focus();
+            //SetAct1Backgroundimage();
         }
     }
 
-    private void ButtonEast()
+    private void ButtonEast() // TODO
     {
-        if (StoryProgress.playerIsInTown == true)
+        if (!Act1BossDefeatedFlag && StoryProgress.playerIsInTown == true)
         {
             panelTown.Hide();
             panelEncounter.Show();
             Encounter.PerformEncounter(monsterContainer.listOfMonsters2, itemContainer.items2, this);
-            btn_continue.Focus();
+        }
+        if (Act1BossDefeatedFlag && StoryProgress.playerIsInTown == true)
+        {
+            panelTown.Hide();
+            panelEncounter.Show();
+            Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items2, this);
         }
     }
 
@@ -411,13 +443,13 @@ public partial class MainWindow : Form
             panelTown.Hide();
             panelEncounter.Show();
             sounds.PlayAct1BossSound();
-            btn_continue.Focus();
             // Subscribe to the EncounterCompleted event
             //Encounter.EncounterCompleted += OnEncounterCompleted;
             Encounter.EncounterCompleted += OnAct1BossDefeated;
 
             Encounter.PerformEncounter(monsterContainer.listOfMonstersBossAct1, itemContainer.items2, this);
-        } else
+        }
+        else
         {
             // act 2 boss logic here
         }
@@ -438,6 +470,16 @@ public partial class MainWindow : Form
         BackgroundImage = imageSetter.GetPictureBoxImage("act2background.png");
     }
 
+    public void SetAct1TownBackgroundimage() // TODO delete
+    {
+        BackgroundImage = imageSetter.GetPictureBoxImage("act1town.png");
+    }
+
+    public void SetAct1Backgroundimage() // TODO delete
+    {
+        BackgroundImage = imageSetter.GetPictureBoxImage("castle.png");
+    }
+
     private void labelCompassS_Click(object sender, EventArgs e)
     {
         ButtonSouth();
@@ -445,8 +487,10 @@ public partial class MainWindow : Form
 
     private void ButtonSouth()
     {
-        txtBox_Town.Text = "You cannot turn back now. You must press on, your destiny awaits.";
-        btn_continue.Focus();
+        if (!Act1BossDefeatedFlag)
+        {
+            txtBox_Town.Text = "You cannot turn back now. You must press on, your destiny awaits.";
+        }
     }
 
     private void buttonHeal_Click(object sender, EventArgs e)
@@ -488,12 +532,60 @@ public partial class MainWindow : Form
 
     private void labelWeaponEquipped_MouseEnter(object sender, EventArgs e)
     {
-        panelPopupPanel.Show();
-        hoverTimer.Stop();
+        ShowWeaponRightHandPanel();
+    }
+
+    private void ShowWeaponRightHandPanel()
+    {
+        if (playerState.Player.EquippedItems.ContainsKey(ItemType.WeaponRightHand))
+        {
+            panelPopupWeaponRightHand.Show();
+            hoverTimer.Stop();
+        }
     }
 
     private void labelWeaponEquipped_MouseLeave(object sender, EventArgs e)
     {
         hoverTimer.Start();
+    }
+
+    private void buttonEquipUnequip_Click(object sender, EventArgs e)
+    {
+        ButtonEquipItems();
+    }
+
+    private void ButtonEquipItems()
+    {
+        if (comboBoxInventory.SelectedItem != null)
+        {
+            Item item = (Item)comboBoxInventory.SelectedItem;
+            if (playerState.Player.Level >= item.LevelRequirement)
+            {
+                SetItemLabelInfo(item);
+                //playerState.Player.AddItemToInventory(item);
+                playerState.Player.EquipItem(item, comboBoxInventory);
+                UpdatePlayerLabels();
+                comboBoxInventory.Items.Remove(item); // removes the equipped item from the combobox
+            }
+            else
+            {
+                textBox1.Text = $"You don't meet the level requirement to equip {item.Name}.";
+            }
+        }
+        else
+        {
+            textBox1.Text = "Select an item to equip.";
+        }
+    }
+
+    private void SetItemLabelInfo(Item item)
+    {
+        switch (item.Type)
+        {
+            case ItemType.WeaponRightHand:
+                labelWeaponRightHandName.Text = item.Name;
+                labelInfoWeaponRightHandEquipped.Text = item.ToString();
+                break;
+        }
     }
 }

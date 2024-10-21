@@ -15,9 +15,10 @@ internal class Player
     public int Experience { get; set; }
     public int Level { get; set; }
     public List<Item> Inventory { get; set; }
-    public List<Item> EquippedItems { get; set; }
+    //public List<Item> EquippedItems { get; set; }
     public event Action LevelUpEvent;
     public static int priceToHeal { get; set; } = 2; // 2 is the default value
+    public Dictionary<ItemType, Item> EquippedItems { get; private set; }
 
     public Player(string name, int maxHealth, int currentHealth, int damage, int strength, int lifesteal,
         int armor, int dodgeChance, int goldInPocket, int experience, int level)
@@ -34,7 +35,8 @@ internal class Player
         Experience = experience;
         Level = level;
         Inventory = new List<Item>();
-        EquippedItems = new List<Item>();
+        //EquippedItems = new List<Item>();
+        EquippedItems = new Dictionary<ItemType, Item>();
     }
 
     public void LevelUp(PlayerState playerState)
@@ -68,6 +70,43 @@ internal class Player
             playerState.Player.CurrentHealth = MaxHealth;
             playerState.Player.GoldInPocket -= priceToHeal;
             priceToHeal += 3 * priceToHeal;
-        } 
+        }
+    }
+
+    public void EquipItem(Item item, ComboBox comboboxInventory)
+    {
+        if (EquippedItems.ContainsKey(item.Type)) // Check if the itemtype is already equipped
+        {
+            UnequipItem(EquippedItems[item.Type], comboboxInventory);
+        }
+
+        // Equip the item
+        EquippedItems[item.Type] = item;
+
+        // Apply item bonuses to the player
+        Damage += item.Damage;
+        Armor += item.Armor;
+        MaxHealth += item.Health;
+        DodgeChance += item.DodgeChance;
+        Strength += item.Strength;
+        Level += item.SkillLevel;
+
+    }
+
+    public void UnequipItem(Item item, ComboBox comboboxInventory)
+    {
+        if (EquippedItems.ContainsKey(item.Type))
+        {
+            // Remove item bonuses to the player
+            Damage -= item.Damage;
+            Armor -= item.Armor;
+            MaxHealth -= item.Health;
+            DodgeChance -= item.DodgeChance;
+            Strength -= item.Strength;
+            Level -= item.SkillLevel;
+
+            EquippedItems.Remove(item.Type);
+            comboboxInventory.Items.Add(item);
+        }
     }
 }

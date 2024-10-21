@@ -1,5 +1,7 @@
-﻿using System;
+﻿using Accessibility;
+using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Reflection.Emit;
 using System.Text;
@@ -14,7 +16,8 @@ internal static class Encounter
     private static readonly Random randomItem = new Random();
     private static readonly Random randomDodge = new Random();
     public static List<Item>? encounteredMonsterItems; // saves the list of items from the parameter til at property
-    public static event EventHandler EncounterCompleted;
+    public static event EventHandler? EncounterCompleted;
+    
 
     public static void PerformEncounter(List<Monster> listOfMonsters, List<Item> listOfItems, MainWindow mainWindow)
     {
@@ -143,7 +146,7 @@ internal static class Encounter
             // resets the monster object
             Monster.CurrentHealth = Monster.MaxHealth;
             Monster = null;
-            EncounterCompleted?.Invoke(null, EventArgs.Empty); // TODO:
+            EncounterCompleted?.Invoke(null, EventArgs.Empty);
         }
     }
 
@@ -158,7 +161,7 @@ internal static class Encounter
         Item foundItem = encounteredMonsterItems[randomItemIndex];
         if (foundItem != null)
         {
-            mainWindow.textBox1.AppendText($"\r\nYou find an item on the monster's corpse: {foundItem.ToString()}");
+            mainWindow.textBox1.AppendText($"\r\nYou find an item on the monster's corpse: {foundItem.Name}.");
             playerState.Player.AddItemToInventory(foundItem); // this may do nothing, because the combobox can hold the items instead
             mainWindow.comboBoxInventory.Items.Add(foundItem);
             mainWindow.comboBoxInventory.SelectedItem = foundItem;
