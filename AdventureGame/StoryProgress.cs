@@ -1,4 +1,5 @@
-﻿namespace AdventureGame;
+﻿
+namespace AdventureGame;
 
 internal class StoryProgress
 {
@@ -10,6 +11,8 @@ internal class StoryProgress
     public static bool playerIsInTown { get; set; } = false;
     private MainWindow _mainWindow;
     bool oneTimeMessage = true;
+    private ImageSetter imageSetter = new ImageSetter();
+    private MusicAndSound sounds = new MusicAndSound();
 
     public StoryProgress(MainWindow mainWindow)
     {
@@ -19,7 +22,7 @@ internal class StoryProgress
     public string GetFirstText()
     {
         return "You have just returned from a long journey to far realms." +
-            "\n\rThe roads are littered with corpses. \n\rDo you have the will to survive the Horrors of the lands?";
+            "\n\r The roads are littered with corpses.\n\r Do you have the will to survive the Horrors of the lands?";
     }
 
     private void NextPanel() // Currently unused
@@ -33,12 +36,17 @@ internal class StoryProgress
     public string GetSecondText()
     {
         return "You ride through the thickening fog, the air heavy with dread." +
-            " A chill sweeps over you as a deadly fiend emerges. It blocks your path - deny it its life.";
+            " A chill sweeps over you as a deadly fiend emerges. It blocks your path - deny its life!";
     }
 
     public string GetHealingText()
     {
         return "The old man lays his hands on your wounds and whisper magic words. You feel refreshed.";
+    }
+    public string GetAct2HealingText()
+    {
+        return "The girl seems to be blind. But it's almost as if something else " +
+            "is bothering her much more... She takes care of your wounds and you hand her some coins as thanks.";
     }
 
     public void ProgressStory()
@@ -76,6 +84,7 @@ internal class StoryProgress
                 {
                     if (oneTimeMessage == true)
                     {
+                        sounds.PlayAct1TownMusic();
                         _mainWindow.txtBox_Town.Text = "You come across a small town in the middle of the forest. " +
                             "While the town isn’t completely deserted, it's dead quiet. " +
                             "Be vary of the road straight ahead. Choose a path.";
@@ -96,6 +105,7 @@ internal class StoryProgress
                 StoryState++;
                 break;
             case 9:
+                sounds.PlayAct2WindMusic();
                 _mainWindow.SetAct2Backgroundimage();
                 _mainWindow.textBox1.Text = "The high mountains are cold, and you are close to freezing to death. " +
                     "But for some unknown reason you mindlessly continue - to face the horrors ahead.";
@@ -114,7 +124,7 @@ internal class StoryProgress
                     {
                         _mainWindow.txtBox_Town.Text = "A frozen town. Time almost stands still here. " +
                             "The streets are buried under a thick blanket of snow, with not a footprint in sight.";
-                        _mainWindow.pictureBoxTown.Image = new ImageSetter().GetPictureBoxImage("act2town.png"); // Sets the town image to Act2Town
+                        SetupAct2controls();
                         oneTimeMessage = false;
                     }
                     else
@@ -130,6 +140,16 @@ internal class StoryProgress
         }
     }
 
+    private void SetupAct2controls()
+    {
+        _mainWindow.pictureBoxTown.Image = imageSetter.GetPictureBoxImage("act2town.png"); // Sets the town image to Act2Town
+        _mainWindow.pictureBoxHealer.Image = imageSetter.GetPictureBoxImage("act2healer.png");
+        _mainWindow.pictureBoxAct2Smith.Image = imageSetter.GetPictureBoxImage("act2smith.png");
+        _mainWindow.pictureBoxHealer.Size = new Size(210, 310);
+        _mainWindow.comboBoxUpgradeItems.Show();
+        _mainWindow.buttonUpgradeItem.Show();
+    }
+
     private void PlayerIsInTown()
     {
         _mainWindow.textBox1.Clear();
@@ -138,4 +158,5 @@ internal class StoryProgress
         playerIsInTown = true;
         //_mainWindow.SetAct1TownBackgroundimage();
     }
+
 }

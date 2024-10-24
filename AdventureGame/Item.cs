@@ -23,18 +23,18 @@ public class Item
     public int Lifesteal { get; set; }
     public int LevelRequirement { get; set; }
 
-    public Item(string name, ItemType type, int damage, int strength, int fireDamage, int poisonDamage, 
-        int skillLevel, int strengthRequirement, int lifesteal, int levelRequirement)
+    public Item(string name, ItemType type, int damage, int strength, int fireDamage, int poisonDamage,
+        int skillLevel, int lifesteal, int strengthRequirement, int levelRequirement)
     {
         Name = name;
         Type = type;
-        Damage = damage;   
+        Damage = damage;
         Strength = strength;
         FireDamage = fireDamage;
         PoisonDamage = poisonDamage;
         SkillLevel = skillLevel;
-        StrengthRequirement = strengthRequirement;
         Lifesteal = lifesteal;
+        StrengthRequirement = strengthRequirement;
         LevelRequirement = levelRequirement;
     }
 
@@ -53,19 +53,23 @@ public class Item
 
     public override string ToString()
     {
-        return
-               $"Damage: {Damage}\n" +
-               $"Health: {Health}\n" +
-               $"Lifesteal: {Lifesteal}\n" +
-               $"Armor: {Armor}\n" +
-               $"Dodge: {DodgeChance}%\n" +
-               $"Strength: {Strength}\n" +
-               $"Level req: {LevelRequirement}\n";
+        var stats = new Dictionary<string, int>
+    {
+        { "Damage", Damage },
+        { "Health", Health },
+        { "Lifesteal", Lifesteal },
+        { "Armor", Armor },
+        { "Dodge", DodgeChance },
+        { "Strength", Strength },
+        { "Strength req", StrengthRequirement },
+        { "Level req", LevelRequirement }
+    };
+        // Only include stats greater than 0
+        return string.Join("\n", stats.Where(stat => stat.Value > 0).Select(stat => $"{stat.Key}: {stat.Value}"));
     }
-
 }
 
-public enum ItemType
+    public enum ItemType
 {
     WeaponLeftHand,
     WeaponRightHand,

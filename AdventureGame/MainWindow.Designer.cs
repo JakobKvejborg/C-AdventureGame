@@ -42,6 +42,7 @@ partial class MainWindow
         labelCompassS = new Label();
         buttonHeal = new Button();
         btn_Continuetown = new Button();
+        buttonEquipUnequip = new Button();
         labelInvisibleWeaponRightHandEquipped = new Label();
         textBox1 = new TextBox();
         comboBoxInventory = new ComboBox();
@@ -65,18 +66,28 @@ partial class MainWindow
         progressBarMonsterHP = new ProgressBar();
         labelMonsterHp = new Label();
         labelMonsterName = new Label();
-        buttonEquipUnequip = new Button();
         panelEncounter = new Panel();
+        panelPopupBoots = new Panel();
+        labelInfoBootsEquipped = new Label();
+        labelBootsName = new Label();
+        labelInvisibleBoots = new Label();
+        panelPopupArmor = new Panel();
+        labelInfoArmorEquipped = new Label();
+        labelArmorName = new Label();
+        labelInvisibleArmor = new Label();
         panelPopupWeaponRightHand = new Panel();
         labelInfoWeaponRightHandEquipped = new Label();
         labelWeaponRightHandName = new Label();
         pictureBoxHero = new PictureBox();
         panelInventory = new Panel();
         panelTown = new Panel();
+        comboBoxUpgradeItems = new ComboBox();
+        buttonUpgradeItem = new Button();
         txtBox_Town = new TextBox();
         pictureBoxCompass = new PictureBox();
         pictureBoxTown = new PictureBox();
         pictureBoxHealer = new PictureBox();
+        pictureBoxAct2Smith = new PictureBox();
         panelStartScreen = new Panel();
         buttonPlayGame = new Button();
         labelGameTitle = new Label();
@@ -85,6 +96,8 @@ partial class MainWindow
         panelMonster.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).BeginInit();
         panelEncounter.SuspendLayout();
+        panelPopupBoots.SuspendLayout();
+        panelPopupArmor.SuspendLayout();
         panelPopupWeaponRightHand.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHero).BeginInit();
         panelInventory.SuspendLayout();
@@ -92,6 +105,7 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxCompass).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxTown).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHealer).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxAct2Smith).BeginInit();
         panelStartScreen.SuspendLayout();
         panelGameOver.SuspendLayout();
         SuspendLayout();
@@ -168,11 +182,11 @@ partial class MainWindow
         // 
         // buttonHeal
         // 
-        buttonHeal.Location = new Point(60, 596);
+        buttonHeal.Location = new Point(35, 597);
         buttonHeal.Name = "buttonHeal";
         buttonHeal.Size = new Size(124, 31);
         buttonHeal.TabIndex = 11;
-        buttonHeal.Text = "Receive Healing";
+        buttonHeal.Text = "Get Healed 2G";
         toolTip.SetToolTip(buttonHeal, "\"H\"");
         buttonHeal.UseVisualStyleBackColor = true;
         buttonHeal.Click += buttonHeal_Click;
@@ -188,6 +202,17 @@ partial class MainWindow
         btn_Continuetown.UseVisualStyleBackColor = true;
         btn_Continuetown.Click += btn_Continuetown_Click;
         // 
+        // buttonEquipUnequip
+        // 
+        buttonEquipUnequip.Location = new Point(4, 58);
+        buttonEquipUnequip.Name = "buttonEquipUnequip";
+        buttonEquipUnequip.Size = new Size(151, 29);
+        buttonEquipUnequip.TabIndex = 21;
+        buttonEquipUnequip.Text = "Equip item";
+        toolTip.SetToolTip(buttonEquipUnequip, "\"E\"");
+        buttonEquipUnequip.UseVisualStyleBackColor = true;
+        buttonEquipUnequip.Click += buttonEquipUnequip_Click;
+        // 
         // labelInvisibleWeaponRightHandEquipped
         // 
         labelInvisibleWeaponRightHandEquipped.AutoSize = true;
@@ -197,9 +222,8 @@ partial class MainWindow
         labelInvisibleWeaponRightHandEquipped.Size = new Size(89, 60);
         labelInvisibleWeaponRightHandEquipped.TabIndex = 24;
         labelInvisibleWeaponRightHandEquipped.Text = "            \r\n            \r\n                    \r\n";
-        labelInvisibleWeaponRightHandEquipped.MouseEnter += labelWeaponEquipped_MouseEnter;
-        labelInvisibleWeaponRightHandEquipped.MouseLeave += labelWeaponEquipped_MouseLeave;
-        labelInvisibleWeaponRightHandEquipped.MouseHover += labelWeaponEquipped_MouseHover;
+        labelInvisibleWeaponRightHandEquipped.MouseEnter += labelInvisibleWeaponRightHandEquipped_MouseEnter;
+        labelInvisibleWeaponRightHandEquipped.MouseLeave += labelInvisibleWeaponRightHandEquipped_MouseLeave;
         // 
         // textBox1
         // 
@@ -444,19 +468,13 @@ partial class MainWindow
         labelMonsterName.TabIndex = 0;
         labelMonsterName.Text = "monsterName";
         // 
-        // buttonEquipUnequip
-        // 
-        buttonEquipUnequip.Location = new Point(4, 58);
-        buttonEquipUnequip.Name = "buttonEquipUnequip";
-        buttonEquipUnequip.Size = new Size(151, 29);
-        buttonEquipUnequip.TabIndex = 21;
-        buttonEquipUnequip.Text = "Equip item";
-        buttonEquipUnequip.UseVisualStyleBackColor = true;
-        buttonEquipUnequip.Click += buttonEquipUnequip_Click;
-        // 
         // panelEncounter
         // 
         panelEncounter.BackColor = Color.Transparent;
+        panelEncounter.Controls.Add(panelPopupBoots);
+        panelEncounter.Controls.Add(labelInvisibleBoots);
+        panelEncounter.Controls.Add(panelPopupArmor);
+        panelEncounter.Controls.Add(labelInvisibleArmor);
         panelEncounter.Controls.Add(panelPopupWeaponRightHand);
         panelEncounter.Controls.Add(panelMonster);
         panelEncounter.Controls.Add(textBox1);
@@ -481,8 +499,98 @@ partial class MainWindow
         panelEncounter.Dock = DockStyle.Fill;
         panelEncounter.Location = new Point(0, 0);
         panelEncounter.Name = "panelEncounter";
-        panelEncounter.Size = new Size(547, 743);
+        panelEncounter.Size = new Size(542, 768);
         panelEncounter.TabIndex = 22;
+        // 
+        // panelPopupBoots
+        // 
+        panelPopupBoots.AutoScroll = true;
+        panelPopupBoots.BorderStyle = BorderStyle.Fixed3D;
+        panelPopupBoots.Controls.Add(labelInfoBootsEquipped);
+        panelPopupBoots.Controls.Add(labelBootsName);
+        panelPopupBoots.Location = new Point(115, 607);
+        panelPopupBoots.Name = "panelPopupBoots";
+        panelPopupBoots.Size = new Size(160, 97);
+        panelPopupBoots.TabIndex = 29;
+        // 
+        // labelInfoBootsEquipped
+        // 
+        labelInfoBootsEquipped.AutoSize = true;
+        labelInfoBootsEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelInfoBootsEquipped.ForeColor = Color.White;
+        labelInfoBootsEquipped.Location = new Point(-1, 15);
+        labelInfoBootsEquipped.Name = "labelInfoBootsEquipped";
+        labelInfoBootsEquipped.Size = new Size(84, 16);
+        labelInfoBootsEquipped.TabIndex = 1;
+        labelInfoBootsEquipped.Text = "weaponInfo";
+        // 
+        // labelBootsName
+        // 
+        labelBootsName.AutoSize = true;
+        labelBootsName.Font = new Font("Snap ITC", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelBootsName.ForeColor = SystemColors.ActiveCaption;
+        labelBootsName.Location = new Point(1, -1);
+        labelBootsName.Name = "labelBootsName";
+        labelBootsName.Size = new Size(87, 17);
+        labelBootsName.TabIndex = 0;
+        labelBootsName.Text = "bootsName";
+        // 
+        // labelInvisibleBoots
+        // 
+        labelInvisibleBoots.AutoSize = true;
+        labelInvisibleBoots.ForeColor = Color.Transparent;
+        labelInvisibleBoots.Location = new Point(53, 674);
+        labelInvisibleBoots.Name = "labelInvisibleBoots";
+        labelInvisibleBoots.Size = new Size(133, 60);
+        labelInvisibleBoots.TabIndex = 28;
+        labelInvisibleBoots.Text = "            \r\n            \r\n                               ";
+        labelInvisibleBoots.MouseEnter += labelInvisibleBoots_MouseEnter;
+        labelInvisibleBoots.MouseLeave += labelInvisibleBoots_MouseLeave;
+        // 
+        // panelPopupArmor
+        // 
+        panelPopupArmor.AutoScroll = true;
+        panelPopupArmor.BorderStyle = BorderStyle.Fixed3D;
+        panelPopupArmor.Controls.Add(labelInfoArmorEquipped);
+        panelPopupArmor.Controls.Add(labelArmorName);
+        panelPopupArmor.Location = new Point(115, 402);
+        panelPopupArmor.Name = "panelPopupArmor";
+        panelPopupArmor.Size = new Size(145, 97);
+        panelPopupArmor.TabIndex = 27;
+        // 
+        // labelInfoArmorEquipped
+        // 
+        labelInfoArmorEquipped.AutoSize = true;
+        labelInfoArmorEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelInfoArmorEquipped.ForeColor = Color.White;
+        labelInfoArmorEquipped.Location = new Point(-1, 15);
+        labelInfoArmorEquipped.Name = "labelInfoArmorEquipped";
+        labelInfoArmorEquipped.Size = new Size(70, 16);
+        labelInfoArmorEquipped.TabIndex = 1;
+        labelInfoArmorEquipped.Text = "armorInfo";
+        // 
+        // labelArmorName
+        // 
+        labelArmorName.AutoSize = true;
+        labelArmorName.Font = new Font("Snap ITC", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelArmorName.ForeColor = SystemColors.ActiveCaption;
+        labelArmorName.Location = new Point(1, -1);
+        labelArmorName.Name = "labelArmorName";
+        labelArmorName.Size = new Size(93, 17);
+        labelArmorName.TabIndex = 0;
+        labelArmorName.Text = "ArmorName";
+        // 
+        // labelInvisibleArmor
+        // 
+        labelInvisibleArmor.AutoSize = true;
+        labelInvisibleArmor.ForeColor = Color.Transparent;
+        labelInvisibleArmor.Location = new Point(85, 447);
+        labelInvisibleArmor.Name = "labelInvisibleArmor";
+        labelInvisibleArmor.Size = new Size(41, 80);
+        labelInvisibleArmor.TabIndex = 26;
+        labelInvisibleArmor.Text = "     \r\n     \r\n      \r\n        ";
+        labelInvisibleArmor.MouseEnter += labelInvisibleArmor_MouseEnter;
+        labelInvisibleArmor.MouseLeave += labelInvisibleArmor_MouseLeave;
         // 
         // panelPopupWeaponRightHand
         // 
@@ -541,6 +649,8 @@ partial class MainWindow
         // panelTown
         // 
         panelTown.BackColor = Color.Transparent;
+        panelTown.Controls.Add(comboBoxUpgradeItems);
+        panelTown.Controls.Add(buttonUpgradeItem);
         panelTown.Controls.Add(btn_Continuetown);
         panelTown.Controls.Add(txtBox_Town);
         panelTown.Controls.Add(buttonHeal);
@@ -551,11 +661,29 @@ partial class MainWindow
         panelTown.Controls.Add(pictureBoxCompass);
         panelTown.Controls.Add(pictureBoxTown);
         panelTown.Controls.Add(pictureBoxHealer);
+        panelTown.Controls.Add(pictureBoxAct2Smith);
         panelTown.Dock = DockStyle.Fill;
         panelTown.Location = new Point(0, 0);
         panelTown.Name = "panelTown";
-        panelTown.Size = new Size(547, 743);
+        panelTown.Size = new Size(542, 768);
         panelTown.TabIndex = 0;
+        // 
+        // comboBoxUpgradeItems
+        // 
+        comboBoxUpgradeItems.FormattingEnabled = true;
+        comboBoxUpgradeItems.Location = new Point(284, 311);
+        comboBoxUpgradeItems.Name = "comboBoxUpgradeItems";
+        comboBoxUpgradeItems.Size = new Size(151, 28);
+        comboBoxUpgradeItems.TabIndex = 16;
+        // 
+        // buttonUpgradeItem
+        // 
+        buttonUpgradeItem.Location = new Point(441, 311);
+        buttonUpgradeItem.Name = "buttonUpgradeItem";
+        buttonUpgradeItem.Size = new Size(78, 28);
+        buttonUpgradeItem.TabIndex = 15;
+        buttonUpgradeItem.Text = "Upgrade";
+        buttonUpgradeItem.UseVisualStyleBackColor = true;
         // 
         // txtBox_Town
         // 
@@ -584,22 +712,31 @@ partial class MainWindow
         // pictureBoxTown
         // 
         pictureBoxTown.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-        pictureBoxTown.Location = new Point(202, 356);
+        pictureBoxTown.Location = new Point(165, 353);
         pictureBoxTown.Name = "pictureBoxTown";
-        pictureBoxTown.Size = new Size(345, 387);
+        pictureBoxTown.Size = new Size(377, 415);
+        pictureBoxTown.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxTown.TabIndex = 0;
         pictureBoxTown.TabStop = false;
         // 
         // pictureBoxHealer
         // 
-        pictureBoxHealer.Anchor = AnchorStyles.Bottom;
         pictureBoxHealer.Image = Properties.Resources.healer;
-        pictureBoxHealer.Location = new Point(3, 402);
+        pictureBoxHealer.Location = new Point(-21, 438);
         pictureBoxHealer.Name = "pictureBoxHealer";
-        pictureBoxHealer.Size = new Size(193, 206);
+        pictureBoxHealer.Size = new Size(190, 195);
         pictureBoxHealer.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxHealer.TabIndex = 10;
         pictureBoxHealer.TabStop = false;
+        // 
+        // pictureBoxAct2Smith
+        // 
+        pictureBoxAct2Smith.Location = new Point(228, 111);
+        pictureBoxAct2Smith.Name = "pictureBoxAct2Smith";
+        pictureBoxAct2Smith.Size = new Size(311, 280);
+        pictureBoxAct2Smith.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxAct2Smith.TabIndex = 14;
+        pictureBoxAct2Smith.TabStop = false;
         // 
         // panelStartScreen
         // 
@@ -664,9 +801,9 @@ partial class MainWindow
         BackColor = SystemColors.ActiveCaptionText;
         BackgroundImage = Properties.Resources.castle1;
         BackgroundImageLayout = ImageLayout.Stretch;
-        ClientSize = new Size(547, 743);
-        Controls.Add(panelEncounter);
+        ClientSize = new Size(542, 768);
         Controls.Add(panelTown);
+        Controls.Add(panelEncounter);
         Controls.Add(panelGameOver);
         Controls.Add(panelStartScreen);
         DoubleBuffered = true;
@@ -678,6 +815,10 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).EndInit();
         panelEncounter.ResumeLayout(false);
         panelEncounter.PerformLayout();
+        panelPopupBoots.ResumeLayout(false);
+        panelPopupBoots.PerformLayout();
+        panelPopupArmor.ResumeLayout(false);
+        panelPopupArmor.PerformLayout();
         panelPopupWeaponRightHand.ResumeLayout(false);
         panelPopupWeaponRightHand.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHero).EndInit();
@@ -687,6 +828,7 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxCompass).EndInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxTown).EndInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHealer).EndInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxAct2Smith).EndInit();
         panelStartScreen.ResumeLayout(false);
         panelStartScreen.PerformLayout();
         panelGameOver.ResumeLayout(false);
@@ -741,7 +883,6 @@ partial class MainWindow
     private Label labelCompassN;
     private Label labelCompassS;
     private Button buttonHeal;
-    private PictureBox pictureBoxHealer;
     public PictureBox pictureBoxTown;
     public TextBox txtBox_Town;
     private Button btn_Continuetown;
@@ -750,4 +891,16 @@ partial class MainWindow
     private Panel panelPopupWeaponRightHand;
     private Label labelWeaponRightHandName;
     private Label labelInfoWeaponRightHandEquipped;
+    public PictureBox pictureBoxHealer;
+    private Label labelInvisibleArmor;
+    private Panel panelPopupArmor;
+    private Label labelInfoArmorEquipped;
+    private Label labelArmorName;
+    private Label labelInvisibleBoots;
+    private Panel panelPopupBoots;
+    private Label labelInfoBootsEquipped;
+    private Label labelBootsName;
+    public PictureBox pictureBoxAct2Smith;
+    public ComboBox comboBoxUpgradeItems;
+    public Button buttonUpgradeItem;
 }

@@ -12,7 +12,8 @@ public class MusicAndSound
 {
     private Random random = new Random();
     private SoundPlayer[] soundPlayers;
-    private WindowsMediaPlayer mediaPlayer1, mediaPlayer2;
+    public WindowsMediaPlayer mediaPlayer1 = new WindowsMediaPlayer();
+    private WindowsMediaPlayer mediaPlayer2 = new WindowsMediaPlayer();
 
     // Helper method to load media "sounds/music" from the "sounds" folder
     public string MediaSoundPath(string soundName)
@@ -40,6 +41,7 @@ public class MusicAndSound
               GetSoundPath("sword6.wav"),
                GetSoundPath("sword7.wav"),
         GetSoundPath("act1boss.wav"),
+        GetSoundPath("act2healer.wav"),
      };
         foreach (var soundPlayer in soundPlayers)
         {
@@ -51,8 +53,20 @@ public class MusicAndSound
     {
         try
         {
-            mediaPlayer1 = new WindowsMediaPlayer();
             mediaPlayer1.URL = MediaSoundPath("thunder.wav");
+            mediaPlayer1.controls.play();
+        }
+        catch
+        {
+            throw new FileLoadException("The sound file was not found");
+        }
+    }
+
+    public void PlayAct2WindMusic()
+    {
+        try
+        {
+            mediaPlayer1.URL = MediaSoundPath("act2wind.wav");
             mediaPlayer1.controls.play();
         }
         catch
@@ -65,7 +79,6 @@ public class MusicAndSound
     {
         try
         {
-            mediaPlayer2 = new WindowsMediaPlayer(); // play boss sound
             mediaPlayer2.URL = MediaSoundPath("act1boss.wav");
             mediaPlayer2.controls.play();
         }
@@ -87,6 +100,18 @@ public class MusicAndSound
         }
     }
 
+    public void PlayAct2HealingSound()
+    {
+        try
+        {
+            soundPlayers[9].Play();
+        }
+        catch
+        {
+            throw new FileLoadException("The sound file was not found");
+        }
+    }
+
     public void PlaySwordAttackSound()
     {
         try
@@ -102,6 +127,34 @@ public class MusicAndSound
             throw new Exception("The sound file was not found");
         }
     }
+
+    internal void PlayAct1TownMusic()
+    {
+        try
+        {
+            mediaPlayer1.URL = MediaSoundPath("act1town.wav");
+            mediaPlayer1.controls.play();
+        }
+        catch
+        {
+            throw new FileLoadException("The sound file was not found");
+        }
+    }
+
+    public void PlayAct1HealingMusic()
+    {
+        try
+        {
+            mediaPlayer2.URL = MediaSoundPath("letmehealyou5db.wav");
+            mediaPlayer2.controls.play();
+        }
+        catch
+        {
+            throw new FileLoadException("The sound file was not found");
+        }
+    }
+
+
 }
 
 

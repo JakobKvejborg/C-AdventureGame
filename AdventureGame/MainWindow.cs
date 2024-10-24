@@ -32,12 +32,18 @@ public partial class MainWindow : Form
         this.DoubleBuffered = true; // helps flickering
         playerState = new PlayerState();
         panelsList = new List<Panel>();
+        #region Hide controls (panels, buttons, combobox)
         panelMonster.Hide();
         panelEncounter.Hide();
         panelTown.Hide();
         panelGameOver.Hide();
         pictureBoxHero.Hide();
         panelPopupWeaponRightHand.Hide();
+        panelPopupArmor.Hide();
+        panelPopupBoots.Hide();
+        comboBoxUpgradeItems.Hide();
+        buttonUpgradeItem.Hide();
+        #endregion
         storyProgress = new StoryProgress(this);
         UpdatePlayerLabels();
         panelTown.Location = new Point(0, 0); // Example: position it at the top-left corner
@@ -55,6 +61,8 @@ public partial class MainWindow : Form
         // Make the window non-reziable
         this.FormBorderStyle = FormBorderStyle.FixedSingle;
         this.MaximizeBox = false;
+        this.StartPosition = FormStartPosition.CenterScreen;
+        //this.Size = new Size(365, 790); // The actual size of an android
 
         // Method to make the Game Title change colors slowly
         FadeTitle();
@@ -69,9 +77,8 @@ public partial class MainWindow : Form
         hoverTimer.Interval = 500;
         hoverTimer.Tick += HoverTimer_Tick;
 
-        buttonEquipUnequip.TabStop = false;
-        buttonDiscardItem.TabStop = false;
     }
+
 
     // This dream method stops a lot of flickering
     protected override CreateParams CreateParams
@@ -96,30 +103,36 @@ public partial class MainWindow : Form
     {
         // Hide the panel
         panelPopupWeaponRightHand.Hide();
-        // Stop the timer to prevent it from ticking again
-        hoverTimer.Stop();
+        panelPopupArmor.Hide();
+        panelPopupBoots.Hide();
     }
 
+    #region Invisible labels
     private void SetInisibleEquippedItemsLabels()
     {
+        // right weapon
         var posWeapon = labelInvisibleWeaponRightHandEquipped.Parent
             .PointToScreen(labelInvisibleWeaponRightHandEquipped.Location);
         posWeapon = pictureBoxHero.PointToClient(posWeapon);
         labelInvisibleWeaponRightHandEquipped.Parent = pictureBoxHero;
         labelInvisibleWeaponRightHandEquipped.Location = posWeapon;
         labelInvisibleWeaponRightHandEquipped.BackColor = Color.Transparent;
-    }
+        // armor
+        var posArmor = labelInvisibleArmor.Parent
+           .PointToScreen(labelInvisibleArmor.Location);
+        posArmor = pictureBoxHero.PointToClient(posArmor);
+        labelInvisibleArmor.Parent = pictureBoxHero;
+        labelInvisibleArmor.Location = posArmor;
+        labelInvisibleArmor.BackColor = Color.Transparent;
+        // boots
+        var posBoots = labelInvisibleBoots.Parent
+           .PointToScreen(labelInvisibleBoots.Location);
+        posBoots = pictureBoxHero.PointToClient(posBoots);
+        labelInvisibleBoots.Parent = pictureBoxHero;
+        labelInvisibleBoots.Location = posBoots;
+        labelInvisibleBoots.BackColor = Color.Transparent;
 
-    private void EnterTown()
-    {
-        if (StoryProgress.playerIsInTown)
-        {
-            panelTown.Show(); // Show the town panel when player enters the town
-            panelEncounter.Hide(); // Hide other panels if necessary
-            textBox1.Text = "Welcome to the Town!";
-        }
     }
-
     private void SetInvisbleCompassLabels()
     {
         var posW = labelCompassW.Parent.PointToScreen(labelCompassW.Location);
@@ -143,6 +156,18 @@ public partial class MainWindow : Form
         labelCompassS.Location = posS;
         labelCompassS.BackColor = Color.Transparent;
     }
+    #endregion
+
+    private void EnterTown()
+    {
+        if (StoryProgress.playerIsInTown)
+        {
+            panelTown.Show(); // Show the town panel when player enters the town
+            panelEncounter.Hide(); // Hide other panels if necessary
+            textBox1.Text = "Welcome to the Town!";
+        }
+    }
+
 
     async void FadeTitle()
     {
@@ -201,8 +226,7 @@ public partial class MainWindow : Form
     private void OnPlayerLevelUp()
     {
         textBox1.Text = $"You have leveled up to level {playerState.Player.Level}!";
-        labelExperience.Text = $"Experience: {playerState.Player.Experience}/{10 * (playerState.Player.Level + playerState.Player.Level)}";
-        labelLevel.Text = $"Level: {playerState.Player.Level.ToString()}";
+        UpdatePlayerLabels();
         UpdatePlayerHealthBar();
     }
 
@@ -217,7 +241,7 @@ public partial class MainWindow : Form
         buttonPlayGame.BackColor = Color.DarkRed;  // Revert to dark red when the mouse leaves
     }
 
-    private void UpdatePlayerLabels()
+    public void UpdatePlayerLabels()
     {
         UpdatePlayerHealthBar();
 
@@ -229,7 +253,7 @@ public partial class MainWindow : Form
         labelPlayerDodge.Text = $"Dodge: {playerState.Player.DodgeChance}%";
         labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket}";
         labelLevel.Text = $"Level: {playerState.Player.Level}";
-        labelExperience.Text = $"Experience: {playerState.Player.Experience}/{10 * (playerState.Player.Level + playerState.Player.Level)}";
+        labelExperience.Text = $"Experience: {playerState.Player.Experience}/{playerState.Player.XpNeededToLevelUp}";
     }
 
     private void UpdatePlayerHealthBar()
@@ -307,6 +331,9 @@ public partial class MainWindow : Form
             case Keys.H:
                 ButtonHeal();
                 return true;
+            case Keys.E:
+                ButtonEquipItems();
+                return true;
             default:
                 return base.ProcessCmdKey(ref msg, keyData); // Let the base method handle other keys
         }
@@ -365,10 +392,7 @@ public partial class MainWindow : Form
             // Remove the selected item
             Item item = (Item)comboBoxInventory.SelectedItem;
             textBox1.Text = $"You throw away the item {item.Name}.";
-            comboBoxInventory.Items.Remove(item);
-            //comboBoxInventory.SelectedItem = null;
-            //playerState.Player.AddItemToInventory(item);
-            playerState.Player.UnequipItem(item, comboBoxInventory);
+            RemoveItemFromComboboxInventory(item);
             UpdatePlayerLabels();
         }
     }
@@ -386,27 +410,29 @@ public partial class MainWindow : Form
 
     private void ButtonWest()
     {
-        if (StoryProgress.playerIsInTown == true)
+        panelTown.Hide();
+        panelEncounter.Show();
+        if (!Act1BossDefeatedFlag && StoryProgress.playerIsInTown == true)
         {
-            panelTown.Hide();
-            panelEncounter.Show();
             Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, this);
             //SetAct1Backgroundimage();
         }
+        if (Act1BossDefeatedFlag && StoryProgress.playerIsInTown == true)
+        {
+            Encounter.PerformEncounter(monsterContainer.listOfMonstersSnowGoldGoblin, itemContainer.emptyItems, this);
+        }
     }
 
-    private void ButtonEast() // TODO
+    private void ButtonEast()
     {
+        panelTown.Hide();
+        panelEncounter.Show();
         if (!Act1BossDefeatedFlag && StoryProgress.playerIsInTown == true)
         {
-            panelTown.Hide();
-            panelEncounter.Show();
             Encounter.PerformEncounter(monsterContainer.listOfMonsters2, itemContainer.items2, this);
         }
         if (Act1BossDefeatedFlag && StoryProgress.playerIsInTown == true)
         {
-            panelTown.Hide();
-            panelEncounter.Show();
             Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items2, this);
         }
     }
@@ -438,15 +464,14 @@ public partial class MainWindow : Form
 
     private void ButtonNorth()
     {
-        if (StoryProgress.playerIsInTown == true && !Act1BossDefeatedFlag)
-        {
             panelTown.Hide();
             panelEncounter.Show();
+        if (StoryProgress.playerIsInTown == true && !Act1BossDefeatedFlag)
+        {
             sounds.PlayAct1BossSound();
             // Subscribe to the EncounterCompleted event
             //Encounter.EncounterCompleted += OnEncounterCompleted;
             Encounter.EncounterCompleted += OnAct1BossDefeated;
-
             Encounter.PerformEncounter(monsterContainer.listOfMonstersBossAct1, itemContainer.items2, this);
         }
         else
@@ -508,11 +533,19 @@ public partial class MainWindow : Form
                 labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket}";
                 buttonHeal.Text = $"Heal {Player.priceToHeal.ToString()}G";
                 UpdatePlayerHealthBar(); // updates the players health bar after being healed
-                txtBox_Town.Text = storyProgress.GetHealingText();
-            }
-            if (!cooldownOnSound)
-            {
-                sounds.PlayHealingSound();
+                if (!cooldownOnSound)
+                {
+                    if (Act1BossDefeatedFlag)
+                    {
+                        txtBox_Town.Text = storyProgress.GetAct2HealingText();
+                        sounds.PlayAct2HealingSound();
+                    }
+                    else
+                    {
+                        txtBox_Town.Text = storyProgress.GetHealingText();
+                        sounds.PlayAct1HealingMusic();
+                    }
+                }
                 cooldownOnSound = true;
                 await Task.Delay(5000);
                 cooldownOnSound = false;
@@ -532,16 +565,8 @@ public partial class MainWindow : Form
 
     private void labelWeaponEquipped_MouseEnter(object sender, EventArgs e)
     {
-        ShowWeaponRightHandPanel();
-    }
+        //ShowHiddenEquippedItemPanel(ItemType.WeaponRightHand);
 
-    private void ShowWeaponRightHandPanel()
-    {
-        if (playerState.Player.EquippedItems.ContainsKey(ItemType.WeaponRightHand))
-        {
-            panelPopupWeaponRightHand.Show();
-            hoverTimer.Stop();
-        }
     }
 
     private void labelWeaponEquipped_MouseLeave(object sender, EventArgs e)
@@ -559,17 +584,18 @@ public partial class MainWindow : Form
         if (comboBoxInventory.SelectedItem != null)
         {
             Item item = (Item)comboBoxInventory.SelectedItem;
-            if (playerState.Player.Level >= item.LevelRequirement)
+            if (playerState.Player.Level >= item.LevelRequirement && playerState.Player.Strength >= item.StrengthRequirement)
             {
-                SetItemLabelInfo(item);
-                //playerState.Player.AddItemToInventory(item);
-                playerState.Player.EquipItem(item, comboBoxInventory);
+                //SetItemLabelInfo(item);
+                playerState.Player.EquipItem(item, comboBoxInventory, comboBoxUpgradeItems);
                 UpdatePlayerLabels();
-                comboBoxInventory.Items.Remove(item); // removes the equipped item from the combobox
+                RemoveItemFromComboboxInventory(item); // removes the equipped item from the combobox
+                comboBoxUpgradeItems.Items.Add(item);
             }
             else
             {
-                textBox1.Text = $"You don't meet the level requirement to equip {item.Name}.";
+                textBox1.Text = $"The level requirement to equip {item.Name} is {item.LevelRequirement}, and the " +
+                    $"strength requirement is {item.StrengthRequirement}.";
             }
         }
         else
@@ -578,14 +604,72 @@ public partial class MainWindow : Form
         }
     }
 
-    private void SetItemLabelInfo(Item item)
+    private void RemoveItemFromComboboxInventory(Item item)
     {
-        switch (item.Type)
+        comboBoxInventory.Items.Remove(item);
+        if (comboBoxInventory.Items.Count > 0)
         {
-            case ItemType.WeaponRightHand:
-                labelWeaponRightHandName.Text = item.Name;
-                labelInfoWeaponRightHandEquipped.Text = item.ToString();
-                break;
+            comboBoxInventory.SelectedIndex = 0;
         }
+    }
+
+    // This method shows the hidden panels when the mouse is over the item on the hero. It also sets the labels info and name of items.
+    private void ShowHiddenItemPanel(ItemType itemType)
+    {
+        if (playerState.Player.EquippedItems.TryGetValue(itemType, out var item) && item != null)
+        {
+            // Show the corresponding panel for the itemType
+            switch (itemType)
+            {
+                case ItemType.WeaponRightHand:
+                    panelPopupWeaponRightHand.Show();
+                    labelWeaponRightHandName.Text = item.Name;
+                    labelInfoWeaponRightHandEquipped.Text = item.ToString();
+                    break;
+                case ItemType.Armor:
+                    panelPopupArmor.Show();
+                    labelArmorName.Text = item.Name;
+                    labelInfoArmorEquipped.Text = item.ToString();
+                    break;
+                case ItemType.Boots:
+                    panelPopupBoots.Show();
+                    labelBootsName.Text = item.Name;
+                    labelInfoBootsEquipped.Text = item.ToString();
+                    break;
+            }
+            hoverTimer.Stop(); // Stop the hover timer regardless of item type
+        }
+    }
+
+
+
+    private void labelInvisibleArmor_MouseLeave(object sender, EventArgs e)
+    {
+        hoverTimer.Start();
+    }
+
+    private void labelInvisibleArmor_MouseEnter(object sender, EventArgs e)
+    {
+        ShowHiddenItemPanel(ItemType.Armor);
+    }
+
+    private void labelInvisibleBoots_MouseEnter(object sender, EventArgs e)
+    {
+        ShowHiddenItemPanel(ItemType.Boots);
+    }
+
+    private void labelInvisibleBoots_MouseLeave(object sender, EventArgs e)
+    {
+        hoverTimer.Start();
+    }
+
+    private void labelInvisibleWeaponRightHandEquipped_MouseEnter(object sender, EventArgs e)
+    {
+        ShowHiddenItemPanel(ItemType.WeaponRightHand);
+    }
+
+    private void labelInvisibleWeaponRightHandEquipped_MouseLeave(object sender, EventArgs e)
+    {
+        hoverTimer.Start();
     }
 }

@@ -93,22 +93,29 @@ internal static class Encounter
     // This method is called by MainWindow every time the player attacks
     public static async void MonsterAttacks(PlayerState playerState, MainWindow mainWindow)
     {
-        if (playerState.Player.CurrentHealth > 0)
+        if (playerState.Player.CurrentHealth > 0) // checks if player is dead
         {
+
         int dodgeChanceRoll = randomDodge.Next(1, 101);
         if (dodgeChanceRoll <= playerState.Player.DodgeChance)
         {
-            mainWindow.textBox1.AppendText("\n\r You dodged the monster's attack!");
+            mainWindow.textBox1.AppendText("\n\rYou dodged the horror's attack!");
             return; // Exit the method if the player dodges
         }
             // Stores the monsters damage dealt in a local variable to avoid the damage being calculated twice
             int monsterDamageDealt = Monster.CalculateMonsterDamage(Monster);
+            int armorBlocked = Math.Min(playerState.Player.Armor, monsterDamageDealt); // Armor can't block more than damage dealt
+            int damageTaken = Math.Max(monsterDamageDealt - armorBlocked, 0); // ensures the damage isn't negative
 
-            playerState.Player.CurrentHealth -= monsterDamageDealt;
+            playerState.Player.CurrentHealth -= damageTaken;
             playerState.Player.CurrentHealth = Math.Max(playerState.Player.CurrentHealth, 0);
-            mainWindow.progressBarPlayerHP.Value = playerState.Player.CurrentHealth;
+            mainWindow.progressBarPlayerHP.Value = playerState.Player.CurrentHealth; // game crashed here
             mainWindow.labelPlayerHP.Text = $"HP: {playerState.Player.CurrentHealth.ToString()}/{playerState.Player.MaxHealth}";
-            mainWindow.textBox1.AppendText($"\r\nThe monster attacks you back and deals {monsterDamageDealt} damage.");
+            mainWindow.textBox1.AppendText($"The monster attacks you back and deals {monsterDamageDealt} damage.");
+            //if (armorBlocked > 0) // I am not sure I want to display this
+            //{
+            //    mainWindow.textBox1.AppendText($"\n\r Your armor blocks {armorBlocked} damage.");
+            //}
         }
 
         // Check if the player is defeated
@@ -181,7 +188,7 @@ internal static class Encounter
     {
         // The player gets experience based on the monster
         playerState.Player.Experience += Monster.MonsterExperience;
-        mainWindow.labelExperience.Text = $"Experience: {playerState.Player.Experience}/{10 * (playerState.Player.Level + playerState.Player.Level)}";
         playerState.Player.LevelUp(playerState);
+        mainWindow.UpdatePlayerLabels();
     }
 }

@@ -20,21 +20,6 @@ internal class Monster
     public Image MonsterImage { get; set; }
     private Random randomMonsterDamage = new Random();
 
-
-    public Monster(string name, int maxHealth, int currentHealth, int minDamage, int maxDamage, int randomDamageModifier,
-        int monsterExperience, int monsterGold)
-    {
-        Name = name;
-        MaxHealth = maxHealth;
-        CurrentHealth = currentHealth;
-        MinDamage = minDamage;
-        MaxDamage = maxDamage;
-        RandomDamageModifier = randomDamageModifier;
-        MonsterExperience = monsterExperience;
-        MonsterGold = monsterGold;
-    }
-
-    // Constructor with image
     public Monster(string name, int maxHealth, int currentHealth, int minDamage, int maxDamage, int randomDamageModifier,
      int monsterExperience, int monsterGold, Image monsterImage)
     {
@@ -64,20 +49,4 @@ internal class Monster
         return (Monster)this.MemberwiseClone();
     }
 
-    //// // this works if you want to clone the list of monsters
-    //public Monster Clone()
-    //{
-    //    return new Monster(
-
-    //        Name,
-    //        MaxHealth,
-    //        CurrentHealth,
-    //        MaxDamage,
-    //        MinDamage,
-    //        RandomDamageModifier,
-    //        MonsterExperience,
-    //        MonsterGold,
-    //        MonsterImage
-    //    );
-    //    }
 }
