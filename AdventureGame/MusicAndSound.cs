@@ -30,7 +30,9 @@ public class MusicAndSound
 
     public void SetListOfSounds()
     {
-        soundPlayers = new SoundPlayer[]
+        try
+        {
+            soundPlayers = new SoundPlayer[]
      {
         GetSoundPath("letmehealyou5db.wav"),  // index 0
          GetSoundPath("sword1.wav"),  // index 1
@@ -42,10 +44,16 @@ public class MusicAndSound
                GetSoundPath("sword7.wav"),
         GetSoundPath("act1boss.wav"),
         GetSoundPath("act2healer.wav"),
+        GetSoundPath("smithing.wav")     // index 10
      };
-        foreach (var soundPlayer in soundPlayers)
+            foreach (var soundPlayer in soundPlayers)
+            {
+                soundPlayer.Load();
+            }
+        }
+        catch
         {
-            soundPlayer.Load();
+            throw new FileLoadException("The sound file was not found");
         }
     }
 
@@ -153,6 +161,19 @@ public class MusicAndSound
             throw new FileLoadException("The sound file was not found");
         }
     }
+
+    public void PlaySmithingSound()
+    {
+        try
+        {
+            soundPlayers[10].Play();
+        }
+        catch
+        {
+            throw new Exception("The sound file was not found");
+        }
+    }
+
 
 
 }

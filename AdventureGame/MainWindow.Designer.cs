@@ -136,7 +136,7 @@ partial class MainWindow
         // 
         labelCompassE.AutoSize = true;
         labelCompassE.ForeColor = Color.Transparent;
-        labelCompassE.Location = new Point(133, 221);
+        labelCompassE.Location = new Point(121, 212);
         labelCompassE.Name = "labelCompassE";
         labelCompassE.Size = new Size(89, 60);
         labelCompassE.TabIndex = 7;
@@ -148,7 +148,7 @@ partial class MainWindow
         // 
         labelCompassW.AutoSize = true;
         labelCompassW.ForeColor = Color.Transparent;
-        labelCompassW.Location = new Point(18, 224);
+        labelCompassW.Location = new Point(6, 215);
         labelCompassW.Name = "labelCompassW";
         labelCompassW.Size = new Size(89, 60);
         labelCompassW.TabIndex = 6;
@@ -160,7 +160,7 @@ partial class MainWindow
         // 
         labelCompassN.AutoSize = true;
         labelCompassN.ForeColor = Color.Transparent;
-        labelCompassN.Location = new Point(80, 142);
+        labelCompassN.Location = new Point(68, 133);
         labelCompassN.Name = "labelCompassN";
         labelCompassN.Size = new Size(89, 80);
         labelCompassN.TabIndex = 8;
@@ -172,7 +172,7 @@ partial class MainWindow
         // 
         labelCompassS.AutoSize = true;
         labelCompassS.ForeColor = Color.Transparent;
-        labelCompassS.Location = new Point(80, 290);
+        labelCompassS.Location = new Point(68, 281);
         labelCompassS.Name = "labelCompassS";
         labelCompassS.Size = new Size(89, 60);
         labelCompassS.TabIndex = 9;
@@ -684,6 +684,7 @@ partial class MainWindow
         buttonUpgradeItem.TabIndex = 15;
         buttonUpgradeItem.Text = "Upgrade";
         buttonUpgradeItem.UseVisualStyleBackColor = true;
+        buttonUpgradeItem.Click += buttonUpgradeItem_Click;
         // 
         // txtBox_Town
         // 
@@ -702,7 +703,7 @@ partial class MainWindow
         // 
         pictureBoxCompass.BackgroundImageLayout = ImageLayout.Stretch;
         pictureBoxCompass.Image = Properties.Resources.compass;
-        pictureBoxCompass.Location = new Point(18, 146);
+        pictureBoxCompass.Location = new Point(6, 137);
         pictureBoxCompass.Name = "pictureBoxCompass";
         pictureBoxCompass.Size = new Size(204, 204);
         pictureBoxCompass.SizeMode = PictureBoxSizeMode.Zoom;
@@ -731,9 +732,9 @@ partial class MainWindow
         // 
         // pictureBoxAct2Smith
         // 
-        pictureBoxAct2Smith.Location = new Point(228, 111);
+        pictureBoxAct2Smith.Location = new Point(220, 101);
         pictureBoxAct2Smith.Name = "pictureBoxAct2Smith";
-        pictureBoxAct2Smith.Size = new Size(311, 280);
+        pictureBoxAct2Smith.Size = new Size(311, 301);
         pictureBoxAct2Smith.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxAct2Smith.TabIndex = 14;
         pictureBoxAct2Smith.TabStop = false;
@@ -743,9 +744,10 @@ partial class MainWindow
         panelStartScreen.BackColor = Color.Transparent;
         panelStartScreen.Controls.Add(buttonPlayGame);
         panelStartScreen.Controls.Add(labelGameTitle);
-        panelStartScreen.Location = new Point(-3, -6);
+        panelStartScreen.Dock = DockStyle.Fill;
+        panelStartScreen.Location = new Point(0, 0);
         panelStartScreen.Name = "panelStartScreen";
-        panelStartScreen.Size = new Size(557, 750);
+        panelStartScreen.Size = new Size(542, 768);
         panelStartScreen.TabIndex = 22;
         // 
         // buttonPlayGame
@@ -777,10 +779,11 @@ partial class MainWindow
         // panelGameOver
         // 
         panelGameOver.Controls.Add(labelGameOverText);
+        panelGameOver.Dock = DockStyle.Fill;
         panelGameOver.ForeColor = Color.FromArgb(94, 94, 94);
         panelGameOver.Location = new Point(0, 0);
         panelGameOver.Name = "panelGameOver";
-        panelGameOver.Size = new Size(549, 738);
+        panelGameOver.Size = new Size(542, 768);
         panelGameOver.TabIndex = 5;
         // 
         // labelGameOverText

@@ -114,8 +114,11 @@ internal class StoryProgress
                 break;
             case 10:
             case 11:
-                Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items1, _mainWindow);
-                StoryState++;
+                if (progressFlag == true)
+                {
+                    Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items1, _mainWindow);
+                    StoryState++;
+                }
                 break;
             case 12:
                 if (progressFlag == true)

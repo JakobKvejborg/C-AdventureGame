@@ -464,8 +464,8 @@ public partial class MainWindow : Form
 
     private void ButtonNorth()
     {
-            panelTown.Hide();
-            panelEncounter.Show();
+        panelTown.Hide();
+        panelEncounter.Show();
         if (StoryProgress.playerIsInTown == true && !Act1BossDefeatedFlag)
         {
             sounds.PlayAct1BossSound();
@@ -671,5 +671,10 @@ public partial class MainWindow : Form
     private void labelInvisibleWeaponRightHandEquipped_MouseLeave(object sender, EventArgs e)
     {
         hoverTimer.Start();
+    }
+
+    private void buttonUpgradeItem_Click(object sender, EventArgs e)
+    {
+        sounds.PlaySmithingSound();
     }
 }
