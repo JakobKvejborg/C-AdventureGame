@@ -17,7 +17,7 @@ internal static class Encounter
     private static readonly Random randomDodge = new Random();
     public static List<Item>? encounteredMonsterItems; // saves the list of items from the parameter til at property
     public static event EventHandler? EncounterCompleted;
-    
+
 
     public static void PerformEncounter(List<Monster> listOfMonsters, List<Item> listOfItems, MainWindow mainWindow)
     {
@@ -36,7 +36,7 @@ internal static class Encounter
         SetEncounteredMonsterLabels(Monster, mainWindow);
 
     }
-   
+
 
     public static Monster GetRandomMonster(List<Monster> listOfMonsters)
     {
@@ -96,12 +96,12 @@ internal static class Encounter
         if (playerState.Player.CurrentHealth > 0) // checks if player is dead
         {
 
-        int dodgeChanceRoll = randomDodge.Next(1, 101);
-        if (dodgeChanceRoll <= playerState.Player.DodgeChance)
-        {
-            mainWindow.textBox1.AppendText("\n\rYou dodged the horror's attack!");
-            return; // Exit the method if the player dodges
-        }
+            int dodgeChanceRoll = randomDodge.Next(1, 101);
+            if (dodgeChanceRoll <= playerState.Player.DodgeChance)
+            {
+                mainWindow.textBox1.AppendText("\n\rYou dodged the horror's attack!");
+                return; // Exit the method if the player dodges
+            }
             // Stores the monsters damage dealt in a local variable to avoid the damage being calculated twice
             int monsterDamageDealt = Monster.CalculateMonsterDamage(Monster);
             int armorBlocked = Math.Min(playerState.Player.Armor, monsterDamageDealt); // Armor can't block more than damage dealt
@@ -143,7 +143,7 @@ internal static class Encounter
         }
         if (Monster.CurrentHealth <= 0)
         {
-            mainWindow.textBox1.Text = $"You have defeated the monster. You gain {Monster.MonsterExperience}xp.";
+            mainWindow.textBox1.AppendText($"\n\rYou have defeated the monster. You gain {Monster.MonsterExperience}xp. ");
             mainWindow.panelMonster.Hide(); // Hides the monster once it's defeated
             PlayerGetsExperiencePoints(playerState, mainWindow);
             PlayerGetsGoldFromMonster(playerState, mainWindow);
@@ -159,21 +159,20 @@ internal static class Encounter
 
     public static void PlayerFindsItemFromMonster(PlayerState playerState, MainWindow mainWindow)
     {
-        if (Monster == null)
+        int randomItemIndex = randomItem.Next(encounteredMonsterItems.Count);
+        Item foundItem = encounteredMonsterItems[randomItemIndex];
+
+        if (Monster == null || foundItem == null)
         {
             return;
         }
         //Get a random item from the list
-        int randomItemIndex = randomItem.Next(encounteredMonsterItems.Count);
-        Item foundItem = encounteredMonsterItems[randomItemIndex];
-        if (foundItem != null)
-        {
-            mainWindow.textBox1.AppendText($"\r\nYou find an item on the monster's corpse: {foundItem.Name}.");
-            playerState.Player.AddItemToInventory(foundItem); // this may do nothing, because the combobox can hold the items instead
-            mainWindow.comboBoxInventory.Items.Add(foundItem);
-            mainWindow.comboBoxInventory.SelectedItem = foundItem;
-        }
-
+        
+            Item itemClone = foundItem.CloneItem();
+            mainWindow.textBox1.AppendText($"\r\nYou find an item on the monster's corpse: {itemClone.Name}.");
+            playerState.Player.AddItemToInventory(itemClone); // this may do nothing, because the combobox can hold the items instead
+            mainWindow.comboBoxInventory.Items.Add(itemClone);
+            mainWindow.comboBoxInventory.SelectedItem = itemClone;
     }
 
 

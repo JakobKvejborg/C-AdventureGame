@@ -109,6 +109,9 @@ internal class MonsterContainer
 
         // Act 2 list of snow monsters
         listOfSnowMonsters1.Add(snowDemon);
+        listOfSnowMonsters1.Add(snowAntler);
+        listOfSnowMonsters1.Add(snowCrazed);
+        listOfSnowMonsters1.Add(snowMoose);
 
     }
 

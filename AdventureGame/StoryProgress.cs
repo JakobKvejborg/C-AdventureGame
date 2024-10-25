@@ -10,7 +10,7 @@ internal class StoryProgress
     public static bool progressFlag { get; set; }
     public static bool playerIsInTown { get; set; } = false;
     private MainWindow _mainWindow;
-    bool oneTimeMessage = true;
+    public bool oneTimeMessage = true;
     private ImageSetter imageSetter = new ImageSetter();
     private MusicAndSound sounds = new MusicAndSound();
 
@@ -25,7 +25,7 @@ internal class StoryProgress
             "\n\r The roads are littered with corpses.\n\r Do you have the will to survive the Horrors of the lands?";
     }
 
-    private void NextPanel() // Currently unused
+    private void NextPanel() // Currently unused. Maybe this could've been used to switch between different acts/towns
     {
         if (_mainWindow.panelsIndex < _mainWindow.panelsList.Count - 1)
         {
@@ -45,8 +45,8 @@ internal class StoryProgress
     }
     public string GetAct2HealingText()
     {
-        return "The girl seems to be blind. But it's almost as if something else " +
-            "is bothering her much more... She takes care of your wounds and you hand her some coins as thanks.";
+        return "The girl’s white eyes hints her blindness, but as you approach she seems to see you coming. " +
+            "She takes care of your wounds and you hand her some coins as thanks.";
     }
 
     public void ProgressStory()
@@ -149,6 +149,7 @@ internal class StoryProgress
         _mainWindow.pictureBoxHealer.Image = imageSetter.GetPictureBoxImage("act2healer.png");
         _mainWindow.pictureBoxAct2Smith.Image = imageSetter.GetPictureBoxImage("act2smith.png");
         _mainWindow.pictureBoxHealer.Size = new Size(210, 310);
+        _mainWindow.pictureBoxAct2Smith.Show();
         _mainWindow.comboBoxUpgradeItems.Show();
         _mainWindow.buttonUpgradeItem.Show();
     }
@@ -159,7 +160,6 @@ internal class StoryProgress
         _mainWindow.panelEncounter.Hide();
         _mainWindow.panelTown.Show();
         playerIsInTown = true;
-        //_mainWindow.SetAct1TownBackgroundimage();
     }
 
 }

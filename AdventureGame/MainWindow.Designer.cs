@@ -33,6 +33,7 @@ partial class MainWindow
     private void InitializeComponent()
     {
         components = new System.ComponentModel.Container();
+        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
         toolTip = new ToolTip(components);
         btn_continue = new Button();
         btn_attack = new Button();
@@ -43,11 +44,11 @@ partial class MainWindow
         buttonHeal = new Button();
         btn_Continuetown = new Button();
         buttonEquipUnequip = new Button();
+        buttonDiscardItem = new Button();
         labelInvisibleWeaponRightHandEquipped = new Label();
         textBox1 = new TextBox();
         comboBoxInventory = new ComboBox();
         labelInventory = new Label();
-        buttonDiscardItem = new Button();
         btn_useMagic = new Button();
         btn_block = new Button();
         progressBarPlayerHP = new ProgressBar();
@@ -213,6 +214,17 @@ partial class MainWindow
         buttonEquipUnequip.UseVisualStyleBackColor = true;
         buttonEquipUnequip.Click += buttonEquipUnequip_Click;
         // 
+        // buttonDiscardItem
+        // 
+        buttonDiscardItem.Location = new Point(4, 93);
+        buttonDiscardItem.Name = "buttonDiscardItem";
+        buttonDiscardItem.Size = new Size(151, 29);
+        buttonDiscardItem.TabIndex = 4;
+        buttonDiscardItem.Text = "Discard item";
+        toolTip.SetToolTip(buttonDiscardItem, "\"T\"");
+        buttonDiscardItem.UseVisualStyleBackColor = true;
+        buttonDiscardItem.Click += buttonDiscardItem_Click;
+        // 
         // labelInvisibleWeaponRightHandEquipped
         // 
         labelInvisibleWeaponRightHandEquipped.AutoSize = true;
@@ -257,16 +269,6 @@ partial class MainWindow
         labelInventory.Size = new Size(70, 20);
         labelInventory.TabIndex = 3;
         labelInventory.Text = "Inventory";
-        // 
-        // buttonDiscardItem
-        // 
-        buttonDiscardItem.Location = new Point(4, 93);
-        buttonDiscardItem.Name = "buttonDiscardItem";
-        buttonDiscardItem.Size = new Size(151, 29);
-        buttonDiscardItem.TabIndex = 4;
-        buttonDiscardItem.Text = "Discard item";
-        buttonDiscardItem.UseVisualStyleBackColor = true;
-        buttonDiscardItem.Click += buttonDiscardItem_Click;
         // 
         // btn_useMagic
         // 
@@ -670,6 +672,7 @@ partial class MainWindow
         // 
         // comboBoxUpgradeItems
         // 
+        comboBoxUpgradeItems.DropDownStyle = ComboBoxStyle.DropDownList;
         comboBoxUpgradeItems.FormattingEnabled = true;
         comboBoxUpgradeItems.Location = new Point(284, 311);
         comboBoxUpgradeItems.Name = "comboBoxUpgradeItems";
@@ -678,11 +681,11 @@ partial class MainWindow
         // 
         // buttonUpgradeItem
         // 
-        buttonUpgradeItem.Location = new Point(441, 311);
+        buttonUpgradeItem.Location = new Point(436, 311);
         buttonUpgradeItem.Name = "buttonUpgradeItem";
-        buttonUpgradeItem.Size = new Size(78, 28);
+        buttonUpgradeItem.Size = new Size(81, 28);
         buttonUpgradeItem.TabIndex = 15;
-        buttonUpgradeItem.Text = "Upgrade";
+        buttonUpgradeItem.Text = "Upgrade 50G";
         buttonUpgradeItem.UseVisualStyleBackColor = true;
         buttonUpgradeItem.Click += buttonUpgradeItem_Click;
         // 
@@ -702,7 +705,7 @@ partial class MainWindow
         // pictureBoxCompass
         // 
         pictureBoxCompass.BackgroundImageLayout = ImageLayout.Stretch;
-        pictureBoxCompass.Image = Properties.Resources.compass;
+        pictureBoxCompass.Image = (Image)resources.GetObject("pictureBoxCompass.Image");
         pictureBoxCompass.Location = new Point(6, 137);
         pictureBoxCompass.Name = "pictureBoxCompass";
         pictureBoxCompass.Size = new Size(204, 204);

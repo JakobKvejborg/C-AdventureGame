@@ -2,6 +2,7 @@
 
 internal class Player
 {
+    private MainWindow mainWindow;
 
     public string Name { get; set; }
     public int MaxHealth { get; set; }
@@ -73,13 +74,29 @@ internal class Player
             priceToHeal += 3 * priceToHeal;
         }
     }
+    public void HandlePlayerDeath(MainWindow mainWindow)
+    {
+        if (CurrentHealth <= 0)
+        {
+            // Handle death logic
+            mainWindow.panelEncounter.Hide();
+            mainWindow.panelGameOver.Show();
 
-    public void EquipItem(Item item, ComboBox comboboxInventory, ComboBox comboboxUpgradeItems)
+            // If you need a delay before showing game over message
+            Task.Delay(200).ContinueWith(t =>
+            {
+                Thread.Sleep(1000);
+                mainWindow.textBox1.AppendText("\n\rYou have died. Game Over.");
+                Application.Exit();
+            });
+        }
+    }
+
+        public void EquipItem(Item item, ComboBox comboboxInventory, ComboBox comboboxUpgradeItems)
     {
         if (EquippedItems.ContainsKey(item.Type)) // Check if the itemtype is already equipped
         {
             UnequipItem(EquippedItems[item.Type], comboboxInventory, comboboxUpgradeItems);
-            
         }
 
         // Equip the item
@@ -93,7 +110,6 @@ internal class Player
         DodgeChance += item.DodgeChance;
         Strength += item.Strength;
         Level += item.SkillLevel;
-
     }
 
     public void UnequipItem(Item item, ComboBox comboboxInventory, ComboBox comboboxUpgradeItem)
@@ -113,6 +129,10 @@ internal class Player
             comboboxInventory.Items.Add(item);
             comboboxUpgradeItem.Items.Remove(item);
 
+            if (CurrentHealth <= 0)
+            {
+                CurrentHealth = 0;
+            }
         }
     }
 }

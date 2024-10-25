@@ -51,6 +51,7 @@ public partial class MainWindow : Form
         panelTown.BringToFront();
         this.Controls.Add(panelTown);
         comboBoxInventory.DisplayMember = "Name"; // Makes the comboboxInventory only display the item.Name
+        comboBoxUpgradeItems.DisplayMember = "Name"; // Makes the comboboxInventory only display the item.Name
 
         // Event that listens for player levelup
         playerState.Player.LevelUpEvent += OnPlayerLevelUp;
@@ -62,12 +63,10 @@ public partial class MainWindow : Form
         this.FormBorderStyle = FormBorderStyle.FixedSingle;
         this.MaximizeBox = false;
         this.StartPosition = FormStartPosition.CenterScreen;
-        //this.Size = new Size(365, 790); // The actual size of an android
 
         // Method to make the Game Title change colors slowly
         FadeTitle();
-
-        this.KeyPreview = true;
+        this.KeyPreview = true; // prevents the buttons from gaining unwanted focus
 
         SetInvisbleCompassLabels();
         SetInisibleEquippedItemsLabels();
@@ -76,7 +75,6 @@ public partial class MainWindow : Form
         hoverTimer = new System.Windows.Forms.Timer();  // Create the timer instance
         hoverTimer.Interval = 500;
         hoverTimer.Tick += HoverTimer_Tick;
-
     }
 
 
@@ -95,7 +93,6 @@ public partial class MainWindow : Form
     private void PreloadResources()
     {
         Image image = Properties.Resources.healer; // Preload images
-        image = Properties.Resources.compass;
         Font font = new Font("Arial", 12); // Preload fonts
     }
 
@@ -158,16 +155,6 @@ public partial class MainWindow : Form
     }
     #endregion
 
-    private void EnterTown()
-    {
-        if (StoryProgress.playerIsInTown)
-        {
-            panelTown.Show(); // Show the town panel when player enters the town
-            panelEncounter.Hide(); // Hide other panels if necessary
-            textBox1.Text = "Welcome to the Town!";
-        }
-    }
-
 
     async void FadeTitle()
     {
@@ -225,7 +212,7 @@ public partial class MainWindow : Form
 
     private void OnPlayerLevelUp()
     {
-        textBox1.Text = $"You have leveled up to level {playerState.Player.Level}!";
+        textBox1.AppendText($"\r\nYou have leveled up to level {playerState.Player.Level}!");
         UpdatePlayerLabels();
         UpdatePlayerHealthBar();
     }
@@ -262,6 +249,7 @@ public partial class MainWindow : Form
         int currentHealth = playerState.Player.CurrentHealth;
         int maxHealth = playerState.Player.MaxHealth;
 
+        CheckIfPlayerIsDefeated();
         progressBarPlayerHP.Maximum = maxHealth;
         progressBarPlayerHP.Value = currentHealth;
         labelPlayerHP.Text = $"HP: {currentHealth}/{maxHealth}";
@@ -333,6 +321,9 @@ public partial class MainWindow : Form
                 return true;
             case Keys.E:
                 ButtonEquipItems();
+                return true;
+            case Keys.T:
+                ButtonDiscardItem();
                 return true;
             default:
                 return base.ProcessCmdKey(ref msg, keyData); // Let the base method handle other keys
@@ -462,6 +453,7 @@ public partial class MainWindow : Form
         ButtonNorth();
     }
 
+    // Boss encounters
     private void ButtonNorth()
     {
         panelTown.Hide();
@@ -470,8 +462,10 @@ public partial class MainWindow : Form
         {
             sounds.PlayAct1BossSound();
             // Subscribe to the EncounterCompleted event
-            //Encounter.EncounterCompleted += OnEncounterCompleted;
             Encounter.EncounterCompleted += OnAct1BossDefeated;
+
+            Player.priceToHeal = 4; // resets the price to heal
+            buttonHeal.Text = $"Heal {Player.priceToHeal.ToString()}G";
             Encounter.PerformEncounter(monsterContainer.listOfMonstersBossAct1, itemContainer.items2, this);
         }
         else
@@ -515,6 +509,20 @@ public partial class MainWindow : Form
         if (!Act1BossDefeatedFlag)
         {
             txtBox_Town.Text = "You cannot turn back now. You must press on, your destiny awaits.";
+            return;
+        }
+        if (Act1BossDefeatedFlag && StoryProgress.playerIsInTown)
+        {
+            Act1BossDefeatedFlag = false;
+            SetAct1Backgroundimage();
+            storyProgress.StoryState = 6;
+            pictureBoxTown.Image = imageSetter.GetPictureBoxImage("act1town.png");
+            pictureBoxHealer.Image = imageSetter.GetPictureBoxImage("healer.png");
+            pictureBoxAct2Smith.Hide();
+            buttonUpgradeItem.Hide();
+            comboBoxUpgradeItems.Hide();
+            txtBox_Town.Text = ("You return to the dark forest. \r\nWhat comes next is up to you.");
+            sounds.PlayAct1TownMusic();
         }
     }
 
@@ -530,7 +538,7 @@ public partial class MainWindow : Form
             if (playerState.Player.GoldInPocket >= Player.priceToHeal)
             {
                 playerState.Player.HealPlayer(playerState);
-                labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket}";
+                UpdatePlayerLabels();
                 buttonHeal.Text = $"Heal {Player.priceToHeal.ToString()}G";
                 UpdatePlayerHealthBar(); // updates the players health bar after being healed
                 if (!cooldownOnSound)
@@ -591,6 +599,7 @@ public partial class MainWindow : Form
                 UpdatePlayerLabels();
                 RemoveItemFromComboboxInventory(item); // removes the equipped item from the combobox
                 comboBoxUpgradeItems.Items.Add(item);
+                CheckIfPlayerIsDefeated(); // checks if the player dies from unequipping an item that gives health
             }
             else
             {
@@ -675,6 +684,47 @@ public partial class MainWindow : Form
 
     private void buttonUpgradeItem_Click(object sender, EventArgs e)
     {
-        sounds.PlaySmithingSound();
+        ButtonUpgradeItem();
+    }
+
+    private void ButtonUpgradeItem()
+    {
+        if (comboBoxUpgradeItems.SelectedItem != null && playerState.Player.GoldInPocket >= Item.CostToUpgrade)
+        {
+            Item item = (Item)comboBoxUpgradeItems.SelectedItem;
+            if (item.IsItemUpgraded)
+            {
+                txtBox_Town.Text = "\"Aaah, the item has already been upgraded. Give me another one!\"";
+                return;
+            }
+            sounds.PlaySmithingSound();
+            playerState.Player.UnequipItem(item, comboBoxInventory, comboBoxUpgradeItems); // unequips the item to prevent stat bugs
+            item.UpgradeItem();
+            playerState.Player.GoldInPocket -= Item.CostToUpgrade;
+            UpdatePlayerLabels();
+            comboBoxInventory.Items[comboBoxInventory.Items.IndexOf(item)] = item; // Update the item in the ComboBox
+
+            if (comboBoxInventory.Items.Count > 0) // This just ensures the combobox "stands" on an item
+            {
+                comboBoxInventory.SelectedIndex = 0;
+            }
+        }
+        else
+        {
+            txtBox_Town.Text = "\"Sorry, the best I can do is 50G. No discounts.\"";
+        }
+    }
+
+    private async Task CheckIfPlayerIsDefeated()
+    {
+        if (playerState.Player.CurrentHealth <= 0)
+        {
+            await Task.Delay(200);
+            Thread.Sleep(500);
+            panelEncounter.Hide();
+            panelGameOver.Show();
+            await Task.Delay(1500);
+            Application.Exit();
+        }
     }
 }

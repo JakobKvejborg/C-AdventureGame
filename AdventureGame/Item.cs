@@ -16,13 +16,15 @@ public class Item
     public int DodgeChance { get; set; }
     public int Strength { get; set; }
     public int Armor { get; set; }
+    public int SkillLevel { get; set; }
+    public int Lifesteal { get; set; }
     public int FireDamage { get; set; }
     public int PoisonDamage { get; set; }
-    public int SkillLevel { get; set; }
     public int StrengthRequirement { get; set; }
-    public int Lifesteal { get; set; }
     public int LevelRequirement { get; set; }
-
+    public static int CostToUpgrade { get; set; } = 50;
+    public bool IsItemUpgraded { get; set; } = false;
+    // Weapon item types
     public Item(string name, ItemType type, int damage, int strength, int fireDamage, int poisonDamage,
         int skillLevel, int lifesteal, int strengthRequirement, int levelRequirement)
     {
@@ -61,15 +63,89 @@ public class Item
         { "Armor", Armor },
         { "Dodge", DodgeChance },
         { "Strength", Strength },
+        { "Skilllevel", SkillLevel },
         { "Strength req", StrengthRequirement },
         { "Level req", LevelRequirement }
     };
         // Only include stats greater than 0
         return string.Join("\n", stats.Where(stat => stat.Value > 0).Select(stat => $"{stat.Key}: {stat.Value}"));
     }
+
+    public Item CloneItem()
+    {
+        return (Item)this.MemberwiseClone();
+    }
+
+    public void UpgradeItem()
+    {
+        if (IsItemUpgraded)
+        {
+            return;
+        }
+        Random random = new Random();
+        Name = "Upgraded " + Name;
+        IsItemUpgraded = true;
+        switch (Type)
+        {
+            case ItemType.WeaponRightHand:
+                // Randomly upgrade a stat for weapons
+                int weaponUpgradeChoice = random.Next(1, 5); // 1 to 4 for four stats
+                switch (weaponUpgradeChoice)
+                {
+                    case 1: // Damage
+                        Damage += random.Next(1, 3); // Increase Damage by 1 to 2
+                        break;
+                    case 2: // Strength
+                        Strength += random.Next(1, 6); // Increase Strength by 1 to 5
+                        break;
+                    case 3: // Lifesteal
+                        Lifesteal += random.Next(1, 5); // Increase Lifesteal by 1 or 4
+                        break;
+                    case 4: // SkillLevel
+                        SkillLevel += random.Next(1, 2); // Increase Skilllevel by 1 or 2
+                        break;
+                        // Add more cases if needed
+                }
+                break;
+
+            case ItemType.Armor:
+                // Randomly upgrade a stat for armor
+                int armorUpgradeChoice = random.Next(1, 4); // 1 to 3 for three stats
+                switch (armorUpgradeChoice)
+                {
+                    case 1: // Health
+                        Health += random.Next(5, 24); // Increase Health by 5 to 23
+                        break;
+                    case 2: // Armor
+                        Armor += random.Next(1, 6); // Increase Armor by 1 to 5
+                        break;
+                        // Add more cases if needed
+                }
+                break;
+
+            case ItemType.Boots:
+                // Randomly upgrade a stat for armor
+                int bootsUpgradeChoice = random.Next(1, 4); // 1 to 3 for three stats
+                switch (bootsUpgradeChoice)
+                {
+                    case 1: // Health
+                        Health += random.Next(1, 14); // Increase Health by 1 to 13
+                        break;
+                    case 2: // Dodge Chance
+                        DodgeChance += random.Next(1, 6); // Increase Dodge Chance by 1 to 5
+                        break;
+                        // Add more cases if needed
+                }
+                break;
+        }
+        
+    }
+
+
 }
 
-    public enum ItemType
+
+public enum ItemType
 {
     WeaponLeftHand,
     WeaponRightHand,
@@ -85,3 +161,4 @@ public class Item
     Belt
     // Add more as needed
 }
+
