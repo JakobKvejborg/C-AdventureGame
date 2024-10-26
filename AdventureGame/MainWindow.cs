@@ -32,19 +32,7 @@ public partial class MainWindow : Form
         this.DoubleBuffered = true; // helps flickering
         playerState = new PlayerState();
         panelsList = new List<Panel>();
-        #region Hide controls (panels, buttons, combobox)
-        panelMonster.Hide();
-        panelEncounter.Hide();
-        panelTown.Hide();
-        panelGameOver.Hide();
-        pictureBoxHero.Hide();
-        panelPopupWeaponRightHand.Hide();
-        panelPopupArmor.Hide();
-        panelPopupBoots.Hide();
-        comboBoxUpgradeItems.Hide();
-        buttonUpgradeItem.Hide();
-        #endregion
-        storyProgress = new StoryProgress(this);
+        HidePanelsEtc(); storyProgress = new StoryProgress(this);
         UpdatePlayerLabels();
         panelTown.Location = new Point(0, 0); // Example: position it at the top-left corner
         panelTown.Size = new Size(400, 300);  // Example: set a proper size to make it visible
@@ -52,6 +40,8 @@ public partial class MainWindow : Form
         this.Controls.Add(panelTown);
         comboBoxInventory.DisplayMember = "Name"; // Makes the comboboxInventory only display the item.Name
         comboBoxUpgradeItems.DisplayMember = "Name"; // Makes the comboboxInventory only display the item.Name
+        MakeHeroBagBackgroundTrulyTransparent(); // this method makes the picturebox HeroBag have an truly invisible background
+        MakeInventoryBackgroundTrulyTransparent();
 
         // Event that listens for player levelup
         playerState.Player.LevelUpEvent += OnPlayerLevelUp;
@@ -75,6 +65,40 @@ public partial class MainWindow : Form
         hoverTimer = new System.Windows.Forms.Timer();  // Create the timer instance
         hoverTimer.Interval = 500;
         hoverTimer.Tick += HoverTimer_Tick;
+    }
+
+    private void HidePanelsEtc()
+    {
+        #region Hide panels, buttons, combobox
+        panelMonster.Hide();
+        panelEncounter.Hide();
+        panelTown.Hide();
+        panelGameOver.Hide();
+        pictureBoxHero.Hide();
+        panelPopupWeaponRightHand.Hide();
+        panelPopupArmor.Hide();
+        panelPopupBoots.Hide();
+        panelPopupGloves.Hide();
+        comboBoxUpgradeItems.Hide();
+        buttonUpgradeItem.Hide();
+        pictureBoxHeroBag.Hide();
+        pictureBoxInventory.Hide();
+        panelInventory.Hide();
+        #endregion
+    }
+
+    private void MakeHeroBagBackgroundTrulyTransparent()
+    {
+        pictureBoxHero.Controls.Add(pictureBoxHeroBag);
+        pictureBoxHeroBag.Location = new Point(120, 170);
+        pictureBoxHeroBag.BackColor = Color.Transparent;
+    }
+
+    private void MakeInventoryBackgroundTrulyTransparent()
+    {
+        pictureBoxInventory.Controls.Add(panelInventory);
+        panelInventory.Location = new Point(45, 40);
+        panelInventory.BackColor = Color.Transparent;
     }
 
 
@@ -102,6 +126,7 @@ public partial class MainWindow : Form
         panelPopupWeaponRightHand.Hide();
         panelPopupArmor.Hide();
         panelPopupBoots.Hide();
+        panelPopupGloves.Hide();
     }
 
     #region Invisible labels
@@ -128,6 +153,13 @@ public partial class MainWindow : Form
         labelInvisibleBoots.Parent = pictureBoxHero;
         labelInvisibleBoots.Location = posBoots;
         labelInvisibleBoots.BackColor = Color.Transparent;
+        // gloves
+        var posGloves = labelInvisibleGloves.Parent
+           .PointToScreen(labelInvisibleGloves.Location);
+        posGloves = pictureBoxHero.PointToClient(posGloves);
+        labelInvisibleGloves.Parent = pictureBoxHero;
+        labelInvisibleGloves.Location = posGloves;
+        labelInvisibleGloves.BackColor = Color.Transparent;
 
     }
     private void SetInvisbleCompassLabels()
@@ -645,6 +677,11 @@ public partial class MainWindow : Form
                     labelBootsName.Text = item.Name;
                     labelInfoBootsEquipped.Text = item.ToString();
                     break;
+                case ItemType.Gloves:
+                    panelPopupGloves.Show();
+                    labelGlovesName.Text = item.Name;
+                    labelInfoGlovesEquipped.Text = item.ToString();
+                    break;
             }
             hoverTimer.Stop(); // Stop the hover timer regardless of item type
         }
@@ -691,13 +728,13 @@ public partial class MainWindow : Form
     {
         if (comboBoxUpgradeItems.SelectedItem != null && playerState.Player.GoldInPocket >= Item.CostToUpgrade)
         {
+            sounds.PlaySmithingSound();
             Item item = (Item)comboBoxUpgradeItems.SelectedItem;
             if (item.IsItemUpgraded)
             {
-                txtBox_Town.Text = "\"Aaah, the item has already been upgraded. Give me another one!\"";
+                txtBox_Town.Text = "\"Aaah, this item has already been upgraded. Give me another one!\"";
                 return;
             }
-            sounds.PlaySmithingSound();
             playerState.Player.UnequipItem(item, comboBoxInventory, comboBoxUpgradeItems); // unequips the item to prevent stat bugs
             item.UpgradeItem();
             playerState.Player.GoldInPocket -= Item.CostToUpgrade;
@@ -726,5 +763,45 @@ public partial class MainWindow : Form
             await Task.Delay(1500);
             Application.Exit();
         }
+    }
+
+    private void labelInvisibleGloves_MouseEnter(object sender, EventArgs e)
+    {
+        ShowHiddenItemPanel(ItemType.Gloves);
+    }
+
+    private void labelInvisibleGloves_MouseLeave(object sender, EventArgs e)
+    {
+        hoverTimer.Start();
+    }
+
+    private void pictureBoxHeroBag_Click(object sender, EventArgs e)
+    {
+        ShowInventory();
+    }
+
+    private void ShowInventory()
+    {
+        pictureBoxInventory.Show();
+        panelInventory.Show();
+        pictureBoxHeroBag.Hide();
+        sounds.PlayInventorySound();
+    }
+
+    private void pictureBoxInventory_Click(object sender, EventArgs e)
+    {
+        HideInventory();
+    }
+
+    public void HideInventory()
+    {
+        pictureBoxInventory.Hide();
+        panelInventory.Hide();
+        pictureBoxHeroBag.Show();
+    }
+
+    private void labelInventory_Click(object sender, EventArgs e)
+    {
+        HideInventory();
     }
 }

@@ -82,7 +82,7 @@ internal class MonsterContainer
         Monster snowAntler = new("Snow Antler", 25, 24, 7, 0, 0, 18, 2, snowAntlerImage);
         Monster snowCrazed = new("Snow Crazed", 22, 22, 6, 0, 0, 15, 1, snowCrazedImage);
         Monster snowHorror = new("Snow Horror", 30, 30, 9, 0, 0, 25, 4, snowHorrorImage);
-        Monster snowMoose = new("Snow Moose", 35, 20, 10, 0, 0, 20, 3, snowMooseImage);
+        Monster snowMoose = new("Snow Moose", 35, 35, 10, 0, 0, 20, 3, snowMooseImage);
 
         // List of Monsters 1
         listOfMonsters1.Add(normalGoblin);

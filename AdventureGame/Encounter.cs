@@ -119,21 +119,10 @@ internal static class Encounter
         }
 
         // Check if the player is defeated
-        await CheckIfPlayerIsDefeated(playerState, mainWindow);
+        await playerState.Player.HandlePlayerDeathAsync(mainWindow);
     }
 
-    private static async Task CheckIfPlayerIsDefeated(PlayerState playerState, MainWindow mainWindow)
-    {
-        if (playerState.Player.CurrentHealth <= 0)
-        {
-            await Task.Delay(200);
-            Thread.Sleep(1000);
-            mainWindow.panelEncounter.Hide();
-            mainWindow.panelGameOver.Show();
-            await Task.Delay(1200);
-            Application.Exit();
-        }
-    }
+  
 
     public static void MonsterIsDefeated(PlayerState playerState, MainWindow mainWindow)
     {

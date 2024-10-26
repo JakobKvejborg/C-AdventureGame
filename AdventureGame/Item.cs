@@ -41,11 +41,12 @@ public class Item
     }
 
     // Constructor for armor type items
-    public Item(string name, ItemType type, int health, int dodgeChance, int armor, int skillLevel, int strengthRequirement, int levelRequirement)
+    public Item(string name, ItemType type, int health, int strength, int dodgeChance, int armor, int skillLevel, int strengthRequirement, int levelRequirement)
     {
         Name = name;
         Type = type;
         Health = health;
+        Strength = strength;
         DodgeChance = dodgeChance;
         Armor = armor;
         SkillLevel = skillLevel;

@@ -74,21 +74,16 @@ internal class Player
             priceToHeal += 3 * priceToHeal;
         }
     }
-    public void HandlePlayerDeath(MainWindow mainWindow)
+    public async Task HandlePlayerDeathAsync(MainWindow mainWindow)
     {
         if (CurrentHealth <= 0)
         {
-            // Handle death logic
+            await Task.Delay(200);
+            Thread.Sleep(1000);
             mainWindow.panelEncounter.Hide();
             mainWindow.panelGameOver.Show();
-
-            // If you need a delay before showing game over message
-            Task.Delay(200).ContinueWith(t =>
-            {
-                Thread.Sleep(1000);
-                mainWindow.textBox1.AppendText("\n\rYou have died. Game Over.");
-                Application.Exit();
-            });
+            await Task.Delay(1900);
+            Application.Exit();
         }
     }
 
@@ -133,6 +128,7 @@ internal class Player
             {
                 CurrentHealth = 0;
             }
+
         }
     }
 }

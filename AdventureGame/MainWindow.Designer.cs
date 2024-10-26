@@ -68,6 +68,10 @@ partial class MainWindow
         labelMonsterHp = new Label();
         labelMonsterName = new Label();
         panelEncounter = new Panel();
+        panelPopupGloves = new Panel();
+        labelInfoGlovesEquipped = new Label();
+        labelGlovesName = new Label();
+        labelInvisibleGloves = new Label();
         panelPopupBoots = new Panel();
         labelInfoBootsEquipped = new Label();
         labelBootsName = new Label();
@@ -79,8 +83,10 @@ partial class MainWindow
         panelPopupWeaponRightHand = new Panel();
         labelInfoWeaponRightHandEquipped = new Label();
         labelWeaponRightHandName = new Label();
-        pictureBoxHero = new PictureBox();
         panelInventory = new Panel();
+        pictureBoxHeroBag = new PictureBox();
+        pictureBoxHero = new PictureBox();
+        pictureBoxInventory = new PictureBox();
         panelTown = new Panel();
         comboBoxUpgradeItems = new ComboBox();
         buttonUpgradeItem = new Button();
@@ -97,11 +103,14 @@ partial class MainWindow
         panelMonster.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).BeginInit();
         panelEncounter.SuspendLayout();
+        panelPopupGloves.SuspendLayout();
         panelPopupBoots.SuspendLayout();
         panelPopupArmor.SuspendLayout();
         panelPopupWeaponRightHand.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)pictureBoxHero).BeginInit();
         panelInventory.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxHeroBag).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxHero).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxInventory).BeginInit();
         panelTown.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxCompass).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxTown).BeginInit();
@@ -263,12 +272,14 @@ partial class MainWindow
         // labelInventory
         // 
         labelInventory.BackColor = Color.Transparent;
+        labelInventory.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
         labelInventory.ForeColor = Color.White;
         labelInventory.Location = new Point(13, 0);
         labelInventory.Name = "labelInventory";
-        labelInventory.Size = new Size(70, 20);
+        labelInventory.Size = new Size(90, 20);
         labelInventory.TabIndex = 3;
         labelInventory.Text = "Inventory";
+        labelInventory.Click += labelInventory_Click;
         // 
         // btn_useMagic
         // 
@@ -314,11 +325,11 @@ partial class MainWindow
         // 
         labelPlayerArmor.AutoSize = true;
         labelPlayerArmor.BackColor = Color.Transparent;
-        labelPlayerArmor.Font = new Font("Impact", 10F);
+        labelPlayerArmor.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerArmor.ForeColor = Color.White;
         labelPlayerArmor.Location = new Point(14, 340);
         labelPlayerArmor.Name = "labelPlayerArmor";
-        labelPlayerArmor.Size = new Size(53, 21);
+        labelPlayerArmor.Size = new Size(59, 23);
         labelPlayerArmor.TabIndex = 11;
         labelPlayerArmor.Text = "armor";
         // 
@@ -326,11 +337,11 @@ partial class MainWindow
         // 
         labelPlayerDamage.AutoSize = true;
         labelPlayerDamage.BackColor = Color.Transparent;
-        labelPlayerDamage.Font = new Font("Impact", 10F);
+        labelPlayerDamage.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerDamage.ForeColor = Color.White;
         labelPlayerDamage.Location = new Point(14, 242);
         labelPlayerDamage.Name = "labelPlayerDamage";
-        labelPlayerDamage.Size = new Size(68, 21);
+        labelPlayerDamage.Size = new Size(75, 23);
         labelPlayerDamage.TabIndex = 12;
         labelPlayerDamage.Text = "damage";
         // 
@@ -338,11 +349,11 @@ partial class MainWindow
         // 
         labelPlayerDodge.AutoSize = true;
         labelPlayerDodge.BackColor = Color.Transparent;
-        labelPlayerDodge.Font = new Font("Impact", 10F);
+        labelPlayerDodge.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerDodge.ForeColor = Color.White;
         labelPlayerDodge.Location = new Point(14, 370);
         labelPlayerDodge.Name = "labelPlayerDodge";
-        labelPlayerDodge.Size = new Size(55, 21);
+        labelPlayerDodge.Size = new Size(62, 23);
         labelPlayerDodge.TabIndex = 13;
         labelPlayerDodge.Text = "dodge";
         // 
@@ -361,11 +372,11 @@ partial class MainWindow
         // 
         labelPlayerStrength.AutoSize = true;
         labelPlayerStrength.BackColor = Color.Transparent;
-        labelPlayerStrength.Font = new Font("Impact", 10F);
+        labelPlayerStrength.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerStrength.ForeColor = Color.White;
         labelPlayerStrength.Location = new Point(14, 274);
         labelPlayerStrength.Name = "labelPlayerStrength";
-        labelPlayerStrength.Size = new Size(70, 21);
+        labelPlayerStrength.Size = new Size(78, 23);
         labelPlayerStrength.TabIndex = 15;
         labelPlayerStrength.Text = "strength";
         // 
@@ -373,11 +384,11 @@ partial class MainWindow
         // 
         labelPlayerLifeSteal.AutoSize = true;
         labelPlayerLifeSteal.BackColor = Color.Transparent;
-        labelPlayerLifeSteal.Font = new Font("Impact", 10F);
+        labelPlayerLifeSteal.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerLifeSteal.ForeColor = Color.White;
         labelPlayerLifeSteal.Location = new Point(14, 306);
         labelPlayerLifeSteal.Name = "labelPlayerLifeSteal";
-        labelPlayerLifeSteal.Size = new Size(70, 21);
+        labelPlayerLifeSteal.Size = new Size(73, 23);
         labelPlayerLifeSteal.TabIndex = 16;
         labelPlayerLifeSteal.Text = "lifesteal";
         // 
@@ -385,11 +396,11 @@ partial class MainWindow
         // 
         labelGoldInPocket.AutoSize = true;
         labelGoldInPocket.BackColor = Color.Transparent;
-        labelGoldInPocket.Font = new Font("Impact", 10F);
+        labelGoldInPocket.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelGoldInPocket.ForeColor = Color.Gold;
         labelGoldInPocket.Location = new Point(14, 399);
         labelGoldInPocket.Name = "labelGoldInPocket";
-        labelGoldInPocket.Size = new Size(42, 21);
+        labelGoldInPocket.Size = new Size(47, 23);
         labelGoldInPocket.TabIndex = 17;
         labelGoldInPocket.Text = "gold";
         // 
@@ -397,11 +408,11 @@ partial class MainWindow
         // 
         labelLevel.AutoSize = true;
         labelLevel.BackColor = Color.Transparent;
-        labelLevel.Font = new Font("Impact", 10F);
+        labelLevel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelLevel.ForeColor = Color.White;
         labelLevel.Location = new Point(132, 242);
         labelLevel.Name = "labelLevel";
-        labelLevel.Size = new Size(46, 21);
+        labelLevel.Size = new Size(51, 23);
         labelLevel.TabIndex = 18;
         labelLevel.Text = "Level";
         // 
@@ -409,11 +420,11 @@ partial class MainWindow
         // 
         labelExperience.AutoSize = true;
         labelExperience.BackColor = Color.Transparent;
-        labelExperience.Font = new Font("Impact", 10F);
+        labelExperience.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelExperience.ForeColor = Color.White;
         labelExperience.Location = new Point(132, 274);
         labelExperience.Name = "labelExperience";
-        labelExperience.Size = new Size(88, 21);
+        labelExperience.Size = new Size(96, 23);
         labelExperience.TabIndex = 19;
         labelExperience.Text = "Experience";
         // 
@@ -462,17 +473,19 @@ partial class MainWindow
         // 
         labelMonsterName.AutoSize = true;
         labelMonsterName.BackColor = Color.Transparent;
-        labelMonsterName.Font = new Font("Impact", 10F);
+        labelMonsterName.Font = new Font("Impact", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
         labelMonsterName.ForeColor = Color.White;
-        labelMonsterName.Location = new Point(24, 0);
+        labelMonsterName.Location = new Point(22, -1);
         labelMonsterName.Name = "labelMonsterName";
-        labelMonsterName.Size = new Size(109, 21);
+        labelMonsterName.Size = new Size(110, 22);
         labelMonsterName.TabIndex = 0;
         labelMonsterName.Text = "monsterName";
         // 
         // panelEncounter
         // 
         panelEncounter.BackColor = Color.Transparent;
+        panelEncounter.Controls.Add(panelPopupGloves);
+        panelEncounter.Controls.Add(labelInvisibleGloves);
         panelEncounter.Controls.Add(panelPopupBoots);
         panelEncounter.Controls.Add(labelInvisibleBoots);
         panelEncounter.Controls.Add(panelPopupArmor);
@@ -482,6 +495,7 @@ partial class MainWindow
         panelEncounter.Controls.Add(textBox1);
         panelEncounter.Controls.Add(btn_continue);
         panelEncounter.Controls.Add(labelExperience);
+        panelEncounter.Controls.Add(panelInventory);
         panelEncounter.Controls.Add(labelLevel);
         panelEncounter.Controls.Add(labelGoldInPocket);
         panelEncounter.Controls.Add(btn_attack);
@@ -495,14 +509,60 @@ partial class MainWindow
         panelEncounter.Controls.Add(labelPlayerDamage);
         panelEncounter.Controls.Add(labelPlayerArmor);
         panelEncounter.Controls.Add(labelInvisibleWeaponRightHandEquipped);
+        panelEncounter.Controls.Add(pictureBoxHeroBag);
         panelEncounter.Controls.Add(pictureBoxHero);
+        panelEncounter.Controls.Add(pictureBoxInventory);
         panelEncounter.Controls.Add(labelHeroName);
-        panelEncounter.Controls.Add(panelInventory);
         panelEncounter.Dock = DockStyle.Fill;
         panelEncounter.Location = new Point(0, 0);
         panelEncounter.Name = "panelEncounter";
-        panelEncounter.Size = new Size(542, 768);
+        panelEncounter.Size = new Size(537, 768);
         panelEncounter.TabIndex = 22;
+        // 
+        // panelPopupGloves
+        // 
+        panelPopupGloves.AutoScroll = true;
+        panelPopupGloves.BorderStyle = BorderStyle.Fixed3D;
+        panelPopupGloves.Controls.Add(labelInfoGlovesEquipped);
+        panelPopupGloves.Controls.Add(labelGlovesName);
+        panelPopupGloves.Location = new Point(171, 436);
+        panelPopupGloves.Name = "panelPopupGloves";
+        panelPopupGloves.Size = new Size(145, 97);
+        panelPopupGloves.TabIndex = 31;
+        // 
+        // labelInfoGlovesEquipped
+        // 
+        labelInfoGlovesEquipped.AutoSize = true;
+        labelInfoGlovesEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelInfoGlovesEquipped.ForeColor = Color.White;
+        labelInfoGlovesEquipped.Location = new Point(-1, 15);
+        labelInfoGlovesEquipped.Name = "labelInfoGlovesEquipped";
+        labelInfoGlovesEquipped.Size = new Size(75, 16);
+        labelInfoGlovesEquipped.TabIndex = 1;
+        labelInfoGlovesEquipped.Text = "glovesInfo";
+        // 
+        // labelGlovesName
+        // 
+        labelGlovesName.AutoSize = true;
+        labelGlovesName.Font = new Font("Snap ITC", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelGlovesName.ForeColor = SystemColors.ActiveCaption;
+        labelGlovesName.Location = new Point(1, -1);
+        labelGlovesName.Name = "labelGlovesName";
+        labelGlovesName.Size = new Size(96, 17);
+        labelGlovesName.TabIndex = 0;
+        labelGlovesName.Text = "GlovesName";
+        // 
+        // labelInvisibleGloves
+        // 
+        labelInvisibleGloves.AutoSize = true;
+        labelInvisibleGloves.ForeColor = Color.Transparent;
+        labelInvisibleGloves.Location = new Point(154, 496);
+        labelInvisibleGloves.Name = "labelInvisibleGloves";
+        labelInvisibleGloves.Size = new Size(33, 60);
+        labelInvisibleGloves.TabIndex = 30;
+        labelInvisibleGloves.Text = "     \r\n     \r\n      ";
+        labelInvisibleGloves.MouseEnter += labelInvisibleGloves_MouseEnter;
+        labelInvisibleGloves.MouseLeave += labelInvisibleGloves_MouseLeave;
         // 
         // panelPopupBoots
         // 
@@ -627,6 +687,28 @@ partial class MainWindow
         labelWeaponRightHandName.TabIndex = 0;
         labelWeaponRightHandName.Text = "weaponName";
         // 
+        // panelInventory
+        // 
+        panelInventory.Controls.Add(labelInventory);
+        panelInventory.Controls.Add(buttonDiscardItem);
+        panelInventory.Controls.Add(comboBoxInventory);
+        panelInventory.Controls.Add(buttonEquipUnequip);
+        panelInventory.Location = new Point(334, 554);
+        panelInventory.Name = "panelInventory";
+        panelInventory.Size = new Size(159, 124);
+        panelInventory.TabIndex = 23;
+        // 
+        // pictureBoxHeroBag
+        // 
+        pictureBoxHeroBag.Image = Properties.Resources.bag2;
+        pictureBoxHeroBag.Location = new Point(125, 558);
+        pictureBoxHeroBag.Name = "pictureBoxHeroBag";
+        pictureBoxHeroBag.Size = new Size(82, 98);
+        pictureBoxHeroBag.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxHeroBag.TabIndex = 32;
+        pictureBoxHeroBag.TabStop = false;
+        pictureBoxHeroBag.Click += pictureBoxHeroBag_Click;
+        // 
         // pictureBoxHero
         // 
         pictureBoxHero.Image = Properties.Resources.hero;
@@ -637,16 +719,16 @@ partial class MainWindow
         pictureBoxHero.TabIndex = 22;
         pictureBoxHero.TabStop = false;
         // 
-        // panelInventory
+        // pictureBoxInventory
         // 
-        panelInventory.Controls.Add(labelInventory);
-        panelInventory.Controls.Add(buttonDiscardItem);
-        panelInventory.Controls.Add(comboBoxInventory);
-        panelInventory.Controls.Add(buttonEquipUnequip);
-        panelInventory.Location = new Point(340, 544);
-        panelInventory.Name = "panelInventory";
-        panelInventory.Size = new Size(164, 125);
-        panelInventory.TabIndex = 23;
+        pictureBoxInventory.Image = Properties.Resources.inventory;
+        pictureBoxInventory.Location = new Point(293, 500);
+        pictureBoxInventory.Name = "pictureBoxInventory";
+        pictureBoxInventory.Size = new Size(232, 229);
+        pictureBoxInventory.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxInventory.TabIndex = 33;
+        pictureBoxInventory.TabStop = false;
+        pictureBoxInventory.Click += pictureBoxInventory_Click;
         // 
         // panelTown
         // 
@@ -667,7 +749,7 @@ partial class MainWindow
         panelTown.Dock = DockStyle.Fill;
         panelTown.Location = new Point(0, 0);
         panelTown.Name = "panelTown";
-        panelTown.Size = new Size(542, 768);
+        panelTown.Size = new Size(537, 768);
         panelTown.TabIndex = 0;
         // 
         // comboBoxUpgradeItems
@@ -716,7 +798,7 @@ partial class MainWindow
         // pictureBoxTown
         // 
         pictureBoxTown.Anchor = AnchorStyles.Bottom | AnchorStyles.Right;
-        pictureBoxTown.Location = new Point(165, 353);
+        pictureBoxTown.Location = new Point(160, 353);
         pictureBoxTown.Name = "pictureBoxTown";
         pictureBoxTown.Size = new Size(377, 415);
         pictureBoxTown.SizeMode = PictureBoxSizeMode.Zoom;
@@ -750,7 +832,7 @@ partial class MainWindow
         panelStartScreen.Dock = DockStyle.Fill;
         panelStartScreen.Location = new Point(0, 0);
         panelStartScreen.Name = "panelStartScreen";
-        panelStartScreen.Size = new Size(542, 768);
+        panelStartScreen.Size = new Size(537, 768);
         panelStartScreen.TabIndex = 22;
         // 
         // buttonPlayGame
@@ -786,7 +868,7 @@ partial class MainWindow
         panelGameOver.ForeColor = Color.FromArgb(94, 94, 94);
         panelGameOver.Location = new Point(0, 0);
         panelGameOver.Name = "panelGameOver";
-        panelGameOver.Size = new Size(542, 768);
+        panelGameOver.Size = new Size(537, 768);
         panelGameOver.TabIndex = 5;
         // 
         // labelGameOverText
@@ -807,9 +889,9 @@ partial class MainWindow
         BackColor = SystemColors.ActiveCaptionText;
         BackgroundImage = Properties.Resources.castle1;
         BackgroundImageLayout = ImageLayout.Stretch;
-        ClientSize = new Size(542, 768);
-        Controls.Add(panelTown);
+        ClientSize = new Size(537, 768);
         Controls.Add(panelEncounter);
+        Controls.Add(panelTown);
         Controls.Add(panelGameOver);
         Controls.Add(panelStartScreen);
         DoubleBuffered = true;
@@ -821,14 +903,18 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).EndInit();
         panelEncounter.ResumeLayout(false);
         panelEncounter.PerformLayout();
+        panelPopupGloves.ResumeLayout(false);
+        panelPopupGloves.PerformLayout();
         panelPopupBoots.ResumeLayout(false);
         panelPopupBoots.PerformLayout();
         panelPopupArmor.ResumeLayout(false);
         panelPopupArmor.PerformLayout();
         panelPopupWeaponRightHand.ResumeLayout(false);
         panelPopupWeaponRightHand.PerformLayout();
-        ((System.ComponentModel.ISupportInitialize)pictureBoxHero).EndInit();
         panelInventory.ResumeLayout(false);
+        ((System.ComponentModel.ISupportInitialize)pictureBoxHeroBag).EndInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxHero).EndInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxInventory).EndInit();
         panelTown.ResumeLayout(false);
         panelTown.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxCompass).EndInit();
@@ -909,4 +995,10 @@ partial class MainWindow
     public PictureBox pictureBoxAct2Smith;
     public ComboBox comboBoxUpgradeItems;
     public Button buttonUpgradeItem;
+    private Label labelInvisibleGloves;
+    private Panel panelPopupGloves;
+    private Label labelInfoGlovesEquipped;
+    private Label labelGlovesName;
+    public PictureBox pictureBoxHeroBag;
+    private PictureBox pictureBoxInventory;
 }

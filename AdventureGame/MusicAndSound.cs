@@ -44,7 +44,8 @@ public class MusicAndSound
                GetSoundPath("sword7.wav"),
         GetSoundPath("act1boss.wav"),
         GetSoundPath("act2healer.wav"),
-        GetSoundPath("smithing.wav")     // index 10
+        GetSoundPath("smithing.wav"),     // index 10
+        GetSoundPath("inventory.wav")
      };
             foreach (var soundPlayer in soundPlayers)
             {
@@ -167,6 +168,18 @@ public class MusicAndSound
         try
         {
             soundPlayers[10].Play();
+        }
+        catch
+        {
+            throw new Exception("The sound file was not found");
+        }
+    }
+
+    public void PlayInventorySound()
+    {
+        try
+        {
+            soundPlayers[11].Play();
         }
         catch
         {

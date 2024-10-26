@@ -65,6 +65,7 @@ internal class StoryProgress
                 break;
             case 2:
                 _mainWindow.pictureBoxHero.Show();
+                _mainWindow.pictureBoxHeroBag.Show();
                 Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, _mainWindow);
                 _mainWindow.textBox1.AppendText("");
                 StoryState++;
@@ -159,6 +160,7 @@ internal class StoryProgress
         _mainWindow.textBox1.Clear();
         _mainWindow.panelEncounter.Hide();
         _mainWindow.panelTown.Show();
+        _mainWindow.HideInventory();
         playerIsInTown = true;
     }
 
