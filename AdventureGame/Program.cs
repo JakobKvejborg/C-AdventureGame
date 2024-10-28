@@ -14,7 +14,7 @@ namespace AdventureGame
             ApplicationConfiguration.Initialize();
             Application.Run(new MainWindow());
 
-
+            //test GIT
         }
     }
 }
