@@ -46,6 +46,7 @@ partial class MainWindow
         buttonEquipUnequip = new Button();
         buttonDiscardItem = new Button();
         pictureBoxHeroBag = new PictureBox();
+        labelPlayerArmor = new Label();
         labelInvisibleWeaponRightHandEquipped = new Label();
         textBox1 = new TextBox();
         comboBoxInventory = new ComboBox();
@@ -54,7 +55,6 @@ partial class MainWindow
         btn_block = new Button();
         progressBarPlayerHP = new ProgressBar();
         labelPlayerHP = new Label();
-        labelPlayerArmor = new Label();
         labelPlayerDamage = new Label();
         labelPlayerDodge = new Label();
         labelHeroName = new Label();
@@ -69,6 +69,7 @@ partial class MainWindow
         labelMonsterHp = new Label();
         labelMonsterName = new Label();
         panelEncounter = new Panel();
+        pictureBoxLoot = new PictureBox();
         panelPopupGloves = new Panel();
         labelInfoGlovesEquipped = new Label();
         labelGlovesName = new Label();
@@ -104,6 +105,7 @@ partial class MainWindow
         panelMonster.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).BeginInit();
         panelEncounter.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxLoot).BeginInit();
         panelPopupGloves.SuspendLayout();
         panelPopupBoots.SuspendLayout();
         panelPopupArmor.SuspendLayout();
@@ -246,6 +248,19 @@ partial class MainWindow
         toolTip.SetToolTip(pictureBoxHeroBag, "\"I\"");
         pictureBoxHeroBag.Click += pictureBoxHeroBag_Click;
         // 
+        // labelPlayerArmor
+        // 
+        labelPlayerArmor.AutoSize = true;
+        labelPlayerArmor.BackColor = Color.Transparent;
+        labelPlayerArmor.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+        labelPlayerArmor.ForeColor = Color.White;
+        labelPlayerArmor.Location = new Point(14, 340);
+        labelPlayerArmor.Name = "labelPlayerArmor";
+        labelPlayerArmor.Size = new Size(59, 23);
+        labelPlayerArmor.TabIndex = 11;
+        labelPlayerArmor.Text = "armor";
+        toolTip.SetToolTip(labelPlayerArmor, "The amount of damage blocked from an attack.");
+        // 
         // labelInvisibleWeaponRightHandEquipped
         // 
         labelInvisibleWeaponRightHandEquipped.AutoSize = true;
@@ -332,18 +347,6 @@ partial class MainWindow
         labelPlayerHP.TabIndex = 9;
         labelPlayerHP.Text = "HP";
         labelPlayerHP.Click += label2_Click;
-        // 
-        // labelPlayerArmor
-        // 
-        labelPlayerArmor.AutoSize = true;
-        labelPlayerArmor.BackColor = Color.Transparent;
-        labelPlayerArmor.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-        labelPlayerArmor.ForeColor = Color.White;
-        labelPlayerArmor.Location = new Point(14, 340);
-        labelPlayerArmor.Name = "labelPlayerArmor";
-        labelPlayerArmor.Size = new Size(59, 23);
-        labelPlayerArmor.TabIndex = 11;
-        labelPlayerArmor.Text = "armor";
         // 
         // labelPlayerDamage
         // 
@@ -498,6 +501,7 @@ partial class MainWindow
         panelEncounter.BackColor = Color.Transparent;
         panelEncounter.BackgroundImage = Properties.Resources.castle;
         panelEncounter.BackgroundImageLayout = ImageLayout.Stretch;
+        panelEncounter.Controls.Add(pictureBoxLoot);
         panelEncounter.Controls.Add(panelPopupGloves);
         panelEncounter.Controls.Add(labelInvisibleGloves);
         panelEncounter.Controls.Add(panelPopupBoots);
@@ -532,6 +536,18 @@ partial class MainWindow
         panelEncounter.Name = "panelEncounter";
         panelEncounter.Size = new Size(537, 768);
         panelEncounter.TabIndex = 22;
+        // 
+        // pictureBoxLoot
+        // 
+        pictureBoxLoot.Image = Properties.Resources.loot;
+        pictureBoxLoot.Location = new Point(312, 331);
+        pictureBoxLoot.Name = "pictureBoxLoot";
+        pictureBoxLoot.Size = new Size(188, 144);
+        pictureBoxLoot.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxLoot.TabIndex = 34;
+        pictureBoxLoot.TabStop = false;
+        toolTip.SetToolTip(pictureBoxLoot, "\"L\"");
+        pictureBoxLoot.Click += pictureBoxLoot_Click;
         // 
         // panelPopupGloves
         // 
@@ -911,6 +927,7 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).EndInit();
         panelEncounter.ResumeLayout(false);
         panelEncounter.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxLoot).EndInit();
         panelPopupGloves.ResumeLayout(false);
         panelPopupGloves.PerformLayout();
         panelPopupBoots.ResumeLayout(false);
@@ -1008,4 +1025,5 @@ partial class MainWindow
     private Label labelGlovesName;
     public PictureBox pictureBoxHeroBag;
     private PictureBox pictureBoxInventory;
+    public PictureBox pictureBoxLoot;
 }

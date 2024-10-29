@@ -12,6 +12,7 @@ namespace AdventureGame;
 internal static class Encounter
 {
     public static Monster Monster { get; private set; } // Stores the monster encountered
+    public static Item itemDroppedFromMonster {  get; private set; } // Stores the randomly found item
     private static readonly Random randomMonster = new Random();
     private static readonly Random randomItem = new Random();
     private static readonly Random randomDodge = new Random();
@@ -115,7 +116,7 @@ internal static class Encounter
     {
         if (playerState.Player.CurrentHealth > 0) // checks if player is dead
         {
-
+            // Player dodge
             int dodgeChanceRoll = randomDodge.Next(1, 101);
             if (dodgeChanceRoll <= playerState.Player.DodgeChance)
             {
@@ -131,7 +132,7 @@ internal static class Encounter
             playerState.Player.CurrentHealth = Math.Max(playerState.Player.CurrentHealth, 0);
             mainWindow.progressBarPlayerHP.Value = playerState.Player.CurrentHealth; // game crashed here
             mainWindow.labelPlayerHP.Text = $"HP: {playerState.Player.CurrentHealth.ToString()}/{playerState.Player.MaxHealth}";
-            mainWindow.textBox1.AppendText($"The monster attacks you back and deals {monsterDamageDealt} damage.");
+            mainWindow.textBox1.AppendText($"The horror attacks you back and deals {monsterDamageDealt} damage.");
             //if (armorBlocked > 0) // I am not sure I want to display this
             //{
             //    mainWindow.textBox1.AppendText($"\n\r Your armor blocks {armorBlocked} damage.");
@@ -143,7 +144,7 @@ internal static class Encounter
     }
 
 
-
+    // This method is called by MainWindow when the player attacks
     public static void MonsterIsDefeated(PlayerState playerState, MainWindow mainWindow)
     {
         if (Monster == null)
@@ -152,22 +153,23 @@ internal static class Encounter
         }
         if (Monster.CurrentHealth <= 0)
         {
-            mainWindow.textBox1.AppendText($"\n\rYou have defeated the monster. You gain {Monster.MonsterExperience}xp. ");
+            mainWindow.textBox1.AppendText($"\n\rYou have defeated the horror. You gain {Monster.MonsterExperience}xp. ");
             mainWindow.panelMonster.Hide(); // Hides the monster once it's defeated
             PlayerGetsExperiencePoints(playerState, mainWindow);
             PlayerGetsGoldFromMonster(playerState, mainWindow);
-            PlayerFindsItemFromMonster(playerState, mainWindow);
+            GenerateItemFoundOnMonster(playerState, mainWindow); // This creates the item found on the monster
             StoryProgress.progressFlag = true;
 
             // resets the monster object
             Monster.CurrentHealth = Monster.MaxHealth;
             Monster = null;
-            EncounterCompleted?.Invoke(null, EventArgs.Empty);
+            EncounterCompleted?.Invoke(null, EventArgs.Empty); // this is used for bosses
         }
     }
 
-    public static void PlayerFindsItemFromMonster(PlayerState playerState, MainWindow mainWindow)
+    public static void GenerateItemFoundOnMonster(PlayerState playerState, MainWindow mainWindow)
     {
+        //Get a random item from the list
         int randomItemIndex = randomItem.Next(encounteredMonsterItems.Count);
         Item foundItem = encounteredMonsterItems[randomItemIndex];
 
@@ -175,16 +177,26 @@ internal static class Encounter
         {
             return;
         }
-        //Get a random item from the list
-
-        Item itemClone = foundItem.CloneItem();
-        mainWindow.textBox1.AppendText($"\r\nYou find an item on the monster's corpse: {itemClone.Name}.");
-        playerState.Player.AddItemToInventory(itemClone); // this may do nothing, because the combobox can hold the items instead
-        mainWindow.comboBoxInventory.Items.Add(itemClone);
-        mainWindow.comboBoxInventory.SelectedItem = itemClone;
+        
+        itemDroppedFromMonster = foundItem.CloneItem(); // This stores the item found in a property on class level
+        if (itemDroppedFromMonster != null)
+        {
+            mainWindow.pictureBoxLoot.Show();
+        }
     }
 
-
+    // This method is called fromm mainWindow when the loot is clicked
+    public static void ItemIsLootetFromMonster(PlayerState playerState, MainWindow mainWindow)
+    {
+        if (itemDroppedFromMonster != null)
+        {
+            // Tell the player which item has been found
+            mainWindow.textBox1.AppendText($"\r\nYou find an item on the horror's corpse: {itemDroppedFromMonster.Name}.");
+            //playerState.Player.AddItemToInventory(itemDroppedFromMonster); // this may do nothing, because the combobox can hold the items instead
+            mainWindow.comboBoxInventory.Items.Add(itemDroppedFromMonster);
+            mainWindow.comboBoxInventory.SelectedItem = itemDroppedFromMonster;
+        }
+    }
 
     private static void PlayerGetsGoldFromMonster(PlayerState playerState, MainWindow mainWindow)
     {

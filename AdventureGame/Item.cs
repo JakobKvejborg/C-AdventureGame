@@ -78,7 +78,7 @@ public class Item
         return string.Join("\n", stats.Where(stat => stat.Value > 0).Select(stat => $"{stat.Key}: {stat.Value}"));
     }
 
-    public Item CloneItem()
+    public Item CloneItem() // TODO create a category for each item type
     {
         return (Item)this.MemberwiseClone();
     }
@@ -96,7 +96,7 @@ public class Item
         {
             case ItemType.WeaponRightHand:
                 // Randomly upgrade a stat for weapons
-                int weaponUpgradeChoice = random.Next(1, 5); // 1 to 4 for four stats
+                int weaponUpgradeChoice = random.Next(1, 5); // 1 to 5 for four stats
                 switch (weaponUpgradeChoice)
                 {
                     case 1: // Damage
@@ -117,7 +117,7 @@ public class Item
 
             case ItemType.Armor:
                 // Randomly upgrade a stat for armor
-                int armorUpgradeChoice = random.Next(1, 3); // 1 to 3 for three stats
+                int armorUpgradeChoice = random.Next(1, 3); // 1 to 3 for two stats
                 switch (armorUpgradeChoice)
                 {
                     case 1: // Health
@@ -140,6 +140,20 @@ public class Item
                         break;
                     case 2: // Dodge Chance
                         DodgeChance += random.Next(1, 6); // Increase Dodge Chance by 1 to 5
+                        break;
+                        // Add more cases if needed
+                }
+                break;
+            case ItemType.Gloves:
+                // Randomly upgrade a stat for armor
+                int GlovesUpgradeChoice = random.Next(1, 3); // 1 to 3 for two stats
+                switch (GlovesUpgradeChoice)
+                {
+                    case 1: // Armor
+                        Armor += random.Next(1, 4); // Increase Health by 1 to 3
+                        break;
+                    case 2: // Strength
+                        Strength += random.Next(1, 6); // Increase Strength by 1 to 5
                         break;
                         // Add more cases if needed
                 }

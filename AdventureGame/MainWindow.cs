@@ -34,7 +34,8 @@ public partial class MainWindow : Form
         this.DoubleBuffered = true; // helps flickering
         playerState = new PlayerState();
         panelsList = new List<Panel>();
-        HidePanelsEtc(); storyProgress = new StoryProgress(this);
+        HidePanelsEtc();
+        storyProgress = new StoryProgress(this);
         UpdatePlayerLabels();
         panelTown.Location = new Point(0, 0); // Example: position it at the top-left corner
         panelTown.Size = new Size(400, 300);  // Example: set a proper size to make it visible
@@ -86,6 +87,7 @@ public partial class MainWindow : Form
         pictureBoxHeroBag.Hide();
         pictureBoxInventory.Hide();
         panelInventory.Hide();
+        pictureBoxLoot.Hide();
         #endregion
     }
 
@@ -305,23 +307,15 @@ public partial class MainWindow : Form
         {
             isAttackOnCooldown = true;
             Encounter.PlayerAttacks(playerState, this);
-            CheckIfMonsterIsDead();
             sounds.PlaySwordAttackSound(); // plays the attack sound
+            //CheckIfMonsterIsDead();
+            Encounter.MonsterIsDefeated(playerState, this); // Checks if the monster is dead
             await ShakeControl(pictureBoxMonster1);
 
             btn_attack.Enabled = false;
             await Task.Delay(80); // set this higher for a slower attackrate
             btn_attack.Enabled = true;
             isAttackOnCooldown = false;
-        }
-    }
-
-    private void CheckIfMonsterIsDead()
-    {
-        Encounter.MonsterIsDefeated(playerState, this);
-        if (Encounter.Monster == null) // This is wrong for sure
-        {
-            Encounter.PlayerFindsItemFromMonster(playerState, this);
         }
     }
 
@@ -374,6 +368,9 @@ public partial class MainWindow : Form
                 if (IsInventoryOpen)
                     if (comboBoxInventory.Items.Count > 0)
                         comboBoxInventory.SelectedIndex = (comboBoxInventory.SelectedIndex - 1 + comboBoxInventory.Items.Count) % comboBoxInventory.Items.Count;
+                return true;
+            case Keys.L:
+                pictureBoxLootIsClicked(); // player finds item from loot
                 return true;
             default:
                 return base.ProcessCmdKey(ref msg, keyData); // Let the base method handle other keys
@@ -828,4 +825,14 @@ public partial class MainWindow : Form
         HideInventory();
     }
 
+    private void pictureBoxLoot_Click(object sender, EventArgs e)
+    {
+        pictureBoxLootIsClicked();
+    }
+
+    public void pictureBoxLootIsClicked()
+    {
+        pictureBoxLoot.Hide();
+        Encounter.ItemIsLootetFromMonster(playerState, this);
+    }
 }

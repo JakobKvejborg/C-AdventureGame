@@ -15,6 +15,11 @@
   </ItemGroup>
 
   <ItemGroup>
+    <Compile Include="G:\DeadDiskDrive\Visual Studio\1Visual Studio Solution Projects\AdventureGame\MainWindow.cs" Link="MainWindow.cs" />
+    <Compile Include="G:\DeadDiskDrive\Visual Studio\1Visual Studio Solution Projects\AdventureGame\MainWindow.Designer.cs" Link="MainWindow.Designer.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
     <COMReference Include="WMPLib">
       <VersionMinor>0</VersionMinor>
       <VersionMajor>1</VersionMajor>
@@ -24,6 +29,10 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
+  </ItemGroup>
+
+  <ItemGroup>
+    <EmbeddedResource Include="G:\DeadDiskDrive\Visual Studio\1Visual Studio Solution Projects\AdventureGame\MainWindow.resx" Link="MainWindow.resx" />
   </ItemGroup>
 
   <ItemGroup>
