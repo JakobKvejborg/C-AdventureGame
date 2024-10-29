@@ -9,7 +9,7 @@ namespace AdventureGame;
 public class ImageSetter
 {
 
-    public Image GetPictureBoxImage(string imageName)
+    public Image GetImagePath(string imageName)
     {
         Image image = null;
         try

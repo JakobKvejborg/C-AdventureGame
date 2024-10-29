@@ -9,7 +9,7 @@ namespace AdventureGame;
 internal class PlayerState
 {
 
-    private Player player = new Player("Hero", 35, 35, 2, 3, 0, 0, 0, 0, 0, 1);
+    private Player player = new Player("Hero", 35, 35, 22, 3, 0, 0, 0, 0, 0, 1);
     public Player Player => player;
    
 }

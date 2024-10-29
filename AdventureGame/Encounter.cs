@@ -53,7 +53,14 @@ internal static class Encounter
     // This method sets all the labels to match the encountered monsters stats
     private static void SetEncounteredMonsterLabels(Monster encounteredMonster, MainWindow mainWindow)
     {
-        mainWindow.textBox1.Text = $"You have encountered a {encounteredMonster.Name}! Kill it.";
+        if (encounteredMonster.Name == "Aldrus Thornfell" || encounteredMonster.Name == "Another Boss Name")
+        {
+            mainWindow.textBox1.Text = $"You have awakened {encounteredMonster.Name}! Your end is near.";
+        }
+        else
+        {
+            mainWindow.textBox1.Text = $"You have encountered a {encounteredMonster.Name}! Kill it.";
+        }
 
         int monsterHealth = encounteredMonster.MaxHealth;
         int monsterAttack = encounteredMonster.MaxDamage;
@@ -80,13 +87,26 @@ internal static class Encounter
             }
 
             mainWindow.progressBarMonsterHP.Value = Monster.CurrentHealth;
-            mainWindow.textBox1.AppendText($"You attack the {Monster.Name}, and deal {playerState.Player.CalculateTotalDamage(playerState)} damage. \r\n");
+            AttackText(playerState, mainWindow);
             mainWindow.labelMonsterHp.Text = $"HP: {Monster.CurrentHealth}/{Monster.MaxHealth}";
 
             if (Monster.CurrentHealth > 0)
             {
                 MonsterAttacks(playerState, mainWindow); // Monster attacks back if still alive
             }
+        }
+    }
+
+    private static void AttackText(PlayerState playerState, MainWindow mainWindow)
+    {
+
+        if (Monster.Name == "Aldrus Thornfell" || Monster.Name == "Another Boss Name")
+        {
+            mainWindow.textBox1.AppendText($"You attack {Monster.Name}, and deal {playerState.Player.CalculateTotalDamage(playerState)} damage. \r\n");
+        }
+        else
+        {
+            mainWindow.textBox1.AppendText($"You attack the {Monster.Name}, and deal {playerState.Player.CalculateTotalDamage(playerState)} damage. \r\n");
         }
     }
 
@@ -122,7 +142,7 @@ internal static class Encounter
         await playerState.Player.HandlePlayerDeathAsync(mainWindow);
     }
 
-  
+
 
     public static void MonsterIsDefeated(PlayerState playerState, MainWindow mainWindow)
     {
@@ -156,12 +176,12 @@ internal static class Encounter
             return;
         }
         //Get a random item from the list
-        
-            Item itemClone = foundItem.CloneItem();
-            mainWindow.textBox1.AppendText($"\r\nYou find an item on the monster's corpse: {itemClone.Name}.");
-            playerState.Player.AddItemToInventory(itemClone); // this may do nothing, because the combobox can hold the items instead
-            mainWindow.comboBoxInventory.Items.Add(itemClone);
-            mainWindow.comboBoxInventory.SelectedItem = itemClone;
+
+        Item itemClone = foundItem.CloneItem();
+        mainWindow.textBox1.AppendText($"\r\nYou find an item on the monster's corpse: {itemClone.Name}.");
+        playerState.Player.AddItemToInventory(itemClone); // this may do nothing, because the combobox can hold the items instead
+        mainWindow.comboBoxInventory.Items.Add(itemClone);
+        mainWindow.comboBoxInventory.SelectedItem = itemClone;
     }
 
 

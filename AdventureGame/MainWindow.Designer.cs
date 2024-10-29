@@ -45,6 +45,7 @@ partial class MainWindow
         btn_Continuetown = new Button();
         buttonEquipUnequip = new Button();
         buttonDiscardItem = new Button();
+        pictureBoxHeroBag = new PictureBox();
         labelInvisibleWeaponRightHandEquipped = new Label();
         textBox1 = new TextBox();
         comboBoxInventory = new ComboBox();
@@ -84,7 +85,6 @@ partial class MainWindow
         labelInfoWeaponRightHandEquipped = new Label();
         labelWeaponRightHandName = new Label();
         panelInventory = new Panel();
-        pictureBoxHeroBag = new PictureBox();
         pictureBoxHero = new PictureBox();
         pictureBoxInventory = new PictureBox();
         panelTown = new Panel();
@@ -100,6 +100,7 @@ partial class MainWindow
         labelGameTitle = new Label();
         panelGameOver = new Panel();
         labelGameOverText = new Label();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxHeroBag).BeginInit();
         panelMonster.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).BeginInit();
         panelEncounter.SuspendLayout();
@@ -108,7 +109,6 @@ partial class MainWindow
         panelPopupArmor.SuspendLayout();
         panelPopupWeaponRightHand.SuspendLayout();
         panelInventory.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)pictureBoxHeroBag).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHero).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxInventory).BeginInit();
         panelTown.SuspendLayout();
@@ -146,11 +146,11 @@ partial class MainWindow
         // 
         labelCompassE.AutoSize = true;
         labelCompassE.ForeColor = Color.Transparent;
-        labelCompassE.Location = new Point(121, 212);
+        labelCompassE.Location = new Point(103, 202);
         labelCompassE.Name = "labelCompassE";
-        labelCompassE.Size = new Size(89, 60);
+        labelCompassE.Size = new Size(73, 60);
         labelCompassE.TabIndex = 7;
-        labelCompassE.Text = "            \r\n            \r\n                    \r\n";
+        labelCompassE.Text = "            \r\n            \r\n                \r\n";
         toolTip.SetToolTip(labelCompassE, "\"D\"");
         labelCompassE.Click += labelCompassE_Click;
         // 
@@ -158,11 +158,11 @@ partial class MainWindow
         // 
         labelCompassW.AutoSize = true;
         labelCompassW.ForeColor = Color.Transparent;
-        labelCompassW.Location = new Point(6, 215);
+        labelCompassW.Location = new Point(5, 203);
         labelCompassW.Name = "labelCompassW";
-        labelCompassW.Size = new Size(89, 60);
+        labelCompassW.Size = new Size(73, 60);
         labelCompassW.TabIndex = 6;
-        labelCompassW.Text = "            \r\n            \r\n                    \r\n";
+        labelCompassW.Text = "            \r\n            \r\n                \r\n";
         toolTip.SetToolTip(labelCompassW, "\"A\"");
         labelCompassW.Click += labelCompassW_Click;
         // 
@@ -170,11 +170,11 @@ partial class MainWindow
         // 
         labelCompassN.AutoSize = true;
         labelCompassN.ForeColor = Color.Transparent;
-        labelCompassN.Location = new Point(68, 133);
+        labelCompassN.Location = new Point(50, 143);
         labelCompassN.Name = "labelCompassN";
-        labelCompassN.Size = new Size(89, 80);
+        labelCompassN.Size = new Size(81, 60);
         labelCompassN.TabIndex = 8;
-        labelCompassN.Text = "            \r\n            \r\n                    \r\n\r\n";
+        labelCompassN.Text = "            \r\n            \r\n                  ";
         toolTip.SetToolTip(labelCompassN, "\"W\"");
         labelCompassN.Click += labelCompassN_Click;
         // 
@@ -182,11 +182,11 @@ partial class MainWindow
         // 
         labelCompassS.AutoSize = true;
         labelCompassS.ForeColor = Color.Transparent;
-        labelCompassS.Location = new Point(68, 281);
+        labelCompassS.Location = new Point(53, 261);
         labelCompassS.Name = "labelCompassS";
-        labelCompassS.Size = new Size(89, 60);
+        labelCompassS.Size = new Size(73, 60);
         labelCompassS.TabIndex = 9;
-        labelCompassS.Text = "            \r\n            \r\n                    \r\n";
+        labelCompassS.Text = "            \r\n            \r\n                ";
         toolTip.SetToolTip(labelCompassS, "\"S\"");
         labelCompassS.Click += labelCompassS_Click;
         // 
@@ -234,6 +234,18 @@ partial class MainWindow
         buttonDiscardItem.UseVisualStyleBackColor = true;
         buttonDiscardItem.Click += buttonDiscardItem_Click;
         // 
+        // pictureBoxHeroBag
+        // 
+        pictureBoxHeroBag.Image = Properties.Resources.bag2;
+        pictureBoxHeroBag.Location = new Point(125, 558);
+        pictureBoxHeroBag.Name = "pictureBoxHeroBag";
+        pictureBoxHeroBag.Size = new Size(82, 98);
+        pictureBoxHeroBag.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxHeroBag.TabIndex = 32;
+        pictureBoxHeroBag.TabStop = false;
+        toolTip.SetToolTip(pictureBoxHeroBag, "\"I\"");
+        pictureBoxHeroBag.Click += pictureBoxHeroBag_Click;
+        // 
         // labelInvisibleWeaponRightHandEquipped
         // 
         labelInvisibleWeaponRightHandEquipped.AutoSize = true;
@@ -274,7 +286,7 @@ partial class MainWindow
         labelInventory.BackColor = Color.Transparent;
         labelInventory.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
         labelInventory.ForeColor = Color.White;
-        labelInventory.Location = new Point(13, 0);
+        labelInventory.Location = new Point(34, 0);
         labelInventory.Name = "labelInventory";
         labelInventory.Size = new Size(90, 20);
         labelInventory.TabIndex = 3;
@@ -484,6 +496,8 @@ partial class MainWindow
         // panelEncounter
         // 
         panelEncounter.BackColor = Color.Transparent;
+        panelEncounter.BackgroundImage = Properties.Resources.castle;
+        panelEncounter.BackgroundImageLayout = ImageLayout.Stretch;
         panelEncounter.Controls.Add(panelPopupGloves);
         panelEncounter.Controls.Add(labelInvisibleGloves);
         panelEncounter.Controls.Add(panelPopupBoots);
@@ -698,17 +712,6 @@ partial class MainWindow
         panelInventory.Size = new Size(159, 124);
         panelInventory.TabIndex = 23;
         // 
-        // pictureBoxHeroBag
-        // 
-        pictureBoxHeroBag.Image = Properties.Resources.bag2;
-        pictureBoxHeroBag.Location = new Point(125, 558);
-        pictureBoxHeroBag.Name = "pictureBoxHeroBag";
-        pictureBoxHeroBag.Size = new Size(82, 98);
-        pictureBoxHeroBag.SizeMode = PictureBoxSizeMode.Zoom;
-        pictureBoxHeroBag.TabIndex = 32;
-        pictureBoxHeroBag.TabStop = false;
-        pictureBoxHeroBag.Click += pictureBoxHeroBag_Click;
-        // 
         // pictureBoxHero
         // 
         pictureBoxHero.Image = Properties.Resources.hero;
@@ -733,6 +736,8 @@ partial class MainWindow
         // panelTown
         // 
         panelTown.BackColor = Color.Transparent;
+        panelTown.BackgroundImage = Properties.Resources.castle;
+        panelTown.BackgroundImageLayout = ImageLayout.Stretch;
         panelTown.Controls.Add(comboBoxUpgradeItems);
         panelTown.Controls.Add(buttonUpgradeItem);
         panelTown.Controls.Add(btn_Continuetown);
@@ -788,9 +793,9 @@ partial class MainWindow
         // 
         pictureBoxCompass.BackgroundImageLayout = ImageLayout.Stretch;
         pictureBoxCompass.Image = (Image)resources.GetObject("pictureBoxCompass.Image");
-        pictureBoxCompass.Location = new Point(6, 137);
+        pictureBoxCompass.Location = new Point(-3, 141);
         pictureBoxCompass.Name = "pictureBoxCompass";
-        pictureBoxCompass.Size = new Size(204, 204);
+        pictureBoxCompass.Size = new Size(181, 186);
         pictureBoxCompass.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxCompass.TabIndex = 5;
         pictureBoxCompass.TabStop = false;
@@ -827,6 +832,8 @@ partial class MainWindow
         // panelStartScreen
         // 
         panelStartScreen.BackColor = Color.Transparent;
+        panelStartScreen.BackgroundImage = Properties.Resources.castle;
+        panelStartScreen.BackgroundImageLayout = ImageLayout.Stretch;
         panelStartScreen.Controls.Add(buttonPlayGame);
         panelStartScreen.Controls.Add(labelGameTitle);
         panelStartScreen.Dock = DockStyle.Fill;
@@ -863,6 +870,7 @@ partial class MainWindow
         // 
         // panelGameOver
         // 
+        panelGameOver.BackgroundImageLayout = ImageLayout.Stretch;
         panelGameOver.Controls.Add(labelGameOverText);
         panelGameOver.Dock = DockStyle.Fill;
         panelGameOver.ForeColor = Color.FromArgb(94, 94, 94);
@@ -887,7 +895,6 @@ partial class MainWindow
         AutoScaleDimensions = new SizeF(8F, 20F);
         AutoScaleMode = AutoScaleMode.Font;
         BackColor = SystemColors.ActiveCaptionText;
-        BackgroundImage = Properties.Resources.castle1;
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(537, 768);
         Controls.Add(panelEncounter);
@@ -898,6 +905,7 @@ partial class MainWindow
         Name = "MainWindow";
         Text = "Horrors Awoken";
         Load += MainWindow_Load;
+        ((System.ComponentModel.ISupportInitialize)pictureBoxHeroBag).EndInit();
         panelMonster.ResumeLayout(false);
         panelMonster.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).EndInit();
@@ -912,7 +920,6 @@ partial class MainWindow
         panelPopupWeaponRightHand.ResumeLayout(false);
         panelPopupWeaponRightHand.PerformLayout();
         panelInventory.ResumeLayout(false);
-        ((System.ComponentModel.ISupportInitialize)pictureBoxHeroBag).EndInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHero).EndInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxInventory).EndInit();
         panelTown.ResumeLayout(false);

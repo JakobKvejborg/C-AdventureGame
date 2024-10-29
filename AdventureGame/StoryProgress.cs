@@ -102,7 +102,7 @@ internal class StoryProgress
                 }
                 break;
             case 8:
-                _mainWindow.textBox1.Text = "After killing the demon tree, you venture forth, much further to the north. ";
+                _mainWindow.textBox1.Text = "After slaying the demon tree, you venture forth, much further to the north. ";
                 StoryState++;
                 break;
             case 9:
@@ -146,9 +146,9 @@ internal class StoryProgress
 
     private void SetupAct2controls()
     {
-        _mainWindow.pictureBoxTown.Image = imageSetter.GetPictureBoxImage("act2town.png"); // Sets the town image to Act2Town
-        _mainWindow.pictureBoxHealer.Image = imageSetter.GetPictureBoxImage("act2healer.png");
-        _mainWindow.pictureBoxAct2Smith.Image = imageSetter.GetPictureBoxImage("act2smith.png");
+        _mainWindow.pictureBoxTown.Image = imageSetter.GetImagePath("act2town.png"); // Sets the town image to Act2Town
+        _mainWindow.pictureBoxHealer.Image = imageSetter.GetImagePath("act2healer.png");
+        _mainWindow.pictureBoxAct2Smith.Image = imageSetter.GetImagePath("act2smith.png");
         _mainWindow.pictureBoxHealer.Size = new Size(210, 310);
         _mainWindow.pictureBoxAct2Smith.Show();
         _mainWindow.comboBoxUpgradeItems.Show();

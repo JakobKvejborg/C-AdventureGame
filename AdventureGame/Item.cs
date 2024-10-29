@@ -20,8 +20,10 @@ public class Item
     public int Lifesteal { get; set; }
     public int FireDamage { get; set; }
     public int PoisonDamage { get; set; }
+    public int Regeneration { get; set; }
     public int StrengthRequirement { get; set; }
     public int LevelRequirement { get; set; }
+    public int CritChance { get; set; }
     public static int CostToUpgrade { get; set; } = 50;
     public bool IsItemUpgraded { get; set; } = false;
     // Weapon item types
@@ -41,11 +43,13 @@ public class Item
     }
 
     // Constructor for armor type items
-    public Item(string name, ItemType type, int health, int strength, int dodgeChance, int armor, int skillLevel, int strengthRequirement, int levelRequirement)
+    public Item(string name, ItemType type, int health, int regeneration, int critChance, int strength, int dodgeChance, int armor, int skillLevel, int strengthRequirement, int levelRequirement)
     {
         Name = name;
         Type = type;
         Health = health;
+        Regeneration = regeneration;
+        CritChance = critChance;
         Strength = strength;
         DodgeChance = dodgeChance;
         Armor = armor;
@@ -61,9 +65,11 @@ public class Item
         { "Damage", Damage },
         { "Health", Health },
         { "Lifesteal", Lifesteal },
+        { "Crit chance", CritChance },
         { "Armor", Armor },
         { "Dodge", DodgeChance },
         { "Strength", Strength },
+        { "Regeneration", Regeneration },
         { "Skilllevel", SkillLevel },
         { "Strength req", StrengthRequirement },
         { "Level req", LevelRequirement }
@@ -111,7 +117,7 @@ public class Item
 
             case ItemType.Armor:
                 // Randomly upgrade a stat for armor
-                int armorUpgradeChoice = random.Next(1, 4); // 1 to 3 for three stats
+                int armorUpgradeChoice = random.Next(1, 3); // 1 to 3 for three stats
                 switch (armorUpgradeChoice)
                 {
                     case 1: // Health
@@ -126,7 +132,7 @@ public class Item
 
             case ItemType.Boots:
                 // Randomly upgrade a stat for armor
-                int bootsUpgradeChoice = random.Next(1, 4); // 1 to 3 for three stats
+                int bootsUpgradeChoice = random.Next(1, 3); // 1 to 3 for three stats
                 switch (bootsUpgradeChoice)
                 {
                     case 1: // Health

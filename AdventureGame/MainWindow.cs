@@ -25,6 +25,8 @@ public partial class MainWindow : Form
     public bool Act1BossDefeatedFlag = false;
     ImageSetter imageSetter = new ImageSetter();
     MusicAndSound sounds = new MusicAndSound();
+    bool IsInventoryOpen { get; set; } = false;
+    bool playGameHasBeenPressed { get; set; } = false;
 
     public MainWindow()
     {
@@ -272,7 +274,7 @@ public partial class MainWindow : Form
         labelPlayerDodge.Text = $"Dodge: {playerState.Player.DodgeChance}%";
         labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket}";
         labelLevel.Text = $"Level: {playerState.Player.Level}";
-        labelExperience.Text = $"Experience: {playerState.Player.Experience}/{playerState.Player.XpNeededToLevelUp}";
+        labelExperience.Text = $"Exp: {playerState.Player.Experience}/{playerState.Player.XpNeededToLevelUp}";
     }
 
     private void UpdatePlayerHealthBar()
@@ -330,10 +332,13 @@ public partial class MainWindow : Form
         switch (keyData)
         {
             case Keys.Space:
-                ButtonAttack(); // Call your attack method
+                Task task = ButtonAttack(); // Call your attack method
                 return true; // Indicate the key was handled
             case Keys.Enter:
-                ButtonPlayGame();
+                if (!playGameHasBeenPressed)
+                {
+                    ButtonPlayGame();
+                }
                 ButtonContinue(); // Call your continue method
                 return true;
             case Keys.W:
@@ -352,10 +357,23 @@ public partial class MainWindow : Form
                 ButtonHeal();
                 return true;
             case Keys.E:
-                ButtonEquipItems();
+                if (IsInventoryOpen) ButtonEquipItems();
                 return true;
             case Keys.T:
-                ButtonDiscardItem();
+                if (IsInventoryOpen) ButtonDiscardItem();
+                return true;
+            case Keys.I:
+                if (pictureBoxHero.Visible == true) if (IsInventoryOpen) HideInventory(); else ShowInventory();
+                return true;
+            case Keys.Down:
+                if (IsInventoryOpen)
+                    if (comboBoxInventory.Items.Count > 0)
+                        comboBoxInventory.SelectedIndex = (comboBoxInventory.SelectedIndex + 1) % comboBoxInventory.Items.Count;
+                return true;
+            case Keys.Up:
+                if (IsInventoryOpen)
+                    if (comboBoxInventory.Items.Count > 0)
+                        comboBoxInventory.SelectedIndex = (comboBoxInventory.SelectedIndex - 1 + comboBoxInventory.Items.Count) % comboBoxInventory.Items.Count;
                 return true;
             default:
                 return base.ProcessCmdKey(ref msg, keyData); // Let the base method handle other keys
@@ -385,8 +403,8 @@ public partial class MainWindow : Form
     // This method runs after the entire layout of WinForms is loaded
     private void MainWindow_Load(object sender, EventArgs e)
     {
-        pictureBoxTown.Image = imageSetter.GetPictureBoxImage("act1town.png"); // places the "town2.png" into the picturebox
-        pictureBoxTown.SizeMode = PictureBoxSizeMode.Zoom; // This will center the image 
+        pictureBoxTown.Image = imageSetter.GetImagePath("act1town.png"); // places the "town2.png" into the picturebox
+        //pictureBoxTown.SizeMode = PictureBoxSizeMode.Zoom; // This will center the image 
 
         sounds.SetListOfSounds();
         sounds.PlayThunderSound();
@@ -414,7 +432,7 @@ public partial class MainWindow : Form
         {
             // Remove the selected item
             Item item = (Item)comboBoxInventory.SelectedItem;
-            textBox1.Text = $"You throw away the item {item.Name}.";
+            textBox1.Text = $"You threw away the item {item.Name}.";
             RemoveItemFromComboboxInventory(item);
             UpdatePlayerLabels();
         }
@@ -426,6 +444,7 @@ public partial class MainWindow : Form
 
     private void ButtonPlayGame()
     {
+        playGameHasBeenPressed = true;
         panelStartScreen.Hide();
         panelEncounter.Show();
         buttonPlayGame.Dispose();
@@ -438,7 +457,6 @@ public partial class MainWindow : Form
         if (!Act1BossDefeatedFlag && StoryProgress.playerIsInTown == true)
         {
             Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, this);
-            //SetAct1Backgroundimage();
         }
         if (Act1BossDefeatedFlag && StoryProgress.playerIsInTown == true)
         {
@@ -492,6 +510,7 @@ public partial class MainWindow : Form
         panelEncounter.Show();
         if (StoryProgress.playerIsInTown == true && !Act1BossDefeatedFlag)
         {
+            Act1BossDefeatedFlag = false;
             sounds.PlayAct1BossSound();
             // Subscribe to the EncounterCompleted event
             Encounter.EncounterCompleted += OnAct1BossDefeated;
@@ -518,17 +537,18 @@ public partial class MainWindow : Form
     public void SetAct2Backgroundimage()
     {
         Act1BossDefeatedFlag = true; // Set the defeated flag
-        BackgroundImage = imageSetter.GetPictureBoxImage("act2background.png");
+        panelEncounter.BackgroundImage = imageSetter.GetImagePath("act2background.png");
+        panelTown.BackgroundImage = imageSetter.GetImagePath("act2background.png");
     }
 
     public void SetAct1TownBackgroundimage() // TODO delete
     {
-        BackgroundImage = imageSetter.GetPictureBoxImage("act1town.png");
+        panelTown.BackgroundImage = imageSetter.GetImagePath("act1town.png");
     }
 
     public void SetAct1Backgroundimage() // TODO delete
     {
-        BackgroundImage = imageSetter.GetPictureBoxImage("castle.png");
+        panelEncounter.BackgroundImage = imageSetter.GetImagePath("castle.png");
     }
 
     private void labelCompassS_Click(object sender, EventArgs e)
@@ -547,9 +567,10 @@ public partial class MainWindow : Form
         {
             Act1BossDefeatedFlag = false;
             SetAct1Backgroundimage();
+            SetAct1TownBackgroundimage();
             storyProgress.StoryState = 6;
-            pictureBoxTown.Image = imageSetter.GetPictureBoxImage("act1town.png");
-            pictureBoxHealer.Image = imageSetter.GetPictureBoxImage("healer.png");
+            pictureBoxTown.Image = imageSetter.GetImagePath("act1town.png");
+            pictureBoxHealer.Image = imageSetter.GetImagePath("healer.png");
             pictureBoxAct2Smith.Hide();
             buttonUpgradeItem.Hide();
             comboBoxUpgradeItems.Hide();
@@ -786,6 +807,7 @@ public partial class MainWindow : Form
         panelInventory.Show();
         pictureBoxHeroBag.Hide();
         sounds.PlayInventorySound();
+        IsInventoryOpen = true;
     }
 
     private void pictureBoxInventory_Click(object sender, EventArgs e)
@@ -798,10 +820,12 @@ public partial class MainWindow : Form
         pictureBoxInventory.Hide();
         panelInventory.Hide();
         pictureBoxHeroBag.Show();
+        IsInventoryOpen = false;
     }
 
     private void labelInventory_Click(object sender, EventArgs e)
     {
         HideInventory();
     }
+
 }
