@@ -15,8 +15,8 @@
   </ItemGroup>
 
   <ItemGroup>
-    <Compile Include="G:\DeadDiskDrive\Visual Studio\1Visual Studio Solution Projects\AdventureGame\MainWindow.cs" Link="MainWindow.cs" />
-    <Compile Include="G:\DeadDiskDrive\Visual Studio\1Visual Studio Solution Projects\AdventureGame\MainWindow.Designer.cs" Link="MainWindow.Designer.cs" />
+    <Compile Include="C:\Users\Kvaj\source\repos\C-AdventureGame\AdventureGame\MainWindow.cs" Link="MainWindow.cs" />
+    <Compile Include="C:\Users\Kvaj\source\repos\C-AdventureGame\AdventureGame\MainWindow.Designer.cs" Link="MainWindow.Designer.cs" />
   </ItemGroup>
 
   <ItemGroup>
@@ -29,10 +29,6 @@
       <Isolated>false</Isolated>
       <EmbedInteropTypes>true</EmbedInteropTypes>
     </COMReference>
-  </ItemGroup>
-
-  <ItemGroup>
-    <EmbeddedResource Include="G:\DeadDiskDrive\Visual Studio\1Visual Studio Solution Projects\AdventureGame\MainWindow.resx" Link="MainWindow.resx" />
   </ItemGroup>
 
   <ItemGroup>

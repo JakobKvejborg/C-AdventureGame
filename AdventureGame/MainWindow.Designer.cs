@@ -33,7 +33,6 @@ partial class MainWindow
     private void InitializeComponent()
     {
         components = new System.ComponentModel.Container();
-        System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(MainWindow));
         toolTip = new ToolTip(components);
         btn_continue = new Button();
         btn_attack = new Button();
@@ -47,6 +46,7 @@ partial class MainWindow
         buttonDiscardItem = new Button();
         pictureBoxHeroBag = new PictureBox();
         labelPlayerArmor = new Label();
+        pictureBoxLoot = new PictureBox();
         labelInvisibleWeaponRightHandEquipped = new Label();
         textBox1 = new TextBox();
         comboBoxInventory = new ComboBox();
@@ -69,7 +69,6 @@ partial class MainWindow
         labelMonsterHp = new Label();
         labelMonsterName = new Label();
         panelEncounter = new Panel();
-        pictureBoxLoot = new PictureBox();
         panelPopupGloves = new Panel();
         labelInfoGlovesEquipped = new Label();
         labelGlovesName = new Label();
@@ -102,10 +101,10 @@ partial class MainWindow
         panelGameOver = new Panel();
         labelGameOverText = new Label();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHeroBag).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxLoot).BeginInit();
         panelMonster.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).BeginInit();
         panelEncounter.SuspendLayout();
-        ((System.ComponentModel.ISupportInitialize)pictureBoxLoot).BeginInit();
         panelPopupGloves.SuspendLayout();
         panelPopupBoots.SuspendLayout();
         panelPopupArmor.SuspendLayout();
@@ -260,6 +259,18 @@ partial class MainWindow
         labelPlayerArmor.TabIndex = 11;
         labelPlayerArmor.Text = "armor";
         toolTip.SetToolTip(labelPlayerArmor, "The amount of damage blocked from an attack.");
+        // 
+        // pictureBoxLoot
+        // 
+        pictureBoxLoot.Image = Properties.Resources.loot;
+        pictureBoxLoot.Location = new Point(312, 331);
+        pictureBoxLoot.Name = "pictureBoxLoot";
+        pictureBoxLoot.Size = new Size(188, 144);
+        pictureBoxLoot.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxLoot.TabIndex = 34;
+        pictureBoxLoot.TabStop = false;
+        toolTip.SetToolTip(pictureBoxLoot, "\"L\"");
+        pictureBoxLoot.Click += pictureBoxLoot_Click;
         // 
         // labelInvisibleWeaponRightHandEquipped
         // 
@@ -537,18 +548,6 @@ partial class MainWindow
         panelEncounter.Size = new Size(537, 768);
         panelEncounter.TabIndex = 22;
         // 
-        // pictureBoxLoot
-        // 
-        pictureBoxLoot.Image = Properties.Resources.loot;
-        pictureBoxLoot.Location = new Point(312, 331);
-        pictureBoxLoot.Name = "pictureBoxLoot";
-        pictureBoxLoot.Size = new Size(188, 144);
-        pictureBoxLoot.SizeMode = PictureBoxSizeMode.Zoom;
-        pictureBoxLoot.TabIndex = 34;
-        pictureBoxLoot.TabStop = false;
-        toolTip.SetToolTip(pictureBoxLoot, "\"L\"");
-        pictureBoxLoot.Click += pictureBoxLoot_Click;
-        // 
         // panelPopupGloves
         // 
         panelPopupGloves.AutoScroll = true;
@@ -808,7 +807,7 @@ partial class MainWindow
         // pictureBoxCompass
         // 
         pictureBoxCompass.BackgroundImageLayout = ImageLayout.Stretch;
-        pictureBoxCompass.Image = (Image)resources.GetObject("pictureBoxCompass.Image");
+        pictureBoxCompass.Image = Properties.Resources.compass;
         pictureBoxCompass.Location = new Point(-3, 141);
         pictureBoxCompass.Name = "pictureBoxCompass";
         pictureBoxCompass.Size = new Size(181, 186);
@@ -922,12 +921,12 @@ partial class MainWindow
         Text = "Horrors Awoken";
         Load += MainWindow_Load;
         ((System.ComponentModel.ISupportInitialize)pictureBoxHeroBag).EndInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxLoot).EndInit();
         panelMonster.ResumeLayout(false);
         panelMonster.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).EndInit();
         panelEncounter.ResumeLayout(false);
         panelEncounter.PerformLayout();
-        ((System.ComponentModel.ISupportInitialize)pictureBoxLoot).EndInit();
         panelPopupGloves.ResumeLayout(false);
         panelPopupGloves.PerformLayout();
         panelPopupBoots.ResumeLayout(false);
