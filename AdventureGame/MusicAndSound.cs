@@ -14,6 +14,8 @@ public class MusicAndSound
     private SoundPlayer[] soundPlayers;
     public WindowsMediaPlayer mediaPlayer1 = new WindowsMediaPlayer();
     private WindowsMediaPlayer mediaPlayer2 = new WindowsMediaPlayer();
+    private WindowsMediaPlayer mediaPlayer3 = new WindowsMediaPlayer();
+
 
     // Helper method to load media "sounds/music" from the "sounds" folder
     public string MediaSoundPath(string soundName)
@@ -45,7 +47,9 @@ public class MusicAndSound
         GetSoundPath("act1boss.wav"),
         GetSoundPath("act2healer.wav"),
         GetSoundPath("smithing.wav"),     // index 10
-        GetSoundPath("inventory.wav")
+        GetSoundPath("inventory.wav"),
+        GetSoundPath("deathgameover.wav"),
+        GetSoundPath("lootitems.wav"),
      };
             foreach (var soundPlayer in soundPlayers)
             {
@@ -187,7 +191,42 @@ public class MusicAndSound
         }
     }
 
+    public void PlayDeathGameOverSound()
+    {
+        try
+        {
+            soundPlayers[12].Play();
+        }
+        catch
+        {
+            throw new Exception("The sound file was not found");
+        }
+    }
 
+    public void PlayLootItemsSound()
+    {
+        try
+        {
+            soundPlayers[13].Play();
+        }
+        catch
+        {
+            throw new Exception("The sound file was not found");
+        }
+    }
+
+    public void PlayCoinSound()
+    {
+        try
+        {
+            mediaPlayer3.URL = MediaSoundPath("coin.wav");
+            mediaPlayer3.controls.play();
+        }
+        catch
+        {
+            throw new FileNotFoundException("The sound file was not found");
+        }
+    }
 
 }
 

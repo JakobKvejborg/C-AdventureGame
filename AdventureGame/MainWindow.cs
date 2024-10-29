@@ -88,6 +88,7 @@ public partial class MainWindow : Form
         pictureBoxInventory.Hide();
         panelInventory.Hide();
         pictureBoxLoot.Hide();
+        labelGoldPopup.Hide();
         #endregion
     }
 
@@ -770,15 +771,16 @@ public partial class MainWindow : Form
         }
     }
 
-    private async Task CheckIfPlayerIsDefeated()
+    public async Task CheckIfPlayerIsDefeated()
     {
         if (playerState.Player.CurrentHealth <= 0)
         {
-            await Task.Delay(200);
+            await Task.Delay(400);
+            sounds.PlayDeathGameOverSound();
             Thread.Sleep(500);
             panelEncounter.Hide();
             panelGameOver.Show();
-            await Task.Delay(1500);
+            await Task.Delay(1900);
             Application.Exit();
         }
     }
@@ -834,5 +836,39 @@ public partial class MainWindow : Form
     {
         pictureBoxLoot.Hide();
         Encounter.ItemIsLootetFromMonster(playerState, this);
+        sounds.PlayLootItemsSound();
     }
+
+    // This is called when gold is dropped
+    public void PopUpGoldLabel(Label label)
+    {
+        sounds.PlayCoinSound();
+        // Initial setup
+        label.Visible = true;
+        label.ForeColor = Color.FromArgb(255, label.ForeColor.R, label.ForeColor.G, label.ForeColor.B); // Fully opaque
+
+        int opacity = 255; // Maximum opacity for RGB channels
+        System.Windows.Forms.Timer fadeTimer = new System.Windows.Forms.Timer { Interval = 40 }; // Timer interval for fade speed
+
+        fadeTimer.Tick += (sender, e) =>
+        {
+            opacity -= 25; // Decrease opacity for fade-out effect
+            if (opacity <= 0)
+            {
+                label.Visible = false; // Hide the label when fully faded
+                fadeTimer.Stop();
+                fadeTimer.Dispose();
+            }
+            else
+            {
+                // Update the label's ForeColor with the current opacity
+                label.ForeColor = Color.FromArgb(opacity, label.ForeColor.R, label.ForeColor.G, label.ForeColor.B);
+            }
+        };
+
+        fadeTimer.Start(); // Start the fading effect
+    }
+
 }
+
+

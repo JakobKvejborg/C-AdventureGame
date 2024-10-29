@@ -81,6 +81,7 @@ partial class MainWindow
         labelInfoArmorEquipped = new Label();
         labelArmorName = new Label();
         labelInvisibleArmor = new Label();
+        labelGoldPopup = new Label();
         panelPopupWeaponRightHand = new Panel();
         labelInfoWeaponRightHandEquipped = new Label();
         labelWeaponRightHandName = new Label();
@@ -519,6 +520,7 @@ partial class MainWindow
         panelEncounter.Controls.Add(labelInvisibleBoots);
         panelEncounter.Controls.Add(panelPopupArmor);
         panelEncounter.Controls.Add(labelInvisibleArmor);
+        panelEncounter.Controls.Add(labelGoldPopup);
         panelEncounter.Controls.Add(panelPopupWeaponRightHand);
         panelEncounter.Controls.Add(panelMonster);
         panelEncounter.Controls.Add(textBox1);
@@ -682,6 +684,17 @@ partial class MainWindow
         labelInvisibleArmor.Text = "     \r\n     \r\n      \r\n        ";
         labelInvisibleArmor.MouseEnter += labelInvisibleArmor_MouseEnter;
         labelInvisibleArmor.MouseLeave += labelInvisibleArmor_MouseLeave;
+        // 
+        // labelGoldPopup
+        // 
+        labelGoldPopup.AutoSize = true;
+        labelGoldPopup.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+        labelGoldPopup.ForeColor = Color.Gold;
+        labelGoldPopup.Location = new Point(272, 306);
+        labelGoldPopup.Name = "labelGoldPopup";
+        labelGoldPopup.Size = new Size(57, 23);
+        labelGoldPopup.TabIndex = 35;
+        labelGoldPopup.Text = "GOLD";
         // 
         // panelPopupWeaponRightHand
         // 
@@ -1025,4 +1038,5 @@ partial class MainWindow
     public PictureBox pictureBoxHeroBag;
     private PictureBox pictureBoxInventory;
     public PictureBox pictureBoxLoot;
+    public Label labelGoldPopup;
 }

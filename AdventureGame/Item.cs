@@ -165,7 +165,6 @@ public class Item
 
 }
 
-
 public enum ItemType
 {
     WeaponLeftHand,

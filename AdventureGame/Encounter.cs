@@ -142,7 +142,7 @@ internal static class Encounter
         }
 
         // Check if the player is defeated
-        await playerState.Player.HandlePlayerDeathAsync(mainWindow);
+        await mainWindow.CheckIfPlayerIsDefeated();
     }
 
 
@@ -202,8 +202,14 @@ internal static class Encounter
 
     private static void PlayerGetsGoldFromMonster(PlayerState playerState, MainWindow mainWindow)
     {
-        playerState.Player.GoldInPocket += Monster.MonsterGold;
+        
+        int goldDropped = Monster.MonsterGold;
+        playerState.Player.GoldInPocket += goldDropped;
         mainWindow.labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket.ToString()}";
+        if (goldDropped > 0)
+        mainWindow.PopUpGoldLabel(mainWindow.labelGoldPopup);
+        mainWindow.labelGoldPopup.Text = $"+{goldDropped}G";
+        goldDropped = 0;
     }
 
     private static void PlayerGetsExperiencePoints(PlayerState playerState, MainWindow mainWindow)
@@ -211,7 +217,7 @@ internal static class Encounter
         // The player gets experience based on the monster
         playerState.Player.Experience += Monster.MonsterExperience;
         playerState.Player.LevelUp(playerState);
-        mainWindow.UpdatePlayerLabels();
+        mainWindow.UpdatePlayerLabels(); // This also checks if player is dead
     }
 
     public static void ResetDroppedItem()
