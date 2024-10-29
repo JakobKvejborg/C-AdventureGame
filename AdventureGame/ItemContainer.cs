@@ -51,6 +51,7 @@ public class ItemContainer
         items1.Add(null);
         items1.Add(null);
         items1.Add(null);
+        items1.Add(null);
 
         // List of items 2
         items2.Add(item1b);
@@ -60,6 +61,7 @@ public class ItemContainer
         items2.Add(item4b);
         items2.Add(item5b);
         items2.Add(item7b);
+        items2.Add(null);
         items2.Add(null);
         items2.Add(null);
         items2.Add(null);

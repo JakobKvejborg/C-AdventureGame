@@ -12,7 +12,7 @@ namespace AdventureGame;
 internal static class Encounter
 {
     public static Monster Monster { get; private set; } // Stores the monster encountered
-    public static Item itemDroppedFromMonster {  get; private set; } // Stores the randomly found item
+    public static Item itemDroppedFromMonster {  get; set; } // Stores the randomly found item
     private static readonly Random randomMonster = new Random();
     private static readonly Random randomItem = new Random();
     private static readonly Random randomDodge = new Random();
@@ -22,6 +22,8 @@ internal static class Encounter
 
     public static void PerformEncounter(List<Monster> listOfMonsters, List<Item> listOfItems, MainWindow mainWindow)
     {
+        ResetDroppedItem(); // Resets the item found from monster
+        mainWindow.pictureBoxLoot.Hide();
         // Disables encounters from town
         StoryProgress.playerIsInTown = false;
         StoryProgress.progressFlag = false;
@@ -210,5 +212,10 @@ internal static class Encounter
         playerState.Player.Experience += Monster.MonsterExperience;
         playerState.Player.LevelUp(playerState);
         mainWindow.UpdatePlayerLabels();
+    }
+
+    public static void ResetDroppedItem()
+    {
+        itemDroppedFromMonster = null;
     }
 }
