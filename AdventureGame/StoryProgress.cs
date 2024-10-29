@@ -86,6 +86,7 @@ internal class StoryProgress
                     if (oneTimeMessage == true)
                     {
                         sounds.PlayAct1TownMusic();
+                        _mainWindow.SetAct1TownBackgroundimage(); // TODO DELETE
                         _mainWindow.txtBox_Town.Text = "You come across a small town in the middle of the forest. " +
                             "While the town isn’t completely deserted, it's dead quiet. " +
                             "Be vary of the road straight ahead. Choose a path.";

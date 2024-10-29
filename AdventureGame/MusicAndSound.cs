@@ -15,6 +15,8 @@ public class MusicAndSound
     public WindowsMediaPlayer mediaPlayer1 = new WindowsMediaPlayer();
     private WindowsMediaPlayer mediaPlayer2 = new WindowsMediaPlayer();
     private WindowsMediaPlayer mediaPlayer3 = new WindowsMediaPlayer();
+    private WindowsMediaPlayer mediaPlayer4 = new WindowsMediaPlayer();
+
 
 
     // Helper method to load media "sounds/music" from the "sounds" folder
@@ -221,6 +223,19 @@ public class MusicAndSound
         {
             mediaPlayer3.URL = MediaSoundPath("coin.wav");
             mediaPlayer3.controls.play();
+        }
+        catch
+        {
+            throw new FileNotFoundException("The sound file was not found");
+        }
+    }
+
+    public void PlayLevelUpSound()
+    {
+        try
+        {
+            mediaPlayer4.URL = MediaSoundPath("levelup.wav");
+            mediaPlayer4.controls.play();
         }
         catch
         {

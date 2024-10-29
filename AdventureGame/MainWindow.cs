@@ -252,6 +252,7 @@ public partial class MainWindow : Form
         textBox1.AppendText($"\r\nYou have leveled up to level {playerState.Player.Level}!");
         UpdatePlayerLabels();
         UpdatePlayerHealthBar();
+        sounds.PlayLevelUpSound();
     }
 
     private void buttonPlayGame_MouseEnter(object sender, EventArgs e)
@@ -541,7 +542,7 @@ public partial class MainWindow : Form
 
     public void SetAct1TownBackgroundimage() // TODO delete
     {
-        panelTown.BackgroundImage = imageSetter.GetImagePath("act1town.png");
+        panelTown.BackgroundImage = imageSetter.GetImagePath("unused (7).png");
     }
 
     public void SetAct1Backgroundimage() // TODO delete
@@ -586,9 +587,9 @@ public partial class MainWindow : Form
     {
         if (StoryProgress.playerIsInTown)
         {
-            if (playerState.Player.GoldInPocket >= Player.priceToHeal)
+            if (playerState.Player.GoldInPocket >= Player.priceToHeal) // the players' gold has to be checked here, due to labels being set
             {
-                playerState.Player.HealPlayer(playerState);
+                playerState.Player.HealPlayer(playerState); 
                 UpdatePlayerLabels();
                 buttonHeal.Text = $"Heal {Player.priceToHeal.ToString()}G";
                 UpdatePlayerHealthBar(); // updates the players health bar after being healed
@@ -624,8 +625,6 @@ public partial class MainWindow : Form
 
     private void labelWeaponEquipped_MouseEnter(object sender, EventArgs e)
     {
-        //ShowHiddenEquippedItemPanel(ItemType.WeaponRightHand);
-
     }
 
     private void labelWeaponEquipped_MouseLeave(object sender, EventArgs e)
@@ -660,7 +659,7 @@ public partial class MainWindow : Form
         }
         else
         {
-            textBox1.Text = "Select an item to equip.";
+            //textBox1.Text = "Select an item to equip."; // TODO DELETE
         }
     }
 

@@ -82,7 +82,7 @@ internal class Player
             Thread.Sleep(1000);
             mainWindow.panelEncounter.Hide();
             mainWindow.panelGameOver.Show();
-            await Task.Delay(1900);
+            await Task.Delay(2100);
             Application.Exit();
         }
     }
