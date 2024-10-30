@@ -12,12 +12,14 @@ namespace AdventureGame;
 internal static class Encounter
 {
     public static Monster Monster { get; private set; } // Stores the monster encountered
-    public static Item itemDroppedFromMonster {  get; set; } // Stores the randomly found item
+    public static Item itemDroppedFromMonster { get; set; } // Stores the randomly found item
     private static readonly Random randomMonster = new Random();
     private static readonly Random randomItem = new Random();
     private static readonly Random randomDodge = new Random();
     public static List<Item>? encounteredMonsterItems; // saves the list of items from the parameter til at property
     public static event EventHandler? EncounterCompleted;
+    public static MusicAndSound sounds = new MusicAndSound();
+    public static bool BloodLust { get; set; }
 
 
     public static void PerformEncounter(List<Monster> listOfMonsters, List<Item> listOfItems, MainWindow mainWindow)
@@ -135,14 +137,22 @@ internal static class Encounter
             mainWindow.progressBarPlayerHP.Value = playerState.Player.CurrentHealth; // game crashed here
             mainWindow.labelPlayerHP.Text = $"HP: {playerState.Player.CurrentHealth.ToString()}/{playerState.Player.MaxHealth}";
             mainWindow.textBox1.AppendText($"The horror attacks you back and deals {monsterDamageDealt} damage.");
-            //if (armorBlocked > 0) // I am not sure I want to display this
-            //{
-            //    mainWindow.textBox1.AppendText($"\n\r Your armor blocks {armorBlocked} damage.");
-            //}
+
         }
 
         // Check if the player is defeated
         await mainWindow.CheckIfPlayerIsDefeated();
+    }
+
+    private static void PlayerRegensHealth(PlayerState playerState)
+    {
+        if (playerState.Player.CurrentHealth >= playerState.Player.MaxHealth)
+        {
+            return;
+        }
+        int regeneration = playerState.Player.Regeneration;
+        playerState.Player.CurrentHealth = Math.Min(playerState.Player.CurrentHealth + regeneration, playerState.Player.MaxHealth);
+
     }
 
 
@@ -162,10 +172,20 @@ internal static class Encounter
             GenerateItemFoundOnMonster(playerState, mainWindow); // This creates the item found on the monster
             StoryProgress.progressFlag = true;
 
+            if (playerState.Player.Regeneration > 0)
+            {  // The player regens health after each battle
+                PlayerRegensHealth(playerState);
+            }
+            if (StoryProgress.TutorialIsOver)
+            {  // Shows the return to town button if the tutorial is over
+                mainWindow.buttonReturnToTown.Show();
+            }
             // resets the monster object
             Monster.CurrentHealth = Monster.MaxHealth;
             Monster = null;
             EncounterCompleted?.Invoke(null, EventArgs.Empty); // this is used for bosses
+            mainWindow.UpdatePlayerLabels();
+
         }
     }
 
@@ -179,7 +199,7 @@ internal static class Encounter
         {
             return;
         }
-        
+
         itemDroppedFromMonster = foundItem.CloneItem(); // This stores the item found in a property on class level
         if (itemDroppedFromMonster != null)
         {
@@ -197,19 +217,23 @@ internal static class Encounter
             //playerState.Player.AddItemToInventory(itemDroppedFromMonster); // this may do nothing, because the combobox can hold the items instead
             mainWindow.comboBoxInventory.Items.Add(itemDroppedFromMonster);
             mainWindow.comboBoxInventory.SelectedItem = itemDroppedFromMonster;
+
         }
     }
 
     private static void PlayerGetsGoldFromMonster(PlayerState playerState, MainWindow mainWindow)
     {
-        
+
         int goldDropped = Monster.MonsterGold;
-        playerState.Player.GoldInPocket += goldDropped;
-        mainWindow.labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket.ToString()}";
         if (goldDropped > 0)
-        mainWindow.PopUpGoldLabel(mainWindow.labelGoldPopup);
-        mainWindow.labelGoldPopup.Text = $"+{goldDropped}G";
-        goldDropped = 0;
+        {
+            playerState.Player.GoldInPocket += goldDropped;
+            mainWindow.labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket.ToString()}";
+            mainWindow.PopupFadeLabel(mainWindow.labelGoldPopup);
+            mainWindow.labelGoldPopup.Text = $"+{goldDropped}G";
+            goldDropped = 0;
+            sounds.PlayCoinSound();
+        }
     }
 
     private static void PlayerGetsExperiencePoints(PlayerState playerState, MainWindow mainWindow)

@@ -89,6 +89,7 @@ public partial class MainWindow : Form
         panelInventory.Hide();
         pictureBoxLoot.Hide();
         labelGoldPopup.Hide();
+        buttonReturnToTown.Hide();
         #endregion
     }
 
@@ -308,9 +309,8 @@ public partial class MainWindow : Form
         if (!isAttackOnCooldown && Encounter.Monster != null)
         {
             isAttackOnCooldown = true;
-            Encounter.PlayerAttacks(playerState, this);
             sounds.PlaySwordAttackSound(); // plays the attack sound
-            //CheckIfMonsterIsDead();
+            Encounter.PlayerAttacks(playerState, this);
             Encounter.MonsterIsDefeated(playerState, this); // Checks if the monster is dead
             await ShakeControl(pictureBoxMonster1);
 
@@ -321,6 +321,11 @@ public partial class MainWindow : Form
         }
     }
 
+    private void buttonBloodLust_Click(object sender, EventArgs e)
+    {
+        ButtonAttack();
+    }
+
     // This method lets the player use the buttons by pressing a key instead of clicking
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
     {
@@ -328,17 +333,18 @@ public partial class MainWindow : Form
         switch (keyData)
         {
             case Keys.Space:
-                Task task = ButtonAttack(); // Call your attack method
-                return true; // Indicate the key was handled
+                Task task = ButtonAttack();
+                return true;
             case Keys.Enter:
                 if (!playGameHasBeenPressed)
                 {
                     ButtonPlayGame();
                 }
-                ButtonContinue(); // Call your continue method
+                ButtonContinue();
+                HideInventory();
                 return true;
             case Keys.W:
-                ButtonNorth(); // Call your move north method
+                ButtonNorth();
                 return true;
             case Keys.A:
                 ButtonWest();
@@ -373,6 +379,9 @@ public partial class MainWindow : Form
                 return true;
             case Keys.L:
                 pictureBoxLootIsClicked(); // player finds item from loot
+                return true;
+            case Keys.B:
+                ReturnToTownClick(); // Returns the player to the town
                 return true;
             default:
                 return base.ProcessCmdKey(ref msg, keyData); // Let the base method handle other keys
@@ -456,6 +465,7 @@ public partial class MainWindow : Form
         if (!Act1BossDefeatedFlag && StoryProgress.playerIsInTown == true)
         {
             Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, this);
+            storyProgress.StoryState = 100; // repeated encounters west act 1
         }
         if (Act1BossDefeatedFlag && StoryProgress.playerIsInTown == true)
         {
@@ -470,6 +480,7 @@ public partial class MainWindow : Form
         if (!Act1BossDefeatedFlag && StoryProgress.playerIsInTown == true)
         {
             Encounter.PerformEncounter(monsterContainer.listOfMonsters2, itemContainer.items2, this);
+            storyProgress.StoryState = 101; // repeated encounters east act 1
         }
         if (Act1BossDefeatedFlag && StoryProgress.playerIsInTown == true)
         {
@@ -527,7 +538,7 @@ public partial class MainWindow : Form
     private void OnAct1BossDefeated(object sender, EventArgs e)
     {
         Act1BossDefeatedFlag = true;
-        storyProgress.StoryState = 8; // Go to case 8.
+        storyProgress.StoryState = 8;
 
         // Unsubscribe from the event to avoid multiple invocations
         Encounter.EncounterCompleted -= OnAct1BossDefeated;
@@ -589,7 +600,7 @@ public partial class MainWindow : Form
         {
             if (playerState.Player.GoldInPocket >= Player.priceToHeal) // the players' gold has to be checked here, due to labels being set
             {
-                playerState.Player.HealPlayer(playerState); 
+                playerState.Player.HealPlayer(playerState);
                 UpdatePlayerLabels();
                 buttonHeal.Text = $"Heal {Player.priceToHeal.ToString()}G";
                 UpdatePlayerHealthBar(); // updates the players health bar after being healed
@@ -659,7 +670,6 @@ public partial class MainWindow : Form
         }
         else
         {
-            //textBox1.Text = "Select an item to equip."; // TODO DELETE
         }
     }
 
@@ -779,7 +789,7 @@ public partial class MainWindow : Form
             Thread.Sleep(500);
             panelEncounter.Hide();
             panelGameOver.Show();
-            await Task.Delay(1900);
+            await Task.Delay(2800);
             Application.Exit();
         }
     }
@@ -833,15 +843,17 @@ public partial class MainWindow : Form
 
     public void pictureBoxLootIsClicked()
     {
-        pictureBoxLoot.Hide();
-        Encounter.ItemIsLootetFromMonster(playerState, this);
-        sounds.PlayLootItemsSound();
+        if (pictureBoxLoot.Visible)
+        {
+            pictureBoxLoot.Hide();
+            Encounter.ItemIsLootetFromMonster(playerState, this);
+            sounds.PlayLootItemsSound();
+        }
     }
 
     // This is called when gold is dropped
-    public void PopUpGoldLabel(Label label)
+    public void PopupFadeLabel(Label label)
     {
-        sounds.PlayCoinSound();
         // Initial setup
         label.Visible = true;
         label.ForeColor = Color.FromArgb(255, label.ForeColor.R, label.ForeColor.G, label.ForeColor.B); // Fully opaque
@@ -867,6 +879,24 @@ public partial class MainWindow : Form
 
         fadeTimer.Start(); // Start the fading effect
     }
+
+    private void buttonReturnToTown_Click(object sender, EventArgs e)
+    {
+        ReturnToTownClick();
+    }
+
+    private void ReturnToTownClick()
+    {
+        if (StoryProgress.TutorialIsOver) // Makes sure the player can't go to the town before the tutorial is over
+        {
+            if (Act1BossDefeatedFlag == false)
+            {
+                storyProgress.StoryState = 7;
+                ButtonContinue();
+            }
+        }
+    }
+
 
 }
 

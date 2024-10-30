@@ -34,6 +34,7 @@ public class ItemContainer
         Item item5b = new("Sandals", ItemType.Boots, 0, 0, 0, 0, 8, 0, 0, 0, 2);
         Item item6b = new("Gloves", ItemType.Gloves, 0, 0, 0, 2, 0, 1, 0, 0, 4);
         Item item7b = new("Leather Gloves", ItemType.Gloves, 11, 0, 0, 0, 0, 1, 0, 0, 5);
+        Item item8b = new("Health Boots", ItemType.Boots, 0, 3, 0, 0, 0, 0, 0, 3, 3);
 
         // List of items 1
         emptyItems.Add(null);
@@ -61,6 +62,8 @@ public class ItemContainer
         items2.Add(item4b);
         items2.Add(item5b);
         items2.Add(item7b);
+        items2.Add(item8b);
+        items2.Add(null);
         items2.Add(null);
         items2.Add(null);
         items2.Add(null);

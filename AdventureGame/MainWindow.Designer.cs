@@ -47,11 +47,12 @@ partial class MainWindow
         pictureBoxHeroBag = new PictureBox();
         labelPlayerArmor = new Label();
         pictureBoxLoot = new PictureBox();
+        buttonReturnToTown = new Button();
+        buttonBloodLust = new Button();
         labelInvisibleWeaponRightHandEquipped = new Label();
         textBox1 = new TextBox();
         comboBoxInventory = new ComboBox();
         labelInventory = new Label();
-        btn_useMagic = new Button();
         btn_block = new Button();
         progressBarPlayerHP = new ProgressBar();
         labelPlayerHP = new Label();
@@ -273,6 +274,30 @@ partial class MainWindow
         toolTip.SetToolTip(pictureBoxLoot, "\"L\"");
         pictureBoxLoot.Click += pictureBoxLoot_Click;
         // 
+        // buttonReturnToTown
+        // 
+        buttonReturnToTown.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+        buttonReturnToTown.ForeColor = Color.MidnightBlue;
+        buttonReturnToTown.Location = new Point(109, 111);
+        buttonReturnToTown.Name = "buttonReturnToTown";
+        buttonReturnToTown.Size = new Size(98, 29);
+        buttonReturnToTown.TabIndex = 36;
+        buttonReturnToTown.Text = "Town";
+        toolTip.SetToolTip(buttonReturnToTown, "\"B\"");
+        buttonReturnToTown.UseVisualStyleBackColor = true;
+        buttonReturnToTown.Click += buttonReturnToTown_Click;
+        // 
+        // buttonBloodLust
+        // 
+        buttonBloodLust.Location = new Point(136, 341);
+        buttonBloodLust.Name = "buttonBloodLust";
+        buttonBloodLust.Size = new Size(94, 29);
+        buttonBloodLust.TabIndex = 37;
+        buttonBloodLust.Text = "Bloodlust";
+        toolTip.SetToolTip(buttonBloodLust, "\"Ctrl\"");
+        buttonBloodLust.UseVisualStyleBackColor = true;
+        buttonBloodLust.Click += buttonBloodLust_Click;
+        // 
         // labelInvisibleWeaponRightHandEquipped
         // 
         labelInvisibleWeaponRightHandEquipped.AutoSize = true;
@@ -319,15 +344,6 @@ partial class MainWindow
         labelInventory.TabIndex = 3;
         labelInventory.Text = "Inventory";
         labelInventory.Click += labelInventory_Click;
-        // 
-        // btn_useMagic
-        // 
-        btn_useMagic.Location = new Point(136, 341);
-        btn_useMagic.Name = "btn_useMagic";
-        btn_useMagic.Size = new Size(94, 29);
-        btn_useMagic.TabIndex = 6;
-        btn_useMagic.Text = "Magic";
-        btn_useMagic.UseVisualStyleBackColor = true;
         // 
         // btn_block
         // 
@@ -513,6 +529,8 @@ partial class MainWindow
         panelEncounter.BackColor = Color.Transparent;
         panelEncounter.BackgroundImage = Properties.Resources.castle;
         panelEncounter.BackgroundImageLayout = ImageLayout.Stretch;
+        panelEncounter.Controls.Add(buttonBloodLust);
+        panelEncounter.Controls.Add(buttonReturnToTown);
         panelEncounter.Controls.Add(pictureBoxLoot);
         panelEncounter.Controls.Add(panelPopupGloves);
         panelEncounter.Controls.Add(labelInvisibleGloves);
@@ -531,7 +549,6 @@ partial class MainWindow
         panelEncounter.Controls.Add(labelGoldInPocket);
         panelEncounter.Controls.Add(btn_attack);
         panelEncounter.Controls.Add(labelPlayerLifeSteal);
-        panelEncounter.Controls.Add(btn_useMagic);
         panelEncounter.Controls.Add(labelPlayerStrength);
         panelEncounter.Controls.Add(btn_block);
         panelEncounter.Controls.Add(progressBarPlayerHP);
@@ -974,7 +991,6 @@ partial class MainWindow
     private Label labelInventory;
     private Button buttonDiscardItem;
     private Button btn_attack;
-    private Button btn_useMagic;
     private Button btn_block;
 
 
@@ -1039,4 +1055,6 @@ partial class MainWindow
     private PictureBox pictureBoxInventory;
     public PictureBox pictureBoxLoot;
     public Label labelGoldPopup;
+    public Button buttonReturnToTown;
+    private Button buttonBloodLust;
 }

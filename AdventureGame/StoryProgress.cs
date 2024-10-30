@@ -13,6 +13,7 @@ internal class StoryProgress
     public bool oneTimeMessage = true;
     private ImageSetter imageSetter = new ImageSetter();
     private MusicAndSound sounds = new MusicAndSound();
+    public static bool TutorialIsOver { get; set; }
 
     public StoryProgress(MainWindow mainWindow)
     {
@@ -80,7 +81,7 @@ internal class StoryProgress
                 break;
             case 5:
             case 6:
-            case 7:
+            case 7: // The player enters town act 1
                 if (progressFlag == true)
                 {
                     if (oneTimeMessage == true)
@@ -101,6 +102,7 @@ internal class StoryProgress
                     //StoryState++; // When this line isn't excecuted, the story will loop here
                     progressFlag = true; // The progressFlag is set to false in performEncounter
                 }
+                TutorialIsOver = true;
                 break;
             case 8:
                 _mainWindow.textBox1.Text = "After slaying the demon tree, you venture forth, much further to the north. ";
@@ -142,6 +144,20 @@ internal class StoryProgress
                     progressFlag = true; // The progressFlag is set to false in performEncounter
                 }
                 break;
+
+            // Special cases:
+            case 100: // Act 1 West
+                if (progressFlag == true)
+                {
+                    Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, _mainWindow);
+                }
+                break;
+            case 101: // Act 1 East
+                if (progressFlag == true)
+                {
+                    Encounter.PerformEncounter(monsterContainer.listOfMonsters2, itemContainer.items2, _mainWindow);
+                }
+                break;
         }
     }
 
@@ -164,5 +180,6 @@ internal class StoryProgress
         _mainWindow.HideInventory();
         playerIsInTown = true;
     }
+
 
 }

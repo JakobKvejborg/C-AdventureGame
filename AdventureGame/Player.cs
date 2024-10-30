@@ -21,9 +21,11 @@ internal class Player
     public static int priceToHeal { get; set; } = 2; // 2 is the default value
     public Dictionary<ItemType, Item> EquippedItems { get; private set; }
     public int XpNeededToLevelUp => ((10 * (Level + Level)) + (Level * Level) - 1);
+    public int CritChance { get; set; }
+    public int Regeneration { get; set; }
 
     public Player(string name, int maxHealth, int currentHealth, int damage, int strength, int lifesteal,
-        int armor, int dodgeChance, int goldInPocket, int experience, int level)
+        int armor, int dodgeChance, int goldInPocket, int experience, int level, int critChance, int regeneration)
     {
         Name = name;
         MaxHealth = maxHealth;
@@ -39,6 +41,8 @@ internal class Player
         Inventory = new List<Item>();
         //EquippedItems = new List<Item>();
         EquippedItems = new Dictionary<ItemType, Item>();
+        CritChance = critChance;
+        Regeneration = regeneration;
     }
 
     public void LevelUp(PlayerState playerState)
@@ -105,6 +109,8 @@ internal class Player
         DodgeChance += item.DodgeChance;
         Strength += item.Strength;
         Level += item.SkillLevel;
+        Regeneration += item.Regeneration;
+        CritChance += item.CritChance;
     }
 
     public void UnequipItem(Item item, ComboBox comboboxInventory, ComboBox comboboxUpgradeItem)
@@ -119,6 +125,8 @@ internal class Player
             DodgeChance -= item.DodgeChance;
             Strength -= item.Strength;
             Level -= item.SkillLevel;
+            Regeneration -= item.Regeneration;
+            CritChance -= item.CritChance;
 
             EquippedItems.Remove(item.Type);
             comboboxInventory.Items.Add(item);
