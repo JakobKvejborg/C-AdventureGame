@@ -210,7 +210,7 @@ public partial class MainWindow : Form
         FadeTitle();
     }
 
-    public static async Task ShakeControl(Control control, int duration = 80, int shakeAmount = 5)
+    public static async Task ShakeMonsterPicturebox(Control control, int duration = 80, int shakeAmount = 5)
     {
         // Store the original location of the control
         var originalLocation = control.Location;
@@ -270,27 +270,44 @@ public partial class MainWindow : Form
         await ButtonAttack();
     }
 
-    private async Task ButtonAttack()
-    {
-        if (!isAttackOnCooldown && Encounter.Monster != null)
-        {
-            isAttackOnCooldown = true;
-            sounds.PlaySwordAttackSound(); // plays the attack sound
-            Encounter.PlayerAttacks(playerState, this);
-            Encounter.MonsterIsDefeated(playerState, this); // Checks if the monster is dead
-            await ShakeControl(pictureBoxMonster1);
+    //private async Task ButtonAttack()
+    //{
+    //    if (!isAttackOnCooldown && Encounter.Monster != null)
+    //    {
+    //        isAttackOnCooldown = true;
+    //        sounds.PlaySwordAttackSound(); // plays the attack sound
+    //        textBox1.Clear();
+    //        Encounter.PlayerAttacks(playerState, this);
+    //        Encounter.MonsterIsDefeated(playerState, this); // Checks if the monster is dead
+    //        await ShakeControl(pictureBoxMonster1);
 
-            btn_attack.Enabled = false;
-            await Task.Delay(80); // set this higher for a slower attackrate
-            btn_attack.Enabled = true;
-            isAttackOnCooldown = false;
-        }
+    //        btn_attack.Enabled = false;
+    //        await Task.Delay(80); // set this higher for a slower attackrate
+    //        btn_attack.Enabled = true;
+    //        isAttackOnCooldown = false;
+    //    }
+    //}
+
+    private async void buttonBloodLust_Click(object sender, EventArgs e)
+    {
+        await BloodLustAttack();
     }
 
-    private void buttonBloodLust_Click(object sender, EventArgs e)
-    {
-        ButtonAttack();
-    }
+    //private async Task BloodLustAttack()
+    //{
+    //    if (!isAttackOnCooldown)
+    //    {
+    //        isAttackOnCooldown = true;
+    //        sounds.PlayBloodLustSound();
+    //        sounds.PlaySwordAttackSound();
+    //        Encounter.BloodLustAttack(playerState, this);
+    //        Encounter.MonsterIsDefeated(playerState, this);
+    //        await ShakeControl(pictureBoxMonster1);
+    //        textBox1.Clear();
+    //        await Task.Delay(80); // set this higher for a slower attackrate
+    //        isAttackOnCooldown = false;
+    //    }
+    //}
 
     // This method lets the player use the buttons by pressing a key instead of clicking
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
@@ -348,6 +365,9 @@ public partial class MainWindow : Form
                 return true;
             case Keys.B:
                 ReturnToTownClick(); // Returns the player to the town
+                return true;
+            case Keys.Q:
+                task = BloodLustAttack();
                 return true;
             default:
                 return base.ProcessCmdKey(ref msg, keyData); // Let the base method handle other keys
@@ -758,7 +778,7 @@ public partial class MainWindow : Form
             Thread.Sleep(500);
             panelEncounter.Hide();
             panelGameOver.Show();
-            await Task.Delay(2800);
+            await Task.Delay(3500);
             Application.Exit();
         }
     }
@@ -896,6 +916,7 @@ public partial class MainWindow : Form
         labelMonsterHp.Text = $"HP: {monster.CurrentHealth}/{monster.MaxHealth}";
         pictureBoxMonster1.Image = monster.MonsterImage; // Sets the image to the encountered monster
     }
+
     public void UpdatePlayerLabels()
     {
         UpdatePlayerHealthBar();
@@ -909,6 +930,8 @@ public partial class MainWindow : Form
         labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket}";
         labelLevel.Text = $"Level: {playerState.Player.Level}";
         labelExperience.Text = $"Exp: {playerState.Player.Experience}/{playerState.Player.XpNeededToLevelUp}";
+        labelCritChance.Text = $"Crit: {playerState.Player.CritChance}%";
+        labelRegeneration.Text = $"Regen: {playerState.Player.Regeneration}";
     }
 
     private void UpdatePlayerHealthBar()
@@ -922,6 +945,47 @@ public partial class MainWindow : Form
         progressBarPlayerHP.Value = currentHealth;
         labelPlayerHP.Text = $"HP: {currentHealth}/{maxHealth}";
     }
+
+   // This is a method that plays the sounds for the attack, calls the attack methods from Encounter, and handles attack controls
+    private async Task PerformAttack(Action attackAction, Action primarySoundAction, Action? secondarySoundAction = null)
+    {
+        if (!isAttackOnCooldown && Encounter.Monster != null)
+        {
+            isAttackOnCooldown = true;
+
+            // Play primary sound (and secondary if provided)
+            primarySoundAction();
+            secondarySoundAction?.Invoke();
+
+            textBox1.Clear();
+            attackAction(); // Executes the specific attack
+
+            // Check if the monster is defeated after the attack
+            Encounter.MonsterIsDefeated(playerState, this);
+
+            await ShakeMonsterPicturebox(pictureBoxMonster1);
+
+            // Handle attack cooldown
+            btn_attack.Enabled = false;
+            buttonBloodLust.Enabled = false;
+            await Task.Delay(80); // Increase this delay for a slower attack rate
+            buttonBloodLust.Enabled = true;
+            btn_attack.Enabled = true;
+            isAttackOnCooldown = false;
+        }
+    }
+
+    private async Task ButtonAttack()
+    {
+        await PerformAttack(() => Encounter.PlayerNormalAttacks(playerState, this), sounds.PlaySwordAttackSound);
+    }
+
+    private async Task BloodLustAttack()
+    {
+        await PerformAttack(() => Encounter.BloodLustAttack(playerState, this), sounds.PlayBloodLustSound, sounds.PlaySwordAttackSound);
+    }
+
+
 
 }
 

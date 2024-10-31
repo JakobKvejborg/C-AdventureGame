@@ -16,6 +16,8 @@ public class MusicAndSound
     private WindowsMediaPlayer mediaPlayer2 = new WindowsMediaPlayer();
     private WindowsMediaPlayer mediaPlayer3 = new WindowsMediaPlayer();
     private WindowsMediaPlayer mediaPlayer4 = new WindowsMediaPlayer();
+    private WindowsMediaPlayer mediaPlayer5 = new WindowsMediaPlayer();
+
 
 
 
@@ -131,7 +133,7 @@ public class MusicAndSound
     {
         try
         {
-            if (random.NextDouble() <= 0.94) // % chance to play a sound
+            if (random.NextDouble() <= 0.99) // % chance to play a sound
             {
                 int soundIndex = random.Next(1, 8);
                 soundPlayers[soundIndex].Play();
@@ -236,6 +238,32 @@ public class MusicAndSound
         {
             mediaPlayer4.URL = MediaSoundPath("levelup.wav");
             mediaPlayer4.controls.play();
+        }
+        catch
+        {
+            throw new FileNotFoundException("The sound file was not found");
+        }
+    }
+
+    public void PlayBloodLustSound()
+    {
+        try
+        {
+            mediaPlayer4.URL = MediaSoundPath("bloodlust.wav");
+            mediaPlayer4.controls.play();
+        }
+        catch
+        {
+            throw new FileNotFoundException("The sound file was not found");
+        }
+    }
+
+    public void PlayCritSound()
+    {
+        try
+        {
+            mediaPlayer5.URL = MediaSoundPath("crit.wav");
+            mediaPlayer5.controls.play();
         }
         catch
         {

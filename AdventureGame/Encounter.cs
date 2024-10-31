@@ -55,49 +55,148 @@ internal static class Encounter
         return monsterClone;
     }
 
-    public static async void PlayerAttacks(PlayerState playerState, MainWindow mainWindow)
+    //public static async void PlayerAttacks(PlayerState playerState, MainWindow mainWindow)
+    //{
+    //    if (Monster != null && Monster.CurrentHealth > 0)
+    //    {
+    //        int playerAttackDamageTotal = playerState.Player.CalculateTotalDamage(playerState); // The players damage
+
+    //        // Checks if the player crits
+    //        bool isCriticalHit = playerState.Player.CritChance >= randomCrit.Next(1, 101); // Roll between 1-100
+    //        if (isCriticalHit)
+    //        {
+    //            playerAttackDamageTotal = (int)(playerAttackDamageTotal * 1.8); // Increase damage by 1.5x for a critical hit
+    //            sounds.PlayCritBloodSound();
+    //        }
+    //        Monster.CurrentHealth -= playerAttackDamageTotal; // The monster loses health
+
+    //        // This makes sure the monsters' hp doesn't drop below 0
+    //        if (Monster.CurrentHealth < 0)
+    //        {
+    //            Monster.CurrentHealth = 0;
+    //        }
+
+    //        mainWindow.UpdateMonsterHealthLabels(Monster);
+    //        AttackText(playerState, mainWindow, playerAttackDamageTotal);
+
+    //        if (Monster.CurrentHealth > 0)
+    //        {
+    //            await Task.Delay(180);
+    //            MonsterAttacks(playerState, mainWindow); // Monster attacks back if still alive
+    //        }
+    //    }
+    //}
+    //public static async void BloodLustAttack(PlayerState playerState, MainWindow mainWindow)
+    //{
+    //    if (Monster != null && Monster.CurrentHealth > 0)
+    //    {
+    //        int playerAttackDamageTotal = (int)(playerState.Player.CalculateTotalDamage(playerState) * 1.3); // 1.3x damage for Blood Lust attack
+
+    //        // Cost the player 15% of max health
+    //        int healthCost = (int)(playerState.Player.MaxHealth * 0.15);
+    //        playerState.Player.CurrentHealth -= healthCost;
+    //        playerState.Player.CurrentHealth = Math.Max(playerState.Player.CurrentHealth, 0); // Prevent negative health
+
+    //        // Critical hit check (optional, apply only if crit chance should work with Blood Lust)
+    //        bool isCriticalHit = playerState.Player.CritChance >= randomCrit.Next(1, 101);
+    //        if (isCriticalHit)
+    //        {
+    //            playerAttackDamageTotal = (int)(playerAttackDamageTotal * 1.8); // 1.6x critical multiplier
+    //            sounds.PlayCritBloodSound();
+    //        }
+
+    //        // Apply damage to the monster
+    //        Monster.CurrentHealth -= playerAttackDamageTotal;
+    //        if (Monster.CurrentHealth < 0)
+    //        {
+    //            Monster.CurrentHealth = 0;
+    //        }
+
+    //        // Update the UI
+    //        mainWindow.UpdateMonsterHealthLabels(Monster);
+    //        mainWindow.UpdatePlayerLabels(); // Update player health due to health cost
+    //        AttackText(playerState, mainWindow, playerAttackDamageTotal); // Show attack text
+
+    //        // If the monster is still alive, let it counterattack after a delay
+    //        if (Monster.CurrentHealth > 0)
+    //        {
+    //            await Task.Delay(180);
+    //            MonsterAttacks(playerState, mainWindow);
+    //        }
+    //        else
+    //        {
+    //            MonsterIsDefeated(playerState, mainWindow);
+    //        }
+    //    }
+    //}
+    public static async void BloodLustAttack(PlayerState playerState, MainWindow mainWindow)
     {
         if (Monster != null && Monster.CurrentHealth > 0)
         {
-            mainWindow.textBox1.Text = (""); // clears the textbox
-            int playerAttackDamageTotal = playerState.Player.CalculateTotalDamage(playerState); // The players damage
-
-            // Checks if the player crits
-            bool isCriticalHit = playerState.Player.CritChance >= randomCrit.Next(1, 101); // Roll between 1-100
-            if (isCriticalHit)
-            {
-                playerAttackDamageTotal = (int)(playerAttackDamageTotal * 1.5); // Increase damage by 1.5x for a critical hit
-                mainWindow.textBox1.AppendText("Critical Hit! ");
-            }
-            Monster.CurrentHealth -= playerAttackDamageTotal; // The monster loses health
-
-            // This makes sure the monsters' hp doesn't drop below 0
-            if (Monster.CurrentHealth < 0)
-            {
-                Monster.CurrentHealth = 0;
-            }
-
-            mainWindow.UpdateMonsterHealthLabels(Monster);
-            AttackText(playerState, mainWindow);
-
-            if (Monster.CurrentHealth > 0)
-            {
-                await Task.Delay(180);
-                MonsterAttacks(playerState, mainWindow); // Monster attacks back if still alive
-            }
+            int playerAttackDamageTotal = (int)(playerState.Player.CalculateTotalDamage(playerState) * 1.3); // 1.3x damage for Blood Lust attack
+            // Cost the player 20% of max health
+            int healthCost = (int)(playerState.Player.MaxHealth * 0.20); // % cost of health
+            playerState.Player.CurrentHealth -= healthCost;
+            playerState.Player.CurrentHealth = Math.Max(playerState.Player.CurrentHealth, 0); // Prevent negative health
+            mainWindow.UpdatePlayerLabels(); // updates the player health bar
+            await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal);
         }
     }
 
-    private static void AttackText(PlayerState playerState, MainWindow mainWindow)
+    public static async void PlayerNormalAttacks(PlayerState playerState, MainWindow mainWindow)
     {
-
-        if (Monster.Name == "Aldrus Thornfell" || Monster.Name == "Another Boss Name")
+        if (Monster != null && Monster.CurrentHealth > 0)
         {
-            mainWindow.textBox1.AppendText($"You attack {Monster.Name}, and deal {playerState.Player.CalculateTotalDamage(playerState)} damage. \r\n");
+            int playerAttackDamageTotal = playerState.Player.CalculateTotalDamage(playerState);
+            await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal); 
+        }
+    }
+
+    // Helper method for all attack methods
+    private static async Task ExecuteAttack(PlayerState playerState, MainWindow mainWindow, int playerAttackDamageTotal)
+    {
+        // Check for critical hit
+        bool isCriticalHit = playerState.Player.CritChance >= randomCrit.Next(1, 101);
+        if (isCriticalHit)
+        {
+            playerAttackDamageTotal = (int)(playerAttackDamageTotal * 1.5); // Increase damage for a critical hit
+            sounds.PlayCritSound();
+        }
+
+        // Apply damage to the monster
+        Monster.CurrentHealth -= playerAttackDamageTotal;
+        if (Monster.CurrentHealth < 0)
+        {
+            Monster.CurrentHealth = 0;
+        }
+
+        // Update the UI
+        mainWindow.UpdateMonsterHealthLabels(Monster);
+        AttackText(playerState, mainWindow, playerAttackDamageTotal); // Show attack text
+
+        // Check if the monster is still alive
+        if (Monster.CurrentHealth > 0)
+        {
+            await Task.Delay(180);
+            MonsterAttacks(playerState, mainWindow); // Monster attacks back if still alive
         }
         else
         {
-            mainWindow.textBox1.AppendText($"You attack the {Monster.Name}, and deal {playerState.Player.CalculateTotalDamage(playerState)} damage. \r\n");
+            MonsterIsDefeated(playerState, mainWindow);
+        }
+    }
+
+
+    // Helper method for some UI text, depending on which monster type is encountered
+    private static void AttackText(PlayerState playerState, MainWindow mainWindow, int playerAttackDamageTotal)
+    {
+        if (Monster.Name == "Aldrus Thornfell" || Monster.Name == "Another Boss Name")
+        {
+            mainWindow.textBox1.AppendText($"You attack {Monster.Name}, and deal {playerAttackDamageTotal} damage. \r\n");
+        }
+        else
+        {
+            mainWindow.textBox1.AppendText($"You attack the {Monster.Name}, and deal {playerAttackDamageTotal} damage. \r\n");
         }
     }
 
@@ -124,7 +223,6 @@ internal static class Encounter
             mainWindow.textBox1.AppendText($"The horror attacks you back and deals {monsterDamageDealt} damage.");
 
         }
-
         // Check if the player is defeated
         await mainWindow.CheckIfPlayerIsDefeated();
     }
@@ -199,8 +297,7 @@ internal static class Encounter
         {
             // Tell the player which item has been found
             mainWindow.textBox1.AppendText($"\r\nYou find an item on the horror's corpse: {itemDroppedFromMonster.Name}.");
-            //playerState.Player.AddItemToInventory(itemDroppedFromMonster); // this may do nothing, because the combobox can hold the items instead
-            mainWindow.comboBoxInventory.Items.Add(itemDroppedFromMonster);
+            mainWindow.comboBoxInventory.Items.Add(itemDroppedFromMonster); // the combobox holds the player inventory, not the player
             mainWindow.comboBoxInventory.SelectedItem = itemDroppedFromMonster;
 
         }
@@ -208,7 +305,6 @@ internal static class Encounter
 
     private static void PlayerGetsGoldFromMonster(PlayerState playerState, MainWindow mainWindow)
     {
-
         int goldDropped = Monster.MonsterGold;
         if (goldDropped > 0)
         {
@@ -234,3 +330,5 @@ internal static class Encounter
         itemDroppedFromMonster = null;
     }
 }
+
+

@@ -53,7 +53,7 @@ partial class MainWindow
         textBox1 = new TextBox();
         comboBoxInventory = new ComboBox();
         labelInventory = new Label();
-        btn_block = new Button();
+        buttonDodgeJab = new Button();
         progressBarPlayerHP = new ProgressBar();
         labelPlayerHP = new Label();
         labelPlayerDamage = new Label();
@@ -70,6 +70,7 @@ partial class MainWindow
         labelMonsterHp = new Label();
         labelMonsterName = new Label();
         panelEncounter = new Panel();
+        labelRegeneration = new Label();
         panelPopupGloves = new Panel();
         labelInfoGlovesEquipped = new Label();
         labelGlovesName = new Label();
@@ -87,6 +88,7 @@ partial class MainWindow
         labelInfoWeaponRightHandEquipped = new Label();
         labelWeaponRightHandName = new Label();
         panelInventory = new Panel();
+        labelCritChance = new Label();
         pictureBoxHero = new PictureBox();
         pictureBoxInventory = new PictureBox();
         panelTown = new Panel();
@@ -136,7 +138,7 @@ partial class MainWindow
         // 
         // btn_attack
         // 
-        btn_attack.Location = new Point(136, 306);
+        btn_attack.Location = new Point(116, 710);
         btn_attack.Name = "btn_attack";
         btn_attack.Size = new Size(94, 29);
         btn_attack.TabIndex = 5;
@@ -255,7 +257,7 @@ partial class MainWindow
         labelPlayerArmor.BackColor = Color.Transparent;
         labelPlayerArmor.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerArmor.ForeColor = Color.White;
-        labelPlayerArmor.Location = new Point(14, 340);
+        labelPlayerArmor.Location = new Point(14, 324);
         labelPlayerArmor.Name = "labelPlayerArmor";
         labelPlayerArmor.Size = new Size(59, 23);
         labelPlayerArmor.TabIndex = 11;
@@ -289,12 +291,12 @@ partial class MainWindow
         // 
         // buttonBloodLust
         // 
-        buttonBloodLust.Location = new Point(136, 341);
+        buttonBloodLust.Location = new Point(11, 710);
         buttonBloodLust.Name = "buttonBloodLust";
         buttonBloodLust.Size = new Size(94, 29);
         buttonBloodLust.TabIndex = 37;
         buttonBloodLust.Text = "Bloodlust";
-        toolTip.SetToolTip(buttonBloodLust, "\"Ctrl\"");
+        toolTip.SetToolTip(buttonBloodLust, "\"Q\"");
         buttonBloodLust.UseVisualStyleBackColor = true;
         buttonBloodLust.Click += buttonBloodLust_Click;
         // 
@@ -345,14 +347,14 @@ partial class MainWindow
         labelInventory.Text = "Inventory";
         labelInventory.Click += labelInventory_Click;
         // 
-        // btn_block
+        // buttonDodgeJab
         // 
-        btn_block.Location = new Point(136, 376);
-        btn_block.Name = "btn_block";
-        btn_block.Size = new Size(94, 29);
-        btn_block.TabIndex = 7;
-        btn_block.Text = "Block";
-        btn_block.UseVisualStyleBackColor = true;
+        buttonDodgeJab.Location = new Point(220, 710);
+        buttonDodgeJab.Name = "buttonDodgeJab";
+        buttonDodgeJab.Size = new Size(94, 29);
+        buttonDodgeJab.TabIndex = 7;
+        buttonDodgeJab.Text = "Dodge Jab";
+        buttonDodgeJab.UseVisualStyleBackColor = true;
         // 
         // progressBarPlayerHP
         // 
@@ -382,7 +384,7 @@ partial class MainWindow
         labelPlayerDamage.BackColor = Color.Transparent;
         labelPlayerDamage.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerDamage.ForeColor = Color.White;
-        labelPlayerDamage.Location = new Point(14, 242);
+        labelPlayerDamage.Location = new Point(14, 231);
         labelPlayerDamage.Name = "labelPlayerDamage";
         labelPlayerDamage.Size = new Size(75, 23);
         labelPlayerDamage.TabIndex = 12;
@@ -394,7 +396,7 @@ partial class MainWindow
         labelPlayerDodge.BackColor = Color.Transparent;
         labelPlayerDodge.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerDodge.ForeColor = Color.White;
-        labelPlayerDodge.Location = new Point(14, 370);
+        labelPlayerDodge.Location = new Point(14, 354);
         labelPlayerDodge.Name = "labelPlayerDodge";
         labelPlayerDodge.Size = new Size(62, 23);
         labelPlayerDodge.TabIndex = 13;
@@ -417,7 +419,7 @@ partial class MainWindow
         labelPlayerStrength.BackColor = Color.Transparent;
         labelPlayerStrength.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerStrength.ForeColor = Color.White;
-        labelPlayerStrength.Location = new Point(14, 274);
+        labelPlayerStrength.Location = new Point(14, 262);
         labelPlayerStrength.Name = "labelPlayerStrength";
         labelPlayerStrength.Size = new Size(78, 23);
         labelPlayerStrength.TabIndex = 15;
@@ -429,7 +431,7 @@ partial class MainWindow
         labelPlayerLifeSteal.BackColor = Color.Transparent;
         labelPlayerLifeSteal.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerLifeSteal.ForeColor = Color.White;
-        labelPlayerLifeSteal.Location = new Point(14, 306);
+        labelPlayerLifeSteal.Location = new Point(14, 294);
         labelPlayerLifeSteal.Name = "labelPlayerLifeSteal";
         labelPlayerLifeSteal.Size = new Size(73, 23);
         labelPlayerLifeSteal.TabIndex = 16;
@@ -441,7 +443,7 @@ partial class MainWindow
         labelGoldInPocket.BackColor = Color.Transparent;
         labelGoldInPocket.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelGoldInPocket.ForeColor = Color.Gold;
-        labelGoldInPocket.Location = new Point(14, 399);
+        labelGoldInPocket.Location = new Point(132, 320);
         labelGoldInPocket.Name = "labelGoldInPocket";
         labelGoldInPocket.Size = new Size(47, 23);
         labelGoldInPocket.TabIndex = 17;
@@ -453,7 +455,7 @@ partial class MainWindow
         labelLevel.BackColor = Color.Transparent;
         labelLevel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelLevel.ForeColor = Color.White;
-        labelLevel.Location = new Point(132, 242);
+        labelLevel.Location = new Point(132, 231);
         labelLevel.Name = "labelLevel";
         labelLevel.Size = new Size(51, 23);
         labelLevel.TabIndex = 18;
@@ -465,7 +467,7 @@ partial class MainWindow
         labelExperience.BackColor = Color.Transparent;
         labelExperience.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelExperience.ForeColor = Color.White;
-        labelExperience.Location = new Point(132, 274);
+        labelExperience.Location = new Point(130, 261);
         labelExperience.Name = "labelExperience";
         labelExperience.Size = new Size(96, 23);
         labelExperience.TabIndex = 19;
@@ -529,9 +531,11 @@ partial class MainWindow
         panelEncounter.BackColor = Color.Transparent;
         panelEncounter.BackgroundImage = Properties.Resources.castle;
         panelEncounter.BackgroundImageLayout = ImageLayout.Stretch;
+        panelEncounter.Controls.Add(labelRegeneration);
         panelEncounter.Controls.Add(buttonBloodLust);
         panelEncounter.Controls.Add(buttonReturnToTown);
         panelEncounter.Controls.Add(pictureBoxLoot);
+        panelEncounter.Controls.Add(btn_attack);
         panelEncounter.Controls.Add(panelPopupGloves);
         panelEncounter.Controls.Add(labelInvisibleGloves);
         panelEncounter.Controls.Add(panelPopupBoots);
@@ -543,29 +547,41 @@ partial class MainWindow
         panelEncounter.Controls.Add(panelMonster);
         panelEncounter.Controls.Add(textBox1);
         panelEncounter.Controls.Add(btn_continue);
-        panelEncounter.Controls.Add(labelExperience);
         panelEncounter.Controls.Add(panelInventory);
-        panelEncounter.Controls.Add(labelLevel);
+        panelEncounter.Controls.Add(buttonDodgeJab);
+        panelEncounter.Controls.Add(labelHeroName);
         panelEncounter.Controls.Add(labelGoldInPocket);
-        panelEncounter.Controls.Add(btn_attack);
-        panelEncounter.Controls.Add(labelPlayerLifeSteal);
         panelEncounter.Controls.Add(labelPlayerStrength);
-        panelEncounter.Controls.Add(btn_block);
-        panelEncounter.Controls.Add(progressBarPlayerHP);
-        panelEncounter.Controls.Add(labelPlayerDodge);
-        panelEncounter.Controls.Add(labelPlayerHP);
+        panelEncounter.Controls.Add(labelExperience);
+        panelEncounter.Controls.Add(labelLevel);
         panelEncounter.Controls.Add(labelPlayerDamage);
+        panelEncounter.Controls.Add(labelPlayerLifeSteal);
+        panelEncounter.Controls.Add(labelPlayerDodge);
+        panelEncounter.Controls.Add(labelCritChance);
         panelEncounter.Controls.Add(labelPlayerArmor);
+        panelEncounter.Controls.Add(labelPlayerHP);
+        panelEncounter.Controls.Add(progressBarPlayerHP);
         panelEncounter.Controls.Add(labelInvisibleWeaponRightHandEquipped);
         panelEncounter.Controls.Add(pictureBoxHeroBag);
         panelEncounter.Controls.Add(pictureBoxHero);
         panelEncounter.Controls.Add(pictureBoxInventory);
-        panelEncounter.Controls.Add(labelHeroName);
         panelEncounter.Dock = DockStyle.Fill;
         panelEncounter.Location = new Point(0, 0);
         panelEncounter.Name = "panelEncounter";
         panelEncounter.Size = new Size(537, 768);
         panelEncounter.TabIndex = 22;
+        // 
+        // labelRegeneration
+        // 
+        labelRegeneration.AutoSize = true;
+        labelRegeneration.BackColor = Color.Transparent;
+        labelRegeneration.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+        labelRegeneration.ForeColor = Color.White;
+        labelRegeneration.Location = new Point(132, 291);
+        labelRegeneration.Name = "labelRegeneration";
+        labelRegeneration.Size = new Size(117, 23);
+        labelRegeneration.TabIndex = 39;
+        labelRegeneration.Text = "Regeneration";
         // 
         // panelPopupGloves
         // 
@@ -604,7 +620,7 @@ partial class MainWindow
         // 
         labelInvisibleGloves.AutoSize = true;
         labelInvisibleGloves.ForeColor = Color.Transparent;
-        labelInvisibleGloves.Location = new Point(154, 496);
+        labelInvisibleGloves.Location = new Point(143, 493);
         labelInvisibleGloves.Name = "labelInvisibleGloves";
         labelInvisibleGloves.Size = new Size(33, 60);
         labelInvisibleGloves.TabIndex = 30;
@@ -756,6 +772,18 @@ partial class MainWindow
         panelInventory.Name = "panelInventory";
         panelInventory.Size = new Size(159, 124);
         panelInventory.TabIndex = 23;
+        // 
+        // labelCritChance
+        // 
+        labelCritChance.AutoSize = true;
+        labelCritChance.BackColor = Color.Transparent;
+        labelCritChance.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+        labelCritChance.ForeColor = Color.White;
+        labelCritChance.Location = new Point(13, 383);
+        labelCritChance.Name = "labelCritChance";
+        labelCritChance.Size = new Size(37, 23);
+        labelCritChance.TabIndex = 38;
+        labelCritChance.Text = "crit";
         // 
         // pictureBoxHero
         // 
@@ -991,7 +1019,7 @@ partial class MainWindow
     private Label labelInventory;
     private Button buttonDiscardItem;
     private Button btn_attack;
-    private Button btn_block;
+    private Button buttonDodgeJab;
 
 
     public Panel panelGameOver;
@@ -1057,4 +1085,6 @@ partial class MainWindow
     public Label labelGoldPopup;
     public Button buttonReturnToTown;
     private Button buttonBloodLust;
+    public Label labelCritChance;
+    public Label labelRegeneration;
 }

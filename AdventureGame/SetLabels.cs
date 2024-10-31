@@ -8,4 +8,8 @@ namespace AdventureGame;
 
 public class SetLabels
 {
+
+    private MainWindow _mainWindow;
+
+
 }
