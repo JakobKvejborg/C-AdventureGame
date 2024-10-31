@@ -2,7 +2,6 @@
 
 internal class Player
 {
-    private MainWindow mainWindow;
 
     public string Name { get; set; }
     public int MaxHealth { get; set; }

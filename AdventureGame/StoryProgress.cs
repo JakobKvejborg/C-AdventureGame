@@ -124,7 +124,7 @@ internal class StoryProgress
                     StoryState++;
                 }
                 break;
-            case 12:
+            case 12: // The player enters town Act2 
                 if (progressFlag == true)
                 {
                     if (oneTimeMessage == true)
@@ -146,16 +146,28 @@ internal class StoryProgress
                 break;
 
             // Special cases:
-            case 100: // Act 1 West
+            case 100: // Act 1 West repeated
                 if (progressFlag == true)
                 {
                     Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, _mainWindow);
                 }
                 break;
-            case 101: // Act 1 East
+            case 101: // Act 1 East repeated
                 if (progressFlag == true)
                 {
                     Encounter.PerformEncounter(monsterContainer.listOfMonsters2, itemContainer.items2, _mainWindow);
+                }
+                break;
+            case 102: // Act 2 East repeated
+                if (progressFlag == true)
+                {
+                    Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items1, _mainWindow);
+                }
+                break;
+            case 103: // Act 2 West repeated
+                if (progressFlag == true)
+                {
+                    Encounter.PerformEncounter(monsterContainer.listOfMonstersSnowGoldGoblin, itemContainer.noItems, _mainWindow);
                 }
                 break;
         }

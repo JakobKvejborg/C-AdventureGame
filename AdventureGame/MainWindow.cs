@@ -1,12 +1,5 @@
-using AdventureGame.Properties;
-using Microsoft.VisualBasic.Devices;
-using System.Drawing.Drawing2D;
-using System.Drawing.Text;
 using System.Media;
-using System.Windows.Forms;
-using System.Windows.Media;
 using Color = System.Drawing.Color;
-using WMPLib;
 namespace AdventureGame;
 
 public partial class MainWindow : Form
@@ -267,33 +260,6 @@ public partial class MainWindow : Form
         buttonPlayGame.BackColor = Color.DarkRed;  // Revert to dark red when the mouse leaves
     }
 
-    public void UpdatePlayerLabels()
-    {
-        UpdatePlayerHealthBar();
-
-        // Setting the player stats labels
-        labelPlayerDamage.Text = $"Damage: {playerState.Player.Damage}";
-        labelPlayerStrength.Text = $"Strength: {playerState.Player.Strength}";
-        labelPlayerLifeSteal.Text = $"Lifesteal: {playerState.Player.Lifesteal}";
-        labelPlayerArmor.Text = $"Armor: {playerState.Player.Armor}";
-        labelPlayerDodge.Text = $"Dodge: {playerState.Player.DodgeChance}%";
-        labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket}";
-        labelLevel.Text = $"Level: {playerState.Player.Level}";
-        labelExperience.Text = $"Exp: {playerState.Player.Experience}/{playerState.Player.XpNeededToLevelUp}";
-    }
-
-    private void UpdatePlayerHealthBar()
-    {
-        //      Setting the progress bar and label player health
-        int currentHealth = playerState.Player.CurrentHealth;
-        int maxHealth = playerState.Player.MaxHealth;
-
-        CheckIfPlayerIsDefeated();
-        progressBarPlayerHP.Maximum = maxHealth;
-        progressBarPlayerHP.Value = currentHealth;
-        labelPlayerHP.Text = $"HP: {currentHealth}/{maxHealth}";
-    }
-
     private void progressBar1_Click(object sender, EventArgs e)
     {
 
@@ -469,7 +435,8 @@ public partial class MainWindow : Form
         }
         if (Act1BossDefeatedFlag && StoryProgress.playerIsInTown == true)
         {
-            Encounter.PerformEncounter(monsterContainer.listOfMonstersSnowGoldGoblin, itemContainer.emptyItems, this);
+            Encounter.PerformEncounter(monsterContainer.listOfMonstersSnowGoldGoblin, itemContainer.noItems, this);
+            storyProgress.StoryState = 103; // repeated encounters west act 1
         }
     }
 
@@ -485,6 +452,7 @@ public partial class MainWindow : Form
         if (Act1BossDefeatedFlag && StoryProgress.playerIsInTown == true)
         {
             Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items2, this);
+            storyProgress.StoryState = 102; // repeated encounters east act 1
         }
     }
 
@@ -539,6 +507,7 @@ public partial class MainWindow : Form
     {
         Act1BossDefeatedFlag = true;
         storyProgress.StoryState = 8;
+        buttonReturnToTown.Hide();
 
         // Unsubscribe from the event to avoid multiple invocations
         Encounter.EncounterCompleted -= OnAct1BossDefeated;
@@ -891,12 +860,68 @@ public partial class MainWindow : Form
         {
             if (Act1BossDefeatedFlag == false)
             {
-                storyProgress.StoryState = 7;
-                ButtonContinue();
+                storyProgress.StoryState = 7; // act 1 town
+            } else
+            {
+                storyProgress.StoryState = 12; // act 2 town
             }
+                ButtonContinue();
         }
     }
 
+    public void UpdateMonsterHealthLabels(Monster monster)
+    {
+        progressBarMonsterHP.Value = monster.CurrentHealth;
+        labelMonsterHp.Text = $"HP: {monster.CurrentHealth}/{monster.MaxHealth}";
+    }
+
+    // This method sets all the labels to match the encountered monsters stats
+    public void SetEncounteredMonsterLabels(Monster monster)
+    {
+        if (monster.Name == "Aldrus Thornfell" || monster.Name == "Another Boss Name")
+        {
+            textBox1.Text = $"You have awakened {monster.Name}! Your end is near.";
+        }
+        else
+        {
+            textBox1.Text = $"You have encountered a {monster.Name}! Kill it.";
+        }
+
+        int monsterHealth = monster.MaxHealth;
+        int monsterAttack = monster.MaxDamage;
+
+        labelMonsterName.Text = monster.Name;
+        progressBarMonsterHP.Maximum = monster.MaxHealth;
+        progressBarMonsterHP.Value = monster.CurrentHealth;
+        labelMonsterHp.Text = $"HP: {monster.CurrentHealth}/{monster.MaxHealth}";
+        pictureBoxMonster1.Image = monster.MonsterImage; // Sets the image to the encountered monster
+    }
+    public void UpdatePlayerLabels()
+    {
+        UpdatePlayerHealthBar();
+
+        // Setting the player stats labels
+        labelPlayerDamage.Text = $"Damage: {playerState.Player.Damage}";
+        labelPlayerStrength.Text = $"Strength: {playerState.Player.Strength}";
+        labelPlayerLifeSteal.Text = $"Lifesteal: {playerState.Player.Lifesteal}";
+        labelPlayerArmor.Text = $"Armor: {playerState.Player.Armor}";
+        labelPlayerDodge.Text = $"Dodge: {playerState.Player.DodgeChance}%";
+        labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket}";
+        labelLevel.Text = $"Level: {playerState.Player.Level}";
+        labelExperience.Text = $"Exp: {playerState.Player.Experience}/{playerState.Player.XpNeededToLevelUp}";
+    }
+
+    private void UpdatePlayerHealthBar()
+    {
+        //      Setting the progress bar and label player health
+        int currentHealth = playerState.Player.CurrentHealth;
+        int maxHealth = playerState.Player.MaxHealth;
+
+        CheckIfPlayerIsDefeated();
+        progressBarPlayerHP.Maximum = maxHealth;
+        progressBarPlayerHP.Value = currentHealth;
+        labelPlayerHP.Text = $"HP: {currentHealth}/{maxHealth}";
+    }
 
 }
 

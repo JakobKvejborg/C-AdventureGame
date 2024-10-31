@@ -8,13 +8,13 @@ namespace AdventureGame;
 
 public class ItemContainer
 {
-    public List<Item> emptyItems;
+    public List<Item> noItems;
     public List<Item> items1;
     public List<Item> items2;
 
     public ItemContainer() 
     {
-        emptyItems = new List<Item>();
+        noItems = new List<Item>();
         items1 = new List<Item>();
         items2 = new List<Item>();
         AddItemsToList();
@@ -34,14 +34,16 @@ public class ItemContainer
         Item item5b = new("Sandals", ItemType.Boots, 0, 0, 0, 0, 8, 0, 0, 0, 2);
         Item item6b = new("Gloves", ItemType.Gloves, 0, 0, 0, 2, 0, 1, 0, 0, 4);
         Item item7b = new("Leather Gloves", ItemType.Gloves, 11, 0, 0, 0, 0, 1, 0, 0, 5);
-        Item item8b = new("Health Boots", ItemType.Boots, 0, 3, 0, 0, 0, 0, 0, 3, 3);
+        Item item8b = new("Health Boots", ItemType.Boots, 0, 2, 0, 0, 0, 0, 0, 3, 3);
+        Item item9b = new("Rusty Boots", ItemType.Boots, 5, 2, 5, 3, 1, 0, 0, 3, 3);
 
         // List of items 1
-        emptyItems.Add(null);
+        noItems.Add(null);
         items1.Add(item1a);
         items1.Add(item2a);
         items1.Add(item1b);
         items1.Add(item6b);
+        items1.Add(null);
         items1.Add(null);
         items1.Add(null);
         items1.Add(null);
@@ -63,6 +65,8 @@ public class ItemContainer
         items2.Add(item5b);
         items2.Add(item7b);
         items2.Add(item8b);
+        items2.Add(item9b);
+        items2.Add(null);
         items2.Add(null);
         items2.Add(null);
         items2.Add(null);

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace AdventureGame;
 
-internal class Monster
+public class Monster
 {
 
     public string Name { get; set; }
@@ -34,7 +34,7 @@ internal class Monster
         MonsterImage = monsterImage;
     }
 
-    public String ToString()
+    public override String ToString()
     {
         return $"Monster: {Name}, Health: {MaxHealth}";
     }

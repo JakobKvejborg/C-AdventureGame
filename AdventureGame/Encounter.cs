@@ -16,6 +16,7 @@ internal static class Encounter
     private static readonly Random randomMonster = new Random();
     private static readonly Random randomItem = new Random();
     private static readonly Random randomDodge = new Random();
+    private static readonly Random randomCrit = new Random();
     public static List<Item>? encounteredMonsterItems; // saves the list of items from the parameter til at property
     public static event EventHandler? EncounterCompleted;
     public static MusicAndSound sounds = new MusicAndSound();
@@ -38,10 +39,9 @@ internal static class Encounter
 
         // Finds a random monster from the list of monsters to fight against, and stores it in the Monster property
         Monster = GetRandomMonster(listOfMonsters);
-        SetEncounteredMonsterLabels(Monster, mainWindow);
+        mainWindow.SetEncounteredMonsterLabels(Monster);
 
     }
-
 
     public static Monster GetRandomMonster(List<Monster> listOfMonsters)
     {
@@ -55,35 +55,21 @@ internal static class Encounter
         return monsterClone;
     }
 
-    // This method sets all the labels to match the encountered monsters stats
-    private static void SetEncounteredMonsterLabels(Monster encounteredMonster, MainWindow mainWindow)
-    {
-        if (encounteredMonster.Name == "Aldrus Thornfell" || encounteredMonster.Name == "Another Boss Name")
-        {
-            mainWindow.textBox1.Text = $"You have awakened {encounteredMonster.Name}! Your end is near.";
-        }
-        else
-        {
-            mainWindow.textBox1.Text = $"You have encountered a {encounteredMonster.Name}! Kill it.";
-        }
-
-        int monsterHealth = encounteredMonster.MaxHealth;
-        int monsterAttack = encounteredMonster.MaxDamage;
-
-        mainWindow.labelMonsterName.Text = encounteredMonster.Name;
-        mainWindow.progressBarMonsterHP.Maximum = encounteredMonster.MaxHealth;
-        mainWindow.progressBarMonsterHP.Value = encounteredMonster.CurrentHealth;
-        mainWindow.labelMonsterHp.Text = $"HP: {encounteredMonster.CurrentHealth}/{encounteredMonster.MaxHealth}";
-        mainWindow.pictureBoxMonster1.Image = encounteredMonster.MonsterImage; // Sets the image to the encountered monster
-    }
-
-    public static void PlayerAttacks(PlayerState playerState, MainWindow mainWindow)
+    public static async void PlayerAttacks(PlayerState playerState, MainWindow mainWindow)
     {
         if (Monster != null && Monster.CurrentHealth > 0)
         {
             mainWindow.textBox1.Text = (""); // clears the textbox
-            int playerAttackDamageTotal = playerState.Player.CalculateTotalDamage(playerState); // The player deals damage
-            Monster.CurrentHealth -= playerAttackDamageTotal;
+            int playerAttackDamageTotal = playerState.Player.CalculateTotalDamage(playerState); // The players damage
+
+            // Checks if the player crits
+            bool isCriticalHit = playerState.Player.CritChance >= randomCrit.Next(1, 101); // Roll between 1-100
+            if (isCriticalHit)
+            {
+                playerAttackDamageTotal = (int)(playerAttackDamageTotal * 1.5); // Increase damage by 1.5x for a critical hit
+                mainWindow.textBox1.AppendText("Critical Hit! ");
+            }
+            Monster.CurrentHealth -= playerAttackDamageTotal; // The monster loses health
 
             // This makes sure the monsters' hp doesn't drop below 0
             if (Monster.CurrentHealth < 0)
@@ -91,12 +77,12 @@ internal static class Encounter
                 Monster.CurrentHealth = 0;
             }
 
-            mainWindow.progressBarMonsterHP.Value = Monster.CurrentHealth;
+            mainWindow.UpdateMonsterHealthLabels(Monster);
             AttackText(playerState, mainWindow);
-            mainWindow.labelMonsterHp.Text = $"HP: {Monster.CurrentHealth}/{Monster.MaxHealth}";
 
             if (Monster.CurrentHealth > 0)
             {
+                await Task.Delay(180);
                 MonsterAttacks(playerState, mainWindow); // Monster attacks back if still alive
             }
         }
@@ -118,7 +104,7 @@ internal static class Encounter
     // This method is called by MainWindow every time the player attacks
     public static async void MonsterAttacks(PlayerState playerState, MainWindow mainWindow)
     {
-        if (playerState.Player.CurrentHealth > 0) // checks if player is dead
+        if (playerState.Player.CurrentHealth > 0 && Monster != null) // checks if player is dead
         {
             // Player dodge
             int dodgeChanceRoll = randomDodge.Next(1, 101);
@@ -134,8 +120,7 @@ internal static class Encounter
 
             playerState.Player.CurrentHealth -= damageTaken;
             playerState.Player.CurrentHealth = Math.Max(playerState.Player.CurrentHealth, 0);
-            mainWindow.progressBarPlayerHP.Value = playerState.Player.CurrentHealth; // game crashed here
-            mainWindow.labelPlayerHP.Text = $"HP: {playerState.Player.CurrentHealth.ToString()}/{playerState.Player.MaxHealth}";
+            mainWindow.UpdatePlayerLabels();
             mainWindow.textBox1.AppendText($"The horror attacks you back and deals {monsterDamageDealt} damage.");
 
         }
