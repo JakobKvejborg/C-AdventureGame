@@ -16,6 +16,7 @@ internal class MonsterContainer
     public List<Monster> listOfMonstersBossAct1 { get; private set; }
     public List<Monster> listOfSnowMonsters1 { get; private set; }
     public List<Monster> listOfMonstersSnowGoldGoblin { get; private set; }
+    public List<Monster> listOfMonstersBossAct2 { get; private set; }
 
     public MonsterContainer()
     {
@@ -24,6 +25,7 @@ internal class MonsterContainer
         listOfMonstersBossAct1 = new List<Monster>();
         listOfSnowMonsters1 = new List<Monster>();
         listOfMonstersSnowGoldGoblin = new List<Monster>();
+        listOfMonstersBossAct2 = new List<Monster>();
         AddMonstersToList();
     }
 
@@ -46,6 +48,7 @@ internal class MonsterContainer
         Image starvedImage = GetMonsterImage("starved.png");
         Image batImage = GetMonsterImage("bat.png");
         Image woodHorrorImage = GetMonsterImage("woodhorror.png");
+        Image deadTrollImage = GetMonsterImage("deadtroll.png");
         Image act1BossImage = GetMonsterImage("bossact1.png");
 
         Image snowDemonImage = GetMonsterImage("snowdemon.png");
@@ -54,6 +57,7 @@ internal class MonsterContainer
         Image snowHorrorImage = GetMonsterImage("snowhorror.png");
         Image snowMooseImage = GetMonsterImage("snowmoose.png");
         Image snowGoblinImage = GetMonsterImage("goldgoblin.png");
+        Image act2BossImage = GetMonsterImage("bossact2.png"); 
 
         // List of normal monsters NORMAL - NOPREFIX - SNOW - NIGHTMARE - ELITE - HORROR - HELLISH - CORRUPTED
         Monster normalGoblin = new("Goblin", 10, 10, 0, 1, 1, 6, 1, normalGoblinImage);
@@ -71,11 +75,12 @@ internal class MonsterContainer
         Monster starved = new("Starved", 13, 13, 1, 0, 6, 19, 0, starvedImage);
         Monster bat = new("Bat", 16, 16, 4, 0, 0, 12, 0, batImage);
         Monster woodHorror = new("Wood Horror", 15, 15, 0, 0, 8, 22, 3, woodHorrorImage);
+        Monster deadTroll = new("Dead Troll", 14, 14, 3, 0, 1, 20, 0, deadTrollImage);
 
         // Special enemies
         Monster act1boss = new("Aldrus Thornfell", 80, 80, 5, 0, 5, 40, 5, act1BossImage); // Act1 boss
         Monster snowGoldGoblin = new("Gold Goblin", 30, 30, 5, 0, 4, 0, 9, snowGoblinImage);
-
+        Monster act2boss = new("Wintermaw", 200, 200, 10, 0, 15, 50, 0, act2BossImage);
 
         // Act 2 Snow Monsters
         Monster snowDemon = new("Snow Demon", 29, 29, 8, 0, 0, 22, 0, snowDemonImage);
@@ -102,10 +107,12 @@ internal class MonsterContainer
         listOfMonsters2.Add(starved);
         listOfMonsters2.Add(bat);
         listOfMonsters2.Add(woodHorror);
+        listOfMonsters2.Add(deadTroll);
 
         // Special enemies
         listOfMonstersBossAct1.Add(act1boss);
         listOfMonstersSnowGoldGoblin.Add(snowGoldGoblin);
+        listOfMonstersBossAct2.Add(act2boss);
 
         // Act 2 list of snow monsters
         listOfSnowMonsters1.Add(snowDemon);

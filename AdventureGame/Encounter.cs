@@ -12,15 +12,15 @@ namespace AdventureGame;
 internal static class Encounter
 {
     public static Monster Monster { get; private set; } // Stores the monster encountered
-    public static Item itemDroppedFromMonster { get; set; } // Stores the randomly found item
-    private static readonly Random randomMonster = new Random();
-    private static readonly Random randomItem = new Random();
-    private static readonly Random randomDodge = new Random();
-    private static readonly Random randomCrit = new Random();
-    public static List<Item>? encounteredMonsterItems; // saves the list of items from the parameter til at property
+    public static Item ItemDroppedFromMonster { get; set; } // Stores the randomly found item
+    private static readonly Random _randomMonster = new Random();
+    private static readonly Random _randomItem = new Random();
+    private static readonly Random _randomDodge = new Random();
+    private static readonly Random _randomCrit = new Random();
+    public static List<Item>? EncounteredMonsterItems; // saves the list of items from the parameter til at property
     public static event EventHandler? EncounterCompleted;
     public static MusicAndSound sounds = new MusicAndSound();
-    public static bool BloodLust { get; set; }
+    public static bool PlayerDodgedFlag;
 
 
     public static void PerformEncounter(List<Monster> listOfMonsters, List<Item> listOfItems, MainWindow mainWindow)
@@ -35,7 +35,7 @@ internal static class Encounter
         mainWindow.textBox1.Clear();
         mainWindow.panelMonster.Show();
 
-        encounteredMonsterItems = listOfItems; // saves the list of items from the parameter til at property
+        EncounteredMonsterItems = listOfItems; // saves the list of items from the parameter til at property
 
         // Finds a random monster from the list of monsters to fight against, and stores it in the Monster property
         Monster = GetRandomMonster(listOfMonsters);
@@ -45,90 +45,15 @@ internal static class Encounter
 
     public static Monster GetRandomMonster(List<Monster> listOfMonsters)
     {
-        int randomMonsterIndex = randomMonster.Next(listOfMonsters.Count);
+        int randomMonsterIndex = _randomMonster.Next(listOfMonsters.Count);
         Monster encounteredMonster = listOfMonsters[randomMonsterIndex];
 
-        // TEST Return a deep copy of monster
         Monster monsterClone = encounteredMonster.CloneMonster();
 
         //return encounteredMonster;
         return monsterClone;
     }
 
-    //public static async void PlayerAttacks(PlayerState playerState, MainWindow mainWindow)
-    //{
-    //    if (Monster != null && Monster.CurrentHealth > 0)
-    //    {
-    //        int playerAttackDamageTotal = playerState.Player.CalculateTotalDamage(playerState); // The players damage
-
-    //        // Checks if the player crits
-    //        bool isCriticalHit = playerState.Player.CritChance >= randomCrit.Next(1, 101); // Roll between 1-100
-    //        if (isCriticalHit)
-    //        {
-    //            playerAttackDamageTotal = (int)(playerAttackDamageTotal * 1.8); // Increase damage by 1.5x for a critical hit
-    //            sounds.PlayCritBloodSound();
-    //        }
-    //        Monster.CurrentHealth -= playerAttackDamageTotal; // The monster loses health
-
-    //        // This makes sure the monsters' hp doesn't drop below 0
-    //        if (Monster.CurrentHealth < 0)
-    //        {
-    //            Monster.CurrentHealth = 0;
-    //        }
-
-    //        mainWindow.UpdateMonsterHealthLabels(Monster);
-    //        AttackText(playerState, mainWindow, playerAttackDamageTotal);
-
-    //        if (Monster.CurrentHealth > 0)
-    //        {
-    //            await Task.Delay(180);
-    //            MonsterAttacks(playerState, mainWindow); // Monster attacks back if still alive
-    //        }
-    //    }
-    //}
-    //public static async void BloodLustAttack(PlayerState playerState, MainWindow mainWindow)
-    //{
-    //    if (Monster != null && Monster.CurrentHealth > 0)
-    //    {
-    //        int playerAttackDamageTotal = (int)(playerState.Player.CalculateTotalDamage(playerState) * 1.3); // 1.3x damage for Blood Lust attack
-
-    //        // Cost the player 15% of max health
-    //        int healthCost = (int)(playerState.Player.MaxHealth * 0.15);
-    //        playerState.Player.CurrentHealth -= healthCost;
-    //        playerState.Player.CurrentHealth = Math.Max(playerState.Player.CurrentHealth, 0); // Prevent negative health
-
-    //        // Critical hit check (optional, apply only if crit chance should work with Blood Lust)
-    //        bool isCriticalHit = playerState.Player.CritChance >= randomCrit.Next(1, 101);
-    //        if (isCriticalHit)
-    //        {
-    //            playerAttackDamageTotal = (int)(playerAttackDamageTotal * 1.8); // 1.6x critical multiplier
-    //            sounds.PlayCritBloodSound();
-    //        }
-
-    //        // Apply damage to the monster
-    //        Monster.CurrentHealth -= playerAttackDamageTotal;
-    //        if (Monster.CurrentHealth < 0)
-    //        {
-    //            Monster.CurrentHealth = 0;
-    //        }
-
-    //        // Update the UI
-    //        mainWindow.UpdateMonsterHealthLabels(Monster);
-    //        mainWindow.UpdatePlayerLabels(); // Update player health due to health cost
-    //        AttackText(playerState, mainWindow, playerAttackDamageTotal); // Show attack text
-
-    //        // If the monster is still alive, let it counterattack after a delay
-    //        if (Monster.CurrentHealth > 0)
-    //        {
-    //            await Task.Delay(180);
-    //            MonsterAttacks(playerState, mainWindow);
-    //        }
-    //        else
-    //        {
-    //            MonsterIsDefeated(playerState, mainWindow);
-    //        }
-    //    }
-    //}
     public static async void BloodLustAttack(PlayerState playerState, MainWindow mainWindow)
     {
         if (Monster != null && Monster.CurrentHealth > 0)
@@ -143,20 +68,45 @@ internal static class Encounter
         }
     }
 
-    public static async void PlayerNormalAttacks(PlayerState playerState, MainWindow mainWindow)
+    public static async void NormalAttack(PlayerState playerState, MainWindow mainWindow)
     {
         if (Monster != null && Monster.CurrentHealth > 0)
         {
             int playerAttackDamageTotal = playerState.Player.CalculateTotalDamage(playerState);
-            await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal); 
+            await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal);
+        }
+    }
+    public static async void DodgeJabAttack(PlayerState playerState, MainWindow mainWindow)
+    {
+        int playerAttackDamageTotal = playerState.Player.CalculateTotalDamage(playerState);
+        if (Monster != null && Monster.CurrentHealth > 0)
+        {
+            if (!PlayerDodgedFlag)
+            {
+                playerAttackDamageTotal = (int)(playerAttackDamageTotal * 0.4);
+            }
+            else
+            {
+                playerAttackDamageTotal = (int)(playerAttackDamageTotal * 1.4);
+            }
+            PlayerDodgedFlag = false;
+            await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal);
         }
     }
 
     // Helper method for all attack methods
     private static async Task ExecuteAttack(PlayerState playerState, MainWindow mainWindow, int playerAttackDamageTotal)
     {
+        // Player lifesteals before crit (we don't want critlifesteal)
+        if (playerState.Player.Lifesteal > 0)
+        {
+            int playerLifeSteal = (playerAttackDamageTotal * playerState.Player.Lifesteal) / 100;
+            playerState.Player.CurrentHealth += playerLifeSteal;
+            playerState.Player.CurrentHealth = Math.Min(playerState.Player.CurrentHealth, playerState.Player.MaxHealth); // ensures currenthealth doesn't exceed maxhealth
+        }
+
         // Check for critical hit
-        bool isCriticalHit = playerState.Player.CritChance >= randomCrit.Next(1, 101);
+        bool isCriticalHit = playerState.Player.CritChance >= _randomCrit.Next(1, 101);
         if (isCriticalHit)
         {
             playerAttackDamageTotal = (int)(playerAttackDamageTotal * 1.5); // Increase damage for a critical hit
@@ -177,7 +127,7 @@ internal static class Encounter
         // Check if the monster is still alive
         if (Monster.CurrentHealth > 0)
         {
-            await Task.Delay(180);
+            await Task.Delay(200);
             MonsterAttacks(playerState, mainWindow); // Monster attacks back if still alive
         }
         else
@@ -186,11 +136,10 @@ internal static class Encounter
         }
     }
 
-
     // Helper method for some UI text, depending on which monster type is encountered
     private static void AttackText(PlayerState playerState, MainWindow mainWindow, int playerAttackDamageTotal)
     {
-        if (Monster.Name == "Aldrus Thornfell" || Monster.Name == "Another Boss Name")
+        if (Monster.Name == "Aldrus Thornfell" || Monster.Name == "Wintermaw") // add alls boss names
         {
             mainWindow.textBox1.AppendText($"You attack {Monster.Name}, and deal {playerAttackDamageTotal} damage. \r\n");
         }
@@ -206,10 +155,12 @@ internal static class Encounter
         if (playerState.Player.CurrentHealth > 0 && Monster != null) // checks if player is dead
         {
             // Player dodge
-            int dodgeChanceRoll = randomDodge.Next(1, 101);
+            int dodgeChanceRoll = _randomDodge.Next(1, 101);
             if (dodgeChanceRoll <= playerState.Player.DodgeChance)
             {
                 mainWindow.textBox1.AppendText("\n\rYou dodged the horror's attack!");
+                PlayerDodgedFlag = true; // This is used for a special Dodge Jab attack
+                sounds.PlayDodgeSound();
                 return; // Exit the method if the player dodges
             }
             // Stores the monsters damage dealt in a local variable to avoid the damage being calculated twice
@@ -248,6 +199,7 @@ internal static class Encounter
         }
         if (Monster.CurrentHealth <= 0)
         {
+            PlayerDodgedFlag = false;
             mainWindow.textBox1.AppendText($"\n\rYou have defeated the horror. You gain {Monster.MonsterExperience}xp. ");
             mainWindow.panelMonster.Hide(); // Hides the monster once it's defeated
             PlayerGetsExperiencePoints(playerState, mainWindow);
@@ -275,31 +227,31 @@ internal static class Encounter
     public static void GenerateItemFoundOnMonster(PlayerState playerState, MainWindow mainWindow)
     {
         //Get a random item from the list
-        int randomItemIndex = randomItem.Next(encounteredMonsterItems.Count);
-        Item foundItem = encounteredMonsterItems[randomItemIndex];
+        int randomItemIndex = _randomItem.Next(EncounteredMonsterItems.Count);
+        Item foundItem = EncounteredMonsterItems[randomItemIndex];
 
         if (Monster == null || foundItem == null)
         {
             return;
         }
 
-        itemDroppedFromMonster = foundItem.CloneItem(); // This stores the item found in a property on class level
-        if (itemDroppedFromMonster != null)
+        ItemDroppedFromMonster = foundItem.CloneItem(); // This stores the item found in a property on class level
+        if (ItemDroppedFromMonster != null)
         {
             mainWindow.pictureBoxLoot.Show();
         }
+
     }
 
     // This method is called fromm mainWindow when the loot is clicked
     public static void ItemIsLootetFromMonster(PlayerState playerState, MainWindow mainWindow)
     {
-        if (itemDroppedFromMonster != null)
+        if (ItemDroppedFromMonster != null)
         {
             // Tell the player which item has been found
-            mainWindow.textBox1.AppendText($"\r\nYou find an item on the horror's corpse: {itemDroppedFromMonster.Name}.");
-            mainWindow.comboBoxInventory.Items.Add(itemDroppedFromMonster); // the combobox holds the player inventory, not the player
-            mainWindow.comboBoxInventory.SelectedItem = itemDroppedFromMonster;
-
+            mainWindow.textBox1.AppendText($"\r\nYou find an item on the horror's corpse: {ItemDroppedFromMonster.Name}.");
+            mainWindow.comboBoxInventory.Items.Add(ItemDroppedFromMonster); // the combobox holds the player inventory, not the player
+            mainWindow.comboBoxInventory.SelectedItem = ItemDroppedFromMonster;
         }
     }
 
@@ -327,7 +279,7 @@ internal static class Encounter
 
     public static void ResetDroppedItem()
     {
-        itemDroppedFromMonster = null;
+        ItemDroppedFromMonster = null;
     }
 }
 

@@ -58,6 +58,13 @@ public class Item
         LevelRequirement = levelRequirement;
     }
 
+    // Constructor for mystical type items
+    public Item(string name, ItemType type)
+    {
+        Name = name;
+        Type = type;
+    }
+
     public override string ToString()
     {
         var stats = new Dictionary<string, int>
@@ -85,18 +92,19 @@ public class Item
 
     public void UpgradeItem()
     {
-        if (IsItemUpgraded)
+        if (IsItemUpgraded || Type == ItemType.Amulet)
         {
             return;
         }
         Random random = new Random();
         Name = "Upgraded " + Name;
+        LevelRequirement += 1;
         IsItemUpgraded = true;
         switch (Type)
         {
             case ItemType.WeaponRightHand:
                 // Randomly upgrade a stat for weapons
-                int weaponUpgradeChoice = random.Next(1, 5); // 1 to 5 for four stats
+                int weaponUpgradeChoice = random.Next(1, 4); // 1 to 4 for three stats
                 switch (weaponUpgradeChoice)
                 {
                     case 1: // Damage
@@ -108,10 +116,6 @@ public class Item
                     case 3: // Lifesteal
                         Lifesteal += random.Next(1, 5); // Increase Lifesteal by 1 or 4
                         break;
-                    case 4: // SkillLevel
-                        SkillLevel += random.Next(1, 2); // Increase Skilllevel by 1 or 2
-                        break;
-                        // Add more cases if needed
                 }
                 break;
 
@@ -146,14 +150,17 @@ public class Item
                 break;
             case ItemType.Gloves:
                 // Randomly upgrade a stat for armor
-                int GlovesUpgradeChoice = random.Next(1, 3); // 1 to 3 for two stats
+                int GlovesUpgradeChoice = random.Next(1, 4); // 1 to 4 for three stats
                 switch (GlovesUpgradeChoice)
                 {
                     case 1: // Armor
                         Armor += random.Next(1, 4); // Increase Health by 1 to 3
                         break;
                     case 2: // Strength
-                        Strength += random.Next(1, 6); // Increase Strength by 1 to 5
+                        Strength += random.Next(1, 8); // Increase Strength by 1 to 5
+                        break;
+                    case 3:
+                        Regeneration += random.Next(1, 4); // increase regen by 1 to 3
                         break;
                         // Add more cases if needed
                 }

@@ -66,6 +66,7 @@ internal class StoryProgress
                 break;
             case 2:
                 _mainWindow.pictureBoxHero.Show();
+                _mainWindow.btn_attack.Show();
                 _mainWindow.pictureBoxHeroBag.Show();
                 Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, _mainWindow);
                 _mainWindow.textBox1.AppendText("");
@@ -87,7 +88,8 @@ internal class StoryProgress
                     if (oneTimeMessage == true)
                     {
                         sounds.PlayAct1TownMusic();
-                        _mainWindow.SetAct1TownBackgroundimage(); // TODO DELETE
+                        _mainWindow.SetAct1TownBackgroundimage(); // TODO 
+                        _mainWindow.pictureBoxAct1ArtsTeacher.Image = imageSetter.GetImagePath("act1artsteacher.png");
                         _mainWindow.txtBox_Town.Text = "You come across a small town in the middle of the forest. " +
                             "While the town isn’t completely deserted, it's dead quiet. " +
                             "Be vary of the road straight ahead. Choose a path.";
@@ -158,16 +160,16 @@ internal class StoryProgress
                     Encounter.PerformEncounter(monsterContainer.listOfMonsters2, itemContainer.items2, _mainWindow);
                 }
                 break;
-            case 102: // Act 2 East repeated
-                if (progressFlag == true)
-                {
-                    Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items1, _mainWindow);
-                }
-                break;
-            case 103: // Act 2 West repeated
+            case 102: // Act 2 West repeated
                 if (progressFlag == true)
                 {
                     Encounter.PerformEncounter(monsterContainer.listOfMonstersSnowGoldGoblin, itemContainer.noItems, _mainWindow);
+                }
+                break;
+            case 103: // Act 2 East repeated
+                if (progressFlag == true)
+                {
+                    Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items3, _mainWindow);
                 }
                 break;
         }
@@ -178,10 +180,14 @@ internal class StoryProgress
         _mainWindow.pictureBoxTown.Image = imageSetter.GetImagePath("act2town.png"); // Sets the town image to Act2Town
         _mainWindow.pictureBoxHealer.Image = imageSetter.GetImagePath("act2healer.png");
         _mainWindow.pictureBoxAct2Smith.Image = imageSetter.GetImagePath("act2smith.png");
+        _mainWindow.pictureBoxAct1ArtsTeacher.Hide();
+        _mainWindow.buttonLearnTechnique.Hide();
         _mainWindow.pictureBoxHealer.Size = new Size(210, 310);
+        _mainWindow.pictureBoxHealer.SizeMode = PictureBoxSizeMode.Zoom;
         _mainWindow.pictureBoxAct2Smith.Show();
         _mainWindow.comboBoxUpgradeItems.Show();
         _mainWindow.buttonUpgradeItem.Show();
+        _mainWindow.pictureBoxTown.Show();
     }
 
     private void PlayerIsInTown()

@@ -22,6 +22,11 @@ internal class Player
     public int XpNeededToLevelUp => ((10 * (Level + Level)) + (Level * Level) - 1);
     public int CritChance { get; set; }
     public int Regeneration { get; set; }
+    public int PriceToLearnTechnique { get; set; } = 10;
+    public bool techniqueBloodLustIsLearned { get; set; } = false;
+    public bool techniqueDodgeJabIsLearned { get; set; } = false;
+    public int advanceTechnique = 0;
+
 
     public Player(string name, int maxHealth, int currentHealth, int damage, int strength, int lifesteal,
         int armor, int dodgeChance, int goldInPocket, int experience, int level, int critChance, int regeneration)
@@ -60,7 +65,7 @@ internal class Player
 
     public int CalculateTotalDamage(PlayerState playerState)
     {
-        return playerState.Player.Damage + ((playerState.Player.Strength / 2) * playerState.Player.Level / 3);
+        return playerState.Player.Damage + ((playerState.Player.Strength / 6) * (playerState.Player.Level / 3));
     }
 
     public void AddItemToInventory(Item foundItem)

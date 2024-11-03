@@ -49,6 +49,7 @@ partial class MainWindow
         pictureBoxLoot = new PictureBox();
         buttonReturnToTown = new Button();
         buttonBloodLust = new Button();
+        buttonUpgradeItem = new Button();
         labelInvisibleWeaponRightHandEquipped = new Label();
         textBox1 = new TextBox();
         comboBoxInventory = new ComboBox();
@@ -70,15 +71,17 @@ partial class MainWindow
         labelMonsterHp = new Label();
         labelMonsterName = new Label();
         panelEncounter = new Panel();
-        labelRegeneration = new Label();
-        panelPopupGloves = new Panel();
-        labelInfoGlovesEquipped = new Label();
-        labelGlovesName = new Label();
-        labelInvisibleGloves = new Label();
+        panelPopupAmulet = new Panel();
+        labelInfoAmuletEquipped = new Label();
+        labelAmuletName = new Label();
         panelPopupBoots = new Panel();
         labelInfoBootsEquipped = new Label();
         labelBootsName = new Label();
         labelInvisibleBoots = new Label();
+        panelPopupGloves = new Panel();
+        labelInfoGlovesEquipped = new Label();
+        labelGlovesName = new Label();
+        labelInvisibleGloves = new Label();
         panelPopupArmor = new Panel();
         labelInfoArmorEquipped = new Label();
         labelArmorName = new Label();
@@ -89,17 +92,23 @@ partial class MainWindow
         labelWeaponRightHandName = new Label();
         panelInventory = new Panel();
         labelCritChance = new Label();
+        labelInvisibleAmulet = new Label();
+        labelInvisibleHelmet = new Label();
+        labelRegeneration = new Label();
+        labelInvisibleBelt = new Label();
         pictureBoxHero = new PictureBox();
         pictureBoxInventory = new PictureBox();
         panelTown = new Panel();
+        buttonLearnTechnique = new Button();
+        pictureBoxAct1ArtsTeacher = new PictureBox();
         comboBoxUpgradeItems = new ComboBox();
-        buttonUpgradeItem = new Button();
         txtBox_Town = new TextBox();
         pictureBoxCompass = new PictureBox();
         pictureBoxTown = new PictureBox();
         pictureBoxHealer = new PictureBox();
         pictureBoxAct2Smith = new PictureBox();
         panelStartScreen = new Panel();
+        labelGameAuthorName = new Label();
         buttonPlayGame = new Button();
         labelGameTitle = new Label();
         panelGameOver = new Panel();
@@ -109,14 +118,16 @@ partial class MainWindow
         panelMonster.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).BeginInit();
         panelEncounter.SuspendLayout();
-        panelPopupGloves.SuspendLayout();
+        panelPopupAmulet.SuspendLayout();
         panelPopupBoots.SuspendLayout();
+        panelPopupGloves.SuspendLayout();
         panelPopupArmor.SuspendLayout();
         panelPopupWeaponRightHand.SuspendLayout();
         panelInventory.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHero).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxInventory).BeginInit();
         panelTown.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxAct1ArtsTeacher).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxCompass).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxTown).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHealer).BeginInit();
@@ -138,9 +149,9 @@ partial class MainWindow
         // 
         // btn_attack
         // 
-        btn_attack.Location = new Point(116, 710);
+        btn_attack.Location = new Point(9, 725);
         btn_attack.Name = "btn_attack";
-        btn_attack.Size = new Size(94, 29);
+        btn_attack.Size = new Size(95, 35);
         btn_attack.TabIndex = 5;
         btn_attack.Text = "Attack";
         toolTip.SetToolTip(btn_attack, "\"Space\"");
@@ -197,7 +208,7 @@ partial class MainWindow
         // 
         // buttonHeal
         // 
-        buttonHeal.Location = new Point(35, 597);
+        buttonHeal.Location = new Point(35, 672);
         buttonHeal.Name = "buttonHeal";
         buttonHeal.Size = new Size(124, 31);
         buttonHeal.TabIndex = 11;
@@ -257,7 +268,7 @@ partial class MainWindow
         labelPlayerArmor.BackColor = Color.Transparent;
         labelPlayerArmor.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerArmor.ForeColor = Color.White;
-        labelPlayerArmor.Location = new Point(14, 324);
+        labelPlayerArmor.Location = new Point(12, 324);
         labelPlayerArmor.Name = "labelPlayerArmor";
         labelPlayerArmor.Size = new Size(59, 23);
         labelPlayerArmor.TabIndex = 11;
@@ -267,9 +278,9 @@ partial class MainWindow
         // pictureBoxLoot
         // 
         pictureBoxLoot.Image = Properties.Resources.loot;
-        pictureBoxLoot.Location = new Point(312, 331);
+        pictureBoxLoot.Location = new Point(315, 343);
         pictureBoxLoot.Name = "pictureBoxLoot";
-        pictureBoxLoot.Size = new Size(188, 144);
+        pictureBoxLoot.Size = new Size(181, 130);
         pictureBoxLoot.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxLoot.TabIndex = 34;
         pictureBoxLoot.TabStop = false;
@@ -291,14 +302,25 @@ partial class MainWindow
         // 
         // buttonBloodLust
         // 
-        buttonBloodLust.Location = new Point(11, 710);
+        buttonBloodLust.Location = new Point(108, 725);
         buttonBloodLust.Name = "buttonBloodLust";
-        buttonBloodLust.Size = new Size(94, 29);
+        buttonBloodLust.Size = new Size(97, 35);
         buttonBloodLust.TabIndex = 37;
         buttonBloodLust.Text = "Bloodlust";
         toolTip.SetToolTip(buttonBloodLust, "\"Q\"");
         buttonBloodLust.UseVisualStyleBackColor = true;
         buttonBloodLust.Click += buttonBloodLust_Click;
+        // 
+        // buttonUpgradeItem
+        // 
+        buttonUpgradeItem.Location = new Point(436, 311);
+        buttonUpgradeItem.Name = "buttonUpgradeItem";
+        buttonUpgradeItem.Size = new Size(81, 28);
+        buttonUpgradeItem.TabIndex = 15;
+        buttonUpgradeItem.Text = "Upgrade 50G";
+        toolTip.SetToolTip(buttonUpgradeItem, "\"U\"");
+        buttonUpgradeItem.UseVisualStyleBackColor = true;
+        buttonUpgradeItem.Click += buttonUpgradeItem_Click;
         // 
         // labelInvisibleWeaponRightHandEquipped
         // 
@@ -349,12 +371,13 @@ partial class MainWindow
         // 
         // buttonDodgeJab
         // 
-        buttonDodgeJab.Location = new Point(220, 710);
+        buttonDodgeJab.Location = new Point(213, 723);
         buttonDodgeJab.Name = "buttonDodgeJab";
-        buttonDodgeJab.Size = new Size(94, 29);
+        buttonDodgeJab.Size = new Size(97, 37);
         buttonDodgeJab.TabIndex = 7;
         buttonDodgeJab.Text = "Dodge Jab";
         buttonDodgeJab.UseVisualStyleBackColor = true;
+        buttonDodgeJab.Click += buttonDodgeJab_Click;
         // 
         // progressBarPlayerHP
         // 
@@ -376,7 +399,6 @@ partial class MainWindow
         labelPlayerHP.Size = new Size(31, 23);
         labelPlayerHP.TabIndex = 9;
         labelPlayerHP.Text = "HP";
-        labelPlayerHP.Click += label2_Click;
         // 
         // labelPlayerDamage
         // 
@@ -384,7 +406,7 @@ partial class MainWindow
         labelPlayerDamage.BackColor = Color.Transparent;
         labelPlayerDamage.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerDamage.ForeColor = Color.White;
-        labelPlayerDamage.Location = new Point(14, 231);
+        labelPlayerDamage.Location = new Point(12, 231);
         labelPlayerDamage.Name = "labelPlayerDamage";
         labelPlayerDamage.Size = new Size(75, 23);
         labelPlayerDamage.TabIndex = 12;
@@ -396,7 +418,7 @@ partial class MainWindow
         labelPlayerDodge.BackColor = Color.Transparent;
         labelPlayerDodge.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerDodge.ForeColor = Color.White;
-        labelPlayerDodge.Location = new Point(14, 354);
+        labelPlayerDodge.Location = new Point(12, 354);
         labelPlayerDodge.Name = "labelPlayerDodge";
         labelPlayerDodge.Size = new Size(62, 23);
         labelPlayerDodge.TabIndex = 13;
@@ -419,7 +441,7 @@ partial class MainWindow
         labelPlayerStrength.BackColor = Color.Transparent;
         labelPlayerStrength.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerStrength.ForeColor = Color.White;
-        labelPlayerStrength.Location = new Point(14, 262);
+        labelPlayerStrength.Location = new Point(12, 262);
         labelPlayerStrength.Name = "labelPlayerStrength";
         labelPlayerStrength.Size = new Size(78, 23);
         labelPlayerStrength.TabIndex = 15;
@@ -431,7 +453,7 @@ partial class MainWindow
         labelPlayerLifeSteal.BackColor = Color.Transparent;
         labelPlayerLifeSteal.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerLifeSteal.ForeColor = Color.White;
-        labelPlayerLifeSteal.Location = new Point(14, 294);
+        labelPlayerLifeSteal.Location = new Point(12, 294);
         labelPlayerLifeSteal.Name = "labelPlayerLifeSteal";
         labelPlayerLifeSteal.Size = new Size(73, 23);
         labelPlayerLifeSteal.TabIndex = 16;
@@ -443,7 +465,7 @@ partial class MainWindow
         labelGoldInPocket.BackColor = Color.Transparent;
         labelGoldInPocket.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelGoldInPocket.ForeColor = Color.Gold;
-        labelGoldInPocket.Location = new Point(132, 320);
+        labelGoldInPocket.Location = new Point(135, 320);
         labelGoldInPocket.Name = "labelGoldInPocket";
         labelGoldInPocket.Size = new Size(47, 23);
         labelGoldInPocket.TabIndex = 17;
@@ -455,7 +477,7 @@ partial class MainWindow
         labelLevel.BackColor = Color.Transparent;
         labelLevel.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelLevel.ForeColor = Color.White;
-        labelLevel.Location = new Point(132, 231);
+        labelLevel.Location = new Point(135, 231);
         labelLevel.Name = "labelLevel";
         labelLevel.Size = new Size(51, 23);
         labelLevel.TabIndex = 18;
@@ -467,7 +489,7 @@ partial class MainWindow
         labelExperience.BackColor = Color.Transparent;
         labelExperience.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelExperience.ForeColor = Color.White;
-        labelExperience.Location = new Point(130, 261);
+        labelExperience.Location = new Point(133, 261);
         labelExperience.Name = "labelExperience";
         labelExperience.Size = new Size(96, 23);
         labelExperience.TabIndex = 19;
@@ -482,7 +504,7 @@ partial class MainWindow
         panelMonster.Controls.Add(labelMonsterName);
         panelMonster.Location = new Point(264, 155);
         panelMonster.Name = "panelMonster";
-        panelMonster.Size = new Size(258, 344);
+        panelMonster.Size = new Size(258, 360);
         panelMonster.TabIndex = 20;
         // 
         // pictureBoxMonster1
@@ -490,7 +512,7 @@ partial class MainWindow
         pictureBoxMonster1.BackgroundImageLayout = ImageLayout.Stretch;
         pictureBoxMonster1.Location = new Point(3, 78);
         pictureBoxMonster1.Name = "pictureBoxMonster1";
-        pictureBoxMonster1.Size = new Size(252, 263);
+        pictureBoxMonster1.Size = new Size(252, 278);
         pictureBoxMonster1.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxMonster1.TabIndex = 21;
         pictureBoxMonster1.TabStop = false;
@@ -531,24 +553,24 @@ partial class MainWindow
         panelEncounter.BackColor = Color.Transparent;
         panelEncounter.BackgroundImage = Properties.Resources.castle;
         panelEncounter.BackgroundImageLayout = ImageLayout.Stretch;
-        panelEncounter.Controls.Add(labelRegeneration);
+        panelEncounter.Controls.Add(panelPopupAmulet);
         panelEncounter.Controls.Add(buttonBloodLust);
+        panelEncounter.Controls.Add(buttonDodgeJab);
         panelEncounter.Controls.Add(buttonReturnToTown);
         panelEncounter.Controls.Add(pictureBoxLoot);
         panelEncounter.Controls.Add(btn_attack);
-        panelEncounter.Controls.Add(panelPopupGloves);
-        panelEncounter.Controls.Add(labelInvisibleGloves);
         panelEncounter.Controls.Add(panelPopupBoots);
         panelEncounter.Controls.Add(labelInvisibleBoots);
+        panelEncounter.Controls.Add(panelPopupGloves);
+        panelEncounter.Controls.Add(labelInvisibleGloves);
         panelEncounter.Controls.Add(panelPopupArmor);
         panelEncounter.Controls.Add(labelInvisibleArmor);
         panelEncounter.Controls.Add(labelGoldPopup);
         panelEncounter.Controls.Add(panelPopupWeaponRightHand);
-        panelEncounter.Controls.Add(panelMonster);
         panelEncounter.Controls.Add(textBox1);
         panelEncounter.Controls.Add(btn_continue);
+        panelEncounter.Controls.Add(panelMonster);
         panelEncounter.Controls.Add(panelInventory);
-        panelEncounter.Controls.Add(buttonDodgeJab);
         panelEncounter.Controls.Add(labelHeroName);
         panelEncounter.Controls.Add(labelGoldInPocket);
         panelEncounter.Controls.Add(labelPlayerStrength);
@@ -562,7 +584,11 @@ partial class MainWindow
         panelEncounter.Controls.Add(labelPlayerHP);
         panelEncounter.Controls.Add(progressBarPlayerHP);
         panelEncounter.Controls.Add(labelInvisibleWeaponRightHandEquipped);
+        panelEncounter.Controls.Add(labelInvisibleAmulet);
+        panelEncounter.Controls.Add(labelInvisibleHelmet);
+        panelEncounter.Controls.Add(labelRegeneration);
         panelEncounter.Controls.Add(pictureBoxHeroBag);
+        panelEncounter.Controls.Add(labelInvisibleBelt);
         panelEncounter.Controls.Add(pictureBoxHero);
         panelEncounter.Controls.Add(pictureBoxInventory);
         panelEncounter.Dock = DockStyle.Fill;
@@ -571,62 +597,38 @@ partial class MainWindow
         panelEncounter.Size = new Size(537, 768);
         panelEncounter.TabIndex = 22;
         // 
-        // labelRegeneration
+        // panelPopupAmulet
         // 
-        labelRegeneration.AutoSize = true;
-        labelRegeneration.BackColor = Color.Transparent;
-        labelRegeneration.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-        labelRegeneration.ForeColor = Color.White;
-        labelRegeneration.Location = new Point(132, 291);
-        labelRegeneration.Name = "labelRegeneration";
-        labelRegeneration.Size = new Size(117, 23);
-        labelRegeneration.TabIndex = 39;
-        labelRegeneration.Text = "Regeneration";
+        panelPopupAmulet.AutoScroll = true;
+        panelPopupAmulet.BorderStyle = BorderStyle.Fixed3D;
+        panelPopupAmulet.Controls.Add(labelInfoAmuletEquipped);
+        panelPopupAmulet.Controls.Add(labelAmuletName);
+        panelPopupAmulet.Location = new Point(12, 438);
+        panelPopupAmulet.Name = "panelPopupAmulet";
+        panelPopupAmulet.Size = new Size(145, 97);
+        panelPopupAmulet.TabIndex = 43;
         // 
-        // panelPopupGloves
+        // labelInfoAmuletEquipped
         // 
-        panelPopupGloves.AutoScroll = true;
-        panelPopupGloves.BorderStyle = BorderStyle.Fixed3D;
-        panelPopupGloves.Controls.Add(labelInfoGlovesEquipped);
-        panelPopupGloves.Controls.Add(labelGlovesName);
-        panelPopupGloves.Location = new Point(171, 436);
-        panelPopupGloves.Name = "panelPopupGloves";
-        panelPopupGloves.Size = new Size(145, 97);
-        panelPopupGloves.TabIndex = 31;
+        labelInfoAmuletEquipped.AutoSize = true;
+        labelInfoAmuletEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelInfoAmuletEquipped.ForeColor = Color.White;
+        labelInfoAmuletEquipped.Location = new Point(-1, 15);
+        labelInfoAmuletEquipped.Name = "labelInfoAmuletEquipped";
+        labelInfoAmuletEquipped.Size = new Size(78, 16);
+        labelInfoAmuletEquipped.TabIndex = 1;
+        labelInfoAmuletEquipped.Text = "AmuletInfo";
         // 
-        // labelInfoGlovesEquipped
+        // labelAmuletName
         // 
-        labelInfoGlovesEquipped.AutoSize = true;
-        labelInfoGlovesEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        labelInfoGlovesEquipped.ForeColor = Color.White;
-        labelInfoGlovesEquipped.Location = new Point(-1, 15);
-        labelInfoGlovesEquipped.Name = "labelInfoGlovesEquipped";
-        labelInfoGlovesEquipped.Size = new Size(75, 16);
-        labelInfoGlovesEquipped.TabIndex = 1;
-        labelInfoGlovesEquipped.Text = "glovesInfo";
-        // 
-        // labelGlovesName
-        // 
-        labelGlovesName.AutoSize = true;
-        labelGlovesName.Font = new Font("Snap ITC", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        labelGlovesName.ForeColor = SystemColors.ActiveCaption;
-        labelGlovesName.Location = new Point(1, -1);
-        labelGlovesName.Name = "labelGlovesName";
-        labelGlovesName.Size = new Size(96, 17);
-        labelGlovesName.TabIndex = 0;
-        labelGlovesName.Text = "GlovesName";
-        // 
-        // labelInvisibleGloves
-        // 
-        labelInvisibleGloves.AutoSize = true;
-        labelInvisibleGloves.ForeColor = Color.Transparent;
-        labelInvisibleGloves.Location = new Point(143, 493);
-        labelInvisibleGloves.Name = "labelInvisibleGloves";
-        labelInvisibleGloves.Size = new Size(33, 60);
-        labelInvisibleGloves.TabIndex = 30;
-        labelInvisibleGloves.Text = "     \r\n     \r\n      ";
-        labelInvisibleGloves.MouseEnter += labelInvisibleGloves_MouseEnter;
-        labelInvisibleGloves.MouseLeave += labelInvisibleGloves_MouseLeave;
+        labelAmuletName.AutoSize = true;
+        labelAmuletName.Font = new Font("Snap ITC", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelAmuletName.ForeColor = SystemColors.ActiveCaption;
+        labelAmuletName.Location = new Point(1, -1);
+        labelAmuletName.Name = "labelAmuletName";
+        labelAmuletName.Size = new Size(99, 17);
+        labelAmuletName.TabIndex = 0;
+        labelAmuletName.Text = "AmuletName";
         // 
         // panelPopupBoots
         // 
@@ -673,6 +675,51 @@ partial class MainWindow
         labelInvisibleBoots.MouseEnter += labelInvisibleBoots_MouseEnter;
         labelInvisibleBoots.MouseLeave += labelInvisibleBoots_MouseLeave;
         // 
+        // panelPopupGloves
+        // 
+        panelPopupGloves.AutoScroll = true;
+        panelPopupGloves.BorderStyle = BorderStyle.Fixed3D;
+        panelPopupGloves.Controls.Add(labelInfoGlovesEquipped);
+        panelPopupGloves.Controls.Add(labelGlovesName);
+        panelPopupGloves.Location = new Point(171, 436);
+        panelPopupGloves.Name = "panelPopupGloves";
+        panelPopupGloves.Size = new Size(145, 97);
+        panelPopupGloves.TabIndex = 31;
+        // 
+        // labelInfoGlovesEquipped
+        // 
+        labelInfoGlovesEquipped.AutoSize = true;
+        labelInfoGlovesEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelInfoGlovesEquipped.ForeColor = Color.White;
+        labelInfoGlovesEquipped.Location = new Point(-1, 15);
+        labelInfoGlovesEquipped.Name = "labelInfoGlovesEquipped";
+        labelInfoGlovesEquipped.Size = new Size(75, 16);
+        labelInfoGlovesEquipped.TabIndex = 1;
+        labelInfoGlovesEquipped.Text = "glovesInfo";
+        // 
+        // labelGlovesName
+        // 
+        labelGlovesName.AutoSize = true;
+        labelGlovesName.Font = new Font("Snap ITC", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelGlovesName.ForeColor = SystemColors.ActiveCaption;
+        labelGlovesName.Location = new Point(1, -1);
+        labelGlovesName.Name = "labelGlovesName";
+        labelGlovesName.Size = new Size(96, 17);
+        labelGlovesName.TabIndex = 0;
+        labelGlovesName.Text = "GlovesName";
+        // 
+        // labelInvisibleGloves
+        // 
+        labelInvisibleGloves.AutoSize = true;
+        labelInvisibleGloves.ForeColor = Color.Transparent;
+        labelInvisibleGloves.Location = new Point(149, 495);
+        labelInvisibleGloves.Name = "labelInvisibleGloves";
+        labelInvisibleGloves.Size = new Size(33, 60);
+        labelInvisibleGloves.TabIndex = 30;
+        labelInvisibleGloves.Text = "     \r\n     \r\n      ";
+        labelInvisibleGloves.MouseEnter += labelInvisibleGloves_MouseEnter;
+        labelInvisibleGloves.MouseLeave += labelInvisibleGloves_MouseLeave;
+        // 
         // panelPopupArmor
         // 
         panelPopupArmor.AutoScroll = true;
@@ -710,11 +757,11 @@ partial class MainWindow
         // 
         labelInvisibleArmor.AutoSize = true;
         labelInvisibleArmor.ForeColor = Color.Transparent;
-        labelInvisibleArmor.Location = new Point(85, 447);
+        labelInvisibleArmor.Location = new Point(85, 453);
         labelInvisibleArmor.Name = "labelInvisibleArmor";
-        labelInvisibleArmor.Size = new Size(41, 80);
+        labelInvisibleArmor.Size = new Size(53, 60);
         labelInvisibleArmor.TabIndex = 26;
-        labelInvisibleArmor.Text = "     \r\n     \r\n      \r\n        ";
+        labelInvisibleArmor.Text = "     \r\n       \r\n           ";
         labelInvisibleArmor.MouseEnter += labelInvisibleArmor_MouseEnter;
         labelInvisibleArmor.MouseLeave += labelInvisibleArmor_MouseLeave;
         // 
@@ -723,7 +770,7 @@ partial class MainWindow
         labelGoldPopup.AutoSize = true;
         labelGoldPopup.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
         labelGoldPopup.ForeColor = Color.Gold;
-        labelGoldPopup.Location = new Point(272, 306);
+        labelGoldPopup.Location = new Point(237, 320);
         labelGoldPopup.Name = "labelGoldPopup";
         labelGoldPopup.Size = new Size(57, 23);
         labelGoldPopup.TabIndex = 35;
@@ -779,11 +826,55 @@ partial class MainWindow
         labelCritChance.BackColor = Color.Transparent;
         labelCritChance.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelCritChance.ForeColor = Color.White;
-        labelCritChance.Location = new Point(13, 383);
+        labelCritChance.Location = new Point(11, 383);
         labelCritChance.Name = "labelCritChance";
         labelCritChance.Size = new Size(37, 23);
         labelCritChance.TabIndex = 38;
         labelCritChance.Text = "crit";
+        // 
+        // labelInvisibleAmulet
+        // 
+        labelInvisibleAmulet.AutoSize = true;
+        labelInvisibleAmulet.ForeColor = Color.Transparent;
+        labelInvisibleAmulet.Location = new Point(89, 427);
+        labelInvisibleAmulet.Name = "labelInvisibleAmulet";
+        labelInvisibleAmulet.Size = new Size(41, 20);
+        labelInvisibleAmulet.TabIndex = 40;
+        labelInvisibleAmulet.Text = "        ";
+        labelInvisibleAmulet.MouseEnter += labelInvisibleAmulet_MouseEnter;
+        labelInvisibleAmulet.MouseLeave += labelInvisibleAmulet_MouseLeave;
+        // 
+        // labelInvisibleHelmet
+        // 
+        labelInvisibleHelmet.AutoSize = true;
+        labelInvisibleHelmet.ForeColor = Color.Transparent;
+        labelInvisibleHelmet.Location = new Point(89, 403);
+        labelInvisibleHelmet.Name = "labelInvisibleHelmet";
+        labelInvisibleHelmet.Size = new Size(41, 20);
+        labelInvisibleHelmet.TabIndex = 42;
+        labelInvisibleHelmet.Text = "        \r\n";
+        // 
+        // labelRegeneration
+        // 
+        labelRegeneration.AutoSize = true;
+        labelRegeneration.BackColor = Color.Transparent;
+        labelRegeneration.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+        labelRegeneration.ForeColor = Color.White;
+        labelRegeneration.Location = new Point(135, 291);
+        labelRegeneration.Name = "labelRegeneration";
+        labelRegeneration.Size = new Size(117, 23);
+        labelRegeneration.TabIndex = 39;
+        labelRegeneration.Text = "Regeneration";
+        // 
+        // labelInvisibleBelt
+        // 
+        labelInvisibleBelt.AutoSize = true;
+        labelInvisibleBelt.ForeColor = Color.Transparent;
+        labelInvisibleBelt.Location = new Point(85, 523);
+        labelInvisibleBelt.Name = "labelInvisibleBelt";
+        labelInvisibleBelt.Size = new Size(61, 20);
+        labelInvisibleBelt.TabIndex = 41;
+        labelInvisibleBelt.Text = "             ";
         // 
         // pictureBoxHero
         // 
@@ -811,6 +902,8 @@ partial class MainWindow
         panelTown.BackColor = Color.Transparent;
         panelTown.BackgroundImage = Properties.Resources.castle;
         panelTown.BackgroundImageLayout = ImageLayout.Stretch;
+        panelTown.Controls.Add(buttonLearnTechnique);
+        panelTown.Controls.Add(pictureBoxAct1ArtsTeacher);
         panelTown.Controls.Add(comboBoxUpgradeItems);
         panelTown.Controls.Add(buttonUpgradeItem);
         panelTown.Controls.Add(btn_Continuetown);
@@ -830,6 +923,25 @@ partial class MainWindow
         panelTown.Size = new Size(537, 768);
         panelTown.TabIndex = 0;
         // 
+        // buttonLearnTechnique
+        // 
+        buttonLearnTechnique.Location = new Point(386, 614);
+        buttonLearnTechnique.Name = "buttonLearnTechnique";
+        buttonLearnTechnique.Size = new Size(124, 32);
+        buttonLearnTechnique.TabIndex = 18;
+        buttonLearnTechnique.Text = "Learn 10G";
+        buttonLearnTechnique.UseVisualStyleBackColor = true;
+        buttonLearnTechnique.Click += buttonLearnTechnique_Click;
+        // 
+        // pictureBoxAct1ArtsTeacher
+        // 
+        pictureBoxAct1ArtsTeacher.Location = new Point(338, 353);
+        pictureBoxAct1ArtsTeacher.Name = "pictureBoxAct1ArtsTeacher";
+        pictureBoxAct1ArtsTeacher.Size = new Size(195, 305);
+        pictureBoxAct1ArtsTeacher.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxAct1ArtsTeacher.TabIndex = 17;
+        pictureBoxAct1ArtsTeacher.TabStop = false;
+        // 
         // comboBoxUpgradeItems
         // 
         comboBoxUpgradeItems.DropDownStyle = ComboBoxStyle.DropDownList;
@@ -838,16 +950,6 @@ partial class MainWindow
         comboBoxUpgradeItems.Name = "comboBoxUpgradeItems";
         comboBoxUpgradeItems.Size = new Size(151, 28);
         comboBoxUpgradeItems.TabIndex = 16;
-        // 
-        // buttonUpgradeItem
-        // 
-        buttonUpgradeItem.Location = new Point(436, 311);
-        buttonUpgradeItem.Name = "buttonUpgradeItem";
-        buttonUpgradeItem.Size = new Size(81, 28);
-        buttonUpgradeItem.TabIndex = 15;
-        buttonUpgradeItem.Text = "Upgrade 50G";
-        buttonUpgradeItem.UseVisualStyleBackColor = true;
-        buttonUpgradeItem.Click += buttonUpgradeItem_Click;
         // 
         // txtBox_Town
         // 
@@ -886,7 +988,7 @@ partial class MainWindow
         // pictureBoxHealer
         // 
         pictureBoxHealer.Image = Properties.Resources.healer;
-        pictureBoxHealer.Location = new Point(-21, 438);
+        pictureBoxHealer.Location = new Point(-21, 513);
         pictureBoxHealer.Name = "pictureBoxHealer";
         pictureBoxHealer.Size = new Size(190, 195);
         pictureBoxHealer.SizeMode = PictureBoxSizeMode.Zoom;
@@ -907,6 +1009,7 @@ partial class MainWindow
         panelStartScreen.BackColor = Color.Transparent;
         panelStartScreen.BackgroundImage = Properties.Resources.castle;
         panelStartScreen.BackgroundImageLayout = ImageLayout.Stretch;
+        panelStartScreen.Controls.Add(labelGameAuthorName);
         panelStartScreen.Controls.Add(buttonPlayGame);
         panelStartScreen.Controls.Add(labelGameTitle);
         panelStartScreen.Dock = DockStyle.Fill;
@@ -914,6 +1017,17 @@ partial class MainWindow
         panelStartScreen.Name = "panelStartScreen";
         panelStartScreen.Size = new Size(537, 768);
         panelStartScreen.TabIndex = 22;
+        // 
+        // labelGameAuthorName
+        // 
+        labelGameAuthorName.AutoSize = true;
+        labelGameAuthorName.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
+        labelGameAuthorName.ForeColor = SystemColors.ButtonHighlight;
+        labelGameAuthorName.Location = new Point(366, 732);
+        labelGameAuthorName.Name = "labelGameAuthorName";
+        labelGameAuthorName.Size = new Size(151, 20);
+        labelGameAuthorName.TabIndex = 2;
+        labelGameAuthorName.Text = "Jakob Kvejborg 2024";
         // 
         // buttonPlayGame
         // 
@@ -985,10 +1099,12 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).EndInit();
         panelEncounter.ResumeLayout(false);
         panelEncounter.PerformLayout();
-        panelPopupGloves.ResumeLayout(false);
-        panelPopupGloves.PerformLayout();
+        panelPopupAmulet.ResumeLayout(false);
+        panelPopupAmulet.PerformLayout();
         panelPopupBoots.ResumeLayout(false);
         panelPopupBoots.PerformLayout();
+        panelPopupGloves.ResumeLayout(false);
+        panelPopupGloves.PerformLayout();
         panelPopupArmor.ResumeLayout(false);
         panelPopupArmor.PerformLayout();
         panelPopupWeaponRightHand.ResumeLayout(false);
@@ -998,6 +1114,7 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxInventory).EndInit();
         panelTown.ResumeLayout(false);
         panelTown.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxAct1ArtsTeacher).EndInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxCompass).EndInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxTown).EndInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHealer).EndInit();
@@ -1018,8 +1135,6 @@ partial class MainWindow
     private Button btn_continue;
     private Label labelInventory;
     private Button buttonDiscardItem;
-    private Button btn_attack;
-    private Button buttonDodgeJab;
 
 
     public Panel panelGameOver;
@@ -1084,7 +1199,18 @@ partial class MainWindow
     public PictureBox pictureBoxLoot;
     public Label labelGoldPopup;
     public Button buttonReturnToTown;
-    private Button buttonBloodLust;
     public Label labelCritChance;
     public Label labelRegeneration;
+    private Label labelGameAuthorName;
+    public PictureBox pictureBoxAct1ArtsTeacher;
+    public Button buttonLearnTechnique;
+    public Button btn_attack;
+    public Button buttonDodgeJab;
+    public Button buttonBloodLust;
+    private Label labelInvisibleAmulet;
+    private Label labelInvisibleBelt;
+    private Label labelInvisibleHelmet;
+    public Panel panelPopupAmulet;
+    private Label labelInfoAmuletEquipped;
+    private Label labelAmuletName;
 }

@@ -270,6 +270,31 @@ public class MusicAndSound
             throw new FileNotFoundException("The sound file was not found");
         }
     }
+    public void PlayDodgeSound()
+    {
+        try
+        {
+            mediaPlayer5.URL = MediaSoundPath("dodge.wav");
+            mediaPlayer5.controls.play();
+        }
+        catch
+        {
+            throw new FileNotFoundException("The sound file was not found");
+        }
+    }
+
+    public void PlayAct2BossSound()
+    {
+        try
+        {
+            mediaPlayer1.URL = MediaSoundPath("act2boss.wav");
+            mediaPlayer1.controls.play();
+        }
+        catch
+        {
+            throw new FileNotFoundException("The sound file was not found");
+        }
+    }
 
 }
 
