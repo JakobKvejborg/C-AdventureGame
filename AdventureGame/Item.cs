@@ -114,7 +114,7 @@ public class Item
                         Strength += random.Next(1, 6); // Increase Strength by 1 to 5
                         break;
                     case 3: // Lifesteal
-                        Lifesteal += random.Next(1, 5); // Increase Lifesteal by 1 or 4
+                        Lifesteal += random.Next(4, 16); // Increase Lifesteal by 1 or 4
                         break;
                 }
                 break;

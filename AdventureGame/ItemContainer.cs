@@ -15,6 +15,7 @@ public class ItemContainer
     public List<Item> items4;
 
     public List<Item> weakAmulets;
+    public List<Item> magicAmulets;
 
     public ItemContainer()
     {
@@ -24,18 +25,19 @@ public class ItemContainer
         items3 = new List<Item>();
         items4 = new List<Item>();
         weakAmulets = new List<Item>();
+        magicAmulets = new List<Item>();
         AddItemsToList();
     }
 
     public void AddItemsToList()
     {
-        // WEAPONS string name, type, int damage, int strength, int fireDamage, int poisonDamage, int skillLevel, int strengthRequirement, int levelRequirement
+        // WEAPONS string name, type, int damage, int strength, int fireDamage, int poisonDamage, int skillLevel, int lifesteal int strengthRequirement, int levelRequirement
         Item item1a = new("Normal Axe", ItemType.WeaponRightHand, 1, 0, 0, 0, 0, 0, 2, 2);
         Item item2a = new("Sword", ItemType.WeaponRightHand, 2, 0, 0, 0, 0, 0, 3, 3);
         Item item3a = new("Blood Spear", ItemType.WeaponRightHand, 2, 0, 0, 0, 0, 5, 8, 1);
-        Item item4a = new("Pike", ItemType.WeaponRightHand, 3, 0, 0, 0, 0, 0, 5, 6);
+        Item item4a = new("Pike", ItemType.WeaponRightHand, 3, 0, 0, 0, 0, 2, 5, 6);
         Item item5a = new("Small Knife", ItemType.WeaponRightHand, 2, 3, 0, 0, 0, 0, 0, 2);
-        Item item6a = new("Spear", ItemType.WeaponRightHand, 3, 0, 0, 0, 0, 0, 5, 1);
+        Item item6a = new("Spear", ItemType.WeaponRightHand, 3, 0, 0, 0, 0, 0, 5, 3);
 
         Item item7a = new("Scythe", ItemType.WeaponRightHand, 4, 3, 0, 0, 0, 2, 5, 4);
         Item item8a = new("Hammer", ItemType.WeaponRightHand, 5, 0, 0, 0, 0, 0, 8, 6);
@@ -50,18 +52,22 @@ public class ItemContainer
         Item item7b = new("Leather Gloves", ItemType.Gloves, 11, 0, 0, 0, 0, 1, 0, 0, 5);
         Item item8b = new("Health Boots", ItemType.Boots, 0, 2, 0, 0, 0, 0, 0, 3, 3);
         Item item9b = new("Rusty Boots", ItemType.Boots, 5, 1, 3, 2, 1, 0, 0, 3, 3);
+        Item item10 = new("Strength Boots", ItemType.Boots, 15, 0, 7, 5, 0, 0, 0, 0, 5);
+        Item item11 = new("Heavy Armor", ItemType.Armor, 15, 0, 0, 3, 0, 1, 0, 0, 2);
 
         Item item10b = new("Bronze Boots", ItemType.Boots, 0, 2, 0, 6, 6, 3, 0, 7, 2);
-        Item item11b = new("Swift Boots", ItemType.Boots, 10, 0, 10, 0, 7, 3, 0, 7, 1);
+        Item item11b = new("Swift Boots", ItemType.Boots, 10, 0, 10, 0, 7, 3, 0, 7, 3);
         Item item12b = new("Plate", ItemType.Armor, 0, 0, 5, 3, 0, 3, 0, 5, 3);
         Item item13b = new("Bronze Plate", ItemType.Armor, 20, 0, 2, 3, 2, 3, 0, 5, 6);
         Item item14b = new("Rusty Plate", ItemType.Armor, 0, 1, 2, 3, 2, 4, 0, 9, 6);
         Item item15b = new("Bronze Gloves", ItemType.Gloves, 0, 0, 8, 5, 0, 2, 0, 5, 6);
 
-        // AMULET
-        Amulet amulet1 = new Amulet("Mystic Amulet");
-        Amulet amulet2 = new Amulet("Magic Amulet");
-        Amulet amulet3 = new Amulet("Millennium Amulet");
+        // AMULETS Normal/noPrefix
+        Amulet amulet1a = new("Mystic Amulet");
+        Amulet amulet2a = new("Mysterious Amulet");
+        Amulet amulet3a = new("Millennium Amulet");
+        // AMULETS Magic
+        Amulet amulet1b = new("Magic Amulet", "Magic");
 
         // List of items 1
         noItems.Add(null);
@@ -97,6 +103,8 @@ public class ItemContainer
         items2.Add(item4a);
         items2.Add(item5a);
         items2.Add(item6a);
+        items2.Add(item10);
+        items2.Add(item11);
         items2.Add(null);
         items2.Add(null);
         items2.Add(null);
@@ -145,14 +153,15 @@ public class ItemContainer
         items3.Add(null);
         items3.Add(null);
 
-        // List of special items
-        weakAmulets.Add(amulet1);
-        weakAmulets.Add(amulet2);
-        weakAmulets.Add(amulet3);
+        // List of weak amulets
+        weakAmulets.Add(amulet1a);
+        weakAmulets.Add(amulet2a);
+        weakAmulets.Add(amulet3a);
         weakAmulets.Add(null);
         weakAmulets.Add(null);
         weakAmulets.Add(null);
-
+        // List of magic amulets
+        magicAmulets.Add(amulet1b);
     }
 
 }

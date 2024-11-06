@@ -1,3 +1,4 @@
+using System.Diagnostics;
 using System.Media;
 using Color = System.Drawing.Color;
 namespace AdventureGame;
@@ -15,12 +16,16 @@ public partial class MainWindow : Form
     public int panelsIndex;
     private System.Windows.Forms.Timer hoverTimer;
     private Random random = new Random();
-    public bool Act1BossDefeatedFlag = false;
-    public bool Act2BossDefeatedFlag = false;
-    ImageSetter imageSetter = new ImageSetter();
+    ImageSetter imageSetter;
     MusicAndSound sounds = new MusicAndSound();
     bool IsInventoryOpen { get; set; } = false;
     bool playGameHasBeenPressed { get; set; } = false;
+    bool EnabledAct1TechniqueTeacher;
+    bool OneTimeBool;
+    bool OneTimeBool2;
+    public bool IsReturnToTownEnabled = true;
+    private QuestManager quests;
+
 
     public MainWindow()
     {
@@ -30,6 +35,8 @@ public partial class MainWindow : Form
         panelsList = new List<Panel>();
         HidePanelsEtc();
         storyProgress = new StoryProgress(this);
+        imageSetter = new ImageSetter(this);
+        quests = new QuestManager(this, imageSetter);
         UpdatePlayerLabels();
         panelTown.Location = new Point(0, 0); // Example: position it at the top-left corner
         panelTown.Size = new Size(400, 300);  // Example: set a proper size to make it visible
@@ -88,6 +95,8 @@ public partial class MainWindow : Form
         btn_attack.Hide();
         buttonBloodLust.Hide();
         buttonDodgeJab.Hide();
+        buttonRoarAttack.Hide();
+        panelAct1Quest1.Hide();
         #endregion
     }
 
@@ -308,7 +317,17 @@ public partial class MainWindow : Form
         switch (keyData)
         {
             case Keys.Space:
+            case Keys.D1:
                 Task task = ButtonAttack();
+                return true;
+            case Keys.D2:
+                task = ButtonBloodLustAttack();
+                return true;
+            case Keys.D3:
+                task = ButtonDodgeJabAttack();
+                return true;
+            case Keys.D4:
+                task = ButtonRoarAttack();
                 return true;
             case Keys.Enter:
                 if (!playGameHasBeenPressed)
@@ -344,50 +363,53 @@ public partial class MainWindow : Form
                 return true;
             case Keys.Down:
                 if (IsInventoryOpen)
-                    if (comboBoxInventory.Items.Count > 0)
+                {
+                    if (comboBoxInventory.Items.Count > 0) // Scrolls through inventory items
                         comboBoxInventory.SelectedIndex = (comboBoxInventory.SelectedIndex + 1) % comboBoxInventory.Items.Count;
+                }
+                if (StoryProgress.playerIsInTown && storyProgress.Act1BossDefeatedFlag)
+                {
+                    if (comboBoxUpgradeItems.Items.Count > 0) // Scrolls through upgradable items
+                        comboBoxUpgradeItems.SelectedIndex = (comboBoxUpgradeItems.SelectedIndex + 1) % comboBoxUpgradeItems.Items.Count;
+                }
                 return true;
             case Keys.Up:
                 if (IsInventoryOpen)
+                {
                     if (comboBoxInventory.Items.Count > 0)
+                    {
                         comboBoxInventory.SelectedIndex = (comboBoxInventory.SelectedIndex - 1 + comboBoxInventory.Items.Count) % comboBoxInventory.Items.Count;
+                    }
+                }
+
+                if (StoryProgress.playerIsInTown && storyProgress.Act1BossDefeatedFlag)
+                {
+                    if (comboBoxUpgradeItems.Items.Count > 0)
+                    {
+                        comboBoxUpgradeItems.SelectedIndex = (comboBoxUpgradeItems.SelectedIndex - 1 + comboBoxUpgradeItems.Items.Count) % comboBoxUpgradeItems.Items.Count;
+                    }
+                }
                 return true;
-            case Keys.L:
+            case Keys.F:
                 pictureBoxLootIsClicked(); // player finds item from loot
                 return true;
             case Keys.B:
                 ReturnToTownClick(); // Returns the player to the town
                 return true;
-            case Keys.Q:
-                task = ButtonBloodLustAttack();
-                return true;
             case Keys.U:
                 ButtonUpgradeItem();
+                return true;
+            case Keys.L:
+                task = ButtonLearnTechniqueAsync();
                 return true;
             default:
                 return base.ProcessCmdKey(ref msg, keyData); // Let the base method handle other keys
         }
     }
 
-    // Helper method to load media "sounds/music" from the "sounds" folder
-    public string MediaSoundPath(string soundName)
-    {
-        string soundDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sounds");
-        return Path.Combine(soundDirectory, soundName);
-    }
-    // Helper method to load the sounds from the folder "sounds" folder
-    public SoundPlayer GetSoundPath(string soundName)
-    {
-        string soundDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sounds");
-        return new SoundPlayer(Path.Combine(soundDirectory, soundName));
-    }
-
     // This method runs after the entire layout of WinForms is loaded
     private void MainWindow_Load(object sender, EventArgs e)
     {
-        //pictureBoxTown.Image = imageSetter.GetImagePath("act1town.png"); // places the picture into the picturebox
-        //pictureBoxTown.SizeMode = PictureBoxSizeMode.Zoom; // This will center the image 
-
         sounds.SetListOfSounds();
         sounds.PlayThunderSound();
 
@@ -396,6 +418,7 @@ public partial class MainWindow : Form
         panelsList.Add(panelGameOver);
         panelsList.Add(panelTown);
         panelsList[panelsIndex].BringToFront();
+        imageSetter.SetAct1Quest1BackgroundImage();
     }
 
     private void label2_Click_1(object sender, EventArgs e)
@@ -438,13 +461,17 @@ public partial class MainWindow : Form
         panelEncounter.Show();
         if (StoryProgress.playerIsInTown == true)
         {
-            if (!Act1BossDefeatedFlag)
+            if (storyProgress.WhichActIsThePlayerIn == 1)
             {
                 storyProgress.StoryState = 100; // repeated encounters west act 1
             }
-            if (Act1BossDefeatedFlag)
+            if (storyProgress.WhichActIsThePlayerIn == 2)
             {
-                storyProgress.StoryState = 102; // repeated encounters west act 1
+                storyProgress.StoryState = 102; // repeated encounters west act 2
+            }
+            if (storyProgress.WhichActIsThePlayerIn == 3)
+            {
+                storyProgress.StoryState = 104; // repeated encounters west act 3
             }
             storyProgress.ProgressStory();
         }
@@ -456,13 +483,17 @@ public partial class MainWindow : Form
         panelEncounter.Show();
         if (StoryProgress.playerIsInTown == true)
         {
-            if (!Act1BossDefeatedFlag)
+            if (storyProgress.WhichActIsThePlayerIn == 1)
             {
                 storyProgress.StoryState = 101; // repeated encounters east act 1
             }
-            if (Act1BossDefeatedFlag)
+            if (storyProgress.WhichActIsThePlayerIn == 2)
             {
                 storyProgress.StoryState = 103; // repeated encounters east act 2
+            }
+            if (storyProgress.WhichActIsThePlayerIn == 3)
+            {
+                storyProgress.StoryState = 104; // repeated encounters west act 3 // should be 105, design choice
             }
             storyProgress.ProgressStory();
         }
@@ -493,61 +524,149 @@ public partial class MainWindow : Form
         ButtonNorth();
     }
 
-    // Boss encounters
     private void ButtonNorth()
     {
         panelTown.Hide();
         panelEncounter.Show();
-        if (StoryProgress.playerIsInTown == true)
-        {
-            if (!Act1BossDefeatedFlag)
-            {
-                Act1BossDefeatedFlag = false;
-                sounds.PlayAct1BossSound();
-                // Subscribe to the EncounterCompleted event
-                Encounter.EncounterCompleted += OnAct1BossDefeated;
 
-                Player.priceToHeal = 4; // resets the price to heal
-                buttonHeal.Text = $"Heal {Player.priceToHeal.ToString()}G";
-                Encounter.PerformEncounter(monsterContainer.listOfMonstersBossAct1, itemContainer.weakAmulets, this);
-            }
-            else
+        if (StoryProgress.playerIsInTown)
+        {
+            switch (storyProgress.WhichActIsThePlayerIn)
             {
-                //Act2BossDefeatedFlag = false; // add this is act2boss can be encountered again
-                sounds.PlayAct2BossSound();
-                Encounter.PerformEncounter(monsterContainer.listOfMonstersBossAct2, itemContainer.noItems, this);
+                case 1: // Player is in act 1
+                    // Act 1 Boss Encounter
+                    if (!storyProgress.Act1BossDefeatedFlag)
+                    {
+                        Act1BossFight();
+                    }
+                    else
+                    {
+                        storyProgress.StoryState = 14;
+                        ButtonContinue();
+                    }
+                    break;
+
+                case 2: // Player is in act 2
+                    // Act 2 Boss Encounter
+                    if (!storyProgress.Act2BossDefeatedFlag)
+                    {
+                        Act2BossFight();
+                    }
+                    else
+                    {
+                        storyProgress.StoryState = 14;
+                        ButtonContinue();
+                    }
+                    break;
+
+                case 3: // Player is in act 3
+                    // Act 3 Boss Encounter
+                    if (!storyProgress.Act3BossDefeatedFlag)
+                    {
+                        Act3BossFight();
+                    }
+                    break;
+
+                default:
+                    storyProgress.StoryState = 14;
+                    ButtonContinue();
+                    break;
             }
         }
     }
 
+    private void Act1BossFight()
+    {
+        sounds.PlayAct1BossSound();
+        Encounter.EncounterCompleted += OnAct1BossDefeated;
+
+        // Reset the healing price and update the button
+        Player.priceToHeal = 4;
+        buttonHeal.Text = $"Heal {Player.priceToHeal}G";
+
+        buttonReturnToTown.Hide();
+
+        // Start the encounter for Act 1 boss
+        Encounter.PerformEncounter(monsterContainer.listOfMonstersBossAct1, itemContainer.weakAmulets, this);
+
+        // Enable the technique teacher if not already done
+        if (!OneTimeBool2)
+        {
+            storyProgress.Act1ArtsTeacherIsAvailable = true;
+            OneTimeBool2 = true;
+        }
+    }
+
+    private void Act2BossFight()
+    {
+        buttonReturnToTown.Hide();
+        buttonReturnToTown.Enabled = false;
+        sounds.PlayAct2BossSound();
+
+        // Start the encounter for Act 2 boss
+        Encounter.PerformEncounter(monsterContainer.listOfMonstersBossAct2, itemContainer.magicAmulets, this);
+
+        // Subscribe to the EncounterCompleted event for the Act 2 boss
+        Encounter.EncounterCompleted += OnAct2BossDefeated;
+
+        // Enable the technique teacher if not already done
+        if (!OneTimeBool)
+        {
+            storyProgress.Act1ArtsTeacherIsAvailable = true;
+            OneTimeBool = true;
+        }
+    }
+
+    private void Act3BossFight()
+    {
+        buttonReturnToTown.Hide();
+        buttonReturnToTown.Enabled = false;
+        IsReturnToTownEnabled = false;
+        imageSetter.SetAct3BossBackgroundimage();
+        Encounter.PerformEncounter(monsterContainer.listOfMonstersBossAct3, itemContainer.noItems, this);
+        Encounter.EncounterCompleted += OnAct3BossDefeated;
+        sounds.PlayAct3Boss();
+        //storyProgress.WhichActIsThePlayerIn = 3;  // Update to Act 3
+    }
+
     private void OnAct1BossDefeated(object sender, EventArgs e)
     {
-        Act1BossDefeatedFlag = true;
+        StoryProgress.playerIsInTown = false;
+        storyProgress.Act1BossDefeatedFlag = true;
         storyProgress.StoryState = 8;
         buttonReturnToTown.Hide();
-        StoryProgress.playerIsInTown = true;
+        IsReturnToTownEnabled = false;
+        sounds.StopAct1TownMusic();
 
         // Unsubscribe from the event to avoid multiple invocations
         Encounter.EncounterCompleted -= OnAct1BossDefeated;
-        //StoryProgress.playerIsInTown = false;
+    }
+    private void OnAct2BossDefeated(object sender, EventArgs e)
+    {
+        StoryProgress.playerIsInTown = false;
+        storyProgress.Act2BossDefeatedFlag = true;
+        storyProgress.StoryState = 13;
+        sounds.StopAct2TownMusic();
+        buttonReturnToTown.Enabled = false;
+        IsReturnToTownEnabled = false;
+        buttonReturnToTown.Hide();
+        // Unsubscribe from the event to avoid multiple invocations
+        Encounter.EncounterCompleted -= OnAct2BossDefeated;
     }
 
-    public void SetAct2Backgroundimage()
+    private void OnAct3BossDefeated(object sender, EventArgs e)
     {
-        Act1BossDefeatedFlag = true; // Set the defeated flag
-        panelEncounter.BackgroundImage = imageSetter.GetImagePath("act2background.png");
-        panelTown.BackgroundImage = imageSetter.GetImagePath("act2background.png");
+        StoryProgress.playerIsInTown = false;
+        storyProgress.Act3BossDefeatedFlag = true;
+        storyProgress.StoryState = 16; // TODO move to storystate/case act 4
+        //sounds.StopAct3TownMusic(); // TODO
+        buttonReturnToTown.Enabled = true;
+        IsReturnToTownEnabled = true;
+
+        // Unsubscribe from the event to avoid multiple invocations
+        Encounter.EncounterCompleted -= OnAct3BossDefeated;
     }
 
-    public void SetAct1TownBackgroundimage() // TODO delete
-    {
-        panelTown.BackgroundImage = imageSetter.GetImagePath("act1townbackground.png");
-    }
-
-    public void SetAct1Backgroundimage() // TODO delete
-    {
-        panelEncounter.BackgroundImage = imageSetter.GetImagePath("castle.png");
-    }
 
     private void labelCompassS_Click(object sender, EventArgs e)
     {
@@ -556,28 +675,34 @@ public partial class MainWindow : Form
 
     private void ButtonSouth()
     {
-        if (!Act1BossDefeatedFlag)
+        if (!storyProgress.Act1BossDefeatedFlag)
         {
             txtBox_Town.Text = "You cannot turn back now. You must press on, your destiny awaits.";
             return;
         }
-        if (Act1BossDefeatedFlag && StoryProgress.playerIsInTown)
+        if (storyProgress.Act1BossDefeatedFlag && StoryProgress.playerIsInTown && storyProgress.WhichActIsThePlayerIn == 2) // if the player is in act2, returns to act1
         {
-            Act1BossDefeatedFlag = false;
-            SetAct1Backgroundimage();
-            SetAct1TownBackgroundimage();
-            storyProgress.StoryState = 6;
-            //pictureBoxTown.Image = imageSetter.GetImagePath("act1town.png");
+            storyProgress.Act1BossDefeatedFlag = false;
+            sounds.StopAct2TownMusic();
+            imageSetter.SetAct1Backgroundimage();
+            sounds.PlayAct1TownMusic();
+            imageSetter.SetAct1TownBackgroundimage();
             pictureBoxTown.Hide();
-            pictureBoxHealer.Image = imageSetter.GetImagePath("healer.png");
-            pictureBoxAct1ArtsTeacher.Show();
-            buttonLearnTechnique.Show();
+            imageSetter.SetAct1HealerPictureBoxImage();
             pictureBoxAct2Smith.Hide();
             buttonUpgradeItem.Hide();
             comboBoxUpgradeItems.Hide();
-            txtBox_Town.Text = ("You return to the dark forest. \r\nWhat comes next is up to you.");
-            sounds.PlayAct1TownMusic();
+            storyProgress.StoryState = 6;
+            storyProgress.ProgressStory();
         }
+        if (storyProgress.Act2BossDefeatedFlag && StoryProgress.playerIsInTown && storyProgress.WhichActIsThePlayerIn == 3) // if in act3, returns to act2
+        {
+            //Act2BossDefeatedFlag = false; // set this if the act2 boss should be encountered more than once
+            sounds.PlayAct2TownMusic();
+            storyProgress.StoryState = 12;
+            storyProgress.ProgressStory();
+        }
+       
     }
 
     private void buttonHeal_Click(object sender, EventArgs e)
@@ -597,7 +722,7 @@ public partial class MainWindow : Form
                 UpdatePlayerHealthBar(); // updates the players health bar after being healed
                 if (!cooldownOnSound)
                 {
-                    if (Act1BossDefeatedFlag)
+                    if (storyProgress.Act1BossDefeatedFlag)
                     {
                         txtBox_Town.Text = storyProgress.GetAct2HealingText();
                         sounds.PlayAct2HealingSound();
@@ -651,7 +776,7 @@ public partial class MainWindow : Form
                 UpdatePlayerLabels();
                 RemoveItemFromComboboxInventory(item); // removes the equipped item from the combobox
                 comboBoxUpgradeItems.Items.Add(item);
-                CheckIfPlayerIsDefeated(); // checks if the player dies from unequipping an item that gives health
+                Task task = CheckIfPlayerIsDefeated(); // checks if the player dies from unequipping an item that gives health
             }
             else
             {
@@ -758,7 +883,7 @@ public partial class MainWindow : Form
 
     private void ButtonUpgradeItem()
     {
-        if (StoryProgress.playerIsInTown && Act1BossDefeatedFlag)
+        if (StoryProgress.playerIsInTown && storyProgress.Act1BossDefeatedFlag)
         {
             if (comboBoxUpgradeItems.SelectedItem != null && playerState.Player.GoldInPocket >= Item.CostToUpgrade)
             {
@@ -767,11 +892,14 @@ public partial class MainWindow : Form
                 if (item.IsItemUpgraded || item.Type == ItemType.Amulet)
                 {
                     txtBox_Town.Text = "\"Aaah, this item has already been upgraded. Give me another one!\"";
+                    sounds.PlayAct2SmithNo();
                     return;
                 }
                 playerState.Player.UnequipItem(item, comboBoxInventory, comboBoxUpgradeItems); // unequips the item to prevent stat bugs
                 item.UpgradeItem();
+                sounds.PlayAct2SmithOffer();
                 playerState.Player.GoldInPocket -= Item.CostToUpgrade;
+                Item.CostToUpgrade += 20;
                 UpdatePlayerLabels();
                 comboBoxInventory.Items[comboBoxInventory.Items.IndexOf(item)] = item; // Update the item in the ComboBox
 
@@ -782,7 +910,8 @@ public partial class MainWindow : Form
             }
             else
             {
-                txtBox_Town.Text = "\"Sorry, the best I can do is 50G. No discounts.\"";
+                txtBox_Town.Text = $"\"Sorry, the best I can do is {Item.CostToUpgrade}G. No discounts.\"";
+                sounds.PlayAct2SmithNo();
             }
         }
     }
@@ -894,15 +1023,19 @@ public partial class MainWindow : Form
 
     private void ReturnToTownClick()
     {
-        if (StoryProgress.TutorialIsOver && StoryProgress.playerIsInTown == false) // Makes sure the player can't go to the town before the tutorial is over
+        if (StoryProgress.TutorialIsOver && StoryProgress.playerIsInTown == false && IsReturnToTownEnabled) // Makes sure the player can't go to the town before the tutorial is over
         {
-            if (Act1BossDefeatedFlag == false)
+            if (storyProgress.WhichActIsThePlayerIn == 1 && !storyProgress.Act1BossDefeatedFlag)
             {
                 storyProgress.StoryState = 7; // act 1 town
             }
-            else
+            if (storyProgress.WhichActIsThePlayerIn == 2)
             {
                 storyProgress.StoryState = 12; // act 2 town
+            }
+            if (storyProgress.WhichActIsThePlayerIn == 3)
+            {
+                storyProgress.StoryState = 16;
             }
             ButtonContinue();
         }
@@ -917,7 +1050,7 @@ public partial class MainWindow : Form
     // This method sets all the labels to match the encountered monsters stats
     public void SetEncounteredMonsterLabels(Monster monster)
     {
-        if (monster.Name == "Aldrus Thornfell" || monster.Name == "Wintermaw")
+        if (monster.Name == "Aldrus Thornfell" || monster.Name == "Wintermaw" || monster.Name == "The Devouring Abyss")
         {
             textBox1.Text = $"You have awakened {monster.Name}! Your end is near.";
         }
@@ -986,16 +1119,17 @@ public partial class MainWindow : Form
 
             // Handle attack cooldown
             buttonDodgeJab.Enabled = false;
+            buttonRoarAttack.Enabled = false;
             btn_attack.Enabled = false;
             buttonBloodLust.Enabled = false;
             await Task.Delay(180); // Increase this delay for a slower attack rate
             buttonBloodLust.Enabled = true;
+            buttonRoarAttack.Enabled = true;
             buttonDodgeJab.Enabled = true;
             btn_attack.Enabled = true;
             isAttackOnCooldown = false;
         }
     }
-
     private async Task ButtonAttack()
     {
         await PerformAttack(() => Encounter.NormalAttack(playerState, this), sounds.PlaySwordAttackSound);
@@ -1008,7 +1142,14 @@ public partial class MainWindow : Form
     }
     private async Task ButtonDodgeJabAttack()
     {
-        await PerformAttack(() => Encounter.DodgeJabAttack(playerState, this), sounds.PlaySwordAttackSound);
+        if (playerState.Player.techniqueDodgeJabIsLearned)
+            await PerformAttack(() => Encounter.DodgeJabAttack(playerState, this), sounds.PlaySwordAttackSound);
+    }
+    private async Task ButtonRoarAttack()
+    {
+        if (playerState.Player.techniqueRoarIsLearned)
+            await PerformAttack(() => Encounter.RoarAttack(playerState, this), sounds.PlayRoarAttackSound);
+        UpdatePlayerLabels();
     }
 
     private async void buttonDodgeJab_Click(object sender, EventArgs e)
@@ -1018,35 +1159,72 @@ public partial class MainWindow : Form
 
     private void buttonLearnTechnique_Click(object sender, EventArgs e)
     {
-        ButtonLearnTechnique();
+        ButtonLearnTechniqueAsync();
     }
 
-    private void ButtonLearnTechnique()
+    private async Task ButtonLearnTechniqueAsync()
     {
-        if (playerState.Player.GoldInPocket >= playerState.Player.PriceToLearnTechnique)
+        if (StoryProgress.playerIsInTown && !storyProgress.Act1BossDefeatedFlag && storyProgress.Act1ArtsTeacherIsAvailable)
         {
-            //pictureBoxAct1ArtsTeacher.Hide();
-            //buttonLearnTechnique.Hide();
-            playerState.Player.GoldInPocket -= playerState.Player.PriceToLearnTechnique;
-
-            switch (playerState.Player.advanceTechnique)
+            if (playerState.Player.GoldInPocket >= playerState.Player.PriceToLearnTechnique)
             {
-                case 0:
-                    playerState.Player.techniqueBloodLustIsLearned = true;
-                    txtBox_Town.Text = "After many hours of training you have learned the Bloodlust technique.";
-                    buttonBloodLust.Show();
-                    break;
-                case 1:
-                    playerState.Player.techniqueDodgeJabIsLearned = true;
-                    txtBox_Town.Text = "After many hours of training you have learned the Dodge Jab technique.";
-                    buttonDodgeJab.Show();
-                    break;
+                playerState.Player.GoldInPocket -= playerState.Player.PriceToLearnTechnique;
+
+                switch (playerState.Player.advanceTechnique)
+                {
+                    case 0:
+                        playerState.Player.techniqueBloodLustIsLearned = true;
+                        txtBox_Town.Text = "After many hours of training you have learned the Bloodlust technique.";
+                        buttonBloodLust.Show();
+                        break;
+                    case 1:
+                        playerState.Player.techniqueDodgeJabIsLearned = true;
+                        txtBox_Town.Text = "After many hours of training you have learned the Dodge Jab technique.";
+                        buttonDodgeJab.Show();
+                        break;
+                    case 2:
+                        playerState.Player.techniqueRoarIsLearned = true;
+                        txtBox_Town.Text = "After many hours of training you have learned the Roar technique.";
+                        buttonRoarAttack.Show();
+                        break;
+                }
+                playerState.Player.advanceTechnique += 1;
+                playerState.Player.PriceToLearnTechnique *= 4;
+                buttonLearnTechnique.Text = $"Learn {playerState.Player.PriceToLearnTechnique}G";
+                UpdatePlayerLabels();
+                sounds.PlayAct1ArtsTeacher();
+                storyProgress.Act1ArtsTeacherIsAvailable = false;
+                buttonLearnTechnique.Hide();
+
+                await Task.Delay(7280);
+                pictureBoxAct1ArtsTeacher.Hide();
             }
-            playerState.Player.advanceTechnique += 1;
-            playerState.Player.PriceToLearnTechnique *= 4;
-            buttonLearnTechnique.Text = $"Learn {playerState.Player.PriceToLearnTechnique}G";
-            UpdatePlayerLabels();
+            else
+            {
+                sounds.PlayAct1ArtsTeacherNo();
+            }
         }
+    }
+
+    private async void buttonRoarAttack_Click(object sender, EventArgs e)
+    {
+        await ButtonRoarAttack();
+    }
+
+    private void StartAct1Quest1()
+    {
+        quests.StartAct1Quest1();
+    }
+
+    private void labelAct1Quest1_Click(object sender, EventArgs e)
+    {
+        StartAct1Quest1();
+        Debug.WriteLine("ghey");
+    }
+
+    private void buttonAct1Quest1Continue_Click(object sender, EventArgs e)
+    {
+        quests.ContinueAct1Quest1Dialogue();
     }
 }
 

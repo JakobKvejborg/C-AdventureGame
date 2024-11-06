@@ -17,6 +17,8 @@ internal class MonsterContainer
     public List<Monster> listOfSnowMonsters1 { get; private set; }
     public List<Monster> listOfMonstersSnowGoldGoblin { get; private set; }
     public List<Monster> listOfMonstersBossAct2 { get; private set; }
+    public List<Monster> listOfMonstersAct3 { get; private set; }
+    public List<Monster> listOfMonstersBossAct3 { get; private set; }
 
     public MonsterContainer()
     {
@@ -26,6 +28,8 @@ internal class MonsterContainer
         listOfSnowMonsters1 = new List<Monster>();
         listOfMonstersSnowGoldGoblin = new List<Monster>();
         listOfMonstersBossAct2 = new List<Monster>();
+        listOfMonstersAct3 = new List<Monster>();
+        listOfMonstersBossAct3 = new List<Monster>();
         AddMonstersToList();
     }
 
@@ -57,7 +61,9 @@ internal class MonsterContainer
         Image snowHorrorImage = GetMonsterImage("snowhorror.png");
         Image snowMooseImage = GetMonsterImage("snowmoose.png");
         Image snowGoblinImage = GetMonsterImage("goldgoblin.png");
-        Image act2BossImage = GetMonsterImage("bossact2.png"); 
+        Image act2BossImage = GetMonsterImage("bossact2.png");
+
+        Image seaHorrorImage = GetMonsterImage("seahorror.png");
 
         // List of normal monsters NORMAL - NOPREFIX - SNOW - NIGHTMARE - ELITE - HORROR - HELLISH - CORRUPTED
         Monster normalGoblin = new("Goblin", 10, 10, 0, 1, 1, 6, 1, normalGoblinImage);
@@ -69,25 +75,29 @@ internal class MonsterContainer
         Monster normalGhost = new("Ghost", 8, 8, 0, 0, 3, 11, 0, normalGhostImage);
 
         // List of noprefix monsters
-        Monster golem = new("Golem", 16, 16, 2, 0, 1, 15, 0, golemImage);
-        Monster knight = new("Knight", 15, 15, 1, 0, 6, 17, 2, knightImage);
-        Monster horror = new("Horror", 19, 19, 3, 0, 1, 13, 0, horrorImage);
-        Monster starved = new("Starved", 13, 13, 1, 0, 6, 19, 0, starvedImage);
-        Monster bat = new("Bat", 16, 16, 4, 0, 0, 12, 0, batImage);
+        Monster golem = new("Golem", 21, 21, 2, 0, 1, 15, 0, golemImage);
+        Monster knight = new("Knight", 17, 17, 1, 0, 6, 17, 2, knightImage);
+        Monster horror = new("Horror", 18, 18, 3, 0, 1, 13, 0, horrorImage);
+        Monster starved = new("Starved", 15, 15, 1, 0, 6, 19, 0, starvedImage);
+        Monster bat = new("Bat", 18, 18, 4, 0, 0, 12, 0, batImage);
         Monster woodHorror = new("Wood Horror", 15, 15, 0, 0, 8, 22, 3, woodHorrorImage);
-        Monster deadTroll = new("Dead Troll", 14, 14, 3, 0, 1, 20, 0, deadTrollImage);
+        Monster deadTroll = new("Dead Troll", 14, 14, 3, 0, 1, 20, 2, deadTrollImage);
 
         // Special enemies
-        Monster act1boss = new("Aldrus Thornfell", 80, 80, 5, 0, 5, 40, 5, act1BossImage); // Act1 boss
+        Monster act1Boss = new("Aldrus Thornfell", 80, 80, 6, 0, 7, 40, 5, act1BossImage); // Act1 boss
         Monster snowGoldGoblin = new("Gold Goblin", 30, 30, 5, 0, 4, 0, 9, snowGoblinImage);
-        Monster act2boss = new("Wintermaw", 200, 200, 10, 0, 15, 50, 0, act2BossImage);
+        Monster act2Boss = new("Wintermaw", 200, 200, 10, 0, 15, 50, 0, act2BossImage);
+        Monster act3Boss = new("The Devouring Abyss", 280, 280, 10, 0, 20, 100, 30, null);
 
         // Act 2 Snow Monsters
         Monster snowDemon = new("Snow Demon", 29, 29, 8, 0, 0, 22, 0, snowDemonImage);
         Monster snowAntler = new("Snow Antler", 25, 24, 7, 0, 0, 18, 2, snowAntlerImage);
         Monster snowCrazed = new("Snow Crazed", 22, 22, 6, 0, 0, 15, 1, snowCrazedImage);
-        Monster snowHorror = new("Snow Horror", 30, 30, 9, 0, 0, 25, 4, snowHorrorImage);
+        Monster snowHorror = new("Snow Horror", 40, 40, 5, 0, 4, 25, 4, snowHorrorImage);
         Monster snowMoose = new("Snow Moose", 35, 35, 10, 0, 0, 20, 3, snowMooseImage);
+
+        // Act 3 Sea Monsters
+        Monster seaHorror = new("Sea Horror", 130, 130, 13, 0, 10, 40, 12, seaHorrorImage);
 
         // List of Monsters 1
         listOfMonsters1.Add(normalGoblin);
@@ -110,15 +120,21 @@ internal class MonsterContainer
         listOfMonsters2.Add(deadTroll);
 
         // Special enemies
-        listOfMonstersBossAct1.Add(act1boss);
+        listOfMonstersBossAct1.Add(act1Boss);
         listOfMonstersSnowGoldGoblin.Add(snowGoldGoblin);
-        listOfMonstersBossAct2.Add(act2boss);
+        listOfMonstersBossAct2.Add(act2Boss);
+        listOfMonstersBossAct3.Add(act3Boss);
+
 
         // Act 2 list of snow monsters
         listOfSnowMonsters1.Add(snowDemon);
         listOfSnowMonsters1.Add(snowAntler);
         listOfSnowMonsters1.Add(snowCrazed);
         listOfSnowMonsters1.Add(snowMoose);
+        listOfSnowMonsters1.Add(snowHorror);
+
+        // Act 3 list of sea monsters
+        listOfMonstersAct3.Add(seaHorror);
 
     }
 

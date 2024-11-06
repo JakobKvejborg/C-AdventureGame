@@ -1,25 +1,25 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
+using System.IO;
 using System.Media;
-using System.Text;
-using System.Threading.Tasks;
 using WMPLib;
 
 namespace AdventureGame;
-
+// Note that the music started from an object must be stopped from the same object again
 public class MusicAndSound
 {
     private Random random = new Random();
     private SoundPlayer[] soundPlayers;
-    public WindowsMediaPlayer mediaPlayer1 = new WindowsMediaPlayer();
-    private WindowsMediaPlayer mediaPlayer2 = new WindowsMediaPlayer();
-    private WindowsMediaPlayer mediaPlayer3 = new WindowsMediaPlayer();
-    private WindowsMediaPlayer mediaPlayer4 = new WindowsMediaPlayer();
-    private WindowsMediaPlayer mediaPlayer5 = new WindowsMediaPlayer();
 
-
-
+    // Separate media players for different music tracks
+    private WindowsMediaPlayer act1TownPlayer = new WindowsMediaPlayer();
+    private WindowsMediaPlayer act2TownPlayer = new WindowsMediaPlayer();
+    private WindowsMediaPlayer act1ThunderPlayer = new WindowsMediaPlayer();
+    private WindowsMediaPlayer act2WindPlayer = new WindowsMediaPlayer();
+    private WindowsMediaPlayer bossPlayer = new WindowsMediaPlayer();
+    private WindowsMediaPlayer soundEffectPlayer = new WindowsMediaPlayer();
+    private WindowsMediaPlayer healingMusicPlayer = new WindowsMediaPlayer();
+    private WindowsMediaPlayer NPCspeechPlayer = new WindowsMediaPlayer();
+    private WindowsMediaPlayer act3WavesPlayer = new WindowsMediaPlayer();
 
     // Helper method to load media "sounds/music" from the "sounds" folder
     public string MediaSoundPath(string soundName)
@@ -27,6 +27,7 @@ public class MusicAndSound
         string soundDirectory = Path.Combine(AppDomain.CurrentDomain.BaseDirectory, "Sounds");
         return Path.Combine(soundDirectory, soundName);
     }
+
     // Helper method to load the sounds from the folder "sounds" folder
     public SoundPlayer GetSoundPath(string soundName)
     {
@@ -39,22 +40,23 @@ public class MusicAndSound
         try
         {
             soundPlayers = new SoundPlayer[]
-     {
-        GetSoundPath("letmehealyou5db.wav"),  // index 0
-         GetSoundPath("sword1.wav"),  // index 1
-          GetSoundPath("sword2.wav"),
-           GetSoundPath("sword3.wav"),
-            GetSoundPath("sword4.wav"),
-             GetSoundPath("sword5.wav"),  // index 5
-              GetSoundPath("sword6.wav"),
-               GetSoundPath("sword7.wav"),
-        GetSoundPath("act1boss.wav"),
-        GetSoundPath("act2healer.wav"),
-        GetSoundPath("smithing.wav"),     // index 10
-        GetSoundPath("inventory.wav"),
-        GetSoundPath("deathgameover.wav"),
-        GetSoundPath("lootitems.wav"),
-     };
+            {
+                GetSoundPath("letmehealyou5db.wav"),  // index 0
+                GetSoundPath("sword1.wav"),          // index 1
+                GetSoundPath("sword2.wav"),
+                GetSoundPath("sword3.wav"),
+                GetSoundPath("sword4.wav"),
+                GetSoundPath("sword5.wav"),          // index 5
+                GetSoundPath("sword6.wav"),
+                GetSoundPath("sword7.wav"),
+                GetSoundPath("act1boss.wav"), // unused
+                GetSoundPath("act2healer.wav"),
+                GetSoundPath("smithing.wav"),        // index 10
+                GetSoundPath("inventory.wav"),
+                GetSoundPath("deathgameover.wav"),
+                GetSoundPath("lootitems.wav"),
+                GetSoundPath("roarattack.wav"), // index 14
+            };
             foreach (var soundPlayer in soundPlayers)
             {
                 soundPlayer.Load();
@@ -66,67 +68,29 @@ public class MusicAndSound
         }
     }
 
-    public void PlayThunderSound()
+    public void PlayThunderSound() // This is never used
     {
-        try
-        {
-            mediaPlayer1.URL = MediaSoundPath("thunder.wav");
-            mediaPlayer1.controls.play();
-        }
-        catch
-        {
-            throw new FileLoadException("The sound file was not found");
-        }
+        PlaySound("thunder.wav", act1ThunderPlayer);
     }
 
     public void PlayAct2WindMusic()
     {
-        try
-        {
-            mediaPlayer1.URL = MediaSoundPath("act2wind.wav");
-            mediaPlayer1.controls.play();
-        }
-        catch
-        {
-            throw new FileLoadException("The sound file was not found");
-        }
+        PlayMusic("act2wind.wav", act2WindPlayer);
     }
 
     public void PlayAct1BossSound()
     {
-        try
-        {
-            mediaPlayer2.URL = MediaSoundPath("act1boss.wav");
-            mediaPlayer2.controls.play();
-        }
-        catch
-        {
-            throw new FileLoadException("The sound file was not found");
-        }
+        PlayMusic("act1boss.wav", bossPlayer);
     }
 
     public void PlayHealingSound()
     {
-        try
-        {
-            soundPlayers[0].Play();
-        }
-        catch
-        {
-            throw new Exception("The sound file was not found");
-        }
+        PlaySound(0);
     }
 
     public void PlayAct2HealingSound()
     {
-        try
-        {
-            soundPlayers[9].Play();
-        }
-        catch
-        {
-            throw new FileLoadException("The sound file was not found");
-        }
+        PlaySound(9);
     }
 
     public void PlaySwordAttackSound()
@@ -145,73 +109,123 @@ public class MusicAndSound
         }
     }
 
-    internal void PlayAct1TownMusic()
+    public void PlayAct1TownMusic()
     {
-        try
-        {
-            mediaPlayer1.URL = MediaSoundPath("act1town.wav");
-            mediaPlayer1.controls.play();
-        }
-        catch
-        {
-            throw new FileLoadException("The sound file was not found");
-        }
+        PlayMusic("act1town.wav", act1TownPlayer);
     }
 
     public void PlayAct1HealingMusic()
     {
-        try
+        PlayMusic("letmehealyou5db.wav", healingMusicPlayer);
+    }
+    public void PlayAct1ArtsTeacher()
+    {
+        PlayMusic("act1artsteacher.wav", NPCspeechPlayer);
+    }
+
+    public void PlayAct1ArtsTeacherNo()
+    {
+        PlayMusic("act1artsteacherno.wav", NPCspeechPlayer);
+    }
+    public void PlayAct2SmithOffer()
+    {
+        if (random.Next(0, 2) == 0) // chooses 0 or 1, and if 0 then...
         {
-            mediaPlayer2.URL = MediaSoundPath("letmehealyou5db.wav");
-            mediaPlayer2.controls.play();
+            PlayMusic("act2smithoffer.wav", NPCspeechPlayer);
         }
-        catch
+        else
         {
-            throw new FileLoadException("The sound file was not found");
+            PlayMusic("act2smithoffer2.wav", NPCspeechPlayer);
         }
+    }
+    public void PlayAct2SmithNo()
+    {
+        PlayMusic("act2smithno.wav", NPCspeechPlayer);
     }
 
     public void PlaySmithingSound()
     {
-        try
-        {
-            soundPlayers[10].Play();
-        }
-        catch
-        {
-            throw new Exception("The sound file was not found");
-        }
+        PlaySound(10);
     }
 
     public void PlayInventorySound()
     {
-        try
-        {
-            soundPlayers[11].Play();
-        }
-        catch
-        {
-            throw new Exception("The sound file was not found");
-        }
+        PlaySound(11);
     }
 
     public void PlayDeathGameOverSound()
     {
-        try
-        {
-            soundPlayers[12].Play();
-        }
-        catch
-        {
-            throw new Exception("The sound file was not found");
-        }
+        PlaySound(12);
     }
 
     public void PlayLootItemsSound()
     {
+        PlaySound(13);
+    }
+    public void PlayRoarAttackSound()
+    {
+        PlaySound(14);
+    }
+
+    public void PlayCoinSound()
+    {
+        PlayMusic("coin.wav", soundEffectPlayer);
+    }
+
+    public void PlayLevelUpSound()
+    {
+        PlayMusic("levelup.wav", soundEffectPlayer);
+    }
+
+    public void PlayBloodLustSound()
+    {
+        PlayMusic("bloodlust.wav", soundEffectPlayer);
+    }
+
+    public void PlayCritSound()
+    {
+        PlayMusic("crit.wav", soundEffectPlayer);
+    }
+
+    public void PlayDodgeSound()
+    {
+        PlayMusic("dodge.wav", soundEffectPlayer);
+    }
+
+    public void PlayAct2BossSound()
+    {
+        PlayMusic("act2boss.wav", soundEffectPlayer);
+    }
+
+    public void PlayAct2TownMusic()
+    {
+        PlayMusic("act2town.wav", act2TownPlayer);
+    }
+
+    private void PlayMusic(string fileName, WindowsMediaPlayer player)
+    {
         try
         {
-            soundPlayers[13].Play();
+            // Stop any currently playing music
+            if (player.playState == WMPPlayState.wmppsPlaying)
+            {
+                player.controls.stop();
+            }
+
+            player.URL = MediaSoundPath(fileName);
+            player.controls.play();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error playing music {fileName}: {ex.Message}");
+        }
+    }
+
+    private void PlaySound(int index)
+    {
+        try
+        {
+            soundPlayers[index].Play();
         }
         catch
         {
@@ -219,84 +233,50 @@ public class MusicAndSound
         }
     }
 
-    public void PlayCoinSound()
+    private void PlaySound(string fileName, WindowsMediaPlayer player)
     {
         try
         {
-            mediaPlayer3.URL = MediaSoundPath("coin.wav");
-            mediaPlayer3.controls.play();
+            player.URL = MediaSoundPath(fileName);
+            player.controls.play();
         }
-        catch
+        catch (Exception ex)
         {
-            throw new FileNotFoundException("The sound file was not found");
+            Console.WriteLine($"Error playing sound {fileName}: {ex.Message}");
         }
     }
 
-    public void PlayLevelUpSound()
+    public void PlayAct3Waves()
     {
-        try
-        {
-            mediaPlayer4.URL = MediaSoundPath("levelup.wav");
-            mediaPlayer4.controls.play();
-        }
-        catch
-        {
-            throw new FileNotFoundException("The sound file was not found");
-        }
+        PlayMusic("act3waves.wav", act3WavesPlayer);
+    }
+    public void PlayAct3Boss()
+    {
+        PlayMusic("act3boss.wav", bossPlayer);
     }
 
-    public void PlayBloodLustSound()
+    public void StopAct1TownMusic()
     {
-        try
-        {
-            mediaPlayer4.URL = MediaSoundPath("bloodlust.wav");
-            mediaPlayer4.controls.play();
-        }
-        catch
-        {
-            throw new FileNotFoundException("The sound file was not found");
-        }
+        act1TownPlayer.controls.stop();
+    }
+    public void StopAct2TownMusic()
+    {
+        act2TownPlayer.controls.stop();
+    }
+    public void StopAct2WindSound()
+    {
+        act2WindPlayer.controls.stop();
+    }
+    public void StopAct1ThunderSound()
+    {
+        act1ThunderPlayer.controls.stop();
     }
 
-    public void PlayCritSound()
+    public void MuteAllSounds()
     {
-        try
-        {
-            mediaPlayer5.URL = MediaSoundPath("crit.wav");
-            mediaPlayer5.controls.play();
-        }
-        catch
-        {
-            throw new FileNotFoundException("The sound file was not found");
-        }
+        StopAct1TownMusic();
+        StopAct1ThunderSound();
+        StopAct2TownMusic();
+        StopAct2WindSound();
     }
-    public void PlayDodgeSound()
-    {
-        try
-        {
-            mediaPlayer5.URL = MediaSoundPath("dodge.wav");
-            mediaPlayer5.controls.play();
-        }
-        catch
-        {
-            throw new FileNotFoundException("The sound file was not found");
-        }
-    }
-
-    public void PlayAct2BossSound()
-    {
-        try
-        {
-            mediaPlayer1.URL = MediaSoundPath("act2boss.wav");
-            mediaPlayer1.controls.play();
-        }
-        catch
-        {
-            throw new FileNotFoundException("The sound file was not found");
-        }
-    }
-
 }
-
-
-

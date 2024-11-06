@@ -23,8 +23,9 @@ internal class Player
     public int CritChance { get; set; }
     public int Regeneration { get; set; }
     public int PriceToLearnTechnique { get; set; } = 10;
-    public bool techniqueBloodLustIsLearned { get; set; } = false;
-    public bool techniqueDodgeJabIsLearned { get; set; } = false;
+    public bool techniqueBloodLustIsLearned { get; set; }
+    public bool techniqueDodgeJabIsLearned { get; set; }
+    public bool techniqueRoarIsLearned { get; set; }
     public int advanceTechnique = 0;
 
 

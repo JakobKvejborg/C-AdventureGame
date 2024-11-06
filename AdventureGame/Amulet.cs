@@ -9,17 +9,60 @@ namespace AdventureGame;
 public class Amulet : Item
 {
     private static Random _random = new Random();
+    public string Tier { get; private set; }
 
-    public Amulet(string name = "Mystic Amulet") : base(name, ItemType.Amulet)
+    public Amulet(string name = "Mystic Amulet", string tier = "Normal") : base(name, ItemType.Amulet)
     {
-        // Randomize attributes for the amulet
-        Strength = _random.Next(0, 5);        // Strength boost between 0 and 4
-        DodgeChance = _random.Next(0, 6);      
-        CritChance = _random.Next(0, 5);     
-        Regeneration = _random.Next(0, 2);
-
-        // Set level requirements randomly
-        LevelRequirement = _random.Next(4, 9);
+        Tier = tier;
+        AssignStatsBasedOnTier();
     }
+    private void AssignStatsBasedOnTier()
+    {
+        switch (Tier)
+        {
+            case "Normal":
+                Strength = _random.Next(0, 5);           // Strength boost between 0 and 4
+                DodgeChance = _random.Next(0, 6);
+                CritChance = _random.Next(0, 5);
+                Regeneration = _random.Next(0, 2);
+                LevelRequirement = _random.Next(4, 9);   // Level 4-8
+                break;
 
+            case "Magic":
+                Strength = _random.Next(3, 7);          // Strength boost between 5 and 9
+                DodgeChance = _random.Next(1, 4);
+                CritChance = _random.Next(5, 15);
+                Regeneration = _random.Next(0, 2);
+                LevelRequirement = _random.Next(1, 10);  // Level 9-13
+                break;
+
+            case "Rare":
+                Strength = _random.Next(5, 10);          // Strength boost between 5 and 9
+                DodgeChance = _random.Next(5, 11);
+                CritChance = _random.Next(5, 10);
+                Regeneration = _random.Next(0, 3);
+                LevelRequirement = _random.Next(9, 14);  // Level 9-13
+                break;
+
+            case "Epic":
+                Strength = _random.Next(10, 16);         // Strength boost between 10 and 15
+                DodgeChance = _random.Next(10, 16);
+                CritChance = _random.Next(10, 15);
+                Regeneration = _random.Next(2, 4);
+                LevelRequirement = _random.Next(15, 21); // Level 15-20
+                break;
+
+            case "Legendary":
+                Strength = _random.Next(15, 21);         // Strength boost between 15 and 20
+                DodgeChance = _random.Next(15, 21);
+                CritChance = _random.Next(15, 20);
+                Regeneration = _random.Next(3, 5);
+                LevelRequirement = _random.Next(30, 35); // Level 20-24
+                break;
+
+            default:
+                throw new ArgumentException("Invalid tier provided.");
+        }
+    }
 }
+

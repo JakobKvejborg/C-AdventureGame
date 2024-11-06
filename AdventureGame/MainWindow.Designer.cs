@@ -50,11 +50,14 @@ partial class MainWindow
         buttonReturnToTown = new Button();
         buttonBloodLust = new Button();
         buttonUpgradeItem = new Button();
+        buttonLearnTechnique = new Button();
+        buttonDodgeJab = new Button();
+        buttonRoarAttack = new Button();
+        buttonAct1Quest1Continue = new Button();
         labelInvisibleWeaponRightHandEquipped = new Label();
         textBox1 = new TextBox();
         comboBoxInventory = new ComboBox();
         labelInventory = new Label();
-        buttonDodgeJab = new Button();
         progressBarPlayerHP = new ProgressBar();
         labelPlayerHP = new Label();
         labelPlayerDamage = new Label();
@@ -99,7 +102,7 @@ partial class MainWindow
         pictureBoxHero = new PictureBox();
         pictureBoxInventory = new PictureBox();
         panelTown = new Panel();
-        buttonLearnTechnique = new Button();
+        labelAct1Quest1 = new Label();
         pictureBoxAct1ArtsTeacher = new PictureBox();
         comboBoxUpgradeItems = new ComboBox();
         txtBox_Town = new TextBox();
@@ -113,6 +116,8 @@ partial class MainWindow
         labelGameTitle = new Label();
         panelGameOver = new Panel();
         labelGameOverText = new Label();
+        panelAct1Quest1 = new Panel();
+        textBoxAct1Quest1 = new TextBox();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHeroBag).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxLoot).BeginInit();
         panelMonster.SuspendLayout();
@@ -134,6 +139,7 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxAct2Smith).BeginInit();
         panelStartScreen.SuspendLayout();
         panelGameOver.SuspendLayout();
+        panelAct1Quest1.SuspendLayout();
         SuspendLayout();
         // 
         // btn_continue
@@ -149,12 +155,12 @@ partial class MainWindow
         // 
         // btn_attack
         // 
-        btn_attack.Location = new Point(9, 725);
+        btn_attack.Location = new Point(5, 725);
         btn_attack.Name = "btn_attack";
-        btn_attack.Size = new Size(95, 35);
+        btn_attack.Size = new Size(98, 35);
         btn_attack.TabIndex = 5;
         btn_attack.Text = "Attack";
-        toolTip.SetToolTip(btn_attack, "\"Space\"");
+        toolTip.SetToolTip(btn_attack, "\"Space\" or \"1\"");
         btn_attack.UseVisualStyleBackColor = true;
         btn_attack.Click += btn_attack_Click;
         // 
@@ -284,7 +290,7 @@ partial class MainWindow
         pictureBoxLoot.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxLoot.TabIndex = 34;
         pictureBoxLoot.TabStop = false;
-        toolTip.SetToolTip(pictureBoxLoot, "\"L\"");
+        toolTip.SetToolTip(pictureBoxLoot, "\"F\"");
         pictureBoxLoot.Click += pictureBoxLoot_Click;
         // 
         // buttonReturnToTown
@@ -302,12 +308,12 @@ partial class MainWindow
         // 
         // buttonBloodLust
         // 
-        buttonBloodLust.Location = new Point(108, 725);
+        buttonBloodLust.Location = new Point(107, 725);
         buttonBloodLust.Name = "buttonBloodLust";
         buttonBloodLust.Size = new Size(97, 35);
         buttonBloodLust.TabIndex = 37;
         buttonBloodLust.Text = "Bloodlust";
-        toolTip.SetToolTip(buttonBloodLust, "\"Q\"");
+        toolTip.SetToolTip(buttonBloodLust, "\"2\"");
         buttonBloodLust.UseVisualStyleBackColor = true;
         buttonBloodLust.Click += buttonBloodLust_Click;
         // 
@@ -321,6 +327,51 @@ partial class MainWindow
         toolTip.SetToolTip(buttonUpgradeItem, "\"U\"");
         buttonUpgradeItem.UseVisualStyleBackColor = true;
         buttonUpgradeItem.Click += buttonUpgradeItem_Click;
+        // 
+        // buttonLearnTechnique
+        // 
+        buttonLearnTechnique.Location = new Point(386, 614);
+        buttonLearnTechnique.Name = "buttonLearnTechnique";
+        buttonLearnTechnique.Size = new Size(124, 32);
+        buttonLearnTechnique.TabIndex = 18;
+        buttonLearnTechnique.Text = "Learn 10G";
+        toolTip.SetToolTip(buttonLearnTechnique, "\"L\"");
+        buttonLearnTechnique.UseVisualStyleBackColor = true;
+        buttonLearnTechnique.Click += buttonLearnTechnique_Click;
+        // 
+        // buttonDodgeJab
+        // 
+        buttonDodgeJab.Location = new Point(207, 725);
+        buttonDodgeJab.Name = "buttonDodgeJab";
+        buttonDodgeJab.Size = new Size(93, 35);
+        buttonDodgeJab.TabIndex = 7;
+        buttonDodgeJab.Text = "Dodge Jab";
+        toolTip.SetToolTip(buttonDodgeJab, "\"3\"");
+        buttonDodgeJab.UseVisualStyleBackColor = true;
+        buttonDodgeJab.Click += buttonDodgeJab_Click;
+        // 
+        // buttonRoarAttack
+        // 
+        buttonRoarAttack.Location = new Point(303, 725);
+        buttonRoarAttack.Name = "buttonRoarAttack";
+        buttonRoarAttack.Size = new Size(93, 35);
+        buttonRoarAttack.TabIndex = 44;
+        buttonRoarAttack.Text = "Roar";
+        toolTip.SetToolTip(buttonRoarAttack, "\"4\"");
+        buttonRoarAttack.UseVisualStyleBackColor = true;
+        buttonRoarAttack.Click += buttonRoarAttack_Click;
+        // 
+        // buttonAct1Quest1Continue
+        // 
+        buttonAct1Quest1Continue.ForeColor = Color.Black;
+        buttonAct1Quest1Continue.Location = new Point(9, 111);
+        buttonAct1Quest1Continue.Name = "buttonAct1Quest1Continue";
+        buttonAct1Quest1Continue.Size = new Size(94, 29);
+        buttonAct1Quest1Continue.TabIndex = 3;
+        buttonAct1Quest1Continue.Text = "Continue";
+        toolTip.SetToolTip(buttonAct1Quest1Continue, "\"Enter\"");
+        buttonAct1Quest1Continue.UseVisualStyleBackColor = true;
+        buttonAct1Quest1Continue.Click += buttonAct1Quest1Continue_Click;
         // 
         // labelInvisibleWeaponRightHandEquipped
         // 
@@ -368,16 +419,6 @@ partial class MainWindow
         labelInventory.TabIndex = 3;
         labelInventory.Text = "Inventory";
         labelInventory.Click += labelInventory_Click;
-        // 
-        // buttonDodgeJab
-        // 
-        buttonDodgeJab.Location = new Point(213, 723);
-        buttonDodgeJab.Name = "buttonDodgeJab";
-        buttonDodgeJab.Size = new Size(97, 37);
-        buttonDodgeJab.TabIndex = 7;
-        buttonDodgeJab.Text = "Dodge Jab";
-        buttonDodgeJab.UseVisualStyleBackColor = true;
-        buttonDodgeJab.Click += buttonDodgeJab_Click;
         // 
         // progressBarPlayerHP
         // 
@@ -553,6 +594,7 @@ partial class MainWindow
         panelEncounter.BackColor = Color.Transparent;
         panelEncounter.BackgroundImage = Properties.Resources.castle;
         panelEncounter.BackgroundImageLayout = ImageLayout.Stretch;
+        panelEncounter.Controls.Add(buttonRoarAttack);
         panelEncounter.Controls.Add(panelPopupAmulet);
         panelEncounter.Controls.Add(buttonBloodLust);
         panelEncounter.Controls.Add(buttonDodgeJab);
@@ -902,6 +944,7 @@ partial class MainWindow
         panelTown.BackColor = Color.Transparent;
         panelTown.BackgroundImage = Properties.Resources.castle;
         panelTown.BackgroundImageLayout = ImageLayout.Stretch;
+        panelTown.Controls.Add(labelAct1Quest1);
         panelTown.Controls.Add(buttonLearnTechnique);
         panelTown.Controls.Add(pictureBoxAct1ArtsTeacher);
         panelTown.Controls.Add(comboBoxUpgradeItems);
@@ -923,15 +966,15 @@ partial class MainWindow
         panelTown.Size = new Size(537, 768);
         panelTown.TabIndex = 0;
         // 
-        // buttonLearnTechnique
+        // labelAct1Quest1
         // 
-        buttonLearnTechnique.Location = new Point(386, 614);
-        buttonLearnTechnique.Name = "buttonLearnTechnique";
-        buttonLearnTechnique.Size = new Size(124, 32);
-        buttonLearnTechnique.TabIndex = 18;
-        buttonLearnTechnique.Text = "Learn 10G";
-        buttonLearnTechnique.UseVisualStyleBackColor = true;
-        buttonLearnTechnique.Click += buttonLearnTechnique_Click;
+        labelAct1Quest1.AutoSize = true;
+        labelAct1Quest1.Location = new Point(231, 472);
+        labelAct1Quest1.Name = "labelAct1Quest1";
+        labelAct1Quest1.Size = new Size(69, 80);
+        labelAct1Quest1.TabIndex = 19;
+        labelAct1Quest1.Text = "               \r\n\r\n\r\n       \r\n";
+        labelAct1Quest1.Click += labelAct1Quest1_Click;
         // 
         // pictureBoxAct1ArtsTeacher
         // 
@@ -1071,11 +1114,35 @@ partial class MainWindow
         labelGameOverText.AutoSize = true;
         labelGameOverText.Font = new Font("Impact", 51F, FontStyle.Bold);
         labelGameOverText.ForeColor = Color.FromArgb(178, 34, 34);
-        labelGameOverText.Location = new Point(25, 161);
+        labelGameOverText.Location = new Point(25, 179);
         labelGameOverText.Name = "labelGameOverText";
         labelGameOverText.Size = new Size(501, 309);
         labelGameOverText.TabIndex = 0;
         labelGameOverText.Text = "You Are Dead\n\r\n\r  Game Over";
+        // 
+        // panelAct1Quest1
+        // 
+        panelAct1Quest1.BackColor = Color.Transparent;
+        panelAct1Quest1.Controls.Add(buttonAct1Quest1Continue);
+        panelAct1Quest1.Controls.Add(textBoxAct1Quest1);
+        panelAct1Quest1.Dock = DockStyle.Fill;
+        panelAct1Quest1.ForeColor = Color.Transparent;
+        panelAct1Quest1.Location = new Point(0, 0);
+        panelAct1Quest1.Name = "panelAct1Quest1";
+        panelAct1Quest1.Size = new Size(537, 768);
+        panelAct1Quest1.TabIndex = 45;
+        // 
+        // textBoxAct1Quest1
+        // 
+        textBoxAct1Quest1.BackColor = Color.FromArgb(195, 195, 195);
+        textBoxAct1Quest1.Font = new Font("Microsoft Sans Serif", 12F);
+        textBoxAct1Quest1.Location = new Point(11, 15);
+        textBoxAct1Quest1.Multiline = true;
+        textBoxAct1Quest1.Name = "textBoxAct1Quest1";
+        textBoxAct1Quest1.ReadOnly = true;
+        textBoxAct1Quest1.ScrollBars = ScrollBars.Vertical;
+        textBoxAct1Quest1.Size = new Size(519, 90);
+        textBoxAct1Quest1.TabIndex = 2;
         // 
         // MainWindow
         // 
@@ -1088,6 +1155,7 @@ partial class MainWindow
         Controls.Add(panelTown);
         Controls.Add(panelGameOver);
         Controls.Add(panelStartScreen);
+        Controls.Add(panelAct1Quest1);
         DoubleBuffered = true;
         Name = "MainWindow";
         Text = "Horrors Awoken";
@@ -1123,6 +1191,8 @@ partial class MainWindow
         panelStartScreen.PerformLayout();
         panelGameOver.ResumeLayout(false);
         panelGameOver.PerformLayout();
+        panelAct1Quest1.ResumeLayout(false);
+        panelAct1Quest1.PerformLayout();
         ResumeLayout(false);
     }
 
@@ -1169,7 +1239,6 @@ partial class MainWindow
     private Label labelCompassE;
     private Label labelCompassN;
     private Label labelCompassS;
-    private Button buttonHeal;
     public PictureBox pictureBoxTown;
     public TextBox txtBox_Town;
     private Button btn_Continuetown;
@@ -1213,4 +1282,10 @@ partial class MainWindow
     public Panel panelPopupAmulet;
     private Label labelInfoAmuletEquipped;
     private Label labelAmuletName;
+    public Button buttonRoarAttack;
+    private Button buttonAct1Quest1Continue;
+    public TextBox textBoxAct1Quest1;
+    public Button buttonHeal;
+    public Label labelAct1Quest1;
+    public Panel panelAct1Quest1;
 }
