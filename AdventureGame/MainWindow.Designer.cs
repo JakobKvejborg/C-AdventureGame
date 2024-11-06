@@ -118,6 +118,7 @@ partial class MainWindow
         labelGameOverText = new Label();
         panelAct1Quest1 = new Panel();
         textBoxAct1Quest1 = new TextBox();
+        buttonAct1Q1Town = new Button();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHeroBag).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxLoot).BeginInit();
         panelMonster.SuspendLayout();
@@ -1123,6 +1124,7 @@ partial class MainWindow
         // panelAct1Quest1
         // 
         panelAct1Quest1.BackColor = Color.Transparent;
+        panelAct1Quest1.Controls.Add(buttonAct1Q1Town);
         panelAct1Quest1.Controls.Add(buttonAct1Quest1Continue);
         panelAct1Quest1.Controls.Add(textBoxAct1Quest1);
         panelAct1Quest1.Dock = DockStyle.Fill;
@@ -1144,6 +1146,19 @@ partial class MainWindow
         textBoxAct1Quest1.Size = new Size(519, 90);
         textBoxAct1Quest1.TabIndex = 2;
         // 
+        // buttonAct1Q1Town
+        // 
+        buttonAct1Q1Town.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+        buttonAct1Q1Town.ForeColor = Color.MidnightBlue;
+        buttonAct1Q1Town.Location = new Point(109, 111);
+        buttonAct1Q1Town.Name = "buttonAct1Q1Town";
+        buttonAct1Q1Town.Size = new Size(98, 29);
+        buttonAct1Q1Town.TabIndex = 37;
+        buttonAct1Q1Town.Text = "Town";
+        toolTip.SetToolTip(buttonAct1Q1Town, "\"B\"");
+        buttonAct1Q1Town.UseVisualStyleBackColor = true;
+        buttonAct1Q1Town.Click += buttonAct1Q1Town_Click;
+        // 
         // MainWindow
         // 
         AutoScaleDimensions = new SizeF(8F, 20F);
@@ -1151,11 +1166,11 @@ partial class MainWindow
         BackColor = SystemColors.ActiveCaptionText;
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(537, 768);
+        Controls.Add(panelAct1Quest1);
         Controls.Add(panelEncounter);
         Controls.Add(panelTown);
         Controls.Add(panelGameOver);
         Controls.Add(panelStartScreen);
-        Controls.Add(panelAct1Quest1);
         DoubleBuffered = true;
         Name = "MainWindow";
         Text = "Horrors Awoken";
@@ -1288,4 +1303,5 @@ partial class MainWindow
     public Button buttonHeal;
     public Label labelAct1Quest1;
     public Panel panelAct1Quest1;
+    public Button buttonAct1Q1Town;
 }

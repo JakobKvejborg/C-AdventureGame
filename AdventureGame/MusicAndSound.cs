@@ -127,6 +127,11 @@ public class MusicAndSound
     {
         PlayMusic("act1artsteacherno.wav", NPCspeechPlayer);
     }
+    public void PlayAct1WomanCrying()
+    {
+        PlayMusic("act1quest1womancrying.wav", NPCspeechPlayer);
+    }
+
     public void PlayAct2SmithOffer()
     {
         if (random.Next(0, 2) == 0) // chooses 0 or 1, and if 0 then...

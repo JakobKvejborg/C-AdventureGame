@@ -336,6 +336,7 @@ public partial class MainWindow : Form
                 }
                 ButtonContinue();
                 HideInventory();
+                Quest1ContinueDialog();
                 return true;
             case Keys.W:
                 ButtonNorth();
@@ -395,6 +396,7 @@ public partial class MainWindow : Form
                 return true;
             case Keys.B:
                 ReturnToTownClick(); // Returns the player to the town
+                Quest1ReturnToTown();
                 return true;
             case Keys.U:
                 ButtonUpgradeItem();
@@ -538,6 +540,7 @@ public partial class MainWindow : Form
                     if (!storyProgress.Act1BossDefeatedFlag)
                     {
                         Act1BossFight();
+                        quests.Act1Quest1EncounterIsActive = false; // disables act1 q1
                     }
                     else
                     {
@@ -675,6 +678,16 @@ public partial class MainWindow : Form
 
     private void ButtonSouth()
     {
+        // Act 1 Quest 1 special encounter
+        if (quests.Act1Quest1EncounterIsActive && !storyProgress.Act1BossDefeatedFlag && storyProgress.WhichActIsThePlayerIn == 1)
+        {
+            quests.Act1Quest1EncounterIsActive = false;
+            panelTown.Hide();
+            panelEncounter.Show();
+            storyProgress.StoryState = 99;
+            storyProgress.ProgressStory();
+            quests.Act1Quest1BoyFound = true;
+        }
         if (!storyProgress.Act1BossDefeatedFlag)
         {
             txtBox_Town.Text = "You cannot turn back now. You must press on, your destiny awaits.";
@@ -702,7 +715,7 @@ public partial class MainWindow : Form
             storyProgress.StoryState = 12;
             storyProgress.ProgressStory();
         }
-       
+
     }
 
     private void buttonHeal_Click(object sender, EventArgs e)
@@ -900,6 +913,7 @@ public partial class MainWindow : Form
                 sounds.PlayAct2SmithOffer();
                 playerState.Player.GoldInPocket -= Item.CostToUpgrade;
                 Item.CostToUpgrade += 20;
+                buttonUpgradeItem.Text = $"{Item.CostToUpgrade}G";
                 UpdatePlayerLabels();
                 comboBoxInventory.Items[comboBoxInventory.Items.IndexOf(item)] = item; // Update the item in the ComboBox
 
@@ -1219,13 +1233,28 @@ public partial class MainWindow : Form
     private void labelAct1Quest1_Click(object sender, EventArgs e)
     {
         StartAct1Quest1();
-        Debug.WriteLine("ghey");
     }
 
     private void buttonAct1Quest1Continue_Click(object sender, EventArgs e)
     {
+        Quest1ContinueDialog();
+    }
+
+    private void Quest1ContinueDialog()
+    {
         quests.ContinueAct1Quest1Dialogue();
     }
+
+    private void buttonAct1Q1Town_Click(object sender, EventArgs e)
+    {
+        Quest1ReturnToTown();
+    }
+
+    private void Quest1ReturnToTown()
+    {
+        quests.ReturnToTownFromAct1Quest1();
+    }
+
 }
 
 

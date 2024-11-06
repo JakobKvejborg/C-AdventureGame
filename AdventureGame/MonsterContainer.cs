@@ -16,6 +16,7 @@ internal class MonsterContainer
     public List<Monster> listOfMonstersBossAct1 { get; private set; }
     public List<Monster> listOfSnowMonsters1 { get; private set; }
     public List<Monster> listOfMonstersSnowGoldGoblin { get; private set; }
+    public List<Monster> listOfMonstersAct1Quest1 { get; private set; }
     public List<Monster> listOfMonstersBossAct2 { get; private set; }
     public List<Monster> listOfMonstersAct3 { get; private set; }
     public List<Monster> listOfMonstersBossAct3 { get; private set; }
@@ -30,6 +31,7 @@ internal class MonsterContainer
         listOfMonstersBossAct2 = new List<Monster>();
         listOfMonstersAct3 = new List<Monster>();
         listOfMonstersBossAct3 = new List<Monster>();
+        listOfMonstersAct1Quest1 = new List<Monster>();
         AddMonstersToList();
     }
 
@@ -54,6 +56,7 @@ internal class MonsterContainer
         Image woodHorrorImage = GetMonsterImage("woodhorror.png");
         Image deadTrollImage = GetMonsterImage("deadtroll.png");
         Image act1BossImage = GetMonsterImage("bossact1.png");
+        Image hungryBeastImage = GetMonsterImage("hungrybeast.png");
 
         Image snowDemonImage = GetMonsterImage("snowdemon.png");
         Image snowAntlerImage = GetMonsterImage("snowantler.png");
@@ -85,6 +88,7 @@ internal class MonsterContainer
 
         // Special enemies
         Monster act1Boss = new("Aldrus Thornfell", 80, 80, 6, 0, 7, 40, 5, act1BossImage); // Act1 boss
+        Monster hungryBeast = new("Hungry Beast", 25, 25, 3, 0, 2, 30, 0, hungryBeastImage);
         Monster snowGoldGoblin = new("Gold Goblin", 30, 30, 5, 0, 4, 0, 9, snowGoblinImage);
         Monster act2Boss = new("Wintermaw", 200, 200, 10, 0, 15, 50, 0, act2BossImage);
         Monster act3Boss = new("The Devouring Abyss", 280, 280, 10, 0, 20, 100, 30, null);
@@ -124,6 +128,7 @@ internal class MonsterContainer
         listOfMonstersSnowGoldGoblin.Add(snowGoldGoblin);
         listOfMonstersBossAct2.Add(act2Boss);
         listOfMonstersBossAct3.Add(act3Boss);
+        listOfMonstersAct1Quest1.Add(hungryBeast);
 
 
         // Act 2 list of snow monsters

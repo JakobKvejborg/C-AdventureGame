@@ -15,40 +15,53 @@ public class QuestManager
     private readonly ImageSetter _imageSetter;
     public bool Act1Quest1BoyFound { get; set; }
     public bool FirstTimeText { get; private set; }
+    private MusicAndSound _sounds = new MusicAndSound();
+    public bool Act1Quest1EncounterIsActive { get; set; }
+    public bool Act1Quest1IsCompleted { get; set; }
+    public bool isInsideAct1Quest1Panel { get; set; }
 
     public QuestManager(MainWindow mainWindow, ImageSetter imageSetter)
     {
         _mainWindow = mainWindow;
         _imageSetter = imageSetter;
         _storyProgress = new StoryProgress(_mainWindow);
+
     }
+
     public void ContinueAct1Quest1Dialogue()
     {
-        //currentDialogueIndex++;
-        _mainWindow.ButtonContinue(); // closes the questpanel finally
+        if (isInsideAct1Quest1Panel)
+        {
+            //currentDialogueIndex++;
+        }
     }
 
-
-        // Start Act 1 Quest 1
-        public void StartAct1Quest1()
+    // Start Act 1 Quest 1
+    public void StartAct1Quest1()
     {
         if (StoryProgress.playerIsInTown && !_storyProgress.Act1BossDefeatedFlag && _storyProgress.WhichActIsThePlayerIn == 1)
         {
+            isInsideAct1Quest1Panel = true;
+
             if (!Act1Quest1BoyFound)
             {
-                _mainWindow.panelAct1Quest1.Show();
+                Act1Quest1EncounterIsActive = true;
                 _imageSetter.SetAct1Quest1BackgroundImage();
+                _mainWindow.panelAct1Quest1.Show();
                 _mainWindow.panelTown.Hide();
+                _sounds.PlayAct1WomanCrying();
 
                 if (!FirstTimeText)
                 {
-                _mainWindow.textBoxAct1Quest1.Text = "Hey, you! You must help me! I... I’ve lost my little boy. I turned away for a moment, and now he’s gone. I’m so worried—I can’t bear the thought of him out there alone. Please, if you could help me find him, I’d be forever grateful.";
+                    _mainWindow.textBoxAct1Quest1.Text = "Hey, you! You must help me! I... I’ve lost my little boy. I turned away for a moment, and now he’s gone. I’m so worried—I can’t bear the thought of him out there alone. Please, if you could help me find him, I’d be forever grateful.";
                     FirstTimeText = true;
-                } else
+                }
+                else
                 {
                     _mainWindow.textBoxAct1Quest1.Text = "Have you found him yet? It’s not safe out there. I hope nothing’s happened to him.";
                 }
-            } else
+            }
+            else
             {
                 CompleteAct1Quest1();
             }
@@ -58,6 +71,28 @@ public class QuestManager
     public void CompleteAct1Quest1()
     {
         _imageSetter.SetAct1Quest1CompletedBackgroundImage();
+        _mainWindow.panelAct1Quest1.Show();
+        _mainWindow.panelTown.Hide();
+        if (!Act1Quest1IsCompleted)
+        {
+            _mainWindow.textBoxAct1Quest1.Text = "Thank you so much for returning my boy to me! As a token of my gratitude, here, take these. They belonged to my father. Farewell, hero.";
+            // give item to the player
+            Act1Quest1IsCompleted = true;
+        }
+        else
+        {
+            _mainWindow.textBoxAct1Quest1.Text = "Thank you again, hero. Maybe you'll save us all some day.";
+        }
+    }
+
+    public void ReturnToTownFromAct1Quest1()
+    {
+        if (isInsideAct1Quest1Panel)
+        {
+            _mainWindow.panelAct1Quest1.Hide();
+            _mainWindow.panelTown.Show();
+            isInsideAct1Quest1Panel = false;
+        }
     }
 
 }

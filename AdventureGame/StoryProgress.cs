@@ -204,6 +204,13 @@ internal class StoryProgress
 
 
             // Special cases:
+            case 99: // Act 1 West repeated
+                if (progressFlag == true)
+                {
+                    Encounter.PerformEncounter(monsterContainer.listOfMonstersAct1Quest1, itemContainer.noItems, _mainWindow);
+                    StoryState = 7;
+                }
+                break;
             case 100: // Act 1 West repeated
                 if (progressFlag == true)
                 {
