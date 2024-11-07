@@ -41,6 +41,7 @@ public class Amulet : Item
                 DodgeChance = _random.Next(5, 11);
                 CritChance = _random.Next(5, 10);
                 Regeneration = _random.Next(0, 3);
+                Lifesteal = _random.Next(0, 8);
                 LevelRequirement = _random.Next(9, 14);  // Level 9-13
                 break;
 
@@ -49,6 +50,7 @@ public class Amulet : Item
                 DodgeChance = _random.Next(10, 16);
                 CritChance = _random.Next(10, 15);
                 Regeneration = _random.Next(2, 4);
+                Lifesteal = _random.Next(0, 15);
                 LevelRequirement = _random.Next(15, 21); // Level 15-20
                 break;
 
@@ -56,6 +58,7 @@ public class Amulet : Item
                 Strength = _random.Next(15, 21);         // Strength boost between 15 and 20
                 DodgeChance = _random.Next(15, 21);
                 CritChance = _random.Next(15, 20);
+                Lifesteal = _random.Next(0, 20);
                 Regeneration = _random.Next(3, 5);
                 LevelRequirement = _random.Next(30, 35); // Level 20-24
                 break;

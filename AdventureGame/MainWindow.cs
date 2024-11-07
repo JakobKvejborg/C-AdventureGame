@@ -18,6 +18,7 @@ public partial class MainWindow : Form
     private Random random = new Random();
     ImageSetter imageSetter;
     MusicAndSound sounds = new MusicAndSound();
+    bool isContinueOnCooldown; // Prevents the player from spamming Continue too fast
     bool IsInventoryOpen { get; set; } = false;
     bool playGameHasBeenPressed { get; set; } = false;
     bool EnabledAct1TechniqueTeacher;
@@ -82,8 +83,11 @@ public partial class MainWindow : Form
         panelPopupWeaponRightHand.Hide();
         panelPopupArmor.Hide();
         panelPopupBoots.Hide();
+        panelPopupBelt.Hide();
         panelPopupGloves.Hide();
+        panelPopupHelmet.Hide();
         panelPopupAmulet.Hide();
+        panelPopupLeggings.Hide();
         comboBoxUpgradeItems.Hide();
         buttonUpgradeItem.Hide();
         pictureBoxHeroBag.Hide();
@@ -91,6 +95,7 @@ public partial class MainWindow : Form
         panelInventory.Hide();
         pictureBoxLoot.Hide();
         labelGoldPopup.Hide();
+        labelHpPopup.Hide();
         buttonReturnToTown.Hide();
         btn_attack.Hide();
         buttonBloodLust.Hide();
@@ -141,6 +146,8 @@ public partial class MainWindow : Form
         panelPopupBoots.Hide();
         panelPopupGloves.Hide();
         panelPopupAmulet.Hide();
+        panelPopupLeggings.Hide();
+        panelPopupHelmet.Hide();
     }
 
     #region Invisible labels
@@ -195,6 +202,13 @@ public partial class MainWindow : Form
         labelInvisibleHelmet.Parent = pictureBoxHero;
         labelInvisibleHelmet.Location = posHelmet;
         labelInvisibleHelmet.BackColor = Color.Transparent;
+        // leggings
+        var posLeggings = labelInvisibleLeggings.Parent
+           .PointToScreen(labelInvisibleLeggings.Location);
+        posLeggings = pictureBoxHero.PointToClient(posLeggings);
+        labelInvisibleLeggings.Parent = pictureBoxHero;
+        labelInvisibleLeggings.Location = posLeggings;
+        labelInvisibleLeggings.BackColor = Color.Transparent;
 
     }
     private void SetInvisbleCompassLabels()
@@ -334,7 +348,7 @@ public partial class MainWindow : Form
                 {
                     ButtonPlayGame();
                 }
-                ButtonContinue();
+                ButtonContinueAsync();
                 HideInventory();
                 Quest1ContinueDialog();
                 return true;
@@ -503,12 +517,20 @@ public partial class MainWindow : Form
 
     private void button1_Click_1(object sender, EventArgs e)
     {
-        ButtonContinue();
+        ButtonContinueAsync();
     }
 
-    public void ButtonContinue()
+    public async Task ButtonContinueAsync()
     {
-        storyProgress.ProgressStory();
+        if (!isContinueOnCooldown)
+        {
+            isContinueOnCooldown = true;
+            storyProgress.ProgressStory();
+
+            await Task.Delay(280);
+            isContinueOnCooldown = false;
+
+        }
     }
 
     private void labelCompassW_Click(object sender, EventArgs e)
@@ -545,7 +567,7 @@ public partial class MainWindow : Form
                     else
                     {
                         storyProgress.StoryState = 14;
-                        ButtonContinue();
+                        ButtonContinueAsync();
                     }
                     break;
 
@@ -558,7 +580,7 @@ public partial class MainWindow : Form
                     else
                     {
                         storyProgress.StoryState = 14;
-                        ButtonContinue();
+                        ButtonContinueAsync();
                     }
                     break;
 
@@ -572,7 +594,7 @@ public partial class MainWindow : Form
 
                 default:
                     storyProgress.StoryState = 14;
-                    ButtonContinue();
+                    ButtonContinueAsync();
                     break;
             }
         }
@@ -756,15 +778,7 @@ public partial class MainWindow : Form
 
     private void btn_Continuetown_Click(object sender, EventArgs e)
     {
-        ButtonContinue();
-    }
-
-    private void labelWeaponEquipped_MouseHover(object sender, EventArgs e)
-    {
-    }
-
-    private void labelWeaponEquipped_MouseEnter(object sender, EventArgs e)
-    {
+        ButtonContinueAsync();
     }
 
     private void labelWeaponEquipped_MouseLeave(object sender, EventArgs e)
@@ -815,8 +829,8 @@ public partial class MainWindow : Form
     private void ShowHiddenItemPanel(ItemType itemType)
     {
         if (playerState.Player.EquippedItems.TryGetValue(itemType, out var item) && item != null)
-        {
-            // Show the corresponding panel for the itemType
+        {   // TODO add more item types
+            // Show the corresponding panel for the itemType 
             switch (itemType)
             {
                 case ItemType.WeaponRightHand:
@@ -843,6 +857,21 @@ public partial class MainWindow : Form
                     panelPopupAmulet.Show();
                     labelAmuletName.Text = item.Name;
                     labelInfoAmuletEquipped.Text = item.ToString();
+                    break;
+                case ItemType.Helmet:
+                    panelPopupHelmet.Show();
+                    labelHelmetName.Text = item.Name;
+                    labelInfoHelmetEquipped.Text = item.ToString();
+                    break;
+                case ItemType.Leggings:
+                    panelPopupLeggings.Show();
+                    labelLeggingsName.Text = item.Name;
+                    labelInfoLeggingsEquipped.Text = item.ToString();
+                    break;
+                case ItemType.Belt:
+                    panelPopupBelt.Show();
+                    labelBeltName.Text = item.Name;
+                    labelInfoBeltEquipped.Text = item.ToString();
                     break;
             }
             hoverTimer.Stop(); // Stop the hover timer regardless of item type
@@ -885,6 +914,44 @@ public partial class MainWindow : Form
     }
 
     private void labelInvisibleWeaponRightHandEquipped_MouseLeave(object sender, EventArgs e)
+    {
+        hoverTimer.Start();
+    }
+    private void labelInvisibleHelmet_MouseEnter(object sender, EventArgs e)
+    {
+        ShowHiddenItemPanel(ItemType.Helmet);
+    }
+
+    private void labelInvisibleHelmet_MouseLeave(object sender, EventArgs e)
+    {
+        hoverTimer.Start();
+    }
+
+    private void labelInvisibleBelt_MouseEnter(object sender, EventArgs e)
+    {
+        ShowHiddenItemPanel(ItemType.Belt);
+    }
+
+    private void labelInvisibleBelt_MouseLeave(object sender, EventArgs e)
+    {
+        hoverTimer.Start();
+    }
+
+    private void labelInvisibleLeggings_MouseEnter(object sender, EventArgs e)
+    {
+        ShowHiddenItemPanel(ItemType.Leggings);
+    }
+
+    private void labelInvisibleLeggings_MouseLeave(object sender, EventArgs e)
+    {
+        hoverTimer.Start();
+    }
+    private void labelInvisibleGloves_MouseEnter(object sender, EventArgs e)
+    {
+        ShowHiddenItemPanel(ItemType.Gloves);
+    }
+
+    private void labelInvisibleGloves_MouseLeave(object sender, EventArgs e)
     {
         hoverTimer.Start();
     }
@@ -944,15 +1011,6 @@ public partial class MainWindow : Form
         }
     }
 
-    private void labelInvisibleGloves_MouseEnter(object sender, EventArgs e)
-    {
-        ShowHiddenItemPanel(ItemType.Gloves);
-    }
-
-    private void labelInvisibleGloves_MouseLeave(object sender, EventArgs e)
-    {
-        hoverTimer.Start();
-    }
 
     private void pictureBoxHeroBag_Click(object sender, EventArgs e)
     {
@@ -1051,7 +1109,7 @@ public partial class MainWindow : Form
             {
                 storyProgress.StoryState = 16;
             }
-            ButtonContinue();
+            ButtonContinueAsync();
         }
     }
 

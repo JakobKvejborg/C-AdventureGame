@@ -78,17 +78,17 @@ internal class MonsterContainer
         Monster normalGhost = new("Ghost", 8, 8, 0, 0, 3, 11, 0, normalGhostImage);
 
         // List of noprefix monsters
-        Monster golem = new("Golem", 21, 21, 2, 0, 1, 15, 0, golemImage);
+        Monster golem = new("Golem", 21, 21, 2, 0, 2, 15, 0, golemImage);
         Monster knight = new("Knight", 17, 17, 1, 0, 6, 17, 2, knightImage);
-        Monster horror = new("Horror", 18, 18, 3, 0, 1, 13, 0, horrorImage);
+        Monster horror = new("Horror", 18, 18, 3, 0, 2, 13, 0, horrorImage);
         Monster starved = new("Starved", 15, 15, 1, 0, 6, 19, 0, starvedImage);
-        Monster bat = new("Bat", 18, 18, 4, 0, 0, 12, 0, batImage);
+        Monster bat = new("Bat", 18, 18, 4, 0, 1, 12, 0, batImage);
         Monster woodHorror = new("Wood Horror", 15, 15, 0, 0, 8, 22, 3, woodHorrorImage);
-        Monster deadTroll = new("Dead Troll", 14, 14, 3, 0, 1, 20, 2, deadTrollImage);
+        Monster deadTroll = new("Dead Troll", 14, 14, 3, 0, 2, 20, 2, deadTrollImage);
 
         // Special enemies
-        Monster act1Boss = new("Aldrus Thornfell", 80, 80, 6, 0, 7, 40, 5, act1BossImage); // Act1 boss
-        Monster hungryBeast = new("Hungry Beast", 25, 25, 3, 0, 2, 30, 0, hungryBeastImage);
+        Monster act1Boss = new("Aldrus Thornfell", 80, 80, 5, 0, 7, 40, 5, act1BossImage); // Act1 boss
+        Monster hungryBeast = new("Hungry Beast", 35, 35, 3, 0, 7, 30, 0, hungryBeastImage);
         Monster snowGoldGoblin = new("Gold Goblin", 30, 30, 5, 0, 4, 0, 9, snowGoblinImage);
         Monster act2Boss = new("Wintermaw", 200, 200, 10, 0, 15, 50, 0, act2BossImage);
         Monster act3Boss = new("The Devouring Abyss", 280, 280, 10, 0, 20, 100, 30, null);

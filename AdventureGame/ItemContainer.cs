@@ -36,31 +36,39 @@ public class ItemContainer
         Item item2a = new("Sword", ItemType.WeaponRightHand, 2, 0, 0, 0, 0, 0, 3, 3);
         Item item3a = new("Blood Spear", ItemType.WeaponRightHand, 2, 0, 0, 0, 0, 5, 8, 1);
         Item item4a = new("Pike", ItemType.WeaponRightHand, 3, 0, 0, 0, 0, 2, 5, 6);
-        Item item5a = new("Small Knife", ItemType.WeaponRightHand, 2, 3, 0, 0, 0, 0, 0, 2);
+        Item item5a = new("Small Knife", ItemType.WeaponRightHand, 2, 2, 0, 0, 0, 0, 0, 2);
         Item item6a = new("Spear", ItemType.WeaponRightHand, 3, 0, 0, 0, 0, 0, 5, 3);
 
-        Item item7a = new("Scythe", ItemType.WeaponRightHand, 4, 3, 0, 0, 0, 2, 5, 4);
+        Item item7a = new("Scythe", ItemType.WeaponRightHand, 4, 1, 0, 0, 0, 2, 5, 4);
         Item item8a = new("Hammer", ItemType.WeaponRightHand, 5, 0, 0, 0, 0, 0, 8, 6);
+        Item item9a = new("Blood Knife", ItemType.WeaponRightHand, 3, 0, 0, 0, 0, 8, 8, 6);
+        Item item10a = new("Blood Sword", ItemType.WeaponRightHand, 4, 0, 0, 0, 0, 6, 8, 6);
 
-        // ARMORS string name, type, health, regen, CritChance, strength, int dodgeChance, int armor, int skillLevel, int strengthRequirement, int levelRequirement
-        Item item1b = new("Rusty Armor", ItemType.Armor, 1, 0, 0, 0, 0, 1, 0, 2, 1);
-        Item item2b = new("Cloak", ItemType.Armor, 0, 0, 0, 0, 5, 2, 0, 2, 3);
-        Item item3b = new("Rags", ItemType.Armor, 5, 0, 0, 0, 0, 0, 0, 0, 2);
-        Item item4b = new("Boots", ItemType.Boots, 0, 0, 0, 0, 0, 1, 0, 0, 2);
-        Item item5b = new("Sandals", ItemType.Boots, 0, 0, 0, 0, 8, 0, 0, 0, 2);
-        Item item6b = new("Gloves", ItemType.Gloves, 0, 0, 0, 2, 0, 1, 0, 0, 4);
-        Item item7b = new("Leather Gloves", ItemType.Gloves, 11, 0, 0, 0, 0, 1, 0, 0, 5);
-        Item item8b = new("Health Boots", ItemType.Boots, 0, 2, 0, 0, 0, 0, 0, 3, 3);
-        Item item9b = new("Rusty Boots", ItemType.Boots, 5, 1, 3, 2, 1, 0, 0, 3, 3);
-        Item item10 = new("Strength Boots", ItemType.Boots, 15, 0, 7, 5, 0, 0, 0, 0, 5);
-        Item item11 = new("Heavy Armor", ItemType.Armor, 15, 0, 0, 3, 0, 1, 0, 0, 2);
+        // ARMORS string name, type, health, regen, CritChance, strength, dodgeChance, armor, skillLevel, lifesteal, strengthRequirement, levelRequirement
+        Item item1b = new("Rusty Armor", ItemType.Armor, 1, 0, 0, 0, 0, 1, 0, 0, 2, 1);
+        Item item2b = new("Cloak", ItemType.Armor, 0, 0, 0, 0, 5, 2, 0, 0, 2, 3);
+        Item item3b = new("Rags", ItemType.Armor, 5, 0, 0, 0, 0, 0, 0, 0, 0, 2);
+        Item item4b = new("Boots", ItemType.Boots, 0, 0, 0, 0, 0, 1, 0, 0, 0, 2);
+        Item item5b = new("Sandals", ItemType.Boots, 0, 0, 0, 0, 8, 0, 0, 0, 0, 2);
+        Item item6b = new("Gloves", ItemType.Gloves, 0, 0, 0, 1, 0, 1, 0, 0, 1, 4);
+        Item item7b = new("Leather Gloves", ItemType.Gloves, 11, 0, 0, 0, 0, 1, 0, 0, 0, 5);
+        Item item8b = new("Health Boots", ItemType.Boots, 0, 2, 0, 0, 0, 0, 0, 0, 3, 3);
+        Item item9b = new("Rusty Boots", ItemType.Boots, 5, 1, 3, 1, 1, 0, 0, 0, 3, 3);
+        Item item10 = new("Strength Boots", ItemType.Boots, 15, 0, 7, 2, 0, 0, 0, 0, 2, 5);
+        Item item11 = new("Heavy Armor", ItemType.Armor, 15, 0, 0, 1, 0, 1, 0, 0, 0, 2);
+        Item item12 = new("Vanity Gloves", ItemType.Gloves, 0, 0, 2, 1, 0, 0, 0, 0, 3, 3);
+        Item item13 = new("Vanity Boots", ItemType.Boots, 0, 0, 0, 2, 2, 0, 0, 0, 3, 2);
+        Item item14 = new("Leather Boots", ItemType.Boots, 11, 0, 0, 0, 0, 0, 0, 0, 3, 5);
 
-        Item item10b = new("Bronze Boots", ItemType.Boots, 0, 2, 0, 6, 6, 3, 0, 7, 2);
-        Item item11b = new("Swift Boots", ItemType.Boots, 10, 0, 10, 0, 7, 3, 0, 7, 3);
-        Item item12b = new("Plate", ItemType.Armor, 0, 0, 5, 3, 0, 3, 0, 5, 3);
-        Item item13b = new("Bronze Plate", ItemType.Armor, 20, 0, 2, 3, 2, 3, 0, 5, 6);
-        Item item14b = new("Rusty Plate", ItemType.Armor, 0, 1, 2, 3, 2, 4, 0, 9, 6);
-        Item item15b = new("Bronze Gloves", ItemType.Gloves, 0, 0, 8, 5, 0, 2, 0, 5, 6);
+        Item item10b = new("Bronze Boots", ItemType.Boots, 0, 2, 0, 6, 6, 3, 0, 0, 7, 2);
+        Item item11b = new("Swift Boots", ItemType.Boots, 10, 0, 10, 0, 7, 3, 0, 0, 7, 3);
+        Item item12b = new("Plate", ItemType.Armor, 0, 0, 5, 3, 0, 3, 0, 0, 5, 3);
+        Item item13b = new("Bronze Plate", ItemType.Armor, 20, 0, 2, 3, 2, 3, 0, 0, 5, 6);
+        Item item14b = new("Rusty Plate", ItemType.Armor, 0, 1, 2, 3, 2, 4, 0, 0, 9, 6);
+        Item item15b = new("Bronze Gloves", ItemType.Gloves, 0, 0, 8, 5, 0, 2, 0, 0, 5, 6);
+
+        Item item16b = new("Vampire Leggings", ItemType.Leggings, 20, 1, 4, 0, 0, 2, 0, 10, 8, 9);
+        Item item17b = new("Vampire Gloves", ItemType.Gloves, 10, 1, 0, 2, 0, 1, 0, 10, 5, 6);
 
         // AMULETS Normal/noPrefix
         Amulet amulet1a = new("Mystic Amulet");
@@ -75,6 +83,14 @@ public class ItemContainer
         items1.Add(item2a);
         items1.Add(item1b);
         items1.Add(item6b);
+        items1.Add(item12);
+        items1.Add(item13);
+        items1.Add(item14);
+        items1.Add(null);
+        items1.Add(null);
+        items1.Add(null);
+        items1.Add(null);
+        items1.Add(null);
         items1.Add(null);
         items1.Add(null);
         items1.Add(null);
@@ -105,6 +121,17 @@ public class ItemContainer
         items2.Add(item6a);
         items2.Add(item10);
         items2.Add(item11);
+        items2.Add(item14);
+        items2.Add(item9a);
+        items2.Add(item10a);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
         items2.Add(null);
         items2.Add(null);
         items2.Add(null);
@@ -152,6 +179,31 @@ public class ItemContainer
         items3.Add(null);
         items3.Add(null);
         items3.Add(null);
+
+        // List of items 4
+        items4.Add(item16b);
+        items4.Add(item17b);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
 
         // List of weak amulets
         weakAmulets.Add(amulet1a);

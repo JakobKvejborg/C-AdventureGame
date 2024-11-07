@@ -43,7 +43,7 @@ public class Item
     }
 
     // Constructor for armor type items
-    public Item(string name, ItemType type, int health, int regeneration, int critChance, int strength, int dodgeChance, int armor, int skillLevel, int strengthRequirement, int levelRequirement)
+    public Item(string name, ItemType type, int health, int regeneration, int critChance, int strength, int dodgeChance, int armor, int skillLevel, int lifesteal, int strengthRequirement, int levelRequirement)
     {
         Name = name;
         Type = type;
@@ -54,6 +54,7 @@ public class Item
         DodgeChance = dodgeChance;
         Armor = armor;
         SkillLevel = skillLevel;
+        Lifesteal = lifesteal;
         StrengthRequirement = strengthRequirement;
         LevelRequirement = levelRequirement;
     }
@@ -164,6 +165,11 @@ public class Item
                         break;
                         // Add more cases if needed
                 }
+                break;
+
+            default:
+                // Handle unspecified ItemTypes here
+                Lifesteal += random.Next(1, 11);
                 break;
         }
         

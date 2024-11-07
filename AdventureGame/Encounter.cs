@@ -118,10 +118,15 @@ internal static class Encounter
         // Player lifesteals before crit (we don't want critlifesteal)
         if (!isRoarAttack && playerState.Player.Lifesteal > 0)
         {
-            int playerLifeSteal = (playerAttackDamageTotal * playerState.Player.Lifesteal) / 100;
-            playerState.Player.CurrentHealth += playerLifeSteal;
+            int playerLifeStealAmount = (playerAttackDamageTotal * playerState.Player.Lifesteal) / 100;
+            playerState.Player.CurrentHealth += playerLifeStealAmount;
             playerState.Player.CurrentHealth = Math.Min(playerState.Player.CurrentHealth, playerState.Player.MaxHealth); // ensures currenthealth doesn't exceed maxhealth
             mainWindow.UpdatePlayerLabels(); // update player health after lifestealing
+            if (playerLifeStealAmount > 0) // checks if the player actually gains life from the attack
+            {
+                mainWindow.labelHpPopup.Text = $"+{playerLifeStealAmount}";
+                mainWindow.PopupFadeLabel(mainWindow.labelHpPopup);
+            }
         }
 
         // Check for critical hit
@@ -227,6 +232,7 @@ internal static class Encounter
 
             PlayerDodgedFlag = false;
             mainWindow.textBox1.AppendText($"\n\rYou have defeated the horror. You gain {Monster.MonsterExperience}xp. ");
+            mainWindow.pictureBoxMonster1.Image = null;
             mainWindow.panelMonster.Hide(); // Hides the monster once it's defeated
             PlayerGetsExperiencePoints(playerState, mainWindow);
             PlayerGetsGoldFromMonster(playerState, mainWindow);

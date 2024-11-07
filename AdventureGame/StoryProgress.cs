@@ -186,7 +186,7 @@ internal class StoryProgress
                     _mainWindow.buttonReturnToTown.Enabled = true;
                     _mainWindow.IsReturnToTownEnabled = true;
                     _mainWindow.buttonReturnToTown.Show();
-                    Encounter.PerformEncounter(monsterContainer.listOfMonstersAct3, itemContainer.noItems, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.listOfMonstersAct3, itemContainer.items4, _mainWindow);
                     StoryState++;
                 }
                 break;
@@ -204,7 +204,7 @@ internal class StoryProgress
 
 
             // Special cases:
-            case 99: // Act 1 West repeated
+            case 99: // Act 1 Quest 1 Hungry Beast
                 if (progressFlag == true)
                 {
                     Encounter.PerformEncounter(monsterContainer.listOfMonstersAct1Quest1, itemContainer.noItems, _mainWindow);
@@ -235,10 +235,10 @@ internal class StoryProgress
                     Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items3, _mainWindow);
                 }
                 break;
-            case 104: // Act 3 West repeated
+            case 104: // Act 3 West & East repeated
                 if (progressFlag == true)
                 {
-                    Encounter.PerformEncounter(monsterContainer.listOfMonstersAct3, itemContainer.noItems, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.listOfMonstersAct3, itemContainer.items4, _mainWindow);
                 }
                 break;
         }

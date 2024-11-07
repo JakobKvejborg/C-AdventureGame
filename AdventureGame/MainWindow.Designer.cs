@@ -54,6 +54,7 @@ partial class MainWindow
         buttonDodgeJab = new Button();
         buttonRoarAttack = new Button();
         buttonAct1Quest1Continue = new Button();
+        buttonAct1Q1Town = new Button();
         labelInvisibleWeaponRightHandEquipped = new Label();
         textBox1 = new TextBox();
         comboBoxInventory = new ComboBox();
@@ -74,6 +75,16 @@ partial class MainWindow
         labelMonsterHp = new Label();
         labelMonsterName = new Label();
         panelEncounter = new Panel();
+        labelHpPopup = new Label();
+        panelPopupBelt = new Panel();
+        labelInfoBeltEquipped = new Label();
+        labelBeltName = new Label();
+        panelPopupLeggings = new Panel();
+        labelInfoLeggingsEquipped = new Label();
+        labelLeggingsName = new Label();
+        panelPopupHelmet = new Panel();
+        labelInfoHelmetEquipped = new Label();
+        labelHelmetName = new Label();
         panelPopupAmulet = new Panel();
         labelInfoAmuletEquipped = new Label();
         labelAmuletName = new Label();
@@ -96,6 +107,7 @@ partial class MainWindow
         panelInventory = new Panel();
         labelCritChance = new Label();
         labelInvisibleAmulet = new Label();
+        labelInvisibleLeggings = new Label();
         labelInvisibleHelmet = new Label();
         labelRegeneration = new Label();
         labelInvisibleBelt = new Label();
@@ -118,12 +130,14 @@ partial class MainWindow
         labelGameOverText = new Label();
         panelAct1Quest1 = new Panel();
         textBoxAct1Quest1 = new TextBox();
-        buttonAct1Q1Town = new Button();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHeroBag).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxLoot).BeginInit();
         panelMonster.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).BeginInit();
         panelEncounter.SuspendLayout();
+        panelPopupBelt.SuspendLayout();
+        panelPopupLeggings.SuspendLayout();
+        panelPopupHelmet.SuspendLayout();
         panelPopupAmulet.SuspendLayout();
         panelPopupBoots.SuspendLayout();
         panelPopupGloves.SuspendLayout();
@@ -374,6 +388,19 @@ partial class MainWindow
         buttonAct1Quest1Continue.UseVisualStyleBackColor = true;
         buttonAct1Quest1Continue.Click += buttonAct1Quest1Continue_Click;
         // 
+        // buttonAct1Q1Town
+        // 
+        buttonAct1Q1Town.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+        buttonAct1Q1Town.ForeColor = Color.MidnightBlue;
+        buttonAct1Q1Town.Location = new Point(109, 111);
+        buttonAct1Q1Town.Name = "buttonAct1Q1Town";
+        buttonAct1Q1Town.Size = new Size(98, 29);
+        buttonAct1Q1Town.TabIndex = 37;
+        buttonAct1Q1Town.Text = "Town";
+        toolTip.SetToolTip(buttonAct1Q1Town, "\"B\"");
+        buttonAct1Q1Town.UseVisualStyleBackColor = true;
+        buttonAct1Q1Town.Click += buttonAct1Q1Town_Click;
+        // 
         // labelInvisibleWeaponRightHandEquipped
         // 
         labelInvisibleWeaponRightHandEquipped.AutoSize = true;
@@ -595,13 +622,17 @@ partial class MainWindow
         panelEncounter.BackColor = Color.Transparent;
         panelEncounter.BackgroundImage = Properties.Resources.castle;
         panelEncounter.BackgroundImageLayout = ImageLayout.Stretch;
-        panelEncounter.Controls.Add(buttonRoarAttack);
+        panelEncounter.Controls.Add(labelHpPopup);
+        panelEncounter.Controls.Add(panelPopupBelt);
+        panelEncounter.Controls.Add(panelPopupLeggings);
+        panelEncounter.Controls.Add(panelPopupHelmet);
         panelEncounter.Controls.Add(panelPopupAmulet);
         panelEncounter.Controls.Add(buttonBloodLust);
         panelEncounter.Controls.Add(buttonDodgeJab);
+        panelEncounter.Controls.Add(buttonRoarAttack);
+        panelEncounter.Controls.Add(btn_attack);
         panelEncounter.Controls.Add(buttonReturnToTown);
         panelEncounter.Controls.Add(pictureBoxLoot);
-        panelEncounter.Controls.Add(btn_attack);
         panelEncounter.Controls.Add(panelPopupBoots);
         panelEncounter.Controls.Add(labelInvisibleBoots);
         panelEncounter.Controls.Add(panelPopupGloves);
@@ -628,6 +659,7 @@ partial class MainWindow
         panelEncounter.Controls.Add(progressBarPlayerHP);
         panelEncounter.Controls.Add(labelInvisibleWeaponRightHandEquipped);
         panelEncounter.Controls.Add(labelInvisibleAmulet);
+        panelEncounter.Controls.Add(labelInvisibleLeggings);
         panelEncounter.Controls.Add(labelInvisibleHelmet);
         panelEncounter.Controls.Add(labelRegeneration);
         panelEncounter.Controls.Add(pictureBoxHeroBag);
@@ -639,6 +671,116 @@ partial class MainWindow
         panelEncounter.Name = "panelEncounter";
         panelEncounter.Size = new Size(537, 768);
         panelEncounter.TabIndex = 22;
+        // 
+        // labelHpPopup
+        // 
+        labelHpPopup.AutoSize = true;
+        labelHpPopup.Font = new Font("Segoe UI Black", 10.8F, FontStyle.Bold, GraphicsUnit.Point, 0);
+        labelHpPopup.ForeColor = Color.Green;
+        labelHpPopup.Location = new Point(213, 173);
+        labelHpPopup.Name = "labelHpPopup";
+        labelHpPopup.Size = new Size(38, 25);
+        labelHpPopup.TabIndex = 49;
+        labelHpPopup.Text = "HP";
+        // 
+        // panelPopupBelt
+        // 
+        panelPopupBelt.AutoScroll = true;
+        panelPopupBelt.BorderStyle = BorderStyle.Fixed3D;
+        panelPopupBelt.Controls.Add(labelInfoBeltEquipped);
+        panelPopupBelt.Controls.Add(labelBeltName);
+        panelPopupBelt.Location = new Point(119, 541);
+        panelPopupBelt.Name = "panelPopupBelt";
+        panelPopupBelt.Size = new Size(160, 97);
+        panelPopupBelt.TabIndex = 48;
+        // 
+        // labelInfoBeltEquipped
+        // 
+        labelInfoBeltEquipped.AutoSize = true;
+        labelInfoBeltEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelInfoBeltEquipped.ForeColor = Color.White;
+        labelInfoBeltEquipped.Location = new Point(-1, 17);
+        labelInfoBeltEquipped.Name = "labelInfoBeltEquipped";
+        labelInfoBeltEquipped.Size = new Size(58, 16);
+        labelInfoBeltEquipped.TabIndex = 1;
+        labelInfoBeltEquipped.Text = "beltInfo";
+        // 
+        // labelBeltName
+        // 
+        labelBeltName.AutoSize = true;
+        labelBeltName.Font = new Font("Snap ITC", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelBeltName.ForeColor = SystemColors.ActiveCaption;
+        labelBeltName.Location = new Point(1, -1);
+        labelBeltName.Name = "labelBeltName";
+        labelBeltName.Size = new Size(76, 17);
+        labelBeltName.TabIndex = 0;
+        labelBeltName.Text = "beltName";
+        // 
+        // panelPopupLeggings
+        // 
+        panelPopupLeggings.AutoScroll = true;
+        panelPopupLeggings.BorderStyle = BorderStyle.Fixed3D;
+        panelPopupLeggings.Controls.Add(labelInfoLeggingsEquipped);
+        panelPopupLeggings.Controls.Add(labelLeggingsName);
+        panelPopupLeggings.Location = new Point(111, 491);
+        panelPopupLeggings.Name = "panelPopupLeggings";
+        panelPopupLeggings.Size = new Size(160, 97);
+        panelPopupLeggings.TabIndex = 47;
+        // 
+        // labelInfoLeggingsEquipped
+        // 
+        labelInfoLeggingsEquipped.AutoSize = true;
+        labelInfoLeggingsEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelInfoLeggingsEquipped.ForeColor = Color.White;
+        labelInfoLeggingsEquipped.Location = new Point(-1, 17);
+        labelInfoLeggingsEquipped.Name = "labelInfoLeggingsEquipped";
+        labelInfoLeggingsEquipped.Size = new Size(86, 16);
+        labelInfoLeggingsEquipped.TabIndex = 1;
+        labelInfoLeggingsEquipped.Text = "leggingsInfo";
+        // 
+        // labelLeggingsName
+        // 
+        labelLeggingsName.AutoSize = true;
+        labelLeggingsName.Font = new Font("Snap ITC", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelLeggingsName.ForeColor = SystemColors.ActiveCaption;
+        labelLeggingsName.Location = new Point(1, -1);
+        labelLeggingsName.Name = "labelLeggingsName";
+        labelLeggingsName.Size = new Size(109, 17);
+        labelLeggingsName.TabIndex = 0;
+        labelLeggingsName.Text = "leggingsName";
+        // 
+        // panelPopupHelmet
+        // 
+        panelPopupHelmet.AutoScroll = true;
+        panelPopupHelmet.BorderStyle = BorderStyle.Fixed3D;
+        panelPopupHelmet.Controls.Add(labelInfoHelmetEquipped);
+        panelPopupHelmet.Controls.Add(labelHelmetName);
+        panelPopupHelmet.Location = new Point(117, 417);
+        panelPopupHelmet.Name = "panelPopupHelmet";
+        panelPopupHelmet.Size = new Size(145, 97);
+        panelPopupHelmet.TabIndex = 45;
+        // 
+        // labelInfoHelmetEquipped
+        // 
+        labelInfoHelmetEquipped.AutoSize = true;
+        labelInfoHelmetEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelInfoHelmetEquipped.ForeColor = Color.White;
+        labelInfoHelmetEquipped.Location = new Point(-1, 17);
+        labelInfoHelmetEquipped.Name = "labelInfoHelmetEquipped";
+        labelInfoHelmetEquipped.Size = new Size(77, 16);
+        labelInfoHelmetEquipped.TabIndex = 1;
+        labelInfoHelmetEquipped.Text = "helmetInfo";
+        // 
+        // labelHelmetName
+        // 
+        labelHelmetName.AutoSize = true;
+        labelHelmetName.Font = new Font("Snap ITC", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelHelmetName.ForeColor = SystemColors.ActiveCaption;
+        labelHelmetName.Location = new Point(1, -1);
+        labelHelmetName.Name = "labelHelmetName";
+        labelHelmetName.Size = new Size(98, 17);
+        labelHelmetName.TabIndex = 0;
+        labelHelmetName.Text = "HelmetName";
         // 
         // panelPopupAmulet
         // 
@@ -656,7 +798,7 @@ partial class MainWindow
         labelInfoAmuletEquipped.AutoSize = true;
         labelInfoAmuletEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
         labelInfoAmuletEquipped.ForeColor = Color.White;
-        labelInfoAmuletEquipped.Location = new Point(-1, 15);
+        labelInfoAmuletEquipped.Location = new Point(-1, 17);
         labelInfoAmuletEquipped.Name = "labelInfoAmuletEquipped";
         labelInfoAmuletEquipped.Size = new Size(78, 16);
         labelInfoAmuletEquipped.TabIndex = 1;
@@ -679,7 +821,7 @@ partial class MainWindow
         panelPopupBoots.BorderStyle = BorderStyle.Fixed3D;
         panelPopupBoots.Controls.Add(labelInfoBootsEquipped);
         panelPopupBoots.Controls.Add(labelBootsName);
-        panelPopupBoots.Location = new Point(115, 607);
+        panelPopupBoots.Location = new Point(103, 600);
         panelPopupBoots.Name = "panelPopupBoots";
         panelPopupBoots.Size = new Size(160, 97);
         panelPopupBoots.TabIndex = 29;
@@ -689,7 +831,7 @@ partial class MainWindow
         labelInfoBootsEquipped.AutoSize = true;
         labelInfoBootsEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
         labelInfoBootsEquipped.ForeColor = Color.White;
-        labelInfoBootsEquipped.Location = new Point(-1, 15);
+        labelInfoBootsEquipped.Location = new Point(-1, 17);
         labelInfoBootsEquipped.Name = "labelInfoBootsEquipped";
         labelInfoBootsEquipped.Size = new Size(84, 16);
         labelInfoBootsEquipped.TabIndex = 1;
@@ -734,7 +876,7 @@ partial class MainWindow
         labelInfoGlovesEquipped.AutoSize = true;
         labelInfoGlovesEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
         labelInfoGlovesEquipped.ForeColor = Color.White;
-        labelInfoGlovesEquipped.Location = new Point(-1, 15);
+        labelInfoGlovesEquipped.Location = new Point(-1, 17);
         labelInfoGlovesEquipped.Name = "labelInfoGlovesEquipped";
         labelInfoGlovesEquipped.Size = new Size(75, 16);
         labelInfoGlovesEquipped.TabIndex = 1;
@@ -779,7 +921,7 @@ partial class MainWindow
         labelInfoArmorEquipped.AutoSize = true;
         labelInfoArmorEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
         labelInfoArmorEquipped.ForeColor = Color.White;
-        labelInfoArmorEquipped.Location = new Point(-1, 15);
+        labelInfoArmorEquipped.Location = new Point(-1, 17);
         labelInfoArmorEquipped.Name = "labelInfoArmorEquipped";
         labelInfoArmorEquipped.Size = new Size(70, 16);
         labelInfoArmorEquipped.TabIndex = 1;
@@ -835,7 +977,7 @@ partial class MainWindow
         labelInfoWeaponRightHandEquipped.AutoSize = true;
         labelInfoWeaponRightHandEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
         labelInfoWeaponRightHandEquipped.ForeColor = Color.White;
-        labelInfoWeaponRightHandEquipped.Location = new Point(-1, 15);
+        labelInfoWeaponRightHandEquipped.Location = new Point(-1, 17);
         labelInfoWeaponRightHandEquipped.Name = "labelInfoWeaponRightHandEquipped";
         labelInfoWeaponRightHandEquipped.Size = new Size(84, 16);
         labelInfoWeaponRightHandEquipped.TabIndex = 1;
@@ -887,6 +1029,18 @@ partial class MainWindow
         labelInvisibleAmulet.MouseEnter += labelInvisibleAmulet_MouseEnter;
         labelInvisibleAmulet.MouseLeave += labelInvisibleAmulet_MouseLeave;
         // 
+        // labelInvisibleLeggings
+        // 
+        labelInvisibleLeggings.AutoSize = true;
+        labelInvisibleLeggings.ForeColor = Color.Transparent;
+        labelInvisibleLeggings.Location = new Point(80, 564);
+        labelInvisibleLeggings.Name = "labelInvisibleLeggings";
+        labelInvisibleLeggings.Size = new Size(65, 100);
+        labelInvisibleLeggings.TabIndex = 46;
+        labelInvisibleLeggings.Text = "              \r\n            \r\n\r\n\r\n\r\n";
+        labelInvisibleLeggings.MouseEnter += labelInvisibleLeggings_MouseEnter;
+        labelInvisibleLeggings.MouseLeave += labelInvisibleLeggings_MouseLeave;
+        // 
         // labelInvisibleHelmet
         // 
         labelInvisibleHelmet.AutoSize = true;
@@ -896,6 +1050,8 @@ partial class MainWindow
         labelInvisibleHelmet.Size = new Size(41, 20);
         labelInvisibleHelmet.TabIndex = 42;
         labelInvisibleHelmet.Text = "        \r\n";
+        labelInvisibleHelmet.MouseEnter += labelInvisibleHelmet_MouseEnter;
+        labelInvisibleHelmet.MouseLeave += labelInvisibleHelmet_MouseLeave;
         // 
         // labelRegeneration
         // 
@@ -918,6 +1074,8 @@ partial class MainWindow
         labelInvisibleBelt.Size = new Size(61, 20);
         labelInvisibleBelt.TabIndex = 41;
         labelInvisibleBelt.Text = "             ";
+        labelInvisibleBelt.MouseEnter += labelInvisibleBelt_MouseEnter;
+        labelInvisibleBelt.MouseLeave += labelInvisibleBelt_MouseLeave;
         // 
         // pictureBoxHero
         // 
@@ -1146,19 +1304,6 @@ partial class MainWindow
         textBoxAct1Quest1.Size = new Size(519, 90);
         textBoxAct1Quest1.TabIndex = 2;
         // 
-        // buttonAct1Q1Town
-        // 
-        buttonAct1Q1Town.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-        buttonAct1Q1Town.ForeColor = Color.MidnightBlue;
-        buttonAct1Q1Town.Location = new Point(109, 111);
-        buttonAct1Q1Town.Name = "buttonAct1Q1Town";
-        buttonAct1Q1Town.Size = new Size(98, 29);
-        buttonAct1Q1Town.TabIndex = 37;
-        buttonAct1Q1Town.Text = "Town";
-        toolTip.SetToolTip(buttonAct1Q1Town, "\"B\"");
-        buttonAct1Q1Town.UseVisualStyleBackColor = true;
-        buttonAct1Q1Town.Click += buttonAct1Q1Town_Click;
-        // 
         // MainWindow
         // 
         AutoScaleDimensions = new SizeF(8F, 20F);
@@ -1166,11 +1311,11 @@ partial class MainWindow
         BackColor = SystemColors.ActiveCaptionText;
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(537, 768);
-        Controls.Add(panelAct1Quest1);
         Controls.Add(panelEncounter);
         Controls.Add(panelTown);
         Controls.Add(panelGameOver);
         Controls.Add(panelStartScreen);
+        Controls.Add(panelAct1Quest1);
         DoubleBuffered = true;
         Name = "MainWindow";
         Text = "Horrors Awoken";
@@ -1182,6 +1327,12 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).EndInit();
         panelEncounter.ResumeLayout(false);
         panelEncounter.PerformLayout();
+        panelPopupBelt.ResumeLayout(false);
+        panelPopupBelt.PerformLayout();
+        panelPopupLeggings.ResumeLayout(false);
+        panelPopupLeggings.PerformLayout();
+        panelPopupHelmet.ResumeLayout(false);
+        panelPopupHelmet.PerformLayout();
         panelPopupAmulet.ResumeLayout(false);
         panelPopupAmulet.PerformLayout();
         panelPopupBoots.ResumeLayout(false);
@@ -1304,4 +1455,15 @@ partial class MainWindow
     public Label labelAct1Quest1;
     public Panel panelAct1Quest1;
     public Button buttonAct1Q1Town;
+    private Panel panelPopupHelmet;
+    private Label labelInfoHelmetEquipped;
+    private Label labelHelmetName;
+    private Label labelInvisibleLeggings;
+    private Panel panelPopupLeggings;
+    private Label labelInfoLeggingsEquipped;
+    private Label labelLeggingsName;
+    private Panel panelPopupBelt;
+    private Label labelInfoBeltEquipped;
+    private Label labelBeltName;
+    public Label labelHpPopup;
 }

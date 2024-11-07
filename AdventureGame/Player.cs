@@ -116,6 +116,7 @@ internal class Player
         Level += item.SkillLevel;
         Regeneration += item.Regeneration;
         CritChance += item.CritChance;
+        Lifesteal += item.Lifesteal;
     }
 
     public void UnequipItem(Item item, ComboBox comboboxInventory, ComboBox comboboxUpgradeItem)
@@ -132,6 +133,7 @@ internal class Player
             Level -= item.SkillLevel;
             Regeneration -= item.Regeneration;
             CritChance -= item.CritChance;
+            Lifesteal -= item.Lifesteal;
 
             EquippedItems.Remove(item.Type);
             comboboxInventory.Items.Add(item);

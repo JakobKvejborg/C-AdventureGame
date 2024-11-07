@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
+using System.Media;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
@@ -75,8 +76,8 @@ public class QuestManager
         _mainWindow.panelTown.Hide();
         if (!Act1Quest1IsCompleted)
         {
-            _mainWindow.textBoxAct1Quest1.Text = "Thank you so much for returning my boy to me! As a token of my gratitude, here, take these. They belonged to my father. Farewell, hero.";
-            // give item to the player
+            _mainWindow.textBoxAct1Quest1.Text = "Thank you so much for returning my boy to me! As a token of my gratitude, here, take this. It belonged to my father. Farewell, hero.\r\n[Father's Helmet added to inventory]";
+            _mainWindow.comboBoxInventory.Items.Add(new Item("Father's Helmet", ItemType.Helmet, 0, 0, 1, 1, new Random().Next(1, 6), 1, 0, 0, 4, 5));
             Act1Quest1IsCompleted = true;
         }
         else
