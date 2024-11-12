@@ -29,15 +29,15 @@ public class Amulet : Item
                 break;
 
             case "Magic":
-                Strength = _random.Next(3, 7);          // Strength boost between 5 and 9
+                Strength = _random.Next(0, 7);       
                 DodgeChance = _random.Next(1, 4);
                 CritChance = _random.Next(5, 15);
                 Regeneration = _random.Next(0, 2);
-                LevelRequirement = _random.Next(1, 10);  // Level 9-13
+                LevelRequirement = _random.Next(4, 11); 
                 break;
 
             case "Rare":
-                Strength = _random.Next(5, 10);          // Strength boost between 5 and 9
+                Strength = _random.Next(5, 10);          
                 DodgeChance = _random.Next(5, 11);
                 CritChance = _random.Next(5, 10);
                 Regeneration = _random.Next(0, 3);
@@ -46,7 +46,7 @@ public class Amulet : Item
                 break;
 
             case "Epic":
-                Strength = _random.Next(10, 16);         // Strength boost between 10 and 15
+                Strength = _random.Next(10, 16);      
                 DodgeChance = _random.Next(10, 16);
                 CritChance = _random.Next(10, 15);
                 Regeneration = _random.Next(2, 4);
@@ -60,7 +60,7 @@ public class Amulet : Item
                 CritChance = _random.Next(15, 20);
                 Lifesteal = _random.Next(0, 20);
                 Regeneration = _random.Next(3, 5);
-                LevelRequirement = _random.Next(30, 35); // Level 20-24
+                LevelRequirement = _random.Next(30, 35);
                 break;
 
             default:

@@ -27,9 +27,9 @@ internal static class Encounter
 
     public static void PerformEncounter(List<Monster> listOfMonsters, List<Item> listOfItems, MainWindow mainWindow)
     {
-        ResetDroppedItem(); // Resets the item found from monster
+        ResetDroppedItem(); // Resets the item found from monster, in case it wasn't looted
         mainWindow.pictureBoxLoot.Hide();
-        // Disables encounters from town
+        // Disables encounters while in combat
         StoryProgress.playerIsInTown = false;
         StoryProgress.progressFlag = false;
 
@@ -59,7 +59,7 @@ internal static class Encounter
     {
         if (Monster != null && Monster.CurrentHealth > 0)
         {
-            int playerAttackDamageTotal = (int)(playerState.Player.CalculateTotalDamage(playerState) * 1.3); // 1.3x damage for Blood Lust attack
+            int playerAttackDamageTotal = (int)(playerState.Player.CalculateTotalDamage(playerState) * 1.5); // 1.5x damage for Blood Lust attack
             // Cost the player 20% of max health
             int healthCost = (int)(playerState.Player.MaxHealth * 0.15); // % cost of health
             playerState.Player.CurrentHealth -= healthCost;
@@ -293,7 +293,7 @@ internal static class Encounter
         if (goldDropped > 0)
         {
             playerState.Player.GoldInPocket += goldDropped;
-            mainWindow.labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket.ToString()}";
+            mainWindow.labelGoldInPocket.Text = $"{playerState.Player.GoldInPocket.ToString()}";
             mainWindow.PopupFadeLabel(mainWindow.labelGoldPopup);
             mainWindow.labelGoldPopup.Text = $"+{goldDropped}G";
             goldDropped = 0;

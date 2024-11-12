@@ -43,7 +43,6 @@ public class QuestManager
         if (StoryProgress.playerIsInTown && !_storyProgress.Act1BossDefeatedFlag && _storyProgress.WhichActIsThePlayerIn == 1)
         {
             isInsideAct1Quest1Panel = true;
-
             if (!Act1Quest1BoyFound)
             {
                 Act1Quest1EncounterIsActive = true;
@@ -66,6 +65,7 @@ public class QuestManager
             {
                 CompleteAct1Quest1();
             }
+            StoryProgress.playerIsInTown = false;
         }
     }
 
@@ -93,6 +93,7 @@ public class QuestManager
             _mainWindow.panelAct1Quest1.Hide();
             _mainWindow.panelTown.Show();
             isInsideAct1Quest1Panel = false;
+            StoryProgress.playerIsInTown = true;
         }
     }
 

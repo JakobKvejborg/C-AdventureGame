@@ -229,7 +229,7 @@ internal class StoryProgress
                     Encounter.PerformEncounter(monsterContainer.listOfMonstersSnowGoldGoblin, itemContainer.noItems, _mainWindow);
                 }
                 break;
-            case 103: // Act 2 East repeated
+            case 103: // Act 2 East repeated snow
                 if (progressFlag == true)
                 {
                     Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items3, _mainWindow);

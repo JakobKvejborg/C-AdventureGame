@@ -8,6 +8,9 @@ namespace AdventureGame;
 
 public class ItemContainer
 {
+    public double DropRate { get; set; }
+    Random _random = new Random();
+
     public List<Item> noItems;
     public List<Item> items1;
     public List<Item> items2;
@@ -16,6 +19,7 @@ public class ItemContainer
 
     public List<Item> weakAmulets;
     public List<Item> magicAmulets;
+    public List<Item> rareAmulets;
 
     public ItemContainer()
     {
@@ -26,23 +30,40 @@ public class ItemContainer
         items4 = new List<Item>();
         weakAmulets = new List<Item>();
         magicAmulets = new List<Item>();
+        rareAmulets = new List<Item>();
         AddItemsToList();
+    }
+    public Item GetRandomItem(List<Item> itemList, double dropRateForNothing = 0.0)
+    {
+        // Check if we "drop nothing" based on the specified rate
+        if (_random.NextDouble() < dropRateForNothing)
+        {
+            return null; // Representing "nothing dropped"
+        }
+
+        // Otherwise, return a random item from the list
+        int index = _random.Next(itemList.Count);
+        return itemList[index];
     }
 
     public void AddItemsToList()
     {
         // WEAPONS string name, type, int damage, int strength, int fireDamage, int poisonDamage, int skillLevel, int lifesteal int strengthRequirement, int levelRequirement
-        Item item1a = new("Normal Axe", ItemType.WeaponRightHand, 1, 0, 0, 0, 0, 0, 2, 2);
+        Item item1a = new("Axe", ItemType.WeaponRightHand, 1, 0, 0, 0, 0, 0, 2, 2);
         Item item2a = new("Sword", ItemType.WeaponRightHand, 2, 0, 0, 0, 0, 0, 3, 3);
         Item item3a = new("Blood Spear", ItemType.WeaponRightHand, 2, 0, 0, 0, 0, 5, 8, 1);
         Item item4a = new("Pike", ItemType.WeaponRightHand, 3, 0, 0, 0, 0, 2, 5, 6);
         Item item5a = new("Small Knife", ItemType.WeaponRightHand, 2, 2, 0, 0, 0, 0, 0, 2);
         Item item6a = new("Spear", ItemType.WeaponRightHand, 3, 0, 0, 0, 0, 0, 5, 3);
+        RandomItem item7 = new("Normal Axe", ItemType.WeaponRightHand);
+        RandomItem item8 = new("Normal Sword", ItemType.WeaponRightHand);
 
         Item item7a = new("Scythe", ItemType.WeaponRightHand, 4, 1, 0, 0, 0, 2, 5, 4);
         Item item8a = new("Hammer", ItemType.WeaponRightHand, 5, 0, 0, 0, 0, 0, 8, 6);
         Item item9a = new("Blood Knife", ItemType.WeaponRightHand, 3, 0, 0, 0, 0, 8, 8, 6);
         Item item10a = new("Blood Sword", ItemType.WeaponRightHand, 4, 0, 0, 0, 0, 6, 8, 6);
+
+        Item item11a = new("Shiny Axe", ItemType.WeaponRightHand, 6, 2, 0, 0, 0, 0, 10, 10);
 
         // ARMORS string name, type, health, regen, CritChance, strength, dodgeChance, armor, skillLevel, lifesteal, strengthRequirement, levelRequirement
         Item item1b = new("Rusty Armor", ItemType.Armor, 1, 0, 0, 0, 0, 1, 0, 0, 2, 1);
@@ -59,6 +80,14 @@ public class ItemContainer
         Item item12 = new("Vanity Gloves", ItemType.Gloves, 0, 0, 2, 1, 0, 0, 0, 0, 3, 3);
         Item item13 = new("Vanity Boots", ItemType.Boots, 0, 0, 0, 2, 2, 0, 0, 0, 3, 2);
         Item item14 = new("Leather Boots", ItemType.Boots, 11, 0, 0, 0, 0, 0, 0, 0, 3, 5);
+        RandomItem item15 = new("Normal Gloves", ItemType.Gloves);
+        RandomItem item16 = new("Normal Boots", ItemType.Boots);
+        RandomItem item17 = new("Normal Belt", ItemType.Belt);
+        RandomItem item18 = new("Normal Armor", ItemType.Armor);
+        RandomItem item19 = new("Normal Leggings", ItemType.Leggings);
+        RandomItem item20 = new("Normal Gauntlets", ItemType.Gloves);
+        RandomItem item21 = new("Normal Plate", ItemType.Armor);
+
 
         Item item10b = new("Bronze Boots", ItemType.Boots, 0, 2, 0, 6, 6, 3, 0, 0, 7, 2);
         Item item11b = new("Swift Boots", ItemType.Boots, 10, 0, 10, 0, 7, 3, 0, 0, 7, 3);
@@ -69,6 +98,7 @@ public class ItemContainer
 
         Item item16b = new("Vampire Leggings", ItemType.Leggings, 20, 1, 4, 0, 0, 2, 0, 10, 8, 9);
         Item item17b = new("Vampire Gloves", ItemType.Gloves, 10, 1, 0, 2, 0, 1, 0, 10, 5, 6);
+        RandomItem item18b = new("Magic Leggings", ItemType.Leggings, ItemQuality.Magic);
 
         // AMULETS Normal/noPrefix
         Amulet amulet1a = new("Mystic Amulet");
@@ -76,6 +106,8 @@ public class ItemContainer
         Amulet amulet3a = new("Millennium Amulet");
         // AMULETS Magic
         Amulet amulet1b = new("Magic Amulet", "Magic");
+        // AMULETS Rare
+        Amulet amulet1c = new("Shiny Amulet", "Rare");
 
         // List of items 1
         noItems.Add(null);
@@ -86,6 +118,8 @@ public class ItemContainer
         items1.Add(item12);
         items1.Add(item13);
         items1.Add(item14);
+        items1.Add(item20);
+        items1.Add(null);
         items1.Add(null);
         items1.Add(null);
         items1.Add(null);
@@ -124,6 +158,41 @@ public class ItemContainer
         items2.Add(item14);
         items2.Add(item9a);
         items2.Add(item10a);
+        items2.Add(item7);
+        items2.Add(item8);
+        items2.Add(item15);
+        items2.Add(item16);
+        items2.Add(item17);
+        items2.Add(item18);
+        items2.Add(item19);
+        items2.Add(item20);
+        items2.Add(item21);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
         items2.Add(null);
         items2.Add(null);
         items2.Add(null);
@@ -165,6 +234,22 @@ public class ItemContainer
         items3.Add(item13b);
         items3.Add(item14b);
         items3.Add(item15b);
+        items3.Add(item7);
+        items3.Add(item8);
+        items3.Add(item15);
+        items3.Add(item19);
+        items3.Add(item18b);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
         items3.Add(null);
         items3.Add(null);
         items3.Add(null);
@@ -183,6 +268,8 @@ public class ItemContainer
         // List of items 4
         items4.Add(item16b);
         items4.Add(item17b);
+        items4.Add(amulet1b);
+        items4.Add(item11a);
         items4.Add(null);
         items4.Add(null);
         items4.Add(null);
@@ -196,6 +283,21 @@ public class ItemContainer
         items4.Add(null);
         items4.Add(null);
         items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null); 
         items4.Add(null);
         items4.Add(null);
         items4.Add(null);
@@ -214,6 +316,8 @@ public class ItemContainer
         weakAmulets.Add(null);
         // List of magic amulets
         magicAmulets.Add(amulet1b);
+        // List of rare amulets
+        rareAmulets.Add(amulet1c);
     }
 
 }

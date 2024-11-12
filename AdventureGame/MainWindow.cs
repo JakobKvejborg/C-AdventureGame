@@ -1,13 +1,13 @@
 using System.Diagnostics;
 using System.Media;
 using Color = System.Drawing.Color;
+
 namespace AdventureGame;
 
 public partial class MainWindow : Form
 {
-
     private PlayerState playerState;
-    private bool isAttackOnCooldown;
+    private bool IsAttackOnCooldown;
     private MonsterContainer monsterContainer = new MonsterContainer();
     private ItemContainer itemContainer = new ItemContainer();
     private StoryProgress storyProgress;
@@ -19,14 +19,14 @@ public partial class MainWindow : Form
     ImageSetter imageSetter;
     MusicAndSound sounds = new MusicAndSound();
     bool isContinueOnCooldown; // Prevents the player from spamming Continue too fast
-    bool IsInventoryOpen { get; set; } = false;
+    public bool IsInventoryOpen { get; set; } = false;
     bool playGameHasBeenPressed { get; set; } = false;
     bool EnabledAct1TechniqueTeacher;
     bool OneTimeBool;
     bool OneTimeBool2;
     public bool IsReturnToTownEnabled = true;
     private QuestManager quests;
-
+    private Controller _controller;
 
     public MainWindow()
     {
@@ -37,6 +37,7 @@ public partial class MainWindow : Form
         HidePanelsEtc();
         storyProgress = new StoryProgress(this);
         imageSetter = new ImageSetter(this);
+        _controller = new Controller(this); // Initialize controller
         quests = new QuestManager(this, imageSetter);
         UpdatePlayerLabels();
         panelTown.Location = new Point(0, 0); // Example: position it at the top-left corner
@@ -51,8 +52,11 @@ public partial class MainWindow : Form
         // Event that listens for player levelup
         playerState.Player.LevelUpEvent += OnPlayerLevelUp;
 
-        buttonPlayGame.MouseEnter += buttonPlayGame_MouseEnter;
+        buttonPlayGame.MouseEnter += buttonPlayGame_MouseEnter; // Button Play Game Color
         buttonPlayGame.MouseLeave += buttonPlayGame_MouseLeave;
+        //this.KeyDown += new KeyEventHandler(Form_KeyDown); // Cool unused code
+        //this.KeyUp += new KeyEventHandler(Form_KeyUp); // Cool unused code
+        this.KeyUp += MainWindow_KeyUp;
 
         // Make the window non-reziable
         this.FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -70,7 +74,43 @@ public partial class MainWindow : Form
         hoverTimer = new System.Windows.Forms.Timer();  // Create the timer instance
         hoverTimer.Interval = 500;
         hoverTimer.Tick += HoverTimer_Tick;
+
+        comboBoxInventory.SelectedIndexChanged += ComboBoxInventory_SelectedIndexChanged; // event that listens when index is changed
+
+        // Set up a timer to poll controller state every 50ms
+        var controllerPollTimer = new System.Windows.Forms.Timer
+        {
+            Interval = 50 // Poll every 50 ms
+        };
+        controllerPollTimer.Tick += (sender, e) => _controller.UpdateControllerState();
+        controllerPollTimer.Start();
     }
+
+    private void ComboBoxInventory_SelectedIndexChanged(object sender, EventArgs e)
+    {
+        ComboboxInventorySetInfoLabel();
+    }
+
+    #region Cool unused code
+    //private void Form_KeyUp(object? sender, KeyEventArgs e)
+    //{
+    //    if (e.KeyCode == Keys.C)
+    //    {
+    //        panelPopupInventoryInfo.Hide();
+    //    }
+    //}
+
+    //private void Form_KeyDown(object? sender, KeyEventArgs e)
+    //{
+    //    if (e.KeyCode == Keys.C && IsInventoryOpen)
+    //    {
+    //        if (IsInventoryOpen)
+    //        {
+    //            panelPopupInventoryInfo.Show();
+    //        }
+    //    }
+    //} 
+    #endregion
 
     private void HidePanelsEtc()
     {
@@ -102,6 +142,7 @@ public partial class MainWindow : Form
         buttonDodgeJab.Hide();
         buttonRoarAttack.Hide();
         panelAct1Quest1.Hide();
+        panelPopupInventoryInfo.Hide();
         #endregion
     }
 
@@ -148,6 +189,7 @@ public partial class MainWindow : Form
         panelPopupAmulet.Hide();
         panelPopupLeggings.Hide();
         panelPopupHelmet.Hide();
+        panelPopupBelt.Hide();
     }
 
     #region Invisible labels
@@ -344,13 +386,7 @@ public partial class MainWindow : Form
                 task = ButtonRoarAttack();
                 return true;
             case Keys.Enter:
-                if (!playGameHasBeenPressed)
-                {
-                    ButtonPlayGame();
-                }
-                ButtonContinueAsync();
-                HideInventory();
-                Quest1ContinueDialog();
+                EnterKeyPressed();
                 return true;
             case Keys.W:
                 ButtonNorth();
@@ -379,8 +415,10 @@ public partial class MainWindow : Form
             case Keys.Down:
                 if (IsInventoryOpen)
                 {
-                    if (comboBoxInventory.Items.Count > 0) // Scrolls through inventory items
+                    if (comboBoxInventory.Items.Count > 0)
+                    {
                         comboBoxInventory.SelectedIndex = (comboBoxInventory.SelectedIndex + 1) % comboBoxInventory.Items.Count;
+                    } // Scrolls through inventory items
                 }
                 if (StoryProgress.playerIsInTown && storyProgress.Act1BossDefeatedFlag)
                 {
@@ -396,7 +434,6 @@ public partial class MainWindow : Form
                         comboBoxInventory.SelectedIndex = (comboBoxInventory.SelectedIndex - 1 + comboBoxInventory.Items.Count) % comboBoxInventory.Items.Count;
                     }
                 }
-
                 if (StoryProgress.playerIsInTown && storyProgress.Act1BossDefeatedFlag)
                 {
                     if (comboBoxUpgradeItems.Items.Count > 0)
@@ -406,7 +443,7 @@ public partial class MainWindow : Form
                 }
                 return true;
             case Keys.F:
-                pictureBoxLootIsClicked(); // player finds item from loot
+                LootIsClicked(); // player finds item from loot
                 return true;
             case Keys.B:
                 ReturnToTownClick(); // Returns the player to the town
@@ -416,10 +453,76 @@ public partial class MainWindow : Form
                 ButtonUpgradeItem();
                 return true;
             case Keys.L:
-                task = ButtonLearnTechniqueAsync();
+                task = LearnTechniqueAsync();
                 return true;
+            case Keys.Tab:
+                if (IsInventoryOpen && comboBoxInventory.Items.Count > 0)
+                {
+                    panelPopupInventoryInfo.Show();
+                }
+                return true; // Indicate that the key was handled
             default:
                 return base.ProcessCmdKey(ref msg, keyData); // Let the base method handle other keys
+        }
+    }
+
+    public void EnterKeyPressed()
+    {
+        if (!playGameHasBeenPressed)
+        {
+            ButtonPlayGame();
+        }
+        ButtonContinueAsync();
+        HideInventory();
+        Quest1ContinueDialog();
+    }
+
+    private void MainWindow_KeyUp(object sender, KeyEventArgs e)
+    {
+        if (e.KeyCode == Keys.Tab)
+        {
+            panelPopupInventoryInfo.Hide();
+        }
+    }
+
+    private void ComboboxInventorySetInfoLabel()
+    {
+        if (comboBoxInventory.SelectedItem is Item selectedItem)
+        {
+            labelInventoryItemInfo.Text = selectedItem.ToString();
+
+            ItemType itemType = selectedItem.Type;
+            switch (itemType)
+            {
+                case ItemType.WeaponRightHand:
+                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("swordicon.ico");
+                    break;
+                case ItemType.Gloves:
+                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("gauntletsicon.ico");
+                    break;
+                case ItemType.Boots:
+                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("bootsicon.png");
+                    break;
+                case ItemType.Armor:
+                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("armoricon.png");
+                    break;
+                case ItemType.Belt:
+                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("belticon.png");
+                    break;
+                case ItemType.Amulet:
+                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("amuleticon.png");
+                    break;
+                case ItemType.Leggings:
+                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("leggingsicon.png");
+                    break;
+                case ItemType.Helmet:
+                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("helmeticon.png");
+                    break;
+                case ItemType.Shoulders:
+                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("shouldersicon.png");
+                    break;
+            }
+
         }
     }
 
@@ -435,6 +538,7 @@ public partial class MainWindow : Form
         panelsList.Add(panelTown);
         panelsList[panelsIndex].BringToFront();
         imageSetter.SetAct1Quest1BackgroundImage();
+        labelInventoryItemInfo.Text = null;
     }
 
     private void label2_Click_1(object sender, EventArgs e)
@@ -447,7 +551,7 @@ public partial class MainWindow : Form
         ButtonDiscardItem();
     }
 
-    private void ButtonDiscardItem()
+    public void ButtonDiscardItem()
     {
         if (comboBoxInventory.SelectedItem != null)
         {
@@ -463,7 +567,7 @@ public partial class MainWindow : Form
         ButtonPlayGame();
     }
 
-    private void ButtonPlayGame()
+    public void ButtonPlayGame()
     {
         playGameHasBeenPressed = true;
         panelStartScreen.Hide();
@@ -471,12 +575,12 @@ public partial class MainWindow : Form
         buttonPlayGame.Dispose();
     }
 
-    private void ButtonWest()
+    public void ButtonWest()
     {
-        panelTown.Hide();
-        panelEncounter.Show();
         if (StoryProgress.playerIsInTown == true)
         {
+            panelTown.Hide();
+            panelEncounter.Show();
             if (storyProgress.WhichActIsThePlayerIn == 1)
             {
                 storyProgress.StoryState = 100; // repeated encounters west act 1
@@ -493,12 +597,12 @@ public partial class MainWindow : Form
         }
     }
 
-    private void ButtonEast()
+    public void ButtonEast()
     {
-        panelTown.Hide();
-        panelEncounter.Show();
         if (StoryProgress.playerIsInTown == true)
         {
+            panelTown.Hide();
+            panelEncounter.Show();
             if (storyProgress.WhichActIsThePlayerIn == 1)
             {
                 storyProgress.StoryState = 101; // repeated encounters east act 1
@@ -548,13 +652,13 @@ public partial class MainWindow : Form
         ButtonNorth();
     }
 
-    private void ButtonNorth()
+    public void ButtonNorth()
     {
-        panelTown.Hide();
-        panelEncounter.Show();
 
         if (StoryProgress.playerIsInTown)
         {
+            panelTown.Hide();
+            panelEncounter.Show();
             switch (storyProgress.WhichActIsThePlayerIn)
             {
                 case 1: // Player is in act 1
@@ -648,7 +752,7 @@ public partial class MainWindow : Form
         buttonReturnToTown.Enabled = false;
         IsReturnToTownEnabled = false;
         imageSetter.SetAct3BossBackgroundimage();
-        Encounter.PerformEncounter(monsterContainer.listOfMonstersBossAct3, itemContainer.noItems, this);
+        Encounter.PerformEncounter(monsterContainer.listOfMonstersBossAct3, itemContainer.rareAmulets, this);
         Encounter.EncounterCompleted += OnAct3BossDefeated;
         sounds.PlayAct3Boss();
         //storyProgress.WhichActIsThePlayerIn = 3;  // Update to Act 3
@@ -698,10 +802,10 @@ public partial class MainWindow : Form
         ButtonSouth();
     }
 
-    private void ButtonSouth()
+    public void ButtonSouth()
     {
         // Act 1 Quest 1 special encounter
-        if (quests.Act1Quest1EncounterIsActive && !storyProgress.Act1BossDefeatedFlag && storyProgress.WhichActIsThePlayerIn == 1)
+        if (quests.Act1Quest1EncounterIsActive && !storyProgress.Act1BossDefeatedFlag && storyProgress.WhichActIsThePlayerIn == 1 && StoryProgress.playerIsInTown)
         {
             quests.Act1Quest1EncounterIsActive = false;
             panelTown.Hide();
@@ -745,7 +849,7 @@ public partial class MainWindow : Form
         ButtonHeal();
     }
 
-    private async void ButtonHeal()
+    public async void ButtonHeal()
     {
         if (StoryProgress.playerIsInTown)
         {
@@ -791,14 +895,13 @@ public partial class MainWindow : Form
         ButtonEquipItems();
     }
 
-    private void ButtonEquipItems()
+    public void ButtonEquipItems()
     {
         if (comboBoxInventory.SelectedItem != null)
         {
             Item item = (Item)comboBoxInventory.SelectedItem;
             if (playerState.Player.Level >= item.LevelRequirement && playerState.Player.Strength >= item.StrengthRequirement)
             {
-                //SetItemLabelInfo(item);
                 playerState.Player.EquipItem(item, comboBoxInventory, comboBoxUpgradeItems);
                 UpdatePlayerLabels();
                 RemoveItemFromComboboxInventory(item); // removes the equipped item from the combobox
@@ -823,6 +926,7 @@ public partial class MainWindow : Form
         {
             comboBoxInventory.SelectedIndex = 0;
         }
+
     }
 
     // This method shows the hidden panels when the mouse is over the item on the hero. It also sets the labels info and name of items.
@@ -961,7 +1065,7 @@ public partial class MainWindow : Form
         ButtonUpgradeItem();
     }
 
-    private void ButtonUpgradeItem()
+    public void ButtonUpgradeItem()
     {
         if (StoryProgress.playerIsInTown && storyProgress.Act1BossDefeatedFlag)
         {
@@ -1017,7 +1121,7 @@ public partial class MainWindow : Form
         ShowInventory();
     }
 
-    private void ShowInventory()
+    public void ShowInventory()
     {
         pictureBoxInventory.Show();
         panelInventory.Show();
@@ -1046,10 +1150,10 @@ public partial class MainWindow : Form
 
     private void pictureBoxLoot_Click(object sender, EventArgs e)
     {
-        pictureBoxLootIsClicked();
+        LootIsClicked();
     }
 
-    public void pictureBoxLootIsClicked()
+    public void LootIsClicked()
     {
         if (pictureBoxLoot.Visible)
         {
@@ -1093,7 +1197,7 @@ public partial class MainWindow : Form
         ReturnToTownClick();
     }
 
-    private void ReturnToTownClick()
+    public void ReturnToTownClick()
     {
         if (StoryProgress.TutorialIsOver && StoryProgress.playerIsInTown == false && IsReturnToTownEnabled) // Makes sure the player can't go to the town before the tutorial is over
         {
@@ -1151,7 +1255,7 @@ public partial class MainWindow : Form
         labelPlayerLifeSteal.Text = $"Lifesteal: {playerState.Player.Lifesteal}%";
         labelPlayerArmor.Text = $"Armor: {playerState.Player.Armor}";
         labelPlayerDodge.Text = $"Dodge: {playerState.Player.DodgeChance}%";
-        labelGoldInPocket.Text = $"Gold: {playerState.Player.GoldInPocket}";
+        labelGoldInPocket.Text = $"{playerState.Player.GoldInPocket}";
         labelLevel.Text = $"Level: {playerState.Player.Level}";
         labelExperience.Text = $"Exp: {playerState.Player.Experience}/{playerState.Player.XpNeededToLevelUp}";
         labelCritChance.Text = $"Crit: {playerState.Player.CritChance}%";
@@ -1173,9 +1277,9 @@ public partial class MainWindow : Form
     // This is a method that plays the sounds for the attack, calls the attack methods from Encounter, and handles attack controls
     private async Task PerformAttack(Action attackAction, Action primarySoundAction, Action? secondarySoundAction = null)
     {
-        if (!isAttackOnCooldown && Encounter.Monster != null)
+        if (!IsAttackOnCooldown && Encounter.Monster != null)
         {
-            isAttackOnCooldown = true;
+            IsAttackOnCooldown = true;
 
             // Play primary sound (and secondary if provided)
             primarySoundAction();
@@ -1199,10 +1303,10 @@ public partial class MainWindow : Form
             buttonRoarAttack.Enabled = true;
             buttonDodgeJab.Enabled = true;
             btn_attack.Enabled = true;
-            isAttackOnCooldown = false;
+            IsAttackOnCooldown = false;
         }
     }
-    private async Task ButtonAttack()
+    public async Task ButtonAttack()
     {
         await PerformAttack(() => Encounter.NormalAttack(playerState, this), sounds.PlaySwordAttackSound);
     }
@@ -1231,10 +1335,10 @@ public partial class MainWindow : Form
 
     private void buttonLearnTechnique_Click(object sender, EventArgs e)
     {
-        ButtonLearnTechniqueAsync();
+        LearnTechniqueAsync();
     }
 
-    private async Task ButtonLearnTechniqueAsync()
+    public async Task LearnTechniqueAsync()
     {
         if (StoryProgress.playerIsInTown && !storyProgress.Act1BossDefeatedFlag && storyProgress.Act1ArtsTeacherIsAvailable)
         {

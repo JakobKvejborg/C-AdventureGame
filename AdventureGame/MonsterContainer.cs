@@ -67,6 +67,9 @@ internal class MonsterContainer
         Image act2BossImage = GetMonsterImage("bossact2.png");
 
         Image seaHorrorImage = GetMonsterImage("seahorror.png");
+        Image seaTerrorImage = GetMonsterImage("seaterror.png");
+        Image seaGhostImage = GetMonsterImage("seaghost.png");
+        Image seaMonsterImage = GetMonsterImage("seamonster.png");
 
         // List of normal monsters NORMAL - NOPREFIX - SNOW - NIGHTMARE - ELITE - HORROR - HELLISH - CORRUPTED
         Monster normalGoblin = new("Goblin", 10, 10, 0, 1, 1, 6, 1, normalGoblinImage);
@@ -89,19 +92,22 @@ internal class MonsterContainer
         // Special enemies
         Monster act1Boss = new("Aldrus Thornfell", 80, 80, 5, 0, 7, 40, 5, act1BossImage); // Act1 boss
         Monster hungryBeast = new("Hungry Beast", 35, 35, 3, 0, 7, 30, 0, hungryBeastImage);
-        Monster snowGoldGoblin = new("Gold Goblin", 30, 30, 5, 0, 4, 0, 9, snowGoblinImage);
-        Monster act2Boss = new("Wintermaw", 200, 200, 10, 0, 15, 50, 0, act2BossImage);
-        Monster act3Boss = new("The Devouring Abyss", 280, 280, 10, 0, 20, 100, 30, null);
+        Monster snowGoldGoblin = new("Gold Goblin", 30, 30, 6, 0, 7, 0, 9, snowGoblinImage);
+        Monster act2Boss = new("Wintermaw", 200, 200, 10, 0, 20, 50, 0, act2BossImage);
+        Monster act3Boss = new("The Devouring Abyss", 400, 400, 20, 0, 30, 100, 30, null);
 
         // Act 2 Snow Monsters
-        Monster snowDemon = new("Snow Demon", 29, 29, 8, 0, 0, 22, 0, snowDemonImage);
-        Monster snowAntler = new("Snow Antler", 25, 24, 7, 0, 0, 18, 2, snowAntlerImage);
-        Monster snowCrazed = new("Snow Crazed", 22, 22, 6, 0, 0, 15, 1, snowCrazedImage);
-        Monster snowHorror = new("Snow Horror", 40, 40, 5, 0, 4, 25, 4, snowHorrorImage);
-        Monster snowMoose = new("Snow Moose", 35, 35, 10, 0, 0, 20, 3, snowMooseImage);
+        Monster snowDemon = new("Snow Demon", 29, 29, 9, 0, 3, 22, 0, snowDemonImage);
+        Monster snowAntler = new("Snow Antler", 27, 27, 8, 0, 3, 18, 2, snowAntlerImage);
+        Monster snowCrazed = new("Snow Crazed", 24, 24, 7, 0, 3, 15, 1, snowCrazedImage);
+        Monster snowHorror = new("Snow Horror", 40, 40, 6, 0, 5, 25, 4, snowHorrorImage);
+        Monster snowMoose = new("Snow Moose", 35, 35, 10, 0, 3, 20, 3, snowMooseImage);
 
         // Act 3 Sea Monsters
-        Monster seaHorror = new("Sea Horror", 130, 130, 13, 0, 10, 40, 12, seaHorrorImage);
+        Monster seaHorror = new("Sea Horror", 130, 130, 13, 0, 15, 40, 12, seaHorrorImage);
+        Monster seaTerror = new("Sea Terror", 120, 120, 10, 0, 19, 50, 0, seaTerrorImage);
+        Monster seaGhost = new("Ghost of the Sea", 100, 100, 0, 0, 25, 30, 17, seaGhostImage);
+        Monster seaMonster = new("Monster of the Sea", 115, 115, 27, 0, 0, 38, 20, seaMonsterImage);
 
         // List of Monsters 1
         listOfMonsters1.Add(normalGoblin);
@@ -140,6 +146,9 @@ internal class MonsterContainer
 
         // Act 3 list of sea monsters
         listOfMonstersAct3.Add(seaHorror);
+        listOfMonstersAct3.Add(seaGhost);
+        listOfMonstersAct3.Add(seaTerror);
+        listOfMonstersAct3.Add(seaMonster);
 
     }
 

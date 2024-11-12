@@ -77,9 +77,9 @@ public class Item
         { "Armor", Armor },
         { "Dodge", DodgeChance },
         { "Strength", Strength },
-        { "Regeneration", Regeneration },
+        { "Regen", Regeneration },
         { "Skilllevel", SkillLevel },
-        { "Strength req", StrengthRequirement },
+        { "Str req", StrengthRequirement },
         { "Level req", LevelRequirement }
     };
         // Only include stats greater than 0
@@ -158,10 +158,27 @@ public class Item
                         Armor += random.Next(1, 4); // Increase Health by 1 to 3
                         break;
                     case 2: // Strength
-                        Strength += random.Next(1, 8); // Increase Strength by 1 to 5
+                        Strength += random.Next(1, 8);
                         break;
                     case 3:
                         Regeneration += random.Next(1, 4); // increase regen by 1 to 3
+                        break;
+                        // Add more cases if needed
+                }
+                break;
+            case ItemType.Leggings:
+                // Randomly upgrade a stat for armor
+                int LeggingsUpgradeChoice = random.Next(1, 4); // 1 to 4 for three stats
+                switch (LeggingsUpgradeChoice)
+                {
+                    case 1: // Armor
+                        DodgeChance += random.Next(3, 7); 
+                        break;
+                    case 2: // Strength
+                        Strength += random.Next(1, 8); 
+                        break;
+                    case 3:
+                        CritChance += random.Next(1, 11); 
                         break;
                         // Add more cases if needed
                 }

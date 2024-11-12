@@ -6,6 +6,7 @@
 		<Nullable>enable</Nullable>
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
+		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
 	</PropertyGroup>
 
 	<!-- Exclude all files in the Images folder from Compile, EmbeddedResource, and None items -->
@@ -26,6 +27,9 @@
 			<Isolated>false</Isolated>
 			<EmbedInteropTypes>true</EmbedInteropTypes>
 		</COMReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <PackageReference Include="OpenTK" Version="4.8.2" />
 	</ItemGroup>
 
 	<!-- Properties/Resources setup for generated resource files -->
