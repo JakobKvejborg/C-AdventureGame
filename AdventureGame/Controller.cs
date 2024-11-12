@@ -16,7 +16,7 @@ public class Controller
     private System.Timers.Timer buttonCooldownTimer;
     private bool isCooldownActive;
 
-    private const int ButtonCooldownMilliseconds = 130;
+    private const int ButtonCooldownMilliseconds = 130; // A timer to prevent accidental double-button-presses
 
     public Controller(MainWindow mainWindow)
     {
