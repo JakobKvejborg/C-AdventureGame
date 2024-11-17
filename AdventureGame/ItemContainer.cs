@@ -87,14 +87,14 @@ public class ItemContainer
         RandomItem item19 = new("Normal Leggings", ItemType.Leggings);
         RandomItem item20 = new("Normal Gauntlets", ItemType.Gloves);
         RandomItem item21 = new("Normal Plate", ItemType.Armor);
-
+        RandomItem item22 = new("Normal Mitts", ItemType.Gloves);
 
         Item item10b = new("Bronze Boots", ItemType.Boots, 0, 2, 0, 6, 6, 3, 0, 0, 7, 2);
         Item item11b = new("Swift Boots", ItemType.Boots, 10, 0, 10, 0, 7, 3, 0, 0, 7, 3);
         Item item12b = new("Plate", ItemType.Armor, 0, 0, 5, 3, 0, 3, 0, 0, 5, 3);
         Item item13b = new("Bronze Plate", ItemType.Armor, 20, 0, 2, 3, 2, 3, 0, 0, 5, 6);
         Item item14b = new("Rusty Plate", ItemType.Armor, 0, 1, 2, 3, 2, 4, 0, 0, 9, 6);
-        Item item15b = new("Bronze Gloves", ItemType.Gloves, 0, 0, 8, 5, 0, 2, 0, 0, 5, 6);
+        Item item15b = new("Bronze Gloves", ItemType.Gloves, 0, 0, 8, 2, 0, 2, 0, 0, 5, 6);
 
         Item item16b = new("Vampire Leggings", ItemType.Leggings, 20, 1, 4, 0, 0, 2, 0, 10, 8, 9);
         Item item17b = new("Vampire Gloves", ItemType.Gloves, 10, 1, 0, 2, 0, 1, 0, 10, 5, 6);
@@ -167,6 +167,7 @@ public class ItemContainer
         items2.Add(item19);
         items2.Add(item20);
         items2.Add(item21);
+        items2.Add(item22);
         items2.Add(null);
         items2.Add(null);
         items2.Add(null);

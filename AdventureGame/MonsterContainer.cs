@@ -94,7 +94,7 @@ internal class MonsterContainer
         Monster hungryBeast = new("Hungry Beast", 35, 35, 3, 0, 7, 30, 0, hungryBeastImage);
         Monster snowGoldGoblin = new("Gold Goblin", 30, 30, 6, 0, 7, 0, 9, snowGoblinImage);
         Monster act2Boss = new("Wintermaw", 200, 200, 10, 0, 20, 50, 0, act2BossImage);
-        Monster act3Boss = new("The Devouring Abyss", 400, 400, 20, 0, 30, 100, 30, null);
+        Monster act3Boss = new("The Devouring Abyss", 400, 400, 19, 0, 30, 100, 30, null);
 
         // Act 2 Snow Monsters
         Monster snowDemon = new("Snow Demon", 29, 29, 9, 0, 3, 22, 0, snowDemonImage);

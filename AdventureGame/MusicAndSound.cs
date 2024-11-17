@@ -20,6 +20,7 @@ public class MusicAndSound
     private WindowsMediaPlayer healingMusicPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer NPCspeechPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer act3WavesPlayer = new WindowsMediaPlayer();
+    private WindowsMediaPlayer act4MusicPlayer = new WindowsMediaPlayer();
 
     // Helper method to load media "sounds/music" from the "sounds" folder
     public string MediaSoundPath(string soundName)
@@ -207,6 +208,11 @@ public class MusicAndSound
         PlayMusic("act2town.wav", act2TownPlayer);
     }
 
+    public void PlayAct4Music()
+    {
+        PlayMusic("act4.wav", act4MusicPlayer);
+    }
+
     private void PlayMusic(string fileName, WindowsMediaPlayer player)
     {
         try
@@ -276,8 +282,16 @@ public class MusicAndSound
     {
         act1ThunderPlayer.controls.stop();
     }
+    public void StopAct3Waves()
+    {
+        act3WavesPlayer.controls.stop();
+    }
+    public void StopAct4Music()
+    {
+        act4MusicPlayer.controls.stop();
+    }
 
-    public void MuteAllSounds()
+    public void MuteAllMusic()
     {
         StopAct1TownMusic();
         StopAct1ThunderSound();

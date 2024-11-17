@@ -86,7 +86,7 @@ public class Item
         return string.Join("\n", stats.Where(stat => stat.Value > 0).Select(stat => $"{stat.Key}: {stat.Value}"));
     }
 
-    public Item CloneItem() // TODO create a category for each item type
+    public Item CloneItem()
     {
         return (Item)this.MemberwiseClone();
     }

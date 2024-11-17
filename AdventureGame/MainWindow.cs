@@ -6,7 +6,7 @@ namespace AdventureGame;
 
 public partial class MainWindow : Form
 {
-    private PlayerState playerState;
+    internal PlayerState playerState;
     private bool IsAttackOnCooldown;
     private MonsterContainer monsterContainer = new MonsterContainer();
     private ItemContainer itemContainer = new ItemContainer();
@@ -14,13 +14,12 @@ public partial class MainWindow : Form
     private bool cooldownOnSound;
     public List<Panel> panelsList;
     public int panelsIndex;
-    private System.Windows.Forms.Timer hoverTimer;
     private Random random = new Random();
     ImageSetter imageSetter;
     MusicAndSound sounds = new MusicAndSound();
     bool isContinueOnCooldown; // Prevents the player from spamming Continue too fast
     public bool IsInventoryOpen { get; set; } = false;
-    bool playGameHasBeenPressed { get; set; } = false;
+    public bool PlayGameHasBeenPressed { get; set; } = false;
     bool EnabledAct1TechniqueTeacher;
     bool OneTimeBool;
     bool OneTimeBool2;
@@ -35,9 +34,9 @@ public partial class MainWindow : Form
         playerState = new PlayerState();
         panelsList = new List<Panel>();
         HidePanelsEtc();
-        storyProgress = new StoryProgress(this);
+        storyProgress = new StoryProgress(this, sounds);
         imageSetter = new ImageSetter(this);
-        _controller = new Controller(this); // Initialize controller
+        _controller = new Controller(playerState, this); // Initialize controller
         quests = new QuestManager(this, imageSetter);
         UpdatePlayerLabels();
         panelTown.Location = new Point(0, 0); // Example: position it at the top-left corner
@@ -69,11 +68,6 @@ public partial class MainWindow : Form
 
         SetInvisbleCompassLabels();
         SetInisibleEquippedItemsLabels();
-
-        // Set how long equipped items info panels should be shown after mousehover
-        hoverTimer = new System.Windows.Forms.Timer();  // Create the timer instance
-        hoverTimer.Interval = 500;
-        hoverTimer.Tick += HoverTimer_Tick;
 
         comboBoxInventory.SelectedIndexChanged += ComboBoxInventory_SelectedIndexChanged; // event that listens when index is changed
 
@@ -128,6 +122,8 @@ public partial class MainWindow : Form
         panelPopupHelmet.Hide();
         panelPopupAmulet.Hide();
         panelPopupLeggings.Hide();
+        panelPopupShoulders.Hide();
+        panelPopupWeaponLeftHand.Hide();
         comboBoxUpgradeItems.Hide();
         buttonUpgradeItem.Hide();
         pictureBoxHeroBag.Hide();
@@ -177,19 +173,6 @@ public partial class MainWindow : Form
     {
         Image image = Properties.Resources.healer; // Preload images
         Font font = new Font("Arial", 12); // Preload fonts
-    }
-
-    private void HoverTimer_Tick(object? sender, EventArgs e)
-    {
-        // Hide the panel // TODO add more item types
-        panelPopupWeaponRightHand.Hide();
-        panelPopupArmor.Hide();
-        panelPopupBoots.Hide();
-        panelPopupGloves.Hide();
-        panelPopupAmulet.Hide();
-        panelPopupLeggings.Hide();
-        panelPopupHelmet.Hide();
-        panelPopupBelt.Hide();
     }
 
     #region Invisible labels
@@ -251,6 +234,20 @@ public partial class MainWindow : Form
         labelInvisibleLeggings.Parent = pictureBoxHero;
         labelInvisibleLeggings.Location = posLeggings;
         labelInvisibleLeggings.BackColor = Color.Transparent;
+        // Shoulders
+        var posShoulders = labelInvisibleShoulders.Parent
+           .PointToScreen(labelInvisibleShoulders.Location);
+        posShoulders = pictureBoxHero.PointToClient(posShoulders);
+        labelInvisibleShoulders.Parent = pictureBoxHero;
+        labelInvisibleShoulders.Location = posShoulders;
+        labelInvisibleShoulders.BackColor = Color.Transparent;
+        // WeaponLeftHand
+        var posWeaponLeftHand = labelInvisibleWeaponLeftHand.Parent
+           .PointToScreen(labelInvisibleWeaponLeftHand.Location);
+        posWeaponLeftHand = pictureBoxHero.PointToClient(posWeaponLeftHand);
+        labelInvisibleWeaponLeftHand.Parent = pictureBoxHero;
+        labelInvisibleWeaponLeftHand.Location = posWeaponLeftHand;
+        labelInvisibleWeaponLeftHand.BackColor = Color.Transparent;
 
     }
     private void SetInvisbleCompassLabels()
@@ -333,7 +330,7 @@ public partial class MainWindow : Form
         control.Location = originalLocation;
     }
 
-    private void OnPlayerLevelUp()
+    public void OnPlayerLevelUp()
     {
         textBox1.AppendText($"\r\nYou have leveled up to level {playerState.Player.Level}!");
         UpdatePlayerLabels();
@@ -413,34 +410,10 @@ public partial class MainWindow : Form
                 if (pictureBoxHero.Visible == true) if (IsInventoryOpen) HideInventory(); else ShowInventory();
                 return true;
             case Keys.Down:
-                if (IsInventoryOpen)
-                {
-                    if (comboBoxInventory.Items.Count > 0)
-                    {
-                        comboBoxInventory.SelectedIndex = (comboBoxInventory.SelectedIndex + 1) % comboBoxInventory.Items.Count;
-                    } // Scrolls through inventory items
-                }
-                if (StoryProgress.playerIsInTown && storyProgress.Act1BossDefeatedFlag)
-                {
-                    if (comboBoxUpgradeItems.Items.Count > 0) // Scrolls through upgradable items
-                        comboBoxUpgradeItems.SelectedIndex = (comboBoxUpgradeItems.SelectedIndex + 1) % comboBoxUpgradeItems.Items.Count;
-                }
+                KeysDown();
                 return true;
             case Keys.Up:
-                if (IsInventoryOpen)
-                {
-                    if (comboBoxInventory.Items.Count > 0)
-                    {
-                        comboBoxInventory.SelectedIndex = (comboBoxInventory.SelectedIndex - 1 + comboBoxInventory.Items.Count) % comboBoxInventory.Items.Count;
-                    }
-                }
-                if (StoryProgress.playerIsInTown && storyProgress.Act1BossDefeatedFlag)
-                {
-                    if (comboBoxUpgradeItems.Items.Count > 0)
-                    {
-                        comboBoxUpgradeItems.SelectedIndex = (comboBoxUpgradeItems.SelectedIndex - 1 + comboBoxUpgradeItems.Items.Count) % comboBoxUpgradeItems.Items.Count;
-                    }
-                }
+                KeysUp();
                 return true;
             case Keys.F:
                 LootIsClicked(); // player finds item from loot
@@ -456,19 +429,61 @@ public partial class MainWindow : Form
                 task = LearnTechniqueAsync();
                 return true;
             case Keys.Tab:
-                if (IsInventoryOpen && comboBoxInventory.Items.Count > 0)
-                {
-                    panelPopupInventoryInfo.Show();
-                }
+                InventoryPanelPopupInfoShow();
                 return true; // Indicate that the key was handled
+            case Keys.M:
+                sounds.MuteAllMusic();
+                return true;
             default:
                 return base.ProcessCmdKey(ref msg, keyData); // Let the base method handle other keys
         }
     }
 
+    public void KeysDown()
+    {
+        if (IsInventoryOpen)
+        {
+            if (comboBoxInventory.Items.Count > 0)
+            {
+                comboBoxInventory.SelectedIndex = (comboBoxInventory.SelectedIndex + 1) % comboBoxInventory.Items.Count;
+            } // Scrolls through inventory items
+        }
+        if (StoryProgress.playerIsInTown && storyProgress.Act1BossDefeatedFlag && StoryProgress.WhichActIsThePlayerIn == 2) // act 2 smith
+        {
+            if (comboBoxUpgradeItems.Items.Count > 0) // Scrolls through upgradable items
+                comboBoxUpgradeItems.SelectedIndex = (comboBoxUpgradeItems.SelectedIndex + 1) % comboBoxUpgradeItems.Items.Count;
+        }
+    }
+
+    public void KeysUp()
+    {
+        if (IsInventoryOpen)
+        {
+            if (comboBoxInventory.Items.Count > 0)
+            {
+                comboBoxInventory.SelectedIndex = (comboBoxInventory.SelectedIndex - 1 + comboBoxInventory.Items.Count) % comboBoxInventory.Items.Count;
+            }
+        }
+        if (StoryProgress.playerIsInTown && storyProgress.Act1BossDefeatedFlag && StoryProgress.WhichActIsThePlayerIn == 2) // Act 2 smith
+        {
+            if (comboBoxUpgradeItems.Items.Count > 0)
+            {
+                comboBoxUpgradeItems.SelectedIndex = (comboBoxUpgradeItems.SelectedIndex - 1 + comboBoxUpgradeItems.Items.Count) % comboBoxUpgradeItems.Items.Count;
+            }
+        }
+    }
+
+    public void InventoryPanelPopupInfoShow()
+    {
+        if (IsInventoryOpen && comboBoxInventory.Items.Count > 0)
+        {
+            panelPopupInventoryInfo.Show();
+        }
+    }
+
     public void EnterKeyPressed()
     {
-        if (!playGameHasBeenPressed)
+        if (!PlayGameHasBeenPressed)
         {
             ButtonPlayGame();
         }
@@ -482,6 +497,7 @@ public partial class MainWindow : Form
         if (e.KeyCode == Keys.Tab)
         {
             panelPopupInventoryInfo.Hide();
+
         }
     }
 
@@ -489,7 +505,7 @@ public partial class MainWindow : Form
     {
         if (comboBoxInventory.SelectedItem is Item selectedItem)
         {
-            labelInventoryItemInfo.Text = selectedItem.ToString();
+            labelInventoryItemInfo.Text = selectedItem.ToString(); // Sets infoLabel on items in inventory
 
             ItemType itemType = selectedItem.Type;
             switch (itemType)
@@ -522,8 +538,99 @@ public partial class MainWindow : Form
                     pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("shouldersicon.png");
                     break;
             }
-
         }
+    }
+
+    public void ShowPopupPanelsBasedOnItemType()
+    {
+        if (comboBoxInventory.SelectedItem is Item selectedItem && IsInventoryOpen)
+        {
+            // Get the item type from the selected item
+            ItemType itemType = selectedItem.Type;
+
+            // Get the item from the EquippedItems collection
+            if (playerState.Player.EquippedItems.TryGetValue(itemType, out var item))
+            {
+                // If the item exists in the EquippedItems, show the appropriate panel
+                switch (itemType)
+                {
+                    case ItemType.WeaponRightHand:
+                        panelPopupWeaponRightHand.Show();
+                        labelWeaponRightHandName.Text = item.Name;
+                        labelInfoWeaponRightHandEquipped.Text = item.ToString();
+                        break;
+
+                    case ItemType.Gloves:
+                        panelPopupGloves.Show();
+                        labelGlovesName.Text = item.Name;
+                        labelInfoGlovesEquipped.Text = item.ToString();
+                        break;
+
+                    case ItemType.Boots:
+                        panelPopupBoots.Show();
+                        labelBootsName.Text = item.Name;
+                        labelInfoBootsEquipped.Text = item.ToString();
+                        break;
+
+                    case ItemType.Armor:
+                        panelPopupArmor.Show();
+                        labelArmorName.Text = item.Name;
+                        labelInfoArmorEquipped.Text = item.ToString();
+                        break;
+
+                    case ItemType.Belt:
+                        panelPopupBelt.Show();
+                        labelBeltName.Text = item.Name;
+                        labelInfoBeltEquipped.Text = item.ToString();
+                        break;
+
+                    case ItemType.Amulet:
+                        panelPopupAmulet.Show();
+                        labelAmuletName.Text = item.Name;
+                        labelInfoAmuletEquipped.Text = item.ToString();
+                        break;
+
+                    case ItemType.Leggings:
+                        panelPopupLeggings.Show();
+                        labelLeggingsName.Text = item.Name;
+                        labelInfoLeggingsEquipped.Text = item.ToString();
+                        break;
+
+                    case ItemType.Helmet:
+                        panelPopupHelmet.Show();
+                        labelHelmetName.Text = item.Name;
+                        labelInfoHelmetEquipped.Text = item.ToString();
+                        break;
+
+                    case ItemType.Shoulders:
+                        panelPopupShoulders.Show();
+                        labelShouldersName.Text = item.Name;
+                        labelInfoShouldersEquipped.Text = item.ToString();
+                        break;
+
+                    case ItemType.WeaponLeftHand:
+                        panelPopupWeaponLeftHand.Show();
+                        labelWeaponLeftHandName.Text = item.Name;
+                        labelInfoWeaponLeftHandEquipped.Text = item.ToString();
+                        break;
+                }
+            }
+        }
+    }
+
+
+    public void HideAllEquipmentPanels()
+    {
+        panelPopupWeaponRightHand.Hide();
+        panelPopupArmor.Hide();
+        panelPopupBoots.Hide();
+        panelPopupGloves.Hide();
+        panelPopupBelt.Hide();
+        panelPopupHelmet.Hide();
+        panelPopupAmulet.Hide();
+        panelPopupLeggings.Hide();
+        panelPopupShoulders.Hide();
+        panelPopupWeaponLeftHand.Hide();
     }
 
     // This method runs after the entire layout of WinForms is loaded
@@ -569,7 +676,7 @@ public partial class MainWindow : Form
 
     public void ButtonPlayGame()
     {
-        playGameHasBeenPressed = true;
+        PlayGameHasBeenPressed = true;
         panelStartScreen.Hide();
         panelEncounter.Show();
         buttonPlayGame.Dispose();
@@ -581,15 +688,15 @@ public partial class MainWindow : Form
         {
             panelTown.Hide();
             panelEncounter.Show();
-            if (storyProgress.WhichActIsThePlayerIn == 1)
+            if (StoryProgress.WhichActIsThePlayerIn == 1)
             {
                 storyProgress.StoryState = 100; // repeated encounters west act 1
             }
-            if (storyProgress.WhichActIsThePlayerIn == 2)
+            if (StoryProgress.WhichActIsThePlayerIn == 2)
             {
                 storyProgress.StoryState = 102; // repeated encounters west act 2
             }
-            if (storyProgress.WhichActIsThePlayerIn == 3)
+            if (StoryProgress.WhichActIsThePlayerIn == 3)
             {
                 storyProgress.StoryState = 104; // repeated encounters west act 3
             }
@@ -603,15 +710,15 @@ public partial class MainWindow : Form
         {
             panelTown.Hide();
             panelEncounter.Show();
-            if (storyProgress.WhichActIsThePlayerIn == 1)
+            if (StoryProgress.WhichActIsThePlayerIn == 1)
             {
                 storyProgress.StoryState = 101; // repeated encounters east act 1
             }
-            if (storyProgress.WhichActIsThePlayerIn == 2)
+            if (StoryProgress.WhichActIsThePlayerIn == 2)
             {
                 storyProgress.StoryState = 103; // repeated encounters east act 2
             }
-            if (storyProgress.WhichActIsThePlayerIn == 3)
+            if (StoryProgress.WhichActIsThePlayerIn == 3)
             {
                 storyProgress.StoryState = 104; // repeated encounters west act 3 // should be 105, design choice
             }
@@ -659,7 +766,7 @@ public partial class MainWindow : Form
         {
             panelTown.Hide();
             panelEncounter.Show();
-            switch (storyProgress.WhichActIsThePlayerIn)
+            switch (StoryProgress.WhichActIsThePlayerIn)
             {
                 case 1: // Player is in act 1
                     // Act 1 Boss Encounter
@@ -668,11 +775,11 @@ public partial class MainWindow : Form
                         Act1BossFight();
                         quests.Act1Quest1EncounterIsActive = false; // disables act1 q1
                     }
-                    else
-                    {
-                        storyProgress.StoryState = 14;
-                        ButtonContinueAsync();
-                    }
+                    //else
+                    //{
+                    //    storyProgress.StoryState = 14;
+                    //    ButtonContinueAsync();
+                    //}
                     break;
 
                 case 2: // Player is in act 2
@@ -694,11 +801,14 @@ public partial class MainWindow : Form
                     {
                         Act3BossFight();
                     }
+                    else
+                    {
+                        storyProgress.StoryState = 18;
+                        ButtonContinueAsync();
+                    }
                     break;
 
                 default:
-                    storyProgress.StoryState = 14;
-                    ButtonContinueAsync();
                     break;
             }
         }
@@ -787,8 +897,8 @@ public partial class MainWindow : Form
     {
         StoryProgress.playerIsInTown = false;
         storyProgress.Act3BossDefeatedFlag = true;
-        storyProgress.StoryState = 16; // TODO move to storystate/case act 4
-        //sounds.StopAct3TownMusic(); // TODO
+        storyProgress.StoryState = 17;
+        //sounds.StopAct3TownMusic(); // TODO maybe
         buttonReturnToTown.Enabled = true;
         IsReturnToTownEnabled = true;
 
@@ -805,7 +915,7 @@ public partial class MainWindow : Form
     public void ButtonSouth()
     {
         // Act 1 Quest 1 special encounter
-        if (quests.Act1Quest1EncounterIsActive && !storyProgress.Act1BossDefeatedFlag && storyProgress.WhichActIsThePlayerIn == 1 && StoryProgress.playerIsInTown)
+        if (quests.Act1Quest1EncounterIsActive && !storyProgress.Act1BossDefeatedFlag && StoryProgress.WhichActIsThePlayerIn == 1 && StoryProgress.playerIsInTown)
         {
             quests.Act1Quest1EncounterIsActive = false;
             panelTown.Hide();
@@ -819,7 +929,7 @@ public partial class MainWindow : Form
             txtBox_Town.Text = "You cannot turn back now. You must press on, your destiny awaits.";
             return;
         }
-        if (storyProgress.Act1BossDefeatedFlag && StoryProgress.playerIsInTown && storyProgress.WhichActIsThePlayerIn == 2) // if the player is in act2, returns to act1
+        if (storyProgress.Act1BossDefeatedFlag && StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 2) // if the player is in act2, returns to act1
         {
             storyProgress.Act1BossDefeatedFlag = false;
             sounds.StopAct2TownMusic();
@@ -834,11 +944,15 @@ public partial class MainWindow : Form
             storyProgress.StoryState = 6;
             storyProgress.ProgressStory();
         }
-        if (storyProgress.Act2BossDefeatedFlag && StoryProgress.playerIsInTown && storyProgress.WhichActIsThePlayerIn == 3) // if in act3, returns to act2
+        if (storyProgress.Act2BossDefeatedFlag && StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 3) // if in act3, returns to act2
         {
             //Act2BossDefeatedFlag = false; // set this if the act2 boss should be encountered more than once
-            sounds.PlayAct2TownMusic();
             storyProgress.StoryState = 12;
+            storyProgress.ProgressStory();
+        }
+        if (storyProgress.Act2BossDefeatedFlag && StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 4)
+        {
+            storyProgress.StoryState = 16;
             storyProgress.ProgressStory();
         }
 
@@ -851,7 +965,7 @@ public partial class MainWindow : Form
 
     public async void ButtonHeal()
     {
-        if (StoryProgress.playerIsInTown)
+        if (StoryProgress.playerIsInTown && (StoryProgress.WhichActIsThePlayerIn == 1 || StoryProgress.WhichActIsThePlayerIn == 2))
         {
             if (playerState.Player.GoldInPocket >= Player.priceToHeal) // the players' gold has to be checked here, due to labels being set
             {
@@ -885,11 +999,6 @@ public partial class MainWindow : Form
         ButtonContinueAsync();
     }
 
-    private void labelWeaponEquipped_MouseLeave(object sender, EventArgs e)
-    {
-        hoverTimer.Start();
-    }
-
     private void buttonEquipUnequip_Click(object sender, EventArgs e)
     {
         ButtonEquipItems();
@@ -905,6 +1014,7 @@ public partial class MainWindow : Form
                 playerState.Player.EquipItem(item, comboBoxInventory, comboBoxUpgradeItems);
                 UpdatePlayerLabels();
                 RemoveItemFromComboboxInventory(item); // removes the equipped item from the combobox
+                SetHiddenPanelLabelsOnly(item.Type);
                 comboBoxUpgradeItems.Items.Add(item);
                 Task task = CheckIfPlayerIsDefeated(); // checks if the player dies from unequipping an item that gives health
             }
@@ -913,9 +1023,6 @@ public partial class MainWindow : Form
                 textBox1.Text = $"The level requirement to equip {item.Name} is {item.LevelRequirement}, and the " +
                     $"strength requirement is {item.StrengthRequirement}.";
             }
-        }
-        else
-        {
         }
     }
 
@@ -930,134 +1037,178 @@ public partial class MainWindow : Form
     }
 
     // This method shows the hidden panels when the mouse is over the item on the hero. It also sets the labels info and name of items.
-    private void ShowHiddenItemPanel(ItemType itemType)
+    public void ShowHiddenItemPanelAndSetLabels(ItemType itemType)
     {
         if (playerState.Player.EquippedItems.TryGetValue(itemType, out var item) && item != null)
-        {   // TODO add more item types
+        {
+
+            SetHiddenPanelLabelsOnly(item.Type);
+
             // Show the corresponding panel for the itemType 
             switch (itemType)
             {
                 case ItemType.WeaponRightHand:
                     panelPopupWeaponRightHand.Show();
+                    break;
+                case ItemType.Armor:
+                    panelPopupArmor.Show();
+                    break;
+                case ItemType.Boots:
+                    panelPopupBoots.Show();
+                    break;
+                case ItemType.Gloves:
+                    panelPopupGloves.Show();
+                    break;
+                case ItemType.Amulet:
+                    panelPopupAmulet.Show();
+                    break;
+                case ItemType.Helmet:
+                    panelPopupHelmet.Show();
+                    break;
+                case ItemType.Leggings:
+                    panelPopupLeggings.Show();
+                    break;
+                case ItemType.Belt:
+                    panelPopupBelt.Show();
+                    break;
+                case ItemType.Shoulders:
+                    panelPopupShoulders.Show();
+                    break;
+                case ItemType.WeaponLeftHand:
+                    panelPopupWeaponLeftHand.Show();
+                    break;
+            }
+        }
+    }
+
+    public void SetHiddenPanelLabelsOnly(ItemType itemType)
+    {
+        if (playerState.Player.EquippedItems.TryGetValue(itemType, out var item) && item != null)
+
+            // Show the corresponding panel for the itemType 
+            switch (itemType)
+            {
+                case ItemType.WeaponRightHand:
                     labelWeaponRightHandName.Text = item.Name;
                     labelInfoWeaponRightHandEquipped.Text = item.ToString();
                     break;
                 case ItemType.Armor:
-                    panelPopupArmor.Show();
                     labelArmorName.Text = item.Name;
                     labelInfoArmorEquipped.Text = item.ToString();
                     break;
                 case ItemType.Boots:
-                    panelPopupBoots.Show();
                     labelBootsName.Text = item.Name;
                     labelInfoBootsEquipped.Text = item.ToString();
                     break;
                 case ItemType.Gloves:
-                    panelPopupGloves.Show();
                     labelGlovesName.Text = item.Name;
                     labelInfoGlovesEquipped.Text = item.ToString();
                     break;
                 case ItemType.Amulet:
-                    panelPopupAmulet.Show();
                     labelAmuletName.Text = item.Name;
                     labelInfoAmuletEquipped.Text = item.ToString();
                     break;
                 case ItemType.Helmet:
-                    panelPopupHelmet.Show();
                     labelHelmetName.Text = item.Name;
                     labelInfoHelmetEquipped.Text = item.ToString();
                     break;
                 case ItemType.Leggings:
-                    panelPopupLeggings.Show();
                     labelLeggingsName.Text = item.Name;
                     labelInfoLeggingsEquipped.Text = item.ToString();
                     break;
                 case ItemType.Belt:
-                    panelPopupBelt.Show();
                     labelBeltName.Text = item.Name;
                     labelInfoBeltEquipped.Text = item.ToString();
                     break;
+                case ItemType.Shoulders:
+                    labelShouldersName.Text = item.Name;
+                    labelInfoShouldersEquipped.Text = item.ToString();
+                    break;
+                case ItemType.WeaponLeftHand:
+                    labelWeaponLeftHandName.Text = item.Name;
+                    labelInfoWeaponLeftHandEquipped.Text = item.ToString();
+                    break;
             }
-            hoverTimer.Stop(); // Stop the hover timer regardless of item type
-        }
     }
+
+
 
     private void labelInvisibleAmulet_MouseEnter(object sender, EventArgs e)
     {
-        ShowHiddenItemPanel(ItemType.Amulet);
+        ShowHiddenItemPanelAndSetLabels(ItemType.Amulet);
     }
 
     private void labelInvisibleAmulet_MouseLeave(object sender, EventArgs e)
     {
-        hoverTimer.Start();
+        panelPopupAmulet.Hide();
     }
 
     private void labelInvisibleArmor_MouseLeave(object sender, EventArgs e)
     {
-        hoverTimer.Start();
+        panelPopupArmor.Hide();
     }
 
     private void labelInvisibleArmor_MouseEnter(object sender, EventArgs e)
     {
-        ShowHiddenItemPanel(ItemType.Armor);
+        ShowHiddenItemPanelAndSetLabels(ItemType.Armor);
     }
 
     private void labelInvisibleBoots_MouseEnter(object sender, EventArgs e)
     {
-        ShowHiddenItemPanel(ItemType.Boots);
+        ShowHiddenItemPanelAndSetLabels(ItemType.Boots);
     }
 
     private void labelInvisibleBoots_MouseLeave(object sender, EventArgs e)
     {
-        hoverTimer.Start();
+        panelPopupBoots.Hide();
     }
 
     private void labelInvisibleWeaponRightHandEquipped_MouseEnter(object sender, EventArgs e)
     {
-        ShowHiddenItemPanel(ItemType.WeaponRightHand);
+        ShowHiddenItemPanelAndSetLabels(ItemType.WeaponRightHand);
     }
 
     private void labelInvisibleWeaponRightHandEquipped_MouseLeave(object sender, EventArgs e)
     {
-        hoverTimer.Start();
+        panelPopupWeaponRightHand.Hide();
     }
     private void labelInvisibleHelmet_MouseEnter(object sender, EventArgs e)
     {
-        ShowHiddenItemPanel(ItemType.Helmet);
+        ShowHiddenItemPanelAndSetLabels(ItemType.Helmet);
     }
 
     private void labelInvisibleHelmet_MouseLeave(object sender, EventArgs e)
     {
-        hoverTimer.Start();
+        panelPopupHelmet.Hide();
     }
 
     private void labelInvisibleBelt_MouseEnter(object sender, EventArgs e)
     {
-        ShowHiddenItemPanel(ItemType.Belt);
+        ShowHiddenItemPanelAndSetLabels(ItemType.Belt);
     }
 
     private void labelInvisibleBelt_MouseLeave(object sender, EventArgs e)
     {
-        hoverTimer.Start();
+        panelPopupBelt.Hide();
     }
 
     private void labelInvisibleLeggings_MouseEnter(object sender, EventArgs e)
     {
-        ShowHiddenItemPanel(ItemType.Leggings);
+        ShowHiddenItemPanelAndSetLabels(ItemType.Leggings);
     }
 
     private void labelInvisibleLeggings_MouseLeave(object sender, EventArgs e)
     {
-        hoverTimer.Start();
+        panelPopupLeggings.Hide();
     }
     private void labelInvisibleGloves_MouseEnter(object sender, EventArgs e)
     {
-        ShowHiddenItemPanel(ItemType.Gloves);
+        ShowHiddenItemPanelAndSetLabels(ItemType.Gloves);
     }
 
     private void labelInvisibleGloves_MouseLeave(object sender, EventArgs e)
     {
-        hoverTimer.Start();
+        panelPopupGloves.Hide();
     }
 
     private void buttonUpgradeItem_Click(object sender, EventArgs e)
@@ -1067,7 +1218,7 @@ public partial class MainWindow : Form
 
     public void ButtonUpgradeItem()
     {
-        if (StoryProgress.playerIsInTown && storyProgress.Act1BossDefeatedFlag)
+        if (StoryProgress.playerIsInTown && storyProgress.Act1BossDefeatedFlag && StoryProgress.WhichActIsThePlayerIn == 2)
         {
             if (comboBoxUpgradeItems.SelectedItem != null && playerState.Player.GoldInPocket >= Item.CostToUpgrade)
             {
@@ -1201,15 +1352,15 @@ public partial class MainWindow : Form
     {
         if (StoryProgress.TutorialIsOver && StoryProgress.playerIsInTown == false && IsReturnToTownEnabled) // Makes sure the player can't go to the town before the tutorial is over
         {
-            if (storyProgress.WhichActIsThePlayerIn == 1 && !storyProgress.Act1BossDefeatedFlag)
+            if (StoryProgress.WhichActIsThePlayerIn == 1 && !storyProgress.Act1BossDefeatedFlag)
             {
                 storyProgress.StoryState = 7; // act 1 town
             }
-            if (storyProgress.WhichActIsThePlayerIn == 2)
+            if (StoryProgress.WhichActIsThePlayerIn == 2)
             {
                 storyProgress.StoryState = 12; // act 2 town
             }
-            if (storyProgress.WhichActIsThePlayerIn == 3)
+            if (StoryProgress.WhichActIsThePlayerIn == 3)
             {
                 storyProgress.StoryState = 16;
             }
@@ -1311,17 +1462,17 @@ public partial class MainWindow : Form
         await PerformAttack(() => Encounter.NormalAttack(playerState, this), sounds.PlaySwordAttackSound);
     }
 
-    private async Task ButtonBloodLustAttack()
+    public async Task ButtonBloodLustAttack()
     {
         if (playerState.Player.techniqueBloodLustIsLearned)
             await PerformAttack(() => Encounter.BloodLustAttack(playerState, this), sounds.PlayBloodLustSound, sounds.PlaySwordAttackSound);
     }
-    private async Task ButtonDodgeJabAttack()
+    public async Task ButtonDodgeJabAttack()
     {
         if (playerState.Player.techniqueDodgeJabIsLearned)
             await PerformAttack(() => Encounter.DodgeJabAttack(playerState, this), sounds.PlaySwordAttackSound);
     }
-    private async Task ButtonRoarAttack()
+    public async Task ButtonRoarAttack()
     {
         if (playerState.Player.techniqueRoarIsLearned)
             await PerformAttack(() => Encounter.RoarAttack(playerState, this), sounds.PlayRoarAttackSound);
@@ -1387,7 +1538,7 @@ public partial class MainWindow : Form
         await ButtonRoarAttack();
     }
 
-    private void StartAct1Quest1()
+    public void StartAct1Quest1()
     {
         quests.StartAct1Quest1();
     }

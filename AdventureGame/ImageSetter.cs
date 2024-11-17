@@ -95,5 +95,10 @@ public class ImageSetter
         _mainWindow.panelEncounter.BackgroundImage = GetImagePath("act3boss.png");
     }
 
+    public void SetAct4BackgroundImage()
+    {
+        _mainWindow.panelEncounter.BackgroundImage = GetImagePath("act4background.png");
+    }
+
 
 }

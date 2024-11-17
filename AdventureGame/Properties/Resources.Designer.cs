@@ -173,6 +173,16 @@ namespace AdventureGame.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap hookicon {
+            get {
+                object obj = ResourceManager.GetObject("hookicon", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap inventory {
             get {
                 object obj = ResourceManager.GetObject("inventory", resourceCulture);
@@ -196,6 +206,16 @@ namespace AdventureGame.Properties {
         internal static System.Drawing.Bitmap loot {
             get {
                 object obj = ResourceManager.GetObject("loot", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
+        internal static System.Drawing.Bitmap shouldersicon {
+            get {
+                object obj = ResourceManager.GetObject("shouldersicon", resourceCulture);
                 return ((System.Drawing.Bitmap)(obj));
             }
         }

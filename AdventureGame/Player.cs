@@ -15,7 +15,6 @@ internal class Player
     public int Experience { get; set; }
     public int Level { get; set; }
     public List<Item> Inventory { get; set; }
-    //public List<Item> EquippedItems { get; set; }
     public event Action LevelUpEvent;
     public static int priceToHeal { get; set; } = 2; // 2 is the default value
     public Dictionary<ItemType, Item> EquippedItems { get; private set; }
@@ -44,7 +43,6 @@ internal class Player
         Experience = experience;
         Level = level;
         Inventory = new List<Item>();
-        //EquippedItems = new List<Item>();
         EquippedItems = new Dictionary<ItemType, Item>();
         CritChance = critChance;
         Regeneration = regeneration;
@@ -96,7 +94,7 @@ internal class Player
         }
     }
 
-        public void EquipItem(Item item, ComboBox comboboxInventory, ComboBox comboboxUpgradeItems)
+    public void EquipItem(Item item, ComboBox comboboxInventory, ComboBox comboboxUpgradeItems)
     {
         if (EquippedItems.ContainsKey(item.Type)) // Check if the itemtype is already equipped
         {
@@ -104,7 +102,8 @@ internal class Player
         }
 
         // Equip the item
-        EquippedItems[item.Type] = item;
+        //EquippedItems.Add(item.Type, item);
+        EquippedItems[item.Type] = item; // This replaces any existing item of the same type
 
         // Apply item bonuses to the player
         Damage += item.Damage;

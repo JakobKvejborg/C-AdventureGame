@@ -25,7 +25,7 @@ public class QuestManager
     {
         _mainWindow = mainWindow;
         _imageSetter = imageSetter;
-        _storyProgress = new StoryProgress(_mainWindow);
+        _storyProgress = new StoryProgress(_mainWindow, _sounds);
 
     }
 
@@ -40,7 +40,7 @@ public class QuestManager
     // Start Act 1 Quest 1
     public void StartAct1Quest1()
     {
-        if (StoryProgress.playerIsInTown && !_storyProgress.Act1BossDefeatedFlag && _storyProgress.WhichActIsThePlayerIn == 1)
+        if (StoryProgress.playerIsInTown && !_storyProgress.Act1BossDefeatedFlag && StoryProgress.WhichActIsThePlayerIn == 1)
         {
             isInsideAct1Quest1Panel = true;
             if (!Act1Quest1BoyFound)

@@ -76,6 +76,15 @@ partial class MainWindow
         labelMonsterHp = new Label();
         labelMonsterName = new Label();
         panelEncounter = new Panel();
+        panelPopupWeaponLeftHand = new Panel();
+        pictureBoxIconWeaponLeftHand = new PictureBox();
+        labelInfoWeaponLeftHandEquipped = new Label();
+        labelWeaponLeftHandName = new Label();
+        panelPopupShoulders = new Panel();
+        labelShouldersName = new Label();
+        pictureBoxIconShoulders = new PictureBox();
+        labelInfoShouldersEquipped = new Label();
+        labelInvisibleWeaponLeftHand = new Label();
         labelGold = new Label();
         panelPopupInventoryInfo = new Panel();
         pictureBoxInventoryIcon = new PictureBox();
@@ -122,6 +131,7 @@ partial class MainWindow
         labelCritChance = new Label();
         labelInvisibleAmulet = new Label();
         labelInvisibleLeggings = new Label();
+        labelInvisibleShoulders = new Label();
         labelInvisibleHelmet = new Label();
         labelInvisibleBelt = new Label();
         pictureBoxHero = new PictureBox();
@@ -148,6 +158,10 @@ partial class MainWindow
         panelMonster.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).BeginInit();
         panelEncounter.SuspendLayout();
+        panelPopupWeaponLeftHand.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxIconWeaponLeftHand).BeginInit();
+        panelPopupShoulders.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxIconShoulders).BeginInit();
         panelPopupInventoryInfo.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxInventoryIcon).BeginInit();
         panelPopupBelt.SuspendLayout();
@@ -346,7 +360,7 @@ partial class MainWindow
         // 
         // buttonBloodLust
         // 
-        buttonBloodLust.Location = new Point(107, 725);
+        buttonBloodLust.Location = new Point(106, 725);
         buttonBloodLust.Name = "buttonBloodLust";
         buttonBloodLust.Size = new Size(97, 35);
         buttonBloodLust.TabIndex = 37;
@@ -379,7 +393,7 @@ partial class MainWindow
         // 
         // buttonDodgeJab
         // 
-        buttonDodgeJab.Location = new Point(207, 725);
+        buttonDodgeJab.Location = new Point(205, 725);
         buttonDodgeJab.Name = "buttonDodgeJab";
         buttonDodgeJab.Size = new Size(93, 35);
         buttonDodgeJab.TabIndex = 7;
@@ -390,7 +404,7 @@ partial class MainWindow
         // 
         // buttonRoarAttack
         // 
-        buttonRoarAttack.Location = new Point(303, 725);
+        buttonRoarAttack.Location = new Point(301, 725);
         buttonRoarAttack.Name = "buttonRoarAttack";
         buttonRoarAttack.Size = new Size(93, 35);
         buttonRoarAttack.TabIndex = 44;
@@ -646,6 +660,9 @@ partial class MainWindow
         panelEncounter.BackColor = Color.Transparent;
         panelEncounter.BackgroundImage = Properties.Resources.castle;
         panelEncounter.BackgroundImageLayout = ImageLayout.Stretch;
+        panelEncounter.Controls.Add(panelPopupWeaponLeftHand);
+        panelEncounter.Controls.Add(panelPopupShoulders);
+        panelEncounter.Controls.Add(labelInvisibleWeaponLeftHand);
         panelEncounter.Controls.Add(labelGold);
         panelEncounter.Controls.Add(panelPopupInventoryInfo);
         panelEncounter.Controls.Add(labelHpPopup);
@@ -687,16 +704,117 @@ partial class MainWindow
         panelEncounter.Controls.Add(labelInvisibleWeaponRightHandEquipped);
         panelEncounter.Controls.Add(labelInvisibleAmulet);
         panelEncounter.Controls.Add(labelInvisibleLeggings);
+        panelEncounter.Controls.Add(labelInvisibleShoulders);
         panelEncounter.Controls.Add(labelInvisibleHelmet);
         panelEncounter.Controls.Add(labelInvisibleBelt);
-        panelEncounter.Controls.Add(pictureBoxHeroBag);
         panelEncounter.Controls.Add(pictureBoxHero);
+        panelEncounter.Controls.Add(pictureBoxHeroBag);
         panelEncounter.Controls.Add(pictureBoxInventory);
         panelEncounter.Dock = DockStyle.Fill;
         panelEncounter.Location = new Point(0, 0);
         panelEncounter.Name = "panelEncounter";
         panelEncounter.Size = new Size(537, 768);
         panelEncounter.TabIndex = 22;
+        // 
+        // panelPopupWeaponLeftHand
+        // 
+        panelPopupWeaponLeftHand.AutoScroll = true;
+        panelPopupWeaponLeftHand.AutoSize = true;
+        panelPopupWeaponLeftHand.BorderStyle = BorderStyle.Fixed3D;
+        panelPopupWeaponLeftHand.Controls.Add(pictureBoxIconWeaponLeftHand);
+        panelPopupWeaponLeftHand.Controls.Add(labelInfoWeaponLeftHandEquipped);
+        panelPopupWeaponLeftHand.Controls.Add(labelWeaponLeftHandName);
+        panelPopupWeaponLeftHand.Location = new Point(3, 559);
+        panelPopupWeaponLeftHand.Name = "panelPopupWeaponLeftHand";
+        panelPopupWeaponLeftHand.Size = new Size(171, 97);
+        panelPopupWeaponLeftHand.TabIndex = 55;
+        // 
+        // pictureBoxIconWeaponLeftHand
+        // 
+        pictureBoxIconWeaponLeftHand.Image = Properties.Resources.hookicon;
+        pictureBoxIconWeaponLeftHand.Location = new Point(118, 3);
+        pictureBoxIconWeaponLeftHand.Name = "pictureBoxIconWeaponLeftHand";
+        pictureBoxIconWeaponLeftHand.Size = new Size(41, 33);
+        pictureBoxIconWeaponLeftHand.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxIconWeaponLeftHand.TabIndex = 3;
+        pictureBoxIconWeaponLeftHand.TabStop = false;
+        // 
+        // labelInfoWeaponLeftHandEquipped
+        // 
+        labelInfoWeaponLeftHandEquipped.AutoSize = true;
+        labelInfoWeaponLeftHandEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelInfoWeaponLeftHandEquipped.ForeColor = Color.White;
+        labelInfoWeaponLeftHandEquipped.Location = new Point(-1, 17);
+        labelInfoWeaponLeftHandEquipped.Name = "labelInfoWeaponLeftHandEquipped";
+        labelInfoWeaponLeftHandEquipped.Size = new Size(87, 16);
+        labelInfoWeaponLeftHandEquipped.TabIndex = 1;
+        labelInfoWeaponLeftHandEquipped.Text = "lefthandInfo";
+        // 
+        // labelWeaponLeftHandName
+        // 
+        labelWeaponLeftHandName.AutoSize = true;
+        labelWeaponLeftHandName.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelWeaponLeftHandName.ForeColor = SystemColors.ActiveCaption;
+        labelWeaponLeftHandName.Location = new Point(1, -1);
+        labelWeaponLeftHandName.Name = "labelWeaponLeftHandName";
+        labelWeaponLeftHandName.Size = new Size(98, 16);
+        labelWeaponLeftHandName.TabIndex = 0;
+        labelWeaponLeftHandName.Text = "LeftHandName";
+        // 
+        // panelPopupShoulders
+        // 
+        panelPopupShoulders.AutoScroll = true;
+        panelPopupShoulders.AutoSize = true;
+        panelPopupShoulders.BorderStyle = BorderStyle.Fixed3D;
+        panelPopupShoulders.Controls.Add(labelShouldersName);
+        panelPopupShoulders.Controls.Add(pictureBoxIconShoulders);
+        panelPopupShoulders.Controls.Add(labelInfoShouldersEquipped);
+        panelPopupShoulders.Location = new Point(163, 394);
+        panelPopupShoulders.Name = "panelPopupShoulders";
+        panelPopupShoulders.Size = new Size(171, 97);
+        panelPopupShoulders.TabIndex = 54;
+        // 
+        // labelShouldersName
+        // 
+        labelShouldersName.AutoSize = true;
+        labelShouldersName.Font = new Font("Microsoft Sans Serif", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelShouldersName.ForeColor = SystemColors.ActiveCaption;
+        labelShouldersName.Location = new Point(1, 2);
+        labelShouldersName.Name = "labelShouldersName";
+        labelShouldersName.Size = new Size(105, 16);
+        labelShouldersName.TabIndex = 4;
+        labelShouldersName.Text = "ShouldersName";
+        // 
+        // pictureBoxIconShoulders
+        // 
+        pictureBoxIconShoulders.Image = Properties.Resources.shouldersicon;
+        pictureBoxIconShoulders.Location = new Point(118, 3);
+        pictureBoxIconShoulders.Name = "pictureBoxIconShoulders";
+        pictureBoxIconShoulders.Size = new Size(41, 33);
+        pictureBoxIconShoulders.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxIconShoulders.TabIndex = 3;
+        pictureBoxIconShoulders.TabStop = false;
+        // 
+        // labelInfoShouldersEquipped
+        // 
+        labelInfoShouldersEquipped.AutoSize = true;
+        labelInfoShouldersEquipped.Font = new Font("Verdana", 7.20000029F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        labelInfoShouldersEquipped.ForeColor = Color.White;
+        labelInfoShouldersEquipped.Location = new Point(-1, 17);
+        labelInfoShouldersEquipped.Name = "labelInfoShouldersEquipped";
+        labelInfoShouldersEquipped.Size = new Size(95, 16);
+        labelInfoShouldersEquipped.TabIndex = 1;
+        labelInfoShouldersEquipped.Text = "shouldersInfo";
+        // 
+        // labelInvisibleWeaponLeftHand
+        // 
+        labelInvisibleWeaponLeftHand.AutoSize = true;
+        labelInvisibleWeaponLeftHand.ForeColor = Color.Transparent;
+        labelInvisibleWeaponLeftHand.Location = new Point(27, 544);
+        labelInvisibleWeaponLeftHand.Name = "labelInvisibleWeaponLeftHand";
+        labelInvisibleWeaponLeftHand.Size = new Size(41, 60);
+        labelInvisibleWeaponLeftHand.TabIndex = 52;
+        labelInvisibleWeaponLeftHand.Text = "       \r\n        \r\n ";
         // 
         // labelGold
         // 
@@ -713,6 +831,7 @@ partial class MainWindow
         // panelPopupInventoryInfo
         // 
         panelPopupInventoryInfo.AutoScroll = true;
+        panelPopupInventoryInfo.AutoSize = true;
         panelPopupInventoryInfo.BorderStyle = BorderStyle.Fixed3D;
         panelPopupInventoryInfo.Controls.Add(pictureBoxInventoryIcon);
         panelPopupInventoryInfo.Controls.Add(labelInventoryItemInfo);
@@ -755,11 +874,12 @@ partial class MainWindow
         // panelPopupBelt
         // 
         panelPopupBelt.AutoScroll = true;
+        panelPopupBelt.AutoSize = true;
         panelPopupBelt.BorderStyle = BorderStyle.Fixed3D;
         panelPopupBelt.Controls.Add(pictureBoxIconBelt);
         panelPopupBelt.Controls.Add(labelInfoBeltEquipped);
         panelPopupBelt.Controls.Add(labelBeltName);
-        panelPopupBelt.Location = new Point(119, 541);
+        panelPopupBelt.Location = new Point(93, 541);
         panelPopupBelt.Name = "panelPopupBelt";
         panelPopupBelt.Size = new Size(170, 97);
         panelPopupBelt.TabIndex = 48;
@@ -799,11 +919,12 @@ partial class MainWindow
         // panelPopupLeggings
         // 
         panelPopupLeggings.AutoScroll = true;
+        panelPopupLeggings.AutoSize = true;
         panelPopupLeggings.BorderStyle = BorderStyle.Fixed3D;
         panelPopupLeggings.Controls.Add(pictureBoxIconLeggings);
         panelPopupLeggings.Controls.Add(labelInfoLeggingsEquipped);
         panelPopupLeggings.Controls.Add(labelLeggingsName);
-        panelPopupLeggings.Location = new Point(111, 491);
+        panelPopupLeggings.Location = new Point(85, 491);
         panelPopupLeggings.Name = "panelPopupLeggings";
         panelPopupLeggings.Size = new Size(178, 97);
         panelPopupLeggings.TabIndex = 47;
@@ -843,11 +964,12 @@ partial class MainWindow
         // panelPopupHelmet
         // 
         panelPopupHelmet.AutoScroll = true;
+        panelPopupHelmet.AutoSize = true;
         panelPopupHelmet.BorderStyle = BorderStyle.Fixed3D;
         panelPopupHelmet.Controls.Add(pictureBoxIconHelmet);
         panelPopupHelmet.Controls.Add(labelInfoHelmetEquipped);
         panelPopupHelmet.Controls.Add(labelHelmetName);
-        panelPopupHelmet.Location = new Point(117, 417);
+        panelPopupHelmet.Location = new Point(91, 417);
         panelPopupHelmet.Name = "panelPopupHelmet";
         panelPopupHelmet.Size = new Size(170, 97);
         panelPopupHelmet.TabIndex = 45;
@@ -887,13 +1009,14 @@ partial class MainWindow
         // panelPopupAmulet
         // 
         panelPopupAmulet.AutoScroll = true;
+        panelPopupAmulet.AutoSize = true;
         panelPopupAmulet.BorderStyle = BorderStyle.Fixed3D;
         panelPopupAmulet.Controls.Add(pictureBoxIconAmulet);
         panelPopupAmulet.Controls.Add(labelInfoAmuletEquipped);
         panelPopupAmulet.Controls.Add(labelAmuletName);
         panelPopupAmulet.Location = new Point(9, 435);
         panelPopupAmulet.Name = "panelPopupAmulet";
-        panelPopupAmulet.Size = new Size(165, 97);
+        panelPopupAmulet.Size = new Size(177, 97);
         panelPopupAmulet.TabIndex = 43;
         // 
         // pictureBoxIconAmulet
@@ -931,6 +1054,7 @@ partial class MainWindow
         // panelPopupBoots
         // 
         panelPopupBoots.AutoScroll = true;
+        panelPopupBoots.AutoSize = true;
         panelPopupBoots.BorderStyle = BorderStyle.Fixed3D;
         panelPopupBoots.Controls.Add(pictureBoxIconBoots);
         panelPopupBoots.Controls.Add(labelInfoBootsEquipped);
@@ -991,7 +1115,7 @@ partial class MainWindow
         panelPopupGloves.Controls.Add(pictureBoxIconGloves);
         panelPopupGloves.Controls.Add(labelInfoGlovesEquipped);
         panelPopupGloves.Controls.Add(labelGlovesName);
-        panelPopupGloves.Location = new Point(171, 436);
+        panelPopupGloves.Location = new Point(145, 436);
         panelPopupGloves.Name = "panelPopupGloves";
         panelPopupGloves.Size = new Size(161, 97);
         panelPopupGloves.TabIndex = 31;
@@ -1043,6 +1167,7 @@ partial class MainWindow
         // panelPopupArmor
         // 
         panelPopupArmor.AutoScroll = true;
+        panelPopupArmor.AutoSize = true;
         panelPopupArmor.BorderStyle = BorderStyle.Fixed3D;
         panelPopupArmor.Controls.Add(pictureBoxIconArmor);
         panelPopupArmor.Controls.Add(labelInfoArmorEquipped);
@@ -1110,6 +1235,7 @@ partial class MainWindow
         // panelPopupWeaponRightHand
         // 
         panelPopupWeaponRightHand.AutoScroll = true;
+        panelPopupWeaponRightHand.AutoSize = true;
         panelPopupWeaponRightHand.BackColor = Color.Transparent;
         panelPopupWeaponRightHand.BorderStyle = BorderStyle.Fixed3D;
         panelPopupWeaponRightHand.Controls.Add(pictureBoxIconWeaponRightHand);
@@ -1210,6 +1336,16 @@ partial class MainWindow
         labelInvisibleLeggings.Text = "              \r\n            \r\n\r\n\r\n\r\n";
         labelInvisibleLeggings.MouseEnter += labelInvisibleLeggings_MouseEnter;
         labelInvisibleLeggings.MouseLeave += labelInvisibleLeggings_MouseLeave;
+        // 
+        // labelInvisibleShoulders
+        // 
+        labelInvisibleShoulders.AutoSize = true;
+        labelInvisibleShoulders.ForeColor = Color.Transparent;
+        labelInvisibleShoulders.Location = new Point(118, 441);
+        labelInvisibleShoulders.Name = "labelInvisibleShoulders";
+        labelInvisibleShoulders.Size = new Size(45, 40);
+        labelInvisibleShoulders.TabIndex = 53;
+        labelInvisibleShoulders.Text = "         \r\n ";
         // 
         // labelInvisibleHelmet
         // 
@@ -1486,6 +1622,12 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).EndInit();
         panelEncounter.ResumeLayout(false);
         panelEncounter.PerformLayout();
+        panelPopupWeaponLeftHand.ResumeLayout(false);
+        panelPopupWeaponLeftHand.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxIconWeaponLeftHand).EndInit();
+        panelPopupShoulders.ResumeLayout(false);
+        panelPopupShoulders.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxIconShoulders).EndInit();
         panelPopupInventoryInfo.ResumeLayout(false);
         panelPopupInventoryInfo.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxInventoryIcon).EndInit();
@@ -1580,23 +1722,19 @@ partial class MainWindow
     private Button btn_Continuetown;
     private Panel panelInventory;
     private Label labelInvisibleWeaponRightHandEquipped;
-    private Panel panelPopupWeaponRightHand;
     private Label labelWeaponRightHandName;
     private Label labelInfoWeaponRightHandEquipped;
     public PictureBox pictureBoxHealer;
     private Label labelInvisibleArmor;
-    private Panel panelPopupArmor;
     private Label labelInfoArmorEquipped;
     private Label labelArmorName;
     private Label labelInvisibleBoots;
-    private Panel panelPopupBoots;
     private Label labelInfoBootsEquipped;
     private Label labelBootsName;
     public PictureBox pictureBoxAct2Smith;
     public ComboBox comboBoxUpgradeItems;
     public Button buttonUpgradeItem;
     private Label labelInvisibleGloves;
-    private Panel panelPopupGloves;
     private Label labelInfoGlovesEquipped;
     private Label labelGlovesName;
     public PictureBox pictureBoxHeroBag;
@@ -1625,18 +1763,14 @@ partial class MainWindow
     public Label labelAct1Quest1;
     public Panel panelAct1Quest1;
     public Button buttonAct1Q1Town;
-    private Panel panelPopupHelmet;
     private Label labelInfoHelmetEquipped;
     private Label labelHelmetName;
     private Label labelInvisibleLeggings;
-    private Panel panelPopupLeggings;
     private Label labelInfoLeggingsEquipped;
     private Label labelLeggingsName;
-    private Panel panelPopupBelt;
     private Label labelInfoBeltEquipped;
     private Label labelBeltName;
     public Label labelHpPopup;
-    private Panel panel1;
     private Label labelInventoryItemInfo;
     public Panel panelPopupInventoryInfo;
     private PictureBox pictureBoxIconWeaponRightHand;
@@ -1649,4 +1783,21 @@ partial class MainWindow
     private PictureBox pictureBoxIconBoots;
     private PictureBox pictureBoxIconArmor;
     public Label labelGold;
+    public Panel panelPopupHelmet;
+    public Panel panelPopupBoots;
+    public Panel panelPopupLeggings;
+    public Panel panelPopupBelt;
+    public Panel panelPopupWeaponRightHand;
+    public Panel panelPopupArmor;
+    public Panel panelPopupGloves;
+    private Label labelInvisibleWeaponLeftHand;
+    private Label labelInvisibleShoulders;
+    private PictureBox pictureBoxIconShoulders;
+    public Panel panelPopupShoulders;
+    public Panel panelPopupWeaponLeftHand;
+    private PictureBox pictureBoxIconWeaponLeftHand;
+    private Label labelWeaponLeftHandName;
+    public Label labelInfoShouldersEquipped;
+    public Label labelInfoWeaponLeftHandEquipped;
+    private Label labelShouldersName;
 }

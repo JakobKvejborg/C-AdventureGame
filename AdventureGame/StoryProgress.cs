@@ -12,19 +12,21 @@ internal class StoryProgress
     public static bool playerIsInTown { get; set; } = false;
     private MainWindow _mainWindow;
     public bool oneTimeMessage = true;
-    private ImageSetter imageSetter;
-    public MusicAndSound sounds = new MusicAndSound();
+    bool oneTimeMessage2 = true;
+    private ImageSetter _imageSetter;
+    public MusicAndSound _sounds;
     public static bool TutorialIsOver { get; set; }
     public bool Act1ArtsTeacherIsAvailable { get; set; } = true;
     public bool Act1BossDefeatedFlag = false;
     public bool Act2BossDefeatedFlag = false;
     public bool Act3BossDefeatedFlag = false;
-    public int WhichActIsThePlayerIn { get; set; } = 1;
+    public static int WhichActIsThePlayerIn { get; set; } = 1;
 
-    public StoryProgress(MainWindow mainWindow)
+    public StoryProgress(MainWindow mainWindow, MusicAndSound sounds)
     {
         _mainWindow = mainWindow;
-        imageSetter = new ImageSetter(mainWindow);
+        _imageSetter = new ImageSetter(mainWindow);
+        _sounds = sounds;
     }
 
     public string GetFirstText()
@@ -33,13 +35,13 @@ internal class StoryProgress
             "\n\r The roads are littered with corpses.\n\r Do you have the will to survive the Horrors of the lands?";
     }
 
-    private void NextPanel() // Currently unused. Maybe this could've been used to switch between different acts/towns
-    {
-        if (_mainWindow.panelsIndex < _mainWindow.panelsList.Count - 1)
-        {
-            _mainWindow.panelsList[++_mainWindow.panelsIndex].BringToFront();
-        }
-    }
+    //private void NextPanel() // Currently unused. Maybe this could've been used to switch between different acts/towns
+    //{
+    //    if (_mainWindow.panelsIndex < _mainWindow.panelsList.Count - 1)
+    //    {
+    //        _mainWindow.panelsList[++_mainWindow.panelsIndex].BringToFront();
+    //    }
+    //}
 
     public string GetSecondText()
     {
@@ -55,6 +57,12 @@ internal class StoryProgress
     {
         return "The girl’s white eyes hints her blindness, but as you approach she seems to see you coming. " +
             "She takes care of your wounds and you hand her some coins as thanks.";
+    }
+
+    public String GetAct4FirstTimeText()
+    {
+        return "After almost drowning you arrive in the fiery lands of the dragons. " +
+            "As the towering silhouettes of the great beasts loom in the distance, you wonder if you'll ever uncover the truth about the curse of this land. Failure is not an option.";
     }
 
     public void ProgressStory()
@@ -94,7 +102,7 @@ internal class StoryProgress
                 {
                     if (oneTimeMessage == true)
                     {
-                        sounds.PlayAct1TownMusic();
+                        _sounds.PlayAct1TownMusic();
                         _mainWindow.txtBox_Town.Text = "You come across a small town in the middle of the forest. " +
                             "While the town isn’t completely deserted, it's dead quiet. " +
                             "Be vary of the road straight ahead. Choose a path.";
@@ -106,9 +114,9 @@ internal class StoryProgress
                             "\r\nWhat comes next is up to you.";
                     }
                     WhichActIsThePlayerIn = 1;
-                    imageSetter.SetAct1TownBackgroundimage();
-                    _mainWindow.pictureBoxAct1ArtsTeacher.Image = imageSetter.GetImagePath("act1artsteacher.png");
-                    sounds.StopAct2TownMusic();
+                    _imageSetter.SetAct1TownBackgroundimage();
+                    _mainWindow.pictureBoxAct1ArtsTeacher.Image = _imageSetter.GetImagePath("act1artsteacher.png");
+                    _sounds.StopAct2TownMusic();
                     PlayerIsInTown();
                     //StoryState++; // When this line isn't excecuted, the story will loop here
                     if (Act1ArtsTeacherIsAvailable)
@@ -125,9 +133,9 @@ internal class StoryProgress
                 StoryState++;
                 break;
             case 9:
-                sounds.StopAct1TownMusic();
-                sounds.PlayAct2WindMusic();
-                imageSetter.SetAct2Backgroundimage();
+                _sounds.StopAct1TownMusic();
+                _sounds.PlayAct2WindMusic();
+                _imageSetter.SetAct2Backgroundimage();
                 _mainWindow.textBox1.Text = "The high mountains are cold, and you are close to freezing to death. " +
                     "But for some unknown reason you mindlessly continue - to face the horrors ahead.";
                 oneTimeMessage = (true); // Reusing the flag for act2
@@ -148,8 +156,8 @@ internal class StoryProgress
                 {
                     if (oneTimeMessage == true)
                     {
-                        sounds.PlayAct2TownMusic();
-                        sounds.StopAct1TownMusic();
+                        _sounds.PlayAct2TownMusic();
+                        
                         _mainWindow.txtBox_Town.Text = "A frozen town. Time almost stands still here. " +
                             "The streets are buried under a thick blanket of snow, with not a footprint in sight.";
                         oneTimeMessage = false;
@@ -174,9 +182,6 @@ internal class StoryProgress
             case 14:
                 playerIsInTown = false;
                 SetUpAct3Controls();
-                WhichActIsThePlayerIn = 3;
-                imageSetter.SetAct3Backgroundimage();
-                sounds.PlayAct3Waves();
                 _mainWindow.textBox1.Text = "You feel lost at sea. Get eaten by a seamonster or drown - which is worse? ";
                 StoryState++;
                 break;
@@ -192,16 +197,30 @@ internal class StoryProgress
                 break;
             case 16: // The player enters town act 3
                 SetUpAct3Controls();
-                WhichActIsThePlayerIn = 3;
+               
                 if (progressFlag == true)
                 {
                     playerIsInTown = true;
                     PlayerIsInTown();
-                    // sounds.playact3music
+                    // sounds.playact3music TODO maybe?
                     _mainWindow.txtBox_Town.Text = "There's nothing out here for you. You consider returning to the frozen town, or continuing forward. ";
                 }
                 break;
+            case 17: // Act 4 start
+                SetupAct4Controls();
+                if (oneTimeMessage2)
+                {
+                    _mainWindow.textBox1.Text = GetAct4FirstTimeText();
+                    oneTimeMessage2 = false;
+                }
+                else
+                {
 
+                }
+                break;
+            case 18: // Town Act 4
+                SetupAct4Controls();
+                break;
 
             // Special cases:
             case 99: // Act 1 Quest 1 Hungry Beast
@@ -244,9 +263,18 @@ internal class StoryProgress
         }
     }
 
+    private void SetupAct4Controls()
+    {
+        _imageSetter.SetAct4BackgroundImage();
+
+        _sounds.PlayAct4Music();
+        _sounds.StopAct3Waves();
+    }
+
     private void SetUpAct3Controls()
     {
-        imageSetter.SetAct3Backgroundimage();
+        WhichActIsThePlayerIn = 3;
+        _imageSetter.SetAct3Backgroundimage();
         _mainWindow.comboBoxUpgradeItems.Hide();
         _mainWindow.buttonUpgradeItem.Hide();
         _mainWindow.pictureBoxTown.Hide();
@@ -256,16 +284,18 @@ internal class StoryProgress
         _mainWindow.pictureBoxAct1ArtsTeacher.Hide();
         WhichActIsThePlayerIn = 3;
 
-        sounds.StopAct2WindSound();
-        sounds.StopAct2TownMusic();
+        _sounds.StopAct4Music();
+        _sounds.StopAct2WindSound();
+        _sounds.StopAct2TownMusic();
+        _sounds.PlayAct3Waves();
     }
 
     public void SetupAct2controls()
     {
-        imageSetter.SetAct2Backgroundimage();
-        imageSetter.SetAct2PictureBoxTownImage(); // Sets the town image to Act2Town
-        imageSetter.SetAct2HealerPictureBoxImage();
-        imageSetter.SetAct2SmithPictureBoxImage();
+        _imageSetter.SetAct2Backgroundimage();
+        _imageSetter.SetAct2PictureBoxTownImage(); // Sets the town image to Act2Town
+        _imageSetter.SetAct2HealerPictureBoxImage();
+        _imageSetter.SetAct2SmithPictureBoxImage();
         _mainWindow.pictureBoxAct1ArtsTeacher.Hide();
         _mainWindow.buttonLearnTechnique.Hide();
         _mainWindow.pictureBoxHealer.Show();
@@ -277,6 +307,9 @@ internal class StoryProgress
         _mainWindow.buttonUpgradeItem.Show();
         _mainWindow.pictureBoxTown.Show();
         _mainWindow.labelAct1Quest1.Hide();
+
+        _sounds.StopAct1TownMusic();
+        _sounds.StopAct3Waves();
     }
 
     private void PlayerIsInTown()
