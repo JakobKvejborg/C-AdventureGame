@@ -732,7 +732,7 @@ partial class MainWindow
         // pictureBoxIconWeaponLeftHand
         // 
         pictureBoxIconWeaponLeftHand.Image = Properties.Resources.hookicon;
-        pictureBoxIconWeaponLeftHand.Location = new Point(118, 3);
+        pictureBoxIconWeaponLeftHand.Location = new Point(120, 3);
         pictureBoxIconWeaponLeftHand.Name = "pictureBoxIconWeaponLeftHand";
         pictureBoxIconWeaponLeftHand.Size = new Size(41, 33);
         pictureBoxIconWeaponLeftHand.SizeMode = PictureBoxSizeMode.Zoom;
@@ -788,7 +788,7 @@ partial class MainWindow
         // pictureBoxIconShoulders
         // 
         pictureBoxIconShoulders.Image = Properties.Resources.shouldersicon;
-        pictureBoxIconShoulders.Location = new Point(118, 3);
+        pictureBoxIconShoulders.Location = new Point(121, 3);
         pictureBoxIconShoulders.Name = "pictureBoxIconShoulders";
         pictureBoxIconShoulders.Size = new Size(41, 33);
         pictureBoxIconShoulders.SizeMode = PictureBoxSizeMode.Zoom;
@@ -932,7 +932,7 @@ partial class MainWindow
         // pictureBoxIconLeggings
         // 
         pictureBoxIconLeggings.Image = Properties.Resources.leggingsicon;
-        pictureBoxIconLeggings.Location = new Point(124, 5);
+        pictureBoxIconLeggings.Location = new Point(130, 5);
         pictureBoxIconLeggings.Name = "pictureBoxIconLeggings";
         pictureBoxIconLeggings.Size = new Size(41, 33);
         pictureBoxIconLeggings.SizeMode = PictureBoxSizeMode.Zoom;

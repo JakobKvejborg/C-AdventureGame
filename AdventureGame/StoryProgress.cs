@@ -62,7 +62,7 @@ internal class StoryProgress
     public String GetAct4FirstTimeText()
     {
         return "After almost drowning you arrive in the fiery lands of the dragons. " +
-            "As the towering silhouettes of the great beasts loom in the distance, you wonder if you'll ever uncover the truth about the curse of this land. Failure is not an option.";
+            "As the towering beasts loom in the distance, you wonder if you'll ever see home again.";
     }
 
     public void ProgressStory()
@@ -188,9 +188,7 @@ internal class StoryProgress
             case 15:
                 if (progressFlag == true)
                 {
-                    _mainWindow.buttonReturnToTown.Enabled = true;
-                    _mainWindow.IsReturnToTownEnabled = true;
-                    _mainWindow.buttonReturnToTown.Show();
+                    EnableReturnToTownFunction();
                     Encounter.PerformEncounter(monsterContainer.listOfMonstersAct3, itemContainer.items4, _mainWindow);
                     StoryState++;
                 }
@@ -200,26 +198,30 @@ internal class StoryProgress
                
                 if (progressFlag == true)
                 {
-                    playerIsInTown = true;
                     PlayerIsInTown();
+                    _sounds.PlayAct3Waves();
                     // sounds.playact3music TODO maybe?
                     _mainWindow.txtBox_Town.Text = "There's nothing out here for you. You consider returning to the frozen town, or continuing forward. ";
                 }
                 break;
             case 17: // Act 4 start
                 SetupAct4Controls();
+                _sounds.PlayAct4Music();
                 if (oneTimeMessage2)
                 {
                     _mainWindow.textBox1.Text = GetAct4FirstTimeText();
                     oneTimeMessage2 = false;
                 }
-                else
-                {
-
-                }
+                StoryState++;
                 break;
             case 18: // Town Act 4
                 SetupAct4Controls();
+                EnableReturnToTownFunction();
+                if (progressFlag == true)
+                {
+                    PlayerIsInTown();
+                    _mainWindow.txtBox_Town.Text = "The fiery town is burning hot, you can barely breathe. But maybe here you will find what you're searching for. \r\nOr maybe it's here you die trying. ";
+                }
                 break;
 
             // Special cases:
@@ -260,14 +262,34 @@ internal class StoryProgress
                     Encounter.PerformEncounter(monsterContainer.listOfMonstersAct3, itemContainer.items4, _mainWindow);
                 }
                 break;
+            case 105: // Act 4 East dragons repeated
+                if (progressFlag == true)
+                {
+                    Encounter.PerformEncounter(monsterContainer.ListOfDragonsAct4East, itemContainer.items4, _mainWindow);
+                }
+                break;
+            case 106: // Act 4 West repeated
+                if (progressFlag == true)
+                {
+                    Encounter.PerformEncounter(monsterContainer.listOfMonstersAct4West, itemContainer.items4, _mainWindow);
+                }
+                break;
         }
+    }
+
+    private void EnableReturnToTownFunction()
+    {
+        _mainWindow.buttonReturnToTown.Enabled = true;
+        _mainWindow.IsReturnToTownEnabled = true;
+        _mainWindow.buttonReturnToTown.Show();
     }
 
     private void SetupAct4Controls()
     {
+        WhichActIsThePlayerIn = 4;
         _imageSetter.SetAct4BackgroundImage();
+        _imageSetter.SetAct4TownBackgroundImage();
 
-        _sounds.PlayAct4Music();
         _sounds.StopAct3Waves();
     }
 
@@ -287,7 +309,7 @@ internal class StoryProgress
         _sounds.StopAct4Music();
         _sounds.StopAct2WindSound();
         _sounds.StopAct2TownMusic();
-        _sounds.PlayAct3Waves();
+        
     }
 
     public void SetupAct2controls()

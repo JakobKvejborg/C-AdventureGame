@@ -20,6 +20,8 @@ internal class MonsterContainer
     public List<Monster> listOfMonstersBossAct2 { get; private set; }
     public List<Monster> listOfMonstersAct3 { get; private set; }
     public List<Monster> listOfMonstersBossAct3 { get; private set; }
+    public List<Monster> listOfMonstersAct4West { get; private set; }
+    public List<Monster> ListOfDragonsAct4East { get; private set; }
 
     public MonsterContainer()
     {
@@ -31,6 +33,8 @@ internal class MonsterContainer
         listOfMonstersBossAct2 = new List<Monster>();
         listOfMonstersAct3 = new List<Monster>();
         listOfMonstersBossAct3 = new List<Monster>();
+        listOfMonstersAct4West = new List<Monster>();
+        ListOfDragonsAct4East = new List<Monster>();
         listOfMonstersAct1Quest1 = new List<Monster>();
         AddMonstersToList();
     }
@@ -71,6 +75,15 @@ internal class MonsterContainer
         Image seaGhostImage = GetMonsterImage("seaghost.png");
         Image seaMonsterImage = GetMonsterImage("seamonster.png");
 
+        Image burningSkeletonImage = GetMonsterImage("burningskeleton.png");
+        Image fireKnightImage = GetMonsterImage("fireknight.png");
+        Image magmaHorrorImage = GetMonsterImage("magmahorror.png");
+        Image magmaFrogImage = GetMonsterImage("magmafrog.png");
+        Image forgottenPrinceImage = GetMonsterImage("forgottenprince.png");
+        Image burningLizardImage = GetMonsterImage("burninglizard.png");
+        Image dragonKingImage = GetMonsterImage("dragonking.png");
+        Image casterDragonImage = GetMonsterImage("casterdragon.png");
+
         // List of normal monsters NORMAL - NOPREFIX - SNOW - NIGHTMARE - ELITE - HORROR - HELLISH - CORRUPTED
         Monster normalGoblin = new("Goblin", 10, 10, 0, 1, 1, 6, 1, normalGoblinImage);
         Monster normalOrc = new("Orc", 7, 7, 0, 1, 2, 9, 0, normalOrcImage);
@@ -108,6 +121,18 @@ internal class MonsterContainer
         Monster seaTerror = new("Sea Terror", 120, 120, 10, 0, 19, 50, 0, seaTerrorImage);
         Monster seaGhost = new("Ghost of the Sea", 100, 100, 0, 0, 25, 30, 17, seaGhostImage);
         Monster seaMonster = new("Monster of the Sea", 115, 115, 27, 0, 0, 38, 20, seaMonsterImage);
+
+        // Act 4 Monsters west
+        Monster burningSkeleton = new("Burning Skeleton", 210, 200, 33, 0, 0, 70, 30, burningSkeletonImage);
+        Monster burningLizard = new("Burning Lizard", 210, 200, 33, 0, 0, 70, 30, burningLizardImage);
+        Monster magmaFrog = new("Magma Frog", 210, 210, 33, 0, 0, 70, 30, magmaFrogImage);
+        Monster magmaHorror = new("Magma Horror", 210, 210, 33, 0, 0, 70, 30, magmaHorrorImage);
+        Monster forgottenPrince = new("Forgotten Prince", 210, 210, 33, 0, 0, 70, 30, forgottenPrinceImage);
+        Monster fireKnight = new("Fire Knight", 210, 210, 33, 0, 0, 70, 30, fireKnightImage);
+
+        // Act 4 Dragons east
+        Monster casterDragon = new("Caster Dragon", 250, 250, 33, 0, 0, 90, 30, casterDragonImage);
+        Monster dragonKing = new("Dragon King", 250, 250, 33, 0, 0, 90, 30, dragonKingImage);
 
         // List of Monsters 1
         listOfMonsters1.Add(normalGoblin);
@@ -149,6 +174,18 @@ internal class MonsterContainer
         listOfMonstersAct3.Add(seaGhost);
         listOfMonstersAct3.Add(seaTerror);
         listOfMonstersAct3.Add(seaMonster);
+
+        // Act 4 list east
+        listOfMonstersAct4West.Add(burningSkeleton);
+        listOfMonstersAct4West.Add(burningLizard);
+        listOfMonstersAct4West.Add(magmaFrog);
+        listOfMonstersAct4West.Add(magmaHorror);
+        listOfMonstersAct4West.Add(forgottenPrince);
+        listOfMonstersAct4West.Add(fireKnight);
+
+        // Act 4 list east
+        ListOfDragonsAct4East.Add(casterDragon);
+        ListOfDragonsAct4East.Add(dragonKing);
 
     }
 

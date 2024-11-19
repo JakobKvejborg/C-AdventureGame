@@ -99,6 +99,10 @@ public class ImageSetter
     {
         _mainWindow.panelEncounter.BackgroundImage = GetImagePath("act4background.png");
     }
+    public void SetAct4TownBackgroundImage()
+    {
+        _mainWindow.panelTown.BackgroundImage = GetImagePath("act4town.png");
+    }
 
 
 }

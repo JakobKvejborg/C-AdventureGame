@@ -700,6 +700,10 @@ public partial class MainWindow : Form
             {
                 storyProgress.StoryState = 104; // repeated encounters west act 3
             }
+            if (StoryProgress.WhichActIsThePlayerIn == 4)
+            {
+                storyProgress.StoryState = 106; // repeated encounters west act 3
+            }
             storyProgress.ProgressStory();
         }
     }
@@ -721,6 +725,10 @@ public partial class MainWindow : Form
             if (StoryProgress.WhichActIsThePlayerIn == 3)
             {
                 storyProgress.StoryState = 104; // repeated encounters west act 3 // should be 105, design choice
+            }
+            if (StoryProgress.WhichActIsThePlayerIn == 4)
+            {
+                storyProgress.StoryState = 105; // repeated encounters east act 4
             }
             storyProgress.ProgressStory();
         }
@@ -761,7 +769,6 @@ public partial class MainWindow : Form
 
     public void ButtonNorth()
     {
-
         if (StoryProgress.playerIsInTown)
         {
             panelTown.Hide();
@@ -773,13 +780,8 @@ public partial class MainWindow : Form
                     if (!storyProgress.Act1BossDefeatedFlag)
                     {
                         Act1BossFight();
-                        quests.Act1Quest1EncounterIsActive = false; // disables act1 q1
                     }
-                    //else
-                    //{
-                    //    storyProgress.StoryState = 14;
-                    //    ButtonContinueAsync();
-                    //}
+                   
                     break;
 
                 case 2: // Player is in act 2
@@ -804,8 +806,21 @@ public partial class MainWindow : Form
                     else
                     {
                         storyProgress.StoryState = 18;
+                        sounds.PlayAct4Music();
                         ButtonContinueAsync();
                     }
+                    break;
+                case 4: // Player is in act 4
+                    // Act 4 Boss Encounter maybe? Or maybe just encounters. //TODO
+                    //if (!storyProgress.Act3BossDefeatedFlag)
+                    //{
+                    //    Act3BossFight();
+                    //}
+                    //else
+                    //{
+                    //    storyProgress.StoryState = 18;
+                    //    ButtonContinueAsync();
+                    //}
                     break;
 
                 default:
@@ -899,8 +914,9 @@ public partial class MainWindow : Form
         storyProgress.Act3BossDefeatedFlag = true;
         storyProgress.StoryState = 17;
         //sounds.StopAct3TownMusic(); // TODO maybe
-        buttonReturnToTown.Enabled = true;
-        IsReturnToTownEnabled = true;
+        buttonReturnToTown.Enabled = false;
+        IsReturnToTownEnabled = false;
+        buttonReturnToTown.Hide();
 
         // Unsubscribe from the event to avoid multiple invocations
         Encounter.EncounterCompleted -= OnAct3BossDefeated;
@@ -949,6 +965,7 @@ public partial class MainWindow : Form
             //Act2BossDefeatedFlag = false; // set this if the act2 boss should be encountered more than once
             storyProgress.StoryState = 12;
             storyProgress.ProgressStory();
+            sounds.PlayAct2TownMusic();
         }
         if (storyProgress.Act2BossDefeatedFlag && StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 4)
         {
@@ -1362,7 +1379,11 @@ public partial class MainWindow : Form
             }
             if (StoryProgress.WhichActIsThePlayerIn == 3)
             {
-                storyProgress.StoryState = 16;
+                storyProgress.StoryState = 16; // act 3 town
+            }
+            if (StoryProgress.WhichActIsThePlayerIn == 4)
+            {
+                storyProgress.StoryState = 18; // act 4 town
             }
             ButtonContinueAsync();
         }
