@@ -16,6 +16,8 @@ public class ItemContainer
     public List<Item> items2;
     public List<Item> items3;
     public List<Item> items4;
+    public List<Item> items5;
+    public List<Item> items6;
 
     public List<Item> weakAmulets;
     public List<Item> magicAmulets;
@@ -28,6 +30,9 @@ public class ItemContainer
         items2 = new List<Item>();
         items3 = new List<Item>();
         items4 = new List<Item>();
+        items5 = new List<Item>();
+        items6 = new List<Item>();
+
         weakAmulets = new List<Item>();
         magicAmulets = new List<Item>();
         rareAmulets = new List<Item>();
@@ -57,6 +62,7 @@ public class ItemContainer
         Item item6a = new("Spear", ItemType.WeaponRightHand, 3, 0, 0, 0, 0, 0, 5, 3);
         RandomItem item7 = new("Normal Axe", ItemType.WeaponRightHand);
         RandomItem item8 = new("Normal Sword", ItemType.WeaponRightHand);
+        RandomItem item9 = new("Normal Hammer", ItemType.WeaponRightHand);
 
         Item item7a = new("Scythe", ItemType.WeaponRightHand, 4, 1, 0, 0, 0, 2, 5, 4);
         Item item8a = new("Hammer", ItemType.WeaponRightHand, 5, 0, 0, 0, 0, 0, 8, 6);
@@ -88,6 +94,13 @@ public class ItemContainer
         RandomItem item20 = new("Normal Gauntlets", ItemType.Gloves);
         RandomItem item21 = new("Normal Plate", ItemType.Armor);
         RandomItem item22 = new("Normal Mitts", ItemType.Gloves);
+        RandomItem item23 = new("Armor", ItemType.Armor);
+        RandomItem item24 = new("Leggings", ItemType.Leggings);
+        RandomItem item25 = new("Pants", ItemType.Leggings);
+        RandomItem item26 = new("Gauntlets", ItemType.Gloves);
+        RandomItem item27 = new("Normal Sandals", ItemType.Boots);
+        RandomItem item28 = new("Torn Pants", ItemType.Leggings);
+        RandomItem item29 = new("Rusty Belt", ItemType.Belt);
 
         Item item10b = new("Bronze Boots", ItemType.Boots, 0, 2, 0, 6, 6, 3, 0, 0, 7, 2);
         Item item11b = new("Swift Boots", ItemType.Boots, 10, 0, 10, 0, 7, 3, 0, 0, 7, 3);
@@ -99,6 +112,19 @@ public class ItemContainer
         Item item16b = new("Vampire Leggings", ItemType.Leggings, 20, 1, 4, 0, 0, 2, 0, 10, 8, 9);
         Item item17b = new("Vampire Gloves", ItemType.Gloves, 10, 1, 0, 2, 0, 1, 0, 10, 5, 6);
         RandomItem item18b = new("Magic Leggings", ItemType.Leggings, ItemQuality.Magic);
+        RandomItem item19b = new("Magic Armor", ItemType.Armor, ItemQuality.Magic);
+        RandomItem item20b = new("Magic Pants", ItemType.Leggings, ItemQuality.Magic);
+        RandomItem item21b = new("Magic Plate", ItemType.Armor, ItemQuality.Magic);
+        RandomItem item22b = new("Magic Gloves", ItemType.Gloves, ItemQuality.Magic);
+        RandomItem item23b = new("Magic Belt", ItemType.Belt, ItemQuality.Magic);
+        RandomItem item24b = new("Magic Helmet", ItemType.Helmet, ItemQuality.Magic);
+        Item item25b = new("Hook", ItemType.WeaponLeftHand, 2, 0, 0, 0, 0, 5, 11, 12);
+        RandomItem item26b = new("Magic Mitts", ItemType.Gloves, ItemQuality.Magic);
+        RandomItem item27b = new("Vampire Belt", ItemType.Belt, ItemQuality.Magic);
+        RandomItem item28b = new("Magic Great Helm", ItemType.Helmet, ItemQuality.Magic);
+        Item item29b = new("Vampire Hook", ItemType.WeaponLeftHand, 1, 0, 0, 0, 0, 11, 7, 13);
+        RandomItem item30b = new("Magic Boots", ItemType.Boots, ItemQuality.Magic);
+
 
         // AMULETS Normal/noPrefix
         Amulet amulet1a = new("Mystic Amulet");
@@ -108,6 +134,9 @@ public class ItemContainer
         Amulet amulet1b = new("Magic Amulet", "Magic");
         // AMULETS Rare
         Amulet amulet1c = new("Shiny Amulet", "Rare");
+        Amulet amulet2c = new("Rare Amulet", "Rare");
+        Amulet amulet3c = new("Golden Amulet", "Rare");
+        Amulet amulet4c = new("Sparkling Amulet", "Rare");
 
         // List of items 1
         noItems.Add(null);
@@ -119,6 +148,17 @@ public class ItemContainer
         items1.Add(item13);
         items1.Add(item14);
         items1.Add(item20);
+        items1.Add(item26);
+        items1.Add(item27);
+        items1.Add(item28);
+        items1.Add(item29);
+        items1.Add(null);
+        items1.Add(null);
+        items1.Add(null);
+        items1.Add(null);
+        items1.Add(null);
+        items1.Add(null);
+        items1.Add(null); 
         items1.Add(null);
         items1.Add(null);
         items1.Add(null);
@@ -134,8 +174,7 @@ public class ItemContainer
         items1.Add(null);
         items1.Add(null);
         items1.Add(null);
-        items1.Add(null);
-        items1.Add(null);
+        items1.Add(null); 
         items1.Add(null);
         items1.Add(null);
 
@@ -167,7 +206,14 @@ public class ItemContainer
         items2.Add(item19);
         items2.Add(item20);
         items2.Add(item21);
-        items2.Add(item22);
+        items2.Add(item22); 
+        items2.Add(item28);
+        items2.Add(item29);
+        items2.Add(item9);
+        items2.Add(null); 
+        items2.Add(null);
+        items2.Add(null);
+        items2.Add(null);
         items2.Add(null);
         items2.Add(null);
         items2.Add(null);
@@ -224,7 +270,7 @@ public class ItemContainer
         items2.Add(null);
         items2.Add(null);
 
-        // List of items 3
+        // List of items 3 SNOW
         items3.Add(item6a);
         items3.Add(item7a);
         items3.Add(item8a);
@@ -240,6 +286,10 @@ public class ItemContainer
         items3.Add(item15);
         items3.Add(item19);
         items3.Add(item18b);
+        items3.Add(item24);
+        items3.Add(item25); 
+        items3.Add(item22);
+        items3.Add(item9);
         items3.Add(null);
         items3.Add(null);
         items3.Add(null);
@@ -263,14 +313,25 @@ public class ItemContainer
         items3.Add(null);
         items3.Add(null);
         items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null); 
         items3.Add(null);
         items3.Add(null);
 
-        // List of items 4
+        // List of items 4 SEA Act 3
         items4.Add(item16b);
         items4.Add(item17b);
         items4.Add(amulet1b);
         items4.Add(item11a);
+        items4.Add(item18b);
+        items4.Add(item19b);
+        items4.Add(item20b);
+        items4.Add(item21b);
         items4.Add(null);
         items4.Add(null);
         items4.Add(null);
@@ -307,6 +368,128 @@ public class ItemContainer
         items4.Add(null);
         items4.Add(null);
         items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+        items4.Add(null);
+
+        // List of items 5 Act 4 west weak
+        items5.Add(item21b);
+        items5.Add(item22b);
+        items5.Add(item23b);
+        items5.Add(item24b);
+        items5.Add(item25b);
+        items5.Add(item26b);
+        items5.Add(item27b);
+        items5.Add(item28b);
+        items5.Add(item29b);
+        items5.Add(item30b);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+        items5.Add(null);
+
+        // List of Items Dragons Act4
+        items6.Add(amulet1c);
+        items6.Add(amulet2c);
+        items6.Add(amulet3c);
+        items6.Add(amulet4c);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
+        items6.Add(null);
 
         // List of weak amulets
         weakAmulets.Add(amulet1a);

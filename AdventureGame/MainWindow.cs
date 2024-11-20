@@ -441,6 +441,8 @@ public partial class MainWindow : Form
 
     public void KeysDown()
     {
+        ScrollTextBox(textBox1, 1);
+        ScrollTextBox(textBoxAct1Quest1, 1);
         if (IsInventoryOpen)
         {
             if (comboBoxInventory.Items.Count > 0)
@@ -453,10 +455,43 @@ public partial class MainWindow : Form
             if (comboBoxUpgradeItems.Items.Count > 0) // Scrolls through upgradable items
                 comboBoxUpgradeItems.SelectedIndex = (comboBoxUpgradeItems.SelectedIndex + 1) % comboBoxUpgradeItems.Items.Count;
         }
+
     }
+
+    private void ScrollTextBox(TextBox textBox, int lines)
+    {
+        // Ensure the TextBox contains text
+        if (string.IsNullOrEmpty(textBox.Text))
+            return;
+
+        int firstVisibleLine = textBox.GetLineFromCharIndex(textBox.SelectionStart);
+        int totalLines = textBox.GetLineFromCharIndex(textBox.TextLength); // Total number of lines based on text length
+
+        // Calculate the new line to scroll to
+        int newLine = Math.Max(0, Math.Min(totalLines, firstVisibleLine + lines));
+
+        if (lines > 0 && newLine == totalLines) // Scrolling down to the very end
+        {
+            textBox.SelectionStart = textBox.Text.Length; // Set caret to the very end
+        }
+        else
+        {
+            int charIndex = textBox.GetFirstCharIndexFromLine(newLine);
+            if (charIndex >= 0) // Ensure charIndex is valid
+            {
+                textBox.SelectionStart = charIndex;
+            }
+        }
+
+        textBox.SelectionLength = 0; // Prevent text selection
+        textBox.ScrollToCaret();    // Scroll to the new caret position
+    }
+
 
     public void KeysUp()
     {
+        ScrollTextBox(textBox1, -1);
+        ScrollTextBox(textBoxAct1Quest1, -1);
         if (IsInventoryOpen)
         {
             if (comboBoxInventory.Items.Count > 0)
@@ -536,6 +571,9 @@ public partial class MainWindow : Form
                     break;
                 case ItemType.Shoulders:
                     pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("shouldersicon.png");
+                    break;
+                case ItemType.WeaponLeftHand:
+                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("hookicon.png");
                     break;
             }
         }
@@ -781,7 +819,7 @@ public partial class MainWindow : Form
                     {
                         Act1BossFight();
                     }
-                   
+
                     break;
 
                 case 2: // Player is in act 2
@@ -1233,6 +1271,16 @@ public partial class MainWindow : Form
         ButtonUpgradeItem();
     }
 
+    private void labelInvisibleWeaponLeftHand_MouseEnter(object sender, EventArgs e)
+    {
+        ShowHiddenItemPanelAndSetLabels(ItemType.WeaponLeftHand);
+    }
+
+    private void labelInvisibleWeaponLeftHand_MouseLeave(object sender, EventArgs e)
+    {
+        panelPopupWeaponLeftHand.Hide();
+    }
+
     public void ButtonUpgradeItem()
     {
         if (StoryProgress.playerIsInTown && storyProgress.Act1BossDefeatedFlag && StoryProgress.WhichActIsThePlayerIn == 2)
@@ -1588,6 +1636,7 @@ public partial class MainWindow : Form
     {
         quests.ReturnToTownFromAct1Quest1();
     }
+
 
 }
 

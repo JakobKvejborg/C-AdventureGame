@@ -404,7 +404,7 @@ partial class MainWindow
         // 
         // buttonRoarAttack
         // 
-        buttonRoarAttack.Location = new Point(301, 725);
+        buttonRoarAttack.Location = new Point(300, 725);
         buttonRoarAttack.Name = "buttonRoarAttack";
         buttonRoarAttack.Size = new Size(93, 35);
         buttonRoarAttack.TabIndex = 44;
@@ -718,7 +718,6 @@ partial class MainWindow
         // 
         // panelPopupWeaponLeftHand
         // 
-        panelPopupWeaponLeftHand.AutoScroll = true;
         panelPopupWeaponLeftHand.AutoSize = true;
         panelPopupWeaponLeftHand.BorderStyle = BorderStyle.Fixed3D;
         panelPopupWeaponLeftHand.Controls.Add(pictureBoxIconWeaponLeftHand);
@@ -763,7 +762,6 @@ partial class MainWindow
         // 
         // panelPopupShoulders
         // 
-        panelPopupShoulders.AutoScroll = true;
         panelPopupShoulders.AutoSize = true;
         panelPopupShoulders.BorderStyle = BorderStyle.Fixed3D;
         panelPopupShoulders.Controls.Add(labelShouldersName);
@@ -815,6 +813,8 @@ partial class MainWindow
         labelInvisibleWeaponLeftHand.Size = new Size(41, 60);
         labelInvisibleWeaponLeftHand.TabIndex = 52;
         labelInvisibleWeaponLeftHand.Text = "       \r\n        \r\n ";
+        labelInvisibleWeaponLeftHand.MouseEnter += labelInvisibleWeaponLeftHand_MouseEnter;
+        labelInvisibleWeaponLeftHand.MouseLeave += labelInvisibleWeaponLeftHand_MouseLeave;
         // 
         // labelGold
         // 
@@ -830,19 +830,18 @@ partial class MainWindow
         // 
         // panelPopupInventoryInfo
         // 
-        panelPopupInventoryInfo.AutoScroll = true;
         panelPopupInventoryInfo.AutoSize = true;
         panelPopupInventoryInfo.BorderStyle = BorderStyle.Fixed3D;
         panelPopupInventoryInfo.Controls.Add(pictureBoxInventoryIcon);
         panelPopupInventoryInfo.Controls.Add(labelInventoryItemInfo);
-        panelPopupInventoryInfo.Location = new Point(335, 607);
+        panelPopupInventoryInfo.Location = new Point(327, 607);
         panelPopupInventoryInfo.Name = "panelPopupInventoryInfo";
-        panelPopupInventoryInfo.Size = new Size(185, 112);
+        panelPopupInventoryInfo.Size = new Size(199, 112);
         panelPopupInventoryInfo.TabIndex = 50;
         // 
         // pictureBoxInventoryIcon
         // 
-        pictureBoxInventoryIcon.Location = new Point(134, 3);
+        pictureBoxInventoryIcon.Location = new Point(142, 3);
         pictureBoxInventoryIcon.Name = "pictureBoxInventoryIcon";
         pictureBoxInventoryIcon.Size = new Size(41, 33);
         pictureBoxInventoryIcon.SizeMode = PictureBoxSizeMode.Zoom;
@@ -873,7 +872,6 @@ partial class MainWindow
         // 
         // panelPopupBelt
         // 
-        panelPopupBelt.AutoScroll = true;
         panelPopupBelt.AutoSize = true;
         panelPopupBelt.BorderStyle = BorderStyle.Fixed3D;
         panelPopupBelt.Controls.Add(pictureBoxIconBelt);
@@ -1008,7 +1006,6 @@ partial class MainWindow
         // 
         // panelPopupAmulet
         // 
-        panelPopupAmulet.AutoScroll = true;
         panelPopupAmulet.AutoSize = true;
         panelPopupAmulet.BorderStyle = BorderStyle.Fixed3D;
         panelPopupAmulet.Controls.Add(pictureBoxIconAmulet);
@@ -1022,7 +1019,7 @@ partial class MainWindow
         // pictureBoxIconAmulet
         // 
         pictureBoxIconAmulet.Image = Properties.Resources.amuleticon;
-        pictureBoxIconAmulet.Location = new Point(114, 3);
+        pictureBoxIconAmulet.Location = new Point(122, 3);
         pictureBoxIconAmulet.Name = "pictureBoxIconAmulet";
         pictureBoxIconAmulet.Size = new Size(41, 33);
         pictureBoxIconAmulet.SizeMode = PictureBoxSizeMode.Zoom;
@@ -1053,7 +1050,6 @@ partial class MainWindow
         // 
         // panelPopupBoots
         // 
-        panelPopupBoots.AutoScroll = true;
         panelPopupBoots.AutoSize = true;
         panelPopupBoots.BorderStyle = BorderStyle.Fixed3D;
         panelPopupBoots.Controls.Add(pictureBoxIconBoots);
@@ -1067,7 +1063,7 @@ partial class MainWindow
         // pictureBoxIconBoots
         // 
         pictureBoxIconBoots.Image = Properties.Resources.bootsicon;
-        pictureBoxIconBoots.Location = new Point(118, 3);
+        pictureBoxIconBoots.Location = new Point(121, 3);
         pictureBoxIconBoots.Name = "pictureBoxIconBoots";
         pictureBoxIconBoots.Size = new Size(41, 33);
         pictureBoxIconBoots.SizeMode = PictureBoxSizeMode.Zoom;
@@ -1110,14 +1106,14 @@ partial class MainWindow
         // 
         // panelPopupGloves
         // 
-        panelPopupGloves.AutoScroll = true;
+        panelPopupGloves.AutoSize = true;
         panelPopupGloves.BorderStyle = BorderStyle.Fixed3D;
         panelPopupGloves.Controls.Add(pictureBoxIconGloves);
         panelPopupGloves.Controls.Add(labelInfoGlovesEquipped);
         panelPopupGloves.Controls.Add(labelGlovesName);
         panelPopupGloves.Location = new Point(145, 436);
         panelPopupGloves.Name = "panelPopupGloves";
-        panelPopupGloves.Size = new Size(161, 97);
+        panelPopupGloves.Size = new Size(164, 97);
         panelPopupGloves.TabIndex = 31;
         // 
         // pictureBoxIconGloves
@@ -1166,7 +1162,6 @@ partial class MainWindow
         // 
         // panelPopupArmor
         // 
-        panelPopupArmor.AutoScroll = true;
         panelPopupArmor.AutoSize = true;
         panelPopupArmor.BorderStyle = BorderStyle.Fixed3D;
         panelPopupArmor.Controls.Add(pictureBoxIconArmor);
@@ -1180,7 +1175,7 @@ partial class MainWindow
         // pictureBoxIconArmor
         // 
         pictureBoxIconArmor.Image = Properties.Resources.armoricon;
-        pictureBoxIconArmor.Location = new Point(139, 3);
+        pictureBoxIconArmor.Location = new Point(134, 5);
         pictureBoxIconArmor.Name = "pictureBoxIconArmor";
         pictureBoxIconArmor.Size = new Size(41, 33);
         pictureBoxIconArmor.SizeMode = PictureBoxSizeMode.Zoom;
@@ -1234,7 +1229,6 @@ partial class MainWindow
         // 
         // panelPopupWeaponRightHand
         // 
-        panelPopupWeaponRightHand.AutoScroll = true;
         panelPopupWeaponRightHand.AutoSize = true;
         panelPopupWeaponRightHand.BackColor = Color.Transparent;
         panelPopupWeaponRightHand.BorderStyle = BorderStyle.Fixed3D;

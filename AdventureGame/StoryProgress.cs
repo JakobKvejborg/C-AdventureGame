@@ -61,7 +61,7 @@ internal class StoryProgress
 
     public String GetAct4FirstTimeText()
     {
-        return "After almost drowning you arrive in the fiery lands of the dragons. " +
+        return "After almost drowning you arrive at the fiery lands of the dragons. " +
             "As the towering beasts loom in the distance, you wonder if you'll ever see home again.";
     }
 
@@ -159,7 +159,7 @@ internal class StoryProgress
                         _sounds.PlayAct2TownMusic();
                         
                         _mainWindow.txtBox_Town.Text = "A frozen town. Time almost stands still here. " +
-                            "The streets are buried under a thick blanket of snow, with not a footprint in sight.";
+                            "The roads are buried under a thick blanket of snow, with not a footprint in sight.";
                         oneTimeMessage = false;
                     }
                     else
@@ -244,13 +244,13 @@ internal class StoryProgress
                     Encounter.PerformEncounter(monsterContainer.listOfMonsters2, itemContainer.items2, _mainWindow);
                 }
                 break;
-            case 102: // Act 2 West repeated
+            case 102: // Act 2 West repeated GOBLINS
                 if (progressFlag == true)
                 {
                     Encounter.PerformEncounter(monsterContainer.listOfMonstersSnowGoldGoblin, itemContainer.noItems, _mainWindow);
                 }
                 break;
-            case 103: // Act 2 East repeated snow
+            case 103: // Act 2 East repeated Snow
                 if (progressFlag == true)
                 {
                     Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items3, _mainWindow);
@@ -265,13 +265,13 @@ internal class StoryProgress
             case 105: // Act 4 East dragons repeated
                 if (progressFlag == true)
                 {
-                    Encounter.PerformEncounter(monsterContainer.ListOfDragonsAct4East, itemContainer.items4, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.ListOfDragonsAct4East, itemContainer.items5, _mainWindow);
                 }
                 break;
             case 106: // Act 4 West repeated
                 if (progressFlag == true)
                 {
-                    Encounter.PerformEncounter(monsterContainer.listOfMonstersAct4West, itemContainer.items4, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.listOfMonstersAct4West, itemContainer.items6, _mainWindow);
                 }
                 break;
         }

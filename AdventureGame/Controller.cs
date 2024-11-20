@@ -172,6 +172,7 @@ public class Controller
 
                 case StickDirection.Left:
                     ShowPanelIfEquipped(ItemType.Amulet);
+                    ShowPanelIfEquipped(ItemType.WeaponLeftHand);
                     break;
 
                 case StickDirection.Right:
