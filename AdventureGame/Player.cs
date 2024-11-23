@@ -17,11 +17,11 @@ internal class Player
     public List<Item> Inventory { get; set; }
     public event Action LevelUpEvent;
     public static int priceToHeal { get; set; } = 2; // 2 is the default value
+    public static int PriceToLearnTechnique { get; set; } = 10;
     public Dictionary<ItemType, Item> EquippedItems { get; private set; }
     public int XpNeededToLevelUp => ((10 * (Level + Level)) + (Level * Level) - 1);
     public int CritChance { get; set; }
     public int Regeneration { get; set; }
-    public int PriceToLearnTechnique { get; set; } = 10;
     public bool techniqueBloodLustIsLearned { get; set; }
     public bool techniqueDodgeJabIsLearned { get; set; }
     public bool techniqueRoarIsLearned { get; set; }

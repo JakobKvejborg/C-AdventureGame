@@ -8,9 +8,12 @@ public partial class MainWindow : Form
 {
     internal PlayerState playerState;
     private bool IsAttackOnCooldown;
+    private ModifierProcessor _modifierProcessor;
     private MonsterContainer monsterContainer = new MonsterContainer();
     private ItemContainer itemContainer = new ItemContainer();
     private StoryProgress storyProgress;
+    PopupWindowModifier _windowModifier;
+
     private bool cooldownOnSound;
     public List<Panel> panelsList;
     public int panelsIndex;
@@ -33,6 +36,8 @@ public partial class MainWindow : Form
         this.DoubleBuffered = true; // helps flickering
         playerState = new PlayerState();
         panelsList = new List<Panel>();
+        _modifierProcessor = new ModifierProcessor(playerState);
+        _windowModifier = new PopupWindowModifier(_modifierProcessor, this);
         HidePanelsEtc();
         storyProgress = new StoryProgress(this, sounds);
         imageSetter = new ImageSetter(this);
@@ -1562,9 +1567,9 @@ public partial class MainWindow : Form
     {
         if (StoryProgress.playerIsInTown && !storyProgress.Act1BossDefeatedFlag && storyProgress.Act1ArtsTeacherIsAvailable)
         {
-            if (playerState.Player.GoldInPocket >= playerState.Player.PriceToLearnTechnique)
+            if (playerState.Player.GoldInPocket >= Player.PriceToLearnTechnique)
             {
-                playerState.Player.GoldInPocket -= playerState.Player.PriceToLearnTechnique;
+                playerState.Player.GoldInPocket -= Player.PriceToLearnTechnique;
 
                 switch (playerState.Player.advanceTechnique)
                 {
@@ -1585,8 +1590,8 @@ public partial class MainWindow : Form
                         break;
                 }
                 playerState.Player.advanceTechnique += 1;
-                playerState.Player.PriceToLearnTechnique *= 4;
-                buttonLearnTechnique.Text = $"Learn {playerState.Player.PriceToLearnTechnique}G";
+                Player.PriceToLearnTechnique *= 4;
+                buttonLearnTechnique.Text = $"Learn {Player.PriceToLearnTechnique}G";
                 UpdatePlayerLabels();
                 sounds.PlayAct1ArtsTeacher();
                 storyProgress.Act1ArtsTeacherIsAvailable = false;
@@ -1635,6 +1640,16 @@ public partial class MainWindow : Form
     private void Quest1ReturnToTown()
     {
         quests.ReturnToTownFromAct1Quest1();
+    }
+
+    private void buttonStartModifiers_Click(object sender, EventArgs e)
+    {
+        OpenModifierPopupWindow();
+    }
+
+    private void OpenModifierPopupWindow()
+    {
+        _windowModifier.ShowDialog(); // Opens the popup
     }
 
 

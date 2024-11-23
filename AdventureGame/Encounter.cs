@@ -60,8 +60,8 @@ internal static class Encounter
         if (Monster != null && Monster.CurrentHealth > 0)
         {
             int playerAttackDamageTotal = (int)(playerState.Player.CalculateTotalDamage(playerState) * 1.5); // 1.5x damage for Blood Lust attack
-            // Cost the player 20% of max health
-            int healthCost = (int)(playerState.Player.MaxHealth * 0.15); // % cost of health
+            // Cost the player % of max health
+            int healthCost = (int)(playerState.Player.MaxHealth * 0.10); // % cost of health
             playerState.Player.CurrentHealth -= healthCost;
             playerState.Player.CurrentHealth = Math.Max(playerState.Player.CurrentHealth, 0); // Prevent negative health
             mainWindow.UpdatePlayerLabels(); // updates the player health bar

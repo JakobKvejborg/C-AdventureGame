@@ -146,6 +146,7 @@ partial class MainWindow
         pictureBoxHealer = new PictureBox();
         pictureBoxAct2Smith = new PictureBox();
         panelStartScreen = new Panel();
+        buttonStartModifiers = new Button();
         labelGameAuthorName = new Label();
         buttonPlayGame = new Button();
         labelGameTitle = new Label();
@@ -207,13 +208,15 @@ partial class MainWindow
         // 
         // btn_attack
         // 
+        btn_attack.BackColor = Color.Gainsboro;
+        btn_attack.Font = new Font("Showcard Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
         btn_attack.Location = new Point(5, 725);
         btn_attack.Name = "btn_attack";
         btn_attack.Size = new Size(98, 35);
         btn_attack.TabIndex = 5;
         btn_attack.Text = "Attack";
         toolTip.SetToolTip(btn_attack, "\"Space\" or \"1\"");
-        btn_attack.UseVisualStyleBackColor = true;
+        btn_attack.UseVisualStyleBackColor = false;
         btn_attack.Click += btn_attack_Click;
         // 
         // labelCompassE
@@ -349,7 +352,7 @@ partial class MainWindow
         // 
         buttonReturnToTown.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
         buttonReturnToTown.ForeColor = Color.MidnightBlue;
-        buttonReturnToTown.Location = new Point(109, 111);
+        buttonReturnToTown.Location = new Point(107, 111);
         buttonReturnToTown.Name = "buttonReturnToTown";
         buttonReturnToTown.Size = new Size(98, 29);
         buttonReturnToTown.TabIndex = 36;
@@ -360,13 +363,15 @@ partial class MainWindow
         // 
         // buttonBloodLust
         // 
+        buttonBloodLust.BackColor = Color.Gainsboro;
+        buttonBloodLust.Font = new Font("Showcard Gothic", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
         buttonBloodLust.Location = new Point(106, 725);
         buttonBloodLust.Name = "buttonBloodLust";
         buttonBloodLust.Size = new Size(97, 35);
         buttonBloodLust.TabIndex = 37;
         buttonBloodLust.Text = "Bloodlust";
         toolTip.SetToolTip(buttonBloodLust, "\"2\"");
-        buttonBloodLust.UseVisualStyleBackColor = true;
+        buttonBloodLust.UseVisualStyleBackColor = false;
         buttonBloodLust.Click += buttonBloodLust_Click;
         // 
         // buttonUpgradeItem
@@ -393,24 +398,28 @@ partial class MainWindow
         // 
         // buttonDodgeJab
         // 
+        buttonDodgeJab.BackColor = Color.Gainsboro;
+        buttonDodgeJab.Font = new Font("Showcard Gothic", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
         buttonDodgeJab.Location = new Point(205, 725);
         buttonDodgeJab.Name = "buttonDodgeJab";
         buttonDodgeJab.Size = new Size(93, 35);
         buttonDodgeJab.TabIndex = 7;
         buttonDodgeJab.Text = "Dodge Jab";
         toolTip.SetToolTip(buttonDodgeJab, "\"3\"");
-        buttonDodgeJab.UseVisualStyleBackColor = true;
+        buttonDodgeJab.UseVisualStyleBackColor = false;
         buttonDodgeJab.Click += buttonDodgeJab_Click;
         // 
         // buttonRoarAttack
         // 
+        buttonRoarAttack.BackColor = Color.Gainsboro;
+        buttonRoarAttack.Font = new Font("Showcard Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
         buttonRoarAttack.Location = new Point(300, 725);
         buttonRoarAttack.Name = "buttonRoarAttack";
         buttonRoarAttack.Size = new Size(93, 35);
         buttonRoarAttack.TabIndex = 44;
         buttonRoarAttack.Text = "Roar";
         toolTip.SetToolTip(buttonRoarAttack, "\"4\"");
-        buttonRoarAttack.UseVisualStyleBackColor = true;
+        buttonRoarAttack.UseVisualStyleBackColor = false;
         buttonRoarAttack.Click += buttonRoarAttack_Click;
         // 
         // buttonAct1Quest1Continue
@@ -429,7 +438,7 @@ partial class MainWindow
         // 
         buttonAct1Q1Town.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
         buttonAct1Q1Town.ForeColor = Color.MidnightBlue;
-        buttonAct1Q1Town.Location = new Point(109, 111);
+        buttonAct1Q1Town.Location = new Point(107, 111);
         buttonAct1Q1Town.Name = "buttonAct1Q1Town";
         buttonAct1Q1Town.Size = new Size(98, 29);
         buttonAct1Q1Town.TabIndex = 37;
@@ -1499,6 +1508,7 @@ partial class MainWindow
         panelStartScreen.BackColor = Color.Transparent;
         panelStartScreen.BackgroundImage = Properties.Resources.castle;
         panelStartScreen.BackgroundImageLayout = ImageLayout.Stretch;
+        panelStartScreen.Controls.Add(buttonStartModifiers);
         panelStartScreen.Controls.Add(labelGameAuthorName);
         panelStartScreen.Controls.Add(buttonPlayGame);
         panelStartScreen.Controls.Add(labelGameTitle);
@@ -1507,6 +1517,21 @@ partial class MainWindow
         panelStartScreen.Name = "panelStartScreen";
         panelStartScreen.Size = new Size(537, 768);
         panelStartScreen.TabIndex = 22;
+        // 
+        // buttonStartModifiers
+        // 
+        buttonStartModifiers.BackColor = Color.DarkRed;
+        buttonStartModifiers.FlatAppearance.BorderSize = 0;
+        buttonStartModifiers.FlatStyle = FlatStyle.Flat;
+        buttonStartModifiers.Font = new Font("Impact", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+        buttonStartModifiers.ForeColor = Color.White;
+        buttonStartModifiers.Location = new Point(179, 554);
+        buttonStartModifiers.Name = "buttonStartModifiers";
+        buttonStartModifiers.Size = new Size(195, 55);
+        buttonStartModifiers.TabIndex = 3;
+        buttonStartModifiers.Text = "Modifiers";
+        buttonStartModifiers.UseVisualStyleBackColor = false;
+        buttonStartModifiers.Click += buttonStartModifiers_Click;
         // 
         // labelGameAuthorName
         // 
@@ -1526,7 +1551,7 @@ partial class MainWindow
         buttonPlayGame.FlatStyle = FlatStyle.Flat;
         buttonPlayGame.Font = new Font("Impact", 20F, FontStyle.Bold);
         buttonPlayGame.ForeColor = Color.White;
-        buttonPlayGame.Location = new Point(180, 488);
+        buttonPlayGame.Location = new Point(179, 463);
         buttonPlayGame.Name = "buttonPlayGame";
         buttonPlayGame.Size = new Size(195, 55);
         buttonPlayGame.TabIndex = 1;
@@ -1599,10 +1624,10 @@ partial class MainWindow
         BackColor = SystemColors.ActiveCaptionText;
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(537, 768);
+        Controls.Add(panelStartScreen);
         Controls.Add(panelEncounter);
         Controls.Add(panelTown);
         Controls.Add(panelGameOver);
-        Controls.Add(panelStartScreen);
         Controls.Add(panelAct1Quest1);
         DoubleBuffered = true;
         Icon = (Icon)resources.GetObject("$this.Icon");
@@ -1794,4 +1819,5 @@ partial class MainWindow
     public Label labelInfoShouldersEquipped;
     public Label labelInfoWeaponLeftHandEquipped;
     private Label labelShouldersName;
+    public Button buttonStartModifiers;
 }
