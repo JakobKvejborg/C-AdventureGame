@@ -437,7 +437,8 @@ public partial class MainWindow : Form
                 InventoryPanelPopupInfoShow();
                 return true; // Indicate that the key was handled
             case Keys.M:
-                sounds.MuteAllMusic();
+                //sounds.MuteAllMusic();
+                OpenModifierPopupWindow();
                 return true;
             default:
                 return base.ProcessCmdKey(ref msg, keyData); // Let the base method handle other keys
@@ -836,6 +837,7 @@ public partial class MainWindow : Form
                     else
                     {
                         storyProgress.StoryState = 14;
+                        sounds.PlayAct3Waves();
                         ButtonContinueAsync();
                     }
                     break;
@@ -991,15 +993,7 @@ public partial class MainWindow : Form
         if (storyProgress.Act1BossDefeatedFlag && StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 2) // if the player is in act2, returns to act1
         {
             storyProgress.Act1BossDefeatedFlag = false;
-            sounds.StopAct2TownMusic();
-            imageSetter.SetAct1Backgroundimage();
             sounds.PlayAct1TownMusic();
-            imageSetter.SetAct1TownBackgroundimage();
-            pictureBoxTown.Hide();
-            imageSetter.SetAct1HealerPictureBoxImage();
-            pictureBoxAct2Smith.Hide();
-            buttonUpgradeItem.Hide();
-            comboBoxUpgradeItems.Hide();
             storyProgress.StoryState = 6;
             storyProgress.ProgressStory();
         }
@@ -1010,8 +1004,9 @@ public partial class MainWindow : Form
             storyProgress.ProgressStory();
             sounds.PlayAct2TownMusic();
         }
-        if (storyProgress.Act2BossDefeatedFlag && StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 4)
+        if (storyProgress.Act2BossDefeatedFlag && StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 4) // if the player is in act4, return to act3
         {
+            sounds.PlayAct3Waves();
             storyProgress.StoryState = 16;
             storyProgress.ProgressStory();
         }
@@ -1077,11 +1072,17 @@ public partial class MainWindow : Form
                 SetHiddenPanelLabelsOnly(item.Type);
                 comboBoxUpgradeItems.Items.Add(item);
                 Task task = CheckIfPlayerIsDefeated(); // checks if the player dies from unequipping an item that gives health
+
+                if (item.Type == ItemType.WeaponLeftHand)
+                {
+                    imageSetter.SetHeroLeftWeaponPictureBoxImage();
+                }
             }
             else
             {
-                textBox1.Text = $"The level requirement to equip {item.Name} is {item.LevelRequirement}, and the " +
-                    $"strength requirement is {item.StrengthRequirement}.";
+                //textBox1.Text = $"The level requirement to equip {item.Name} is {item.LevelRequirement}, and the " +
+                //    $"strength requirement is {item.StrengthRequirement}.";
+                textBox1.Text = $"The requirements to equip {item.Name} are not met.";
             }
         }
     }
@@ -1285,6 +1286,15 @@ public partial class MainWindow : Form
     {
         panelPopupWeaponLeftHand.Hide();
     }
+    private void labelInvisibleShoulders_MouseEnter(object sender, EventArgs e)
+    {
+        ShowHiddenItemPanelAndSetLabels(ItemType.Shoulders);
+    }
+
+    private void labelInvisibleShoulders_MouseLeave(object sender, EventArgs e)
+    {
+        panelPopupShoulders.Hide();
+    }
 
     public void ButtonUpgradeItem()
     {
@@ -1292,7 +1302,6 @@ public partial class MainWindow : Form
         {
             if (comboBoxUpgradeItems.SelectedItem != null && playerState.Player.GoldInPocket >= Item.CostToUpgrade)
             {
-                sounds.PlaySmithingSound();
                 Item item = (Item)comboBoxUpgradeItems.SelectedItem;
                 if (item.IsItemUpgraded || item.Type == ItemType.Amulet)
                 {
@@ -1300,6 +1309,7 @@ public partial class MainWindow : Form
                     sounds.PlayAct2SmithNo();
                     return;
                 }
+                sounds.PlaySmithingSound();
                 playerState.Player.UnequipItem(item, comboBoxInventory, comboBoxUpgradeItems); // unequips the item to prevent stat bugs
                 item.UpgradeItem();
                 sounds.PlayAct2SmithOffer();
@@ -1479,11 +1489,11 @@ public partial class MainWindow : Form
         labelPlayerStrength.Text = $"Strength: {playerState.Player.Strength}";
         labelPlayerLifeSteal.Text = $"Lifesteal: {playerState.Player.Lifesteal}%";
         labelPlayerArmor.Text = $"Armor: {playerState.Player.Armor}";
-        labelPlayerDodge.Text = $"Dodge: {playerState.Player.DodgeChance}%";
+        labelPlayerDodge.Text = $"{playerState.Player.DodgeChance}%";
         labelGoldInPocket.Text = $"{playerState.Player.GoldInPocket}";
         labelLevel.Text = $"Level: {playerState.Player.Level}";
         labelExperience.Text = $"Exp: {playerState.Player.Experience}/{playerState.Player.XpNeededToLevelUp}";
-        labelCritChance.Text = $"Crit: {playerState.Player.CritChance}%";
+        labelCritChance.Text = $"{playerState.Player.CritChance}%";
         labelRegeneration.Text = $"Regen: {playerState.Player.Regeneration}";
     }
 
@@ -1544,7 +1554,7 @@ public partial class MainWindow : Form
     public async Task ButtonDodgeJabAttack()
     {
         if (playerState.Player.techniqueDodgeJabIsLearned)
-            await PerformAttack(() => Encounter.DodgeJabAttack(playerState, this), sounds.PlaySwordAttackSound);
+            await PerformAttack(() => Encounter.DodgeJabAttack(playerState, this), sounds.PlayDodgeJabSound);
     }
     public async Task ButtonRoarAttack()
     {
@@ -1647,12 +1657,22 @@ public partial class MainWindow : Form
         OpenModifierPopupWindow();
     }
 
-    private void OpenModifierPopupWindow()
+    public void OpenModifierPopupWindow()
     {
-        _windowModifier.ShowDialog(); // Opens the popup
+        if (!PlayGameHasBeenPressed)
+        {
+            if (!_windowModifier.Visible)
+            {
+                _windowModifier.ShowDialog(); // Opens the popup
+            }
+            else
+            {
+                _windowModifier.Close();
+            }
+        }
     }
 
-
+  
 }
 
 

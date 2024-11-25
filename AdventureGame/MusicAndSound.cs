@@ -17,6 +17,7 @@ public class MusicAndSound
     private WindowsMediaPlayer act2WindPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer bossPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer soundEffectPlayer = new WindowsMediaPlayer();
+    private WindowsMediaPlayer soundEffectPlayer2 = new WindowsMediaPlayer();
     private WindowsMediaPlayer healingMusicPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer NPCspeechPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer act3WavesPlayer = new WindowsMediaPlayer();
@@ -188,9 +189,14 @@ public class MusicAndSound
         PlayMusic("bloodlust.wav", soundEffectPlayer);
     }
 
+    public void PlayDodgeJabSound()
+    {
+        PlayMusic("dodgejab.wav", soundEffectPlayer);
+    }
+
     public void PlayCritSound()
     {
-        PlayMusic("crit.wav", soundEffectPlayer);
+        PlayMusic("crit.wav", soundEffectPlayer2);
     }
 
     public void PlayDodgeSound()

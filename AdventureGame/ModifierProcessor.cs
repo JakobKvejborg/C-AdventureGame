@@ -20,11 +20,11 @@ public class ModifierProcessor
 
     public string ProcessCommand(string command)
     {
-        if (string.IsNullOrEmpty(command)) return "Have you found any modifiers yet?";
+        if (string.IsNullOrEmpty(command)) return "Found any modifiers yet?";
 
         command = command.ToLower(); // This ensures modifiers works even if typed in CAPS
 
-        if (_appliedModifiers.Contains(command)) return "Modifier has already been applied."; // if the modifier has already been applied, do nothing
+        if (_appliedModifiers.Contains(command)) return "Modifier already applied."; // if the modifier has already been applied, do nothing
 
         switch (command)
         {
@@ -52,6 +52,20 @@ public class ModifierProcessor
                 Player.priceToHeal = 1;
                 _appliedModifiers.Add(command);
                 return "Costs reduced!";
+            case "vampire":
+                _playerState.Player.Lifesteal += 5;
+                return "Lifesteal increased!";
+            case "rich":
+                _playerState.Player.GoldInPocket += 5;
+                return "Starting gold increased!";
+           
+            // Debugging modes
+            case "debug":
+                _playerState.Player.Damage += 15;
+                _playerState.Player.DodgeChance += 60;
+                _playerState.Player.GoldInPocket += 50;
+                _playerState.Player.Lifesteal += 50;
+                return "Debugging mode enabled.";
             default:
                 return "Unknown modifier";
         }

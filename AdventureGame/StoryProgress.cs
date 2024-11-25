@@ -13,6 +13,7 @@ internal class StoryProgress
     private MainWindow _mainWindow;
     public bool oneTimeMessage = true;
     bool oneTimeMessage2 = true;
+    bool oneTimeMessage3 = true;
     private ImageSetter _imageSetter;
     public MusicAndSound _sounds;
     public static bool TutorialIsOver { get; set; }
@@ -100,6 +101,7 @@ internal class StoryProgress
             case 7: // The player enters town act 1
                 if (progressFlag == true)
                 {
+
                     if (oneTimeMessage == true)
                     {
                         _sounds.PlayAct1TownMusic();
@@ -124,6 +126,7 @@ internal class StoryProgress
                         _mainWindow.pictureBoxAct1ArtsTeacher.Show();
                         _mainWindow.buttonLearnTechnique.Show();
                     }
+                    SetupAct1Controls();
                     progressFlag = true; // The progressFlag is set to false in performEncounter
                 }
                 TutorialIsOver = true;
@@ -157,7 +160,7 @@ internal class StoryProgress
                     if (oneTimeMessage == true)
                     {
                         _sounds.PlayAct2TownMusic();
-                        
+
                         _mainWindow.txtBox_Town.Text = "A frozen town. Time almost stands still here. " +
                             "The roads are buried under a thick blanket of snow, with not a footprint in sight.";
                         oneTimeMessage = false;
@@ -195,12 +198,16 @@ internal class StoryProgress
                 break;
             case 16: // The player enters town act 3
                 SetUpAct3Controls();
-               
+
                 if (progressFlag == true)
                 {
+                    if (oneTimeMessage3 == true)
+                    {
+                        _sounds.PlayAct3Waves();
+                        // sounds.playact3music TODO maybe?
+                        oneTimeMessage3 = false;
+                    }
                     PlayerIsInTown();
-                    _sounds.PlayAct3Waves();
-                    // sounds.playact3music TODO maybe?
                     _mainWindow.txtBox_Town.Text = "There's nothing out here for you. You consider returning to the frozen town, or continuing forward. ";
                 }
                 break;
@@ -265,16 +272,28 @@ internal class StoryProgress
             case 105: // Act 4 East dragons repeated
                 if (progressFlag == true)
                 {
-                    Encounter.PerformEncounter(monsterContainer.ListOfDragonsAct4East, itemContainer.items5, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.ListOfDragonsAct4East, itemContainer.items6, _mainWindow);
                 }
                 break;
             case 106: // Act 4 West repeated
                 if (progressFlag == true)
                 {
-                    Encounter.PerformEncounter(monsterContainer.listOfMonstersAct4West, itemContainer.items6, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.listOfMonstersAct4West, itemContainer.items5, _mainWindow);
                 }
                 break;
         }
+    }
+
+    private void SetupAct1Controls()
+    {
+        _sounds.StopAct2TownMusic();
+        _imageSetter.SetAct1Backgroundimage();
+        _imageSetter.SetAct1TownBackgroundimage();
+        _mainWindow.pictureBoxTown.Hide();
+        _imageSetter.SetAct1HealerPictureBoxImage();
+        _mainWindow.pictureBoxAct2Smith.Hide();
+        _mainWindow.buttonUpgradeItem.Hide();
+        _mainWindow.comboBoxUpgradeItems.Hide();
     }
 
     private void EnableReturnToTownFunction()
@@ -309,7 +328,7 @@ internal class StoryProgress
         _sounds.StopAct4Music();
         _sounds.StopAct2WindSound();
         _sounds.StopAct2TownMusic();
-        
+
     }
 
     public void SetupAct2controls()

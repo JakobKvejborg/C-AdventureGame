@@ -1,5 +1,6 @@
 ﻿using OpenTK.Windowing.GraphicsLibraryFramework;
 using System;
+using System.Collections.Generic;
 using System.Diagnostics;
 using System.Threading.Tasks;
 using System.Timers; // Import System.Timers for Timer usage
@@ -280,6 +281,16 @@ public class Controller
                     Task task = _mainWindow.ButtonAttack();
                     break;
                 case 6: // Select
+                    _mainWindow.OpenModifierPopupWindow();
+
+                    if (_mainWindow.IsInventoryOpen)
+                    {
+                        string filePath = "saveditems.json";
+                        if (File.Exists(filePath))
+                        {
+                            _playerState.Player.SaveEquippedItemsToFile(filePath);
+                        }
+                    }
                     break;
                 case 7: // Start button
                     if (!_mainWindow.PlayGameHasBeenPressed)

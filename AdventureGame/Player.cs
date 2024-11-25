@@ -1,4 +1,7 @@
-﻿namespace AdventureGame;
+﻿using System.Text.Json;
+using System.Xml;
+
+namespace AdventureGame;
 
 internal class Player
 {
@@ -145,4 +148,25 @@ internal class Player
 
         }
     }
+
+
+    public void SaveEquippedItemsToFile(string filePath)
+    {
+        // Check if EquippedItems has any content
+        if (EquippedItems == null || !EquippedItems.Any())
+        {
+            return;
+        }
+
+        // Serialize the equipped items to JSON
+        string json = JsonSerializer.Serialize(EquippedItems, new JsonSerializerOptions { WriteIndented = true });
+
+        // Write the JSON to the file
+        File.WriteAllText(filePath, json);
+    }
+
+
+
+
+
 }

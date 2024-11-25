@@ -22,8 +22,9 @@ internal static class Encounter
     public static MusicAndSound sounds = new MusicAndSound();
     public static bool PlayerDodgedFlag;
     private static int RoarBuffDodgeAndCrit = 10;
-    private static bool isRoarActive = false;
-
+    private static bool IsRoarActive = false;
+    private static int RoarBuffCountdown;
+    static Random randomRoar = new Random();
 
     public static void PerformEncounter(List<Monster> listOfMonsters, List<Item> listOfItems, MainWindow mainWindow)
     {
@@ -96,16 +97,15 @@ internal static class Encounter
     }
     public static async void RoarAttack(PlayerState playerState, MainWindow mainWindow)
     {
+        RoarBuffCountdown = randomRoar.Next(3, 7); // The amount of "rounds" the roar buff is active
         if (Monster != null && Monster.CurrentHealth > 0)
         {
             int playerAttackDamageTotal = playerState.Player.CalculateTotalDamage(playerState);
             playerAttackDamageTotal = (int)(playerAttackDamageTotal * 0.2);
 
-            if (!isRoarActive)
+            if (!IsRoarActive)
             {
-                playerState.Player.DodgeChance += RoarBuffDodgeAndCrit; // + 10
-                playerState.Player.CritChance += RoarBuffDodgeAndCrit;
-                isRoarActive = true;
+                TurnOnRoarBuff(playerState, mainWindow);
             }
 
             await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal, isRoarAttack: true);
@@ -115,16 +115,23 @@ internal static class Encounter
     // Helper method for all attack methods
     private static async Task ExecuteAttack(PlayerState playerState, MainWindow mainWindow, int playerAttackDamageTotal, bool isRoarAttack)
     {
-        // Player lifesteals before crit (we don't want critlifesteal)
+        RoarBuffCountdown -= 1;
+        if (IsRoarActive && RoarBuffCountdown == 0) // this resets the roar attack when the RoarBuffCountdown is 0, subtracts the roar buff from the player
+        {
+            TurnOffRoarBuff(playerState, mainWindow);
+        }
+
+        // Player lifesteals before crit (we don't want crit+lifesteal)
         if (!isRoarAttack && playerState.Player.Lifesteal > 0)
         {
-            int playerLifeStealAmount = (playerAttackDamageTotal * playerState.Player.Lifesteal) / 100;
-            playerState.Player.CurrentHealth += playerLifeStealAmount;
+            //int playerLifestealAmount = (playerAttackDamageTotal * playerState.Player.Lifesteal) / 100;
+            int playerLifestealAmount = (playerState.Player.CalculateTotalDamage(playerState) * playerState.Player.Lifesteal) / 100;
+            playerState.Player.CurrentHealth += playerLifestealAmount;
             playerState.Player.CurrentHealth = Math.Min(playerState.Player.CurrentHealth, playerState.Player.MaxHealth); // ensures currenthealth doesn't exceed maxhealth
             mainWindow.UpdatePlayerLabels(); // update player health after lifestealing
-            if (playerLifeStealAmount > 0) // checks if the player actually gains life from the attack
+            if (playerLifestealAmount > 0) // checks if the player actually gains life from the attack
             {
-                mainWindow.labelHpPopup.Text = $"+{playerLifeStealAmount}";
+                mainWindow.labelHpPopup.Text = $"+{playerLifestealAmount}";
                 mainWindow.PopupFadeLabel(mainWindow.labelHpPopup);
             }
         }
@@ -223,11 +230,10 @@ internal static class Encounter
         }
         if (Monster.CurrentHealth <= 0)
         {
-            if (isRoarActive) // this resets the roar attack
+            RoarBuffCountdown = 0;
+            if (IsRoarActive) // this resets the roar attack, subtracts the roar buff from the player
             {
-                playerState.Player.DodgeChance -= RoarBuffDodgeAndCrit;
-                playerState.Player.CritChance -= RoarBuffDodgeAndCrit;
-                isRoarActive = false;
+                TurnOffRoarBuff(playerState, mainWindow);
             }
 
             PlayerDodgedFlag = false;
@@ -254,6 +260,23 @@ internal static class Encounter
             mainWindow.UpdatePlayerLabels();
 
         }
+    }
+
+    private static void TurnOffRoarBuff(PlayerState playerState, MainWindow mainWindow)
+    {
+        playerState.Player.DodgeChance -= RoarBuffDodgeAndCrit;
+        playerState.Player.CritChance -= RoarBuffDodgeAndCrit;
+        mainWindow.labelCritChance.ForeColor = Color.White;
+        mainWindow.labelPlayerDodge.ForeColor = Color.White;
+        IsRoarActive = false;
+    }
+    private static void TurnOnRoarBuff(PlayerState playerState, MainWindow mainWindow)
+    {
+        playerState.Player.DodgeChance += RoarBuffDodgeAndCrit;
+        playerState.Player.CritChance += RoarBuffDodgeAndCrit;
+        mainWindow.labelCritChance.ForeColor = Color.SteelBlue;
+        mainWindow.labelPlayerDodge.ForeColor = Color.SteelBlue;
+        IsRoarActive = true;
     }
 
     public static void GenerateItemFoundOnMonster(PlayerState playerState, MainWindow mainWindow)

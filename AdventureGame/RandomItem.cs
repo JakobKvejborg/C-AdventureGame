@@ -37,7 +37,7 @@ public class RandomItem : Item
         {
             case ItemType.Armor:
                 Strength = _random.Next(0, 2 * multiplier);
-                DodgeChance = _random.Next(0, 4 * multiplier);
+                Health = _random.Next(0, 14 * multiplier);
                 Armor = _random.Next(1, 2 * multiplier);
                 LevelRequirement = _random.Next(1, 3 * multiplier);
                 break;
@@ -46,7 +46,7 @@ public class RandomItem : Item
                 Strength = _random.Next(0, 3 * multiplier);
                 CritChance = _random.Next(1, 9 * multiplier);
                 Armor = _random.Next(0, 3 * multiplier);
-                LevelRequirement = _random.Next(1, 5 * multiplier);
+                LevelRequirement = _random.Next(1, 4 * multiplier);
                 break;
 
             case ItemType.Boots:
@@ -60,7 +60,7 @@ public class RandomItem : Item
                 Regeneration = _random.Next(1, 3 * multiplier);
                 Lifesteal = _random.Next(0, 9 * multiplier);
                 StrengthRequirement = _random.Next(1, 6 * multiplier);
-                LevelRequirement = _random.Next(1, 5 * multiplier);
+                LevelRequirement = _random.Next(1, 6 * multiplier);
                 break;
 
             case ItemType.WeaponRightHand:
@@ -74,9 +74,30 @@ public class RandomItem : Item
                 Armor = _random.Next(0, 3 * multiplier);
                 Strength = _random.Next(0, 3 * multiplier);
                 Regeneration = _random.Next(0, 3 * multiplier);
-                Lifesteal = _random.Next(0, 5 * multiplier);
+                Health = _random.Next(0, 10 * multiplier);
                 StrengthRequirement = _random.Next(1, 6 * multiplier);
                 LevelRequirement = _random.Next(1, 5 * multiplier);
+                break;
+            case ItemType.Helmet:
+                Armor = _random.Next(0, 3 * multiplier);
+                Strength = _random.Next(0, 3 * multiplier);
+                Regeneration = _random.Next(0, 3 * multiplier);
+                StrengthRequirement = _random.Next(1, 6 * multiplier);
+                LevelRequirement = _random.Next(1, 7 * multiplier);
+                break;
+
+            case ItemType.WeaponLeftHand:
+                Strength = _random.Next(0, 2 * multiplier);
+                Regeneration = _random.Next(0, 3 * multiplier * multiplier);
+                Lifesteal = _random.Next(0, 5 * multiplier);
+                StrengthRequirement = _random.Next(1, 2 * multiplier);
+                LevelRequirement = _random.Next(1, 8 * multiplier);
+                break;
+
+            case ItemType.Shoulders:
+                Regeneration = _random.Next(0, 2 * multiplier * multiplier);
+                Health = _random.Next(0, 12 * multiplier);
+                Armor = _random.Next(1, 3 * multiplier);
                 break;
 
             default:

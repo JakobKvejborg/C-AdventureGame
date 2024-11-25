@@ -76,6 +76,8 @@ partial class MainWindow
         labelMonsterHp = new Label();
         labelMonsterName = new Label();
         panelEncounter = new Panel();
+        label1 = new Label();
+        labelDodgeText = new Label();
         panelPopupWeaponLeftHand = new Panel();
         pictureBoxIconWeaponLeftHand = new PictureBox();
         labelInfoWeaponLeftHandEquipped = new Label();
@@ -209,7 +211,8 @@ partial class MainWindow
         // btn_attack
         // 
         btn_attack.BackColor = Color.Gainsboro;
-        btn_attack.Font = new Font("Showcard Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        btn_attack.Font = new Font("Matura MT Script Capitals", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        btn_attack.ForeColor = SystemColors.ActiveCaptionText;
         btn_attack.Location = new Point(5, 725);
         btn_attack.Name = "btn_attack";
         btn_attack.Size = new Size(98, 35);
@@ -364,7 +367,7 @@ partial class MainWindow
         // buttonBloodLust
         // 
         buttonBloodLust.BackColor = Color.Gainsboro;
-        buttonBloodLust.Font = new Font("Showcard Gothic", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        buttonBloodLust.Font = new Font("Matura MT Script Capitals", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
         buttonBloodLust.Location = new Point(106, 725);
         buttonBloodLust.Name = "buttonBloodLust";
         buttonBloodLust.Size = new Size(97, 35);
@@ -399,7 +402,7 @@ partial class MainWindow
         // buttonDodgeJab
         // 
         buttonDodgeJab.BackColor = Color.Gainsboro;
-        buttonDodgeJab.Font = new Font("Showcard Gothic", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        buttonDodgeJab.Font = new Font("Cooper Black", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
         buttonDodgeJab.Location = new Point(205, 725);
         buttonDodgeJab.Name = "buttonDodgeJab";
         buttonDodgeJab.Size = new Size(93, 35);
@@ -412,7 +415,7 @@ partial class MainWindow
         // buttonRoarAttack
         // 
         buttonRoarAttack.BackColor = Color.Gainsboro;
-        buttonRoarAttack.Font = new Font("Showcard Gothic", 9F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        buttonRoarAttack.Font = new Font("Matura MT Script Capitals", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
         buttonRoarAttack.Location = new Point(300, 725);
         buttonRoarAttack.Name = "buttonRoarAttack";
         buttonRoarAttack.Size = new Size(93, 35);
@@ -534,7 +537,7 @@ partial class MainWindow
         labelPlayerDodge.BackColor = Color.Transparent;
         labelPlayerDodge.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelPlayerDodge.ForeColor = Color.White;
-        labelPlayerDodge.Location = new Point(12, 354);
+        labelPlayerDodge.Location = new Point(76, 354);
         labelPlayerDodge.Name = "labelPlayerDodge";
         labelPlayerDodge.Size = new Size(62, 23);
         labelPlayerDodge.TabIndex = 13;
@@ -669,6 +672,8 @@ partial class MainWindow
         panelEncounter.BackColor = Color.Transparent;
         panelEncounter.BackgroundImage = Properties.Resources.castle;
         panelEncounter.BackgroundImageLayout = ImageLayout.Stretch;
+        panelEncounter.Controls.Add(label1);
+        panelEncounter.Controls.Add(labelDodgeText);
         panelEncounter.Controls.Add(panelPopupWeaponLeftHand);
         panelEncounter.Controls.Add(panelPopupShoulders);
         panelEncounter.Controls.Add(labelInvisibleWeaponLeftHand);
@@ -724,6 +729,30 @@ partial class MainWindow
         panelEncounter.Name = "panelEncounter";
         panelEncounter.Size = new Size(537, 768);
         panelEncounter.TabIndex = 22;
+        // 
+        // label1
+        // 
+        label1.AutoSize = true;
+        label1.BackColor = Color.Transparent;
+        label1.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+        label1.ForeColor = Color.White;
+        label1.Location = new Point(13, 383);
+        label1.Name = "label1";
+        label1.Size = new Size(45, 23);
+        label1.TabIndex = 57;
+        label1.Text = "Crit:";
+        // 
+        // labelDodgeText
+        // 
+        labelDodgeText.AutoSize = true;
+        labelDodgeText.BackColor = Color.Transparent;
+        labelDodgeText.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+        labelDodgeText.ForeColor = Color.White;
+        labelDodgeText.Location = new Point(11, 354);
+        labelDodgeText.Name = "labelDodgeText";
+        labelDodgeText.Size = new Size(69, 23);
+        labelDodgeText.TabIndex = 56;
+        labelDodgeText.Text = "Dodge:";
         // 
         // panelPopupWeaponLeftHand
         // 
@@ -984,7 +1013,7 @@ partial class MainWindow
         // pictureBoxIconHelmet
         // 
         pictureBoxIconHelmet.Image = Properties.Resources.helmeticon;
-        pictureBoxIconHelmet.Location = new Point(118, 3);
+        pictureBoxIconHelmet.Location = new Point(120, 3);
         pictureBoxIconHelmet.Name = "pictureBoxIconHelmet";
         pictureBoxIconHelmet.Size = new Size(41, 33);
         pictureBoxIconHelmet.SizeMode = PictureBoxSizeMode.Zoom;
@@ -1310,7 +1339,7 @@ partial class MainWindow
         labelCritChance.BackColor = Color.Transparent;
         labelCritChance.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelCritChance.ForeColor = Color.White;
-        labelCritChance.Location = new Point(11, 383);
+        labelCritChance.Location = new Point(54, 383);
         labelCritChance.Name = "labelCritChance";
         labelCritChance.Size = new Size(37, 23);
         labelCritChance.TabIndex = 38;
@@ -1349,6 +1378,8 @@ partial class MainWindow
         labelInvisibleShoulders.Size = new Size(45, 40);
         labelInvisibleShoulders.TabIndex = 53;
         labelInvisibleShoulders.Text = "         \r\n ";
+        labelInvisibleShoulders.MouseEnter += labelInvisibleShoulders_MouseEnter;
+        labelInvisibleShoulders.MouseLeave += labelInvisibleShoulders_MouseLeave;
         // 
         // labelInvisibleHelmet
         // 
@@ -1624,10 +1655,10 @@ partial class MainWindow
         BackColor = SystemColors.ActiveCaptionText;
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(537, 768);
-        Controls.Add(panelStartScreen);
         Controls.Add(panelEncounter);
         Controls.Add(panelTown);
         Controls.Add(panelGameOver);
+        Controls.Add(panelStartScreen);
         Controls.Add(panelAct1Quest1);
         DoubleBuffered = true;
         Icon = (Icon)resources.GetObject("$this.Icon");
@@ -1820,4 +1851,6 @@ partial class MainWindow
     public Label labelInfoWeaponLeftHandEquipped;
     private Label labelShouldersName;
     public Button buttonStartModifiers;
+    public Label label1;
+    public Label labelDodgeText;
 }

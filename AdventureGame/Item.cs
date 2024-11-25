@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
+using System.Text.Json.Serialization;
 using System.Threading.Tasks;
 
 namespace AdventureGame;
@@ -26,6 +27,7 @@ public class Item
     public int CritChance { get; set; }
     public static int CostToUpgrade { get; set; } = 50;
     public bool IsItemUpgraded { get; set; } = false;
+   
     // Weapon item types
     public Item(string name, ItemType type, int damage, int strength, int fireDamage, int poisonDamage,
         int skillLevel, int lifesteal, int strengthRequirement, int levelRequirement)
@@ -151,8 +153,8 @@ public class Item
                 break;
             case ItemType.Gloves:
                 // Randomly upgrade a stat for armor
-                int GlovesUpgradeChoice = random.Next(1, 4); // 1 to 4 for three stats
-                switch (GlovesUpgradeChoice)
+                int glovesUpgradeChoice = random.Next(1, 4); // 1 to 4 for three stats
+                switch (glovesUpgradeChoice)
                 {
                     case 1: // Armor
                         Armor += random.Next(1, 4); // Increase Health by 1 to 3
@@ -168,8 +170,8 @@ public class Item
                 break;
             case ItemType.Leggings:
                 // Randomly upgrade a stat for armor
-                int LeggingsUpgradeChoice = random.Next(1, 4); // 1 to 4 for three stats
-                switch (LeggingsUpgradeChoice)
+                int leggingsUpgradeChoice = random.Next(1, 5); // 1 to 5 for three stats
+                switch (leggingsUpgradeChoice)
                 {
                     case 1: // Armor
                         DodgeChance += random.Next(3, 7); 
@@ -180,11 +182,26 @@ public class Item
                     case 3:
                         CritChance += random.Next(1, 11); 
                         break;
+                    case 4:
+                        Health += random.Next(1, 26);
+                        break;
                         // Add more cases if needed
                 }
                 break;
+            case ItemType.Belt:
+                int beltUpgradeChoice = random.Next(1, 3); // 1 to 3 for two stats
+                switch (beltUpgradeChoice)
+                {
+                    case 1: // Armor
+                        Armor += random.Next(1, 4); // Increase Health by 1 to 3
+                        break;
+                    case 2:
+                        Health += random.Next(1, 21);
+                        break;
+                }
+                break;
 
-            default:
+                    default:
                 // Handle unspecified ItemTypes here
                 Lifesteal += random.Next(1, 11);
                 break;

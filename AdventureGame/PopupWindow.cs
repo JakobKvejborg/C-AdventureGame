@@ -23,6 +23,7 @@ public partial class PopupWindowModifier : Form
         InitializeComponent();
         _modifierProcessor = modifier; // Stores a reference of the modifierProcessor
         _mainWindow = mainWindow;
+        FormBorderStyle = FormBorderStyle.FixedSingle;
     }
 
     private void buttonEnterModifier_Click(object sender, EventArgs e)
@@ -35,7 +36,8 @@ public partial class PopupWindowModifier : Form
         string userInput = textBoxModifierInput.Text.Trim(); // Trim removes the spaces
         string resultMsg = _modifierProcessor.ProcessCommand(userInput); // process command and get result back
 
-        textBoxModifierInput.Text = resultMsg;
+        textBoxModifierInput.Text = resultMsg; 
+        textBoxModifierInput.SelectAll();
 
         // Update UI after the modifiers have been applied
         _mainWindow.buttonHeal.Text = $"Heal {Player.priceToHeal.ToString()}G";

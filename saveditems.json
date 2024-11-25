@@ -1,0 +1,38 @@
+{
+  "Boots": {
+    "Name": "Rusty Boots",
+    "Type": 3,
+    "Health": 5,
+    "Damage": 0,
+    "DodgeChance": 1,
+    "Strength": 1,
+    "Armor": 0,
+    "SkillLevel": 0,
+    "Lifesteal": 0,
+    "FireDamage": 0,
+    "PoisonDamage": 0,
+    "Regeneration": 1,
+    "StrengthRequirement": 3,
+    "LevelRequirement": 3,
+    "CritChance": 3,
+    "IsItemUpgraded": false
+  },
+  "Shoulders": {
+    "Name": "Strong Shoulders",
+    "Type": 9,
+    "Health": 0,
+    "Damage": 0,
+    "DodgeChance": 0,
+    "Strength": 2,
+    "Armor": 1,
+    "SkillLevel": 0,
+    "Lifesteal": 0,
+    "FireDamage": 0,
+    "PoisonDamage": 0,
+    "Regeneration": 1,
+    "StrengthRequirement": 3,
+    "LevelRequirement": 2,
+    "CritChance": 0,
+    "IsItemUpgraded": false
+  }
+}

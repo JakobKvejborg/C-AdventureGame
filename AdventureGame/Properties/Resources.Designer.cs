@@ -213,6 +213,16 @@ namespace AdventureGame.Properties {
         /// <summary>
         ///   Looks up a localized resource of type System.Drawing.Bitmap.
         /// </summary>
+        internal static System.Drawing.Bitmap modifierimage {
+            get {
+                object obj = ResourceManager.GetObject("modifierimage", resourceCulture);
+                return ((System.Drawing.Bitmap)(obj));
+            }
+        }
+        
+        /// <summary>
+        ///   Looks up a localized resource of type System.Drawing.Bitmap.
+        /// </summary>
         internal static System.Drawing.Bitmap shouldersicon {
             get {
                 object obj = ResourceManager.GetObject("shouldersicon", resourceCulture);

@@ -19,7 +19,6 @@ public class ImageSetter
     public Image GetImagePath(string imageName)
     {
 
-
         Image image = null;
         try
         {
@@ -59,7 +58,11 @@ public class ImageSetter
     {
         _mainWindow.pictureBoxHealer.Image = GetImagePath("healer.png");
     }
-   
+    public void SetHeroLeftWeaponPictureBoxImage()
+    {
+        _mainWindow.pictureBoxHero.Image = GetImagePath("herolefthand.png");
+    }
+
 
     // ACT 2 images
     public void SetAct2Backgroundimage()
