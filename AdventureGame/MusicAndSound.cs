@@ -17,7 +17,7 @@ public class MusicAndSound
     private WindowsMediaPlayer act2WindPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer bossPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer soundEffectPlayer = new WindowsMediaPlayer();
-    private WindowsMediaPlayer soundEffectPlayer2 = new WindowsMediaPlayer();
+    private WindowsMediaPlayer critSoundPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer healingMusicPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer NPCspeechPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer act3WavesPlayer = new WindowsMediaPlayer();
@@ -58,6 +58,7 @@ public class MusicAndSound
                 GetSoundPath("deathgameover.wav"),
                 GetSoundPath("lootitems.wav"),
                 GetSoundPath("roarattack.wav"), // index 14
+                GetSoundPath("divineattack.wav"),
             };
             foreach (var soundPlayer in soundPlayers)
             {
@@ -173,6 +174,10 @@ public class MusicAndSound
     {
         PlaySound(14);
     }
+    public void PlayDivineAttackSound()
+    {
+        PlaySound(15);
+    }
 
     public void PlayCoinSound()
     {
@@ -193,10 +198,14 @@ public class MusicAndSound
     {
         PlayMusic("dodgejab.wav", soundEffectPlayer);
     }
+    public void PlayRetributionSound()
+    {
+        PlayMusic("retribution.wav", soundEffectPlayer);
+    }
 
     public void PlayCritSound()
     {
-        PlayMusic("crit.wav", soundEffectPlayer2);
+        PlayMusic("crit.wav", critSoundPlayer);
     }
 
     public void PlayDodgeSound()

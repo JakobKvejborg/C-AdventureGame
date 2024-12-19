@@ -57,6 +57,7 @@ partial class MainWindow
         buttonAct1Quest1Continue = new Button();
         buttonAct1Q1Town = new Button();
         comboBoxInventory = new ComboBox();
+        buttonDivine = new Button();
         labelInvisibleWeaponRightHandEquipped = new Label();
         textBox1 = new TextBox();
         labelInventory = new Label();
@@ -71,7 +72,9 @@ partial class MainWindow
         labelLevel = new Label();
         labelExperience = new Label();
         panelMonster = new Panel();
+        labelDragonEggs = new Label();
         pictureBoxMonster1 = new PictureBox();
+        pictureBoxDragonEggs = new PictureBox();
         progressBarMonsterHP = new ProgressBar();
         labelMonsterHp = new Label();
         labelMonsterName = new Label();
@@ -160,6 +163,7 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxLoot).BeginInit();
         panelMonster.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxDragonEggs).BeginInit();
         panelEncounter.SuspendLayout();
         panelPopupWeaponLeftHand.SuspendLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxIconWeaponLeftHand).BeginInit();
@@ -368,7 +372,7 @@ partial class MainWindow
         // 
         buttonBloodLust.BackColor = Color.Gainsboro;
         buttonBloodLust.Font = new Font("Matura MT Script Capitals", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        buttonBloodLust.Location = new Point(106, 725);
+        buttonBloodLust.Location = new Point(105, 725);
         buttonBloodLust.Name = "buttonBloodLust";
         buttonBloodLust.Size = new Size(97, 35);
         buttonBloodLust.TabIndex = 37;
@@ -403,7 +407,7 @@ partial class MainWindow
         // 
         buttonDodgeJab.BackColor = Color.Gainsboro;
         buttonDodgeJab.Font = new Font("Cooper Black", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        buttonDodgeJab.Location = new Point(205, 725);
+        buttonDodgeJab.Location = new Point(204, 725);
         buttonDodgeJab.Name = "buttonDodgeJab";
         buttonDodgeJab.Size = new Size(93, 35);
         buttonDodgeJab.TabIndex = 7;
@@ -416,7 +420,7 @@ partial class MainWindow
         // 
         buttonRoarAttack.BackColor = Color.Gainsboro;
         buttonRoarAttack.Font = new Font("Matura MT Script Capitals", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        buttonRoarAttack.Location = new Point(300, 725);
+        buttonRoarAttack.Location = new Point(158, 699);
         buttonRoarAttack.Name = "buttonRoarAttack";
         buttonRoarAttack.Size = new Size(93, 35);
         buttonRoarAttack.TabIndex = 44;
@@ -459,6 +463,19 @@ partial class MainWindow
         comboBoxInventory.Size = new Size(151, 28);
         comboBoxInventory.TabIndex = 2;
         toolTip.SetToolTip(comboBoxInventory, "\"Tab\" & \"Arrows\"");
+        // 
+        // buttonDivine
+        // 
+        buttonDivine.BackColor = Color.Gainsboro;
+        buttonDivine.Font = new Font("Matura MT Script Capitals", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        buttonDivine.Location = new Point(299, 725);
+        buttonDivine.Name = "buttonDivine";
+        buttonDivine.Size = new Size(93, 35);
+        buttonDivine.TabIndex = 58;
+        buttonDivine.Text = "Divine";
+        toolTip.SetToolTip(buttonDivine, "\"5\"");
+        buttonDivine.UseVisualStyleBackColor = false;
+        buttonDivine.Click += buttonDivine_Click;
         // 
         // labelInvisibleWeaponRightHandEquipped
         // 
@@ -626,6 +643,17 @@ partial class MainWindow
         panelMonster.Size = new Size(258, 360);
         panelMonster.TabIndex = 20;
         // 
+        // labelDragonEggs
+        // 
+        labelDragonEggs.AutoSize = true;
+        labelDragonEggs.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+        labelDragonEggs.ForeColor = Color.IndianRed;
+        labelDragonEggs.Location = new Point(180, 146);
+        labelDragonEggs.Name = "labelDragonEggs";
+        labelDragonEggs.Size = new Size(26, 20);
+        labelDragonEggs.TabIndex = 60;
+        labelDragonEggs.Text = "1x";
+        // 
         // pictureBoxMonster1
         // 
         pictureBoxMonster1.BackgroundImageLayout = ImageLayout.Stretch;
@@ -635,6 +663,16 @@ partial class MainWindow
         pictureBoxMonster1.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxMonster1.TabIndex = 21;
         pictureBoxMonster1.TabStop = false;
+        // 
+        // pictureBoxDragonEggs
+        // 
+        pictureBoxDragonEggs.Image = Properties.Resources.dragonegg;
+        pictureBoxDragonEggs.Location = new Point(208, 105);
+        pictureBoxDragonEggs.Name = "pictureBoxDragonEggs";
+        pictureBoxDragonEggs.Size = new Size(51, 71);
+        pictureBoxDragonEggs.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxDragonEggs.TabIndex = 59;
+        pictureBoxDragonEggs.TabStop = false;
         // 
         // progressBarMonsterHP
         // 
@@ -672,6 +710,9 @@ partial class MainWindow
         panelEncounter.BackColor = Color.Transparent;
         panelEncounter.BackgroundImage = Properties.Resources.castle;
         panelEncounter.BackgroundImageLayout = ImageLayout.Stretch;
+        panelEncounter.Controls.Add(labelDragonEggs);
+        panelEncounter.Controls.Add(pictureBoxDragonEggs);
+        panelEncounter.Controls.Add(buttonDivine);
         panelEncounter.Controls.Add(label1);
         panelEncounter.Controls.Add(labelDodgeText);
         panelEncounter.Controls.Add(panelPopupWeaponLeftHand);
@@ -1670,6 +1711,7 @@ partial class MainWindow
         panelMonster.ResumeLayout(false);
         panelMonster.PerformLayout();
         ((System.ComponentModel.ISupportInitialize)pictureBoxMonster1).EndInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxDragonEggs).EndInit();
         panelEncounter.ResumeLayout(false);
         panelEncounter.PerformLayout();
         panelPopupWeaponLeftHand.ResumeLayout(false);
@@ -1853,4 +1895,7 @@ partial class MainWindow
     public Button buttonStartModifiers;
     public Label label1;
     public Label labelDodgeText;
+    public Button buttonDivine;
+    public PictureBox pictureBoxDragonEggs;
+    public Label labelDragonEggs;
 }

@@ -81,8 +81,8 @@ public class Item
         { "Strength", Strength },
         { "Regen", Regeneration },
         { "Skilllevel", SkillLevel },
-        { "Str req", StrengthRequirement },
-        { "Level req", LevelRequirement }
+        { "Str req", StrengthRequirement }, // Grey text
+        { "Level req", LevelRequirement }  // Grey text
     };
         // Only include stats greater than 0
         return string.Join("\n", stats.Where(stat => stat.Value > 0).Select(stat => $"{stat.Key}: {stat.Value}"));
@@ -100,7 +100,7 @@ public class Item
             return;
         }
         Random random = new Random();
-        Name = "Upgraded " + Name;
+        Name = "Upg. " + Name;
         LevelRequirement += 1;
         IsItemUpgraded = true;
         switch (Type)
@@ -117,7 +117,7 @@ public class Item
                         Strength += random.Next(1, 6); // Increase Strength by 1 to 5
                         break;
                     case 3: // Lifesteal
-                        Lifesteal += random.Next(4, 16); // Increase Lifesteal by 1 or 4
+                        Lifesteal += random.Next(1, 9); // Increase Lifesteal by 1 or 8
                         break;
                 }
                 break;
@@ -163,7 +163,7 @@ public class Item
                         Strength += random.Next(1, 8);
                         break;
                     case 3:
-                        Regeneration += random.Next(1, 4); // increase regen by 1 to 3
+                        Regeneration += random.Next(1, 5); // increase regen by 1 to 4
                         break;
                         // Add more cases if needed
                 }

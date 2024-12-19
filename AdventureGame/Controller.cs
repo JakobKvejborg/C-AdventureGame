@@ -230,10 +230,22 @@ public class Controller
             switch (buttonIndex)
             {
                 case 0: // "A" button
-                    _mainWindow.EnterKeyPressed();
+                    if (isLeftTriggerPressed)
+                    {
+                        _mainWindow.RoarAttack();
+                    }
+                    else
+                    {
+                        _mainWindow.EnterKeyPressed();
+                    }
                     break;
 
                 case 1: // "B" button
+                    if (isLeftTriggerPressed)
+                    {
+                        Debug.WriteLine("a+b pressed");
+
+                    }
                     if (StoryProgress.playerIsInTown)
                     {
                         _mainWindow.LearnTechniqueAsync();
@@ -275,10 +287,26 @@ public class Controller
                     }
                     break;
                 case 4: // L1
-                    _mainWindow.ButtonBloodLustAttack();
+                    if (_mainWindow.IsInventoryOpen) { return; }
+                    if (isLeftTriggerPressed)
+                    {
+
+                    }
+                    else
+                    {
+                        _mainWindow.BloodLustAttack();
+                    }
                     break;
                 case 5: // "R1" button
-                    Task task = _mainWindow.ButtonAttack();
+                    if (_mainWindow.IsInventoryOpen) { return; }
+                    if (isLeftTriggerPressed)
+                    {
+                        _mainWindow.DivineAttack();
+                    }
+                    else
+                    {
+                        Task task = _mainWindow.NormalAttack();
+                    }
                     break;
                 case 6: // Select
                     _mainWindow.OpenModifierPopupWindow();
@@ -319,7 +347,7 @@ public class Controller
                 case 15: //
                     Debug.WriteLine("15");
                     break;
-                case 164: //
+                case 16: //
                     Debug.WriteLine("16");
                     break;
 
@@ -327,6 +355,7 @@ public class Controller
                     Console.WriteLine($"Unhandled button index.");
                     break;
             }
+
         }
     }
 
@@ -391,18 +420,29 @@ public class Controller
     // Define actions for the Left Trigger
     private void OnLeftTriggerPressed()
     {
-        if (!_mainWindow.IsInventoryOpen)
-        {
-            _mainWindow.ButtonRoarAttack();
-        }
         if (_mainWindow.IsInventoryOpen)
         {
             PanelPopupItemsShow(); // Makes left trigger "compare" items in inventory vs. equipped
+        } else
+        {
+            // Highlights the attacks that can be used when left trigger is held
+            _mainWindow.btn_attack.Enabled = false;
+            _mainWindow.buttonBloodLust.Enabled = false;
+            _mainWindow.buttonDodgeJab.Enabled = false;
+            _mainWindow.buttonDivine.Enabled = true;
+            _mainWindow.buttonRoarAttack.Enabled = true;
         }
     }
 
     private void OnLeftTriggerReleased()
     {
+        // Highlights the attacks that can be used when left trigger is released
+        _mainWindow.btn_attack.Enabled = true;
+        _mainWindow.buttonBloodLust.Enabled = true;
+        _mainWindow.buttonDodgeJab.Enabled = true;
+        _mainWindow.buttonDivine.Enabled = false;
+        _mainWindow.buttonRoarAttack.Enabled = false;
+
         if (isRightTriggerPressed)
         {
             _mainWindow.HideAllEquipmentPanels();
@@ -414,10 +454,16 @@ public class Controller
     {
         _mainWindow.InventoryPanelPopupInfoShow();
         //_mainWindow.ShowPopupPanelsBasedOnItemType(); // This shows the co-responding item the player has equipped
-
         if (!_mainWindow.IsInventoryOpen)
         {
-            _mainWindow.ButtonDodgeJabAttack();
+            if (isLeftTriggerPressed)
+            {
+                // Perform attack here
+            }
+            else
+            {
+                _mainWindow.DodgeJabAttack();
+            }
         }
     }
 

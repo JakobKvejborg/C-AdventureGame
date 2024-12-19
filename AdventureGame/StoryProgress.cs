@@ -281,6 +281,12 @@ internal class StoryProgress
                     Encounter.PerformEncounter(monsterContainer.listOfMonstersAct4West, itemContainer.items5, _mainWindow);
                 }
                 break;
+            case 107: // Act 4 Dragon Eggs North
+                if (progressFlag == true)
+                {
+                    Encounter.PerformEncounter(monsterContainer.ListOfDragonEggAct4North, itemContainer.noItems, _mainWindow);
+                }
+                break;
         }
     }
 

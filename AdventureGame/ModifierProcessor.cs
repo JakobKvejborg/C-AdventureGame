@@ -60,14 +60,22 @@ public class ModifierProcessor
                 return "Starting gold increased!";
            
             // Debugging modes
-            case "debug":
+            case "presentation":
                 _playerState.Player.Damage += 15;
                 _playerState.Player.DodgeChance += 60;
                 _playerState.Player.GoldInPocket += 50;
+                _playerState.Player.Lifesteal += 50;
+                return "Presentation mode enabled.";
+            case "debug":
+                _playerState.Player.Damage += 25;
+                _playerState.Player.DodgeChance += 60;
+                _playerState.Player.GoldInPocket += 5000;
                 _playerState.Player.Lifesteal += 50;
                 return "Debugging mode enabled.";
             default:
                 return "Unknown modifier";
         }
     }
+
+  
 }

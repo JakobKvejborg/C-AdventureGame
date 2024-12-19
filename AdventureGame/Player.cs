@@ -28,7 +28,9 @@ internal class Player
     public bool techniqueBloodLustIsLearned { get; set; }
     public bool techniqueDodgeJabIsLearned { get; set; }
     public bool techniqueRoarIsLearned { get; set; }
+    public bool techniqueDivineIsLearned { get; set; }
     public int advanceTechnique = 0;
+    public int NumberOfDragonEggsInInventory { get; set; }
 
 
     public Player(string name, int maxHealth, int currentHealth, int damage, int strength, int lifesteal,

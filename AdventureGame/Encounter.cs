@@ -21,7 +21,8 @@ internal static class Encounter
     public static event EventHandler? EncounterCompleted;
     public static MusicAndSound sounds = new MusicAndSound();
     public static bool PlayerDodgedFlag;
-    private static int RoarBuffDodgeAndCrit = 10;
+    private static int RoarBuffDodge = 10;
+    private static int RoarBuffCrit = 5;
     private static bool IsRoarActive = false;
     private static int RoarBuffCountdown;
     static Random randomRoar = new Random();
@@ -60,13 +61,13 @@ internal static class Encounter
     {
         if (Monster != null && Monster.CurrentHealth > 0)
         {
-            int playerAttackDamageTotal = (int)(playerState.Player.CalculateTotalDamage(playerState) * 1.5); // 1.5x damage for Blood Lust attack
+            int playerAttackDamageTotal = (int)(playerState.Player.CalculateTotalDamage(playerState) * 1.6); // 1.6x damage for Blood Lust attack
             // Cost the player % of max health
             int healthCost = (int)(playerState.Player.MaxHealth * 0.10); // % cost of health
             playerState.Player.CurrentHealth -= healthCost;
             playerState.Player.CurrentHealth = Math.Max(playerState.Player.CurrentHealth, 0); // Prevent negative health
             mainWindow.UpdatePlayerLabels(); // updates the player health bar
-            await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal, isRoarAttack: false);
+            await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal, noLifeSteal: false, noCrit: false);
         }
     }
 
@@ -75,7 +76,7 @@ internal static class Encounter
         if (Monster != null && Monster.CurrentHealth > 0)
         {
             int playerAttackDamageTotal = playerState.Player.CalculateTotalDamage(playerState);
-            await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal, isRoarAttack: false);
+            await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal, noLifeSteal: false, noCrit: false);
         }
     }
     public static async void DodgeJabAttack(PlayerState playerState, MainWindow mainWindow)
@@ -92,7 +93,7 @@ internal static class Encounter
                 playerAttackDamageTotal = (int)(playerAttackDamageTotal * 1.4);
             }
             PlayerDodgedFlag = false;
-            await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal, isRoarAttack: false);
+            await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal, noLifeSteal: false, noCrit: false);
         }
     }
     public static async void RoarAttack(PlayerState playerState, MainWindow mainWindow)
@@ -108,12 +109,28 @@ internal static class Encounter
                 TurnOnRoarBuff(playerState, mainWindow);
             }
 
-            await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal, isRoarAttack: true);
+            await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal, noLifeSteal: true, noCrit: true);
+        }
+    }
+    public static async void DivineAttack(PlayerState playerState, MainWindow mainWindow) // an attack that deals damage equal to the players' missing health
+    {
+        if (Monster != null && Monster.CurrentHealth > 0)
+        {
+            // Calculate the percentage of missing health
+            double missingHealthPercentage = (double)(playerState.Player.MaxHealth - playerState.Player.CurrentHealth) / playerState.Player.MaxHealth;
+
+            // Directly calculate the damage multiplier based on missing health
+            double damageMultiplier = 0.2 + (2.5 - 0.2) * Math.Pow(missingHealthPercentage, 1.6);
+
+            int playerAttackDamageTotal = playerState.Player.CalculateTotalDamage(playerState);
+            playerAttackDamageTotal = (int)(playerAttackDamageTotal * damageMultiplier);
+
+            await ExecuteAttack(playerState, mainWindow, playerAttackDamageTotal, noLifeSteal: true, noCrit: true);
         }
     }
 
     // Helper method for all attack methods
-    private static async Task ExecuteAttack(PlayerState playerState, MainWindow mainWindow, int playerAttackDamageTotal, bool isRoarAttack)
+    private static async Task ExecuteAttack(PlayerState playerState, MainWindow mainWindow, int playerAttackDamageTotal, bool noLifeSteal, bool noCrit)
     {
         RoarBuffCountdown -= 1;
         if (IsRoarActive && RoarBuffCountdown == 0) // this resets the roar attack when the RoarBuffCountdown is 0, subtracts the roar buff from the player
@@ -122,7 +139,7 @@ internal static class Encounter
         }
 
         // Player lifesteals before crit (we don't want crit+lifesteal)
-        if (!isRoarAttack && playerState.Player.Lifesteal > 0)
+        if (!noLifeSteal && playerState.Player.Lifesteal > 0)
         {
             //int playerLifestealAmount = (playerAttackDamageTotal * playerState.Player.Lifesteal) / 100;
             int playerLifestealAmount = (playerState.Player.CalculateTotalDamage(playerState) * playerState.Player.Lifesteal) / 100;
@@ -138,7 +155,7 @@ internal static class Encounter
 
         // Check for critical hit
         bool isCriticalHit = playerState.Player.CritChance >= _randomCrit.Next(1, 101);
-        if (isCriticalHit)
+        if (isCriticalHit && !noCrit)
         {
             playerAttackDamageTotal = (int)(playerAttackDamageTotal * 1.5); // Increase damage for a critical hit
             sounds.PlayCritSound();
@@ -264,23 +281,25 @@ internal static class Encounter
 
     private static void TurnOffRoarBuff(PlayerState playerState, MainWindow mainWindow)
     {
-        playerState.Player.DodgeChance -= RoarBuffDodgeAndCrit;
-        playerState.Player.CritChance -= RoarBuffDodgeAndCrit;
+        playerState.Player.DodgeChance -= RoarBuffDodge;
+        playerState.Player.CritChance -= RoarBuffCrit;
         mainWindow.labelCritChance.ForeColor = Color.White;
         mainWindow.labelPlayerDodge.ForeColor = Color.White;
         IsRoarActive = false;
     }
     private static void TurnOnRoarBuff(PlayerState playerState, MainWindow mainWindow)
     {
-        playerState.Player.DodgeChance += RoarBuffDodgeAndCrit;
-        playerState.Player.CritChance += RoarBuffDodgeAndCrit;
-        mainWindow.labelCritChance.ForeColor = Color.SteelBlue;
-        mainWindow.labelPlayerDodge.ForeColor = Color.SteelBlue;
+        playerState.Player.DodgeChance += RoarBuffDodge;
+        playerState.Player.CritChance += RoarBuffCrit;
+        mainWindow.labelCritChance.ForeColor = Color.LightBlue;
+        mainWindow.labelPlayerDodge.ForeColor = Color.LightBlue;
         IsRoarActive = true;
     }
 
     public static void GenerateItemFoundOnMonster(PlayerState playerState, MainWindow mainWindow)
     {
+        GetDragonEgg(playerState, mainWindow); // Gives the player a dragon egg if a specific dragon was killed.
+
         //Get a random item from the list
         int randomItemIndex = _randomItem.Next(EncounteredMonsterItems.Count);
         Item foundItem = EncounteredMonsterItems[randomItemIndex];
@@ -335,6 +354,16 @@ internal static class Encounter
     public static void ResetDroppedItem()
     {
         ItemDroppedFromMonster = null;
+    }
+    private static void GetDragonEgg(PlayerState playerState, MainWindow mainWindow)
+    {
+        if (Monster.Name == "Egg-Watcher Dragon")
+        {
+            playerState.Player.NumberOfDragonEggsInInventory++;
+            mainWindow.labelDragonEggs.Text = $"{playerState.Player.NumberOfDragonEggsInInventory}x";
+            mainWindow.pictureBoxDragonEggs.Show();
+            mainWindow.labelDragonEggs.Show();
+        }
     }
 }
 

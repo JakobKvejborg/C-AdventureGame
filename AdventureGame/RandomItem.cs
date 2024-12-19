@@ -10,6 +10,7 @@ public enum ItemQuality
     Normal,
     Magic,
     Rare,
+    Epic,
     Legendary
 }
 public class RandomItem : Item
@@ -29,6 +30,7 @@ public class RandomItem : Item
         {
             ItemQuality.Magic => 2,
             ItemQuality.Rare => 3,
+            ItemQuality.Epic => 4,
             ItemQuality.Legendary => 5,
             _ => 1 // Normal quality has a multiplier of 1
         };
@@ -37,7 +39,7 @@ public class RandomItem : Item
         {
             case ItemType.Armor:
                 Strength = _random.Next(0, 2 * multiplier);
-                Health = _random.Next(0, 14 * multiplier);
+                Health = _random.Next(2, 15) * multiplier;
                 Armor = _random.Next(1, 2 * multiplier);
                 LevelRequirement = _random.Next(1, 3 * multiplier);
                 break;
@@ -51,7 +53,8 @@ public class RandomItem : Item
 
             case ItemType.Boots:
                 DodgeChance = _random.Next(0, 9 * multiplier);
-                Armor = _random.Next(1, 3 * multiplier);
+                Armor = _random.Next(0, 3 * multiplier);
+                Health = _random.Next(1, 3 * (multiplier + multiplier));
                 LevelRequirement = _random.Next(1, 5 * multiplier);
                 break;
 
@@ -64,8 +67,8 @@ public class RandomItem : Item
                 break;
 
             case ItemType.WeaponRightHand:
-                Damage = _random.Next(0, 3 * multiplier);
-                CritChance = _random.Next(0, 7 * multiplier);
+                Damage = _random.Next(1, 3 * multiplier);
+                CritChance = _random.Next(0, 5 * multiplier);
                 Strength = _random.Next(1, 3 * multiplier);
                 LevelRequirement = _random.Next(1, 5 * multiplier);
                 break;
@@ -74,7 +77,7 @@ public class RandomItem : Item
                 Armor = _random.Next(0, 3 * multiplier);
                 Strength = _random.Next(0, 3 * multiplier);
                 Regeneration = _random.Next(0, 3 * multiplier);
-                Health = _random.Next(0, 10 * multiplier);
+                Health = _random.Next(0, 10 * (multiplier + multiplier));
                 StrengthRequirement = _random.Next(1, 6 * multiplier);
                 LevelRequirement = _random.Next(1, 5 * multiplier);
                 break;
@@ -96,7 +99,7 @@ public class RandomItem : Item
 
             case ItemType.Shoulders:
                 Regeneration = _random.Next(0, 2 * multiplier * multiplier);
-                Health = _random.Next(0, 12 * multiplier);
+                Health = _random.Next(0, 12 * (multiplier + multiplier));
                 Armor = _random.Next(1, 3 * multiplier);
                 break;
 
