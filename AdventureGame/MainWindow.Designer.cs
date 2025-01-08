@@ -72,12 +72,12 @@ partial class MainWindow
         labelLevel = new Label();
         labelExperience = new Label();
         panelMonster = new Panel();
-        labelDragonEggs = new Label();
         pictureBoxMonster1 = new PictureBox();
-        pictureBoxDragonEggs = new PictureBox();
         progressBarMonsterHP = new ProgressBar();
         labelMonsterHp = new Label();
         labelMonsterName = new Label();
+        labelDragonEggs = new Label();
+        pictureBoxDragonEggs = new PictureBox();
         panelEncounter = new Panel();
         label1 = new Label();
         labelDodgeText = new Label();
@@ -276,7 +276,7 @@ partial class MainWindow
         // 
         // buttonHeal
         // 
-        buttonHeal.Location = new Point(35, 672);
+        buttonHeal.Location = new Point(37, 699);
         buttonHeal.Name = "buttonHeal";
         buttonHeal.Size = new Size(124, 31);
         buttonHeal.TabIndex = 11;
@@ -643,17 +643,6 @@ partial class MainWindow
         panelMonster.Size = new Size(258, 360);
         panelMonster.TabIndex = 20;
         // 
-        // labelDragonEggs
-        // 
-        labelDragonEggs.AutoSize = true;
-        labelDragonEggs.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
-        labelDragonEggs.ForeColor = Color.IndianRed;
-        labelDragonEggs.Location = new Point(180, 146);
-        labelDragonEggs.Name = "labelDragonEggs";
-        labelDragonEggs.Size = new Size(26, 20);
-        labelDragonEggs.TabIndex = 60;
-        labelDragonEggs.Text = "1x";
-        // 
         // pictureBoxMonster1
         // 
         pictureBoxMonster1.BackgroundImageLayout = ImageLayout.Stretch;
@@ -663,16 +652,6 @@ partial class MainWindow
         pictureBoxMonster1.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxMonster1.TabIndex = 21;
         pictureBoxMonster1.TabStop = false;
-        // 
-        // pictureBoxDragonEggs
-        // 
-        pictureBoxDragonEggs.Image = Properties.Resources.dragonegg;
-        pictureBoxDragonEggs.Location = new Point(208, 105);
-        pictureBoxDragonEggs.Name = "pictureBoxDragonEggs";
-        pictureBoxDragonEggs.Size = new Size(51, 71);
-        pictureBoxDragonEggs.SizeMode = PictureBoxSizeMode.Zoom;
-        pictureBoxDragonEggs.TabIndex = 59;
-        pictureBoxDragonEggs.TabStop = false;
         // 
         // progressBarMonsterHP
         // 
@@ -704,6 +683,27 @@ partial class MainWindow
         labelMonsterName.Size = new Size(110, 22);
         labelMonsterName.TabIndex = 0;
         labelMonsterName.Text = "monsterName";
+        // 
+        // labelDragonEggs
+        // 
+        labelDragonEggs.AutoSize = true;
+        labelDragonEggs.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+        labelDragonEggs.ForeColor = Color.IndianRed;
+        labelDragonEggs.Location = new Point(180, 146);
+        labelDragonEggs.Name = "labelDragonEggs";
+        labelDragonEggs.Size = new Size(26, 20);
+        labelDragonEggs.TabIndex = 60;
+        labelDragonEggs.Text = "1x";
+        // 
+        // pictureBoxDragonEggs
+        // 
+        pictureBoxDragonEggs.Image = Properties.Resources.dragonegg;
+        pictureBoxDragonEggs.Location = new Point(208, 105);
+        pictureBoxDragonEggs.Name = "pictureBoxDragonEggs";
+        pictureBoxDragonEggs.Size = new Size(51, 71);
+        pictureBoxDragonEggs.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxDragonEggs.TabIndex = 59;
+        pictureBoxDragonEggs.TabStop = false;
         // 
         // panelEncounter
         // 

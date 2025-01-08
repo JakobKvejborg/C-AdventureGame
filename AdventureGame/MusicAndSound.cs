@@ -59,6 +59,7 @@ public class MusicAndSound
                 GetSoundPath("lootitems.wav"),
                 GetSoundPath("roarattack.wav"), // index 14
                 GetSoundPath("divineattack.wav"),
+                GetSoundPath("act4healer.wav"),
             };
             foreach (var soundPlayer in soundPlayers)
             {
@@ -94,6 +95,11 @@ public class MusicAndSound
     public void PlayAct2HealingSound()
     {
         PlaySound(9);
+    }
+
+    public void PlayAct4HealingSound()
+    {
+        PlaySound(16);
     }
 
     public void PlaySwordAttackSound()
@@ -313,4 +319,5 @@ public class MusicAndSound
         StopAct2TownMusic();
         StopAct2WindSound();
     }
+
 }

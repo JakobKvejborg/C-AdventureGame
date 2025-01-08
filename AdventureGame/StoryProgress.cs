@@ -59,10 +59,16 @@ internal class StoryProgress
         return "The girl’s white eyes hints her blindness, but as you approach she seems to see you coming. " +
             "She takes care of your wounds and you hand her some coins as thanks.";
     }
+    public string GetAct4HealingText()
+    {
+        return "\"Careful, the Dragons may bite,\" the girl says with a hint of a smile on her face. The fire burns hot around her. " +
+            "\"You don't have to pay me, I'm just glad to help!\" you pay for her help anyways.";
+    }
+
 
     public String GetAct4FirstTimeText()
     {
-        return "After almost drowning you arrive at the fiery lands of the dragons. " +
+        return "After almost drowning you arrive at the fiery lands of the Dragons. " +
             "As the towering beasts loom in the distance, you wonder if you'll ever see home again.";
     }
 
@@ -314,6 +320,9 @@ internal class StoryProgress
         WhichActIsThePlayerIn = 4;
         _imageSetter.SetAct4BackgroundImage();
         _imageSetter.SetAct4TownBackgroundImage();
+        _mainWindow.pictureBoxHealer.Show();
+        _mainWindow.buttonHeal.Show();
+        _imageSetter.SetAct4HealerImage();
 
         _sounds.StopAct3Waves();
     }

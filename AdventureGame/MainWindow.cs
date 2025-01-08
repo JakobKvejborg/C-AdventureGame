@@ -440,6 +440,9 @@ public partial class MainWindow : Form
             case Keys.L:
                 task = LearnTechniqueAsync();
                 return true;
+            case Keys.Y:
+                    StartAct1Quest1();
+                return true;
             case Keys.Tab:
                 InventoryPanelPopupInfoShow();
                 return true; // Indicate that the key was handled
@@ -878,10 +881,6 @@ public partial class MainWindow : Form
         sounds.PlayAct1BossSound();
         Encounter.EncounterCompleted += OnAct1BossDefeated;
 
-        // Reset the healing price and update the button
-        Player.priceToHeal = 4;
-        buttonHeal.Text = $"Heal {Player.priceToHeal}G";
-
         buttonReturnToTown.Hide();
 
         // Start the encounter for Act 1 boss
@@ -966,7 +965,6 @@ public partial class MainWindow : Form
         buttonReturnToTown.Enabled = false;
         IsReturnToTownEnabled = false;
         buttonReturnToTown.Hide();
-
         // Unsubscribe from the event to avoid multiple invocations
         Encounter.EncounterCompleted -= OnAct3BossDefeated;
     }
@@ -996,7 +994,7 @@ public partial class MainWindow : Form
         }
         if (storyProgress.Act1BossDefeatedFlag && StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 2) // if the player is in act2, returns to act1
         {
-            storyProgress.Act1BossDefeatedFlag = false;
+            storyProgress.Act1BossDefeatedFlag = false; // This is so the act1boss can be defeated again
             sounds.PlayAct1TownMusic();
             storyProgress.StoryState = 6;
             storyProgress.ProgressStory();
@@ -1024,7 +1022,7 @@ public partial class MainWindow : Form
 
     public async void ButtonHeal()
     {
-        if (StoryProgress.playerIsInTown && (StoryProgress.WhichActIsThePlayerIn == 1 || StoryProgress.WhichActIsThePlayerIn == 2))
+        if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn != 3) // We don't want the player to be able to heal in act 3 because there's no healer
         {
             if (playerState.Player.GoldInPocket >= Player.priceToHeal) // the players' gold has to be checked here, due to labels being set
             {
@@ -1034,15 +1032,21 @@ public partial class MainWindow : Form
                 UpdatePlayerHealthBar(); // updates the players health bar after being healed
                 if (!cooldownOnSound)
                 {
-                    if (storyProgress.Act1BossDefeatedFlag)
+                    switch (StoryProgress.WhichActIsThePlayerIn)
                     {
-                        txtBox_Town.Text = storyProgress.GetAct2HealingText();
-                        sounds.PlayAct2HealingSound();
-                    }
-                    else
-                    {
-                        txtBox_Town.Text = storyProgress.GetHealingText();
-                        sounds.PlayAct1HealingMusic();
+                        case 1:
+                            txtBox_Town.Text = storyProgress.GetHealingText();
+                            sounds.PlayAct1HealingMusic();
+                            break;
+                        case 2:
+                            txtBox_Town.Text = storyProgress.GetAct2HealingText();
+                            sounds.PlayAct2HealingSound();
+                            break;
+                        case 4:
+                            txtBox_Town.Text = storyProgress.GetAct4HealingText();
+                            sounds.PlayAct4HealingSound();
+                            break;
+
                     }
                 }
                 cooldownOnSound = true;

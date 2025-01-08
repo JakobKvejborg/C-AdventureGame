@@ -39,7 +39,7 @@ public class QuestManager
 
     // Start Act 1 Quest 1
     public void StartAct1Quest1()
-    {
+     {
         if (StoryProgress.playerIsInTown && !_storyProgress.Act1BossDefeatedFlag && StoryProgress.WhichActIsThePlayerIn == 1)
         {
             isInsideAct1Quest1Panel = true;

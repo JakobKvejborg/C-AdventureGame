@@ -83,7 +83,7 @@ internal class Player
         {
             playerState.Player.CurrentHealth = MaxHealth;
             playerState.Player.GoldInPocket -= priceToHeal;
-            priceToHeal += 3 * priceToHeal;
+            priceToHeal *= 2;
         }
     }
     public async Task HandlePlayerDeathAsync(MainWindow mainWindow)

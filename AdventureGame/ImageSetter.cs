@@ -98,6 +98,7 @@ public class ImageSetter
         _mainWindow.panelEncounter.BackgroundImage = GetImagePath("act3boss.png");
     }
 
+    // ACT 4 images
     public void SetAct4BackgroundImage()
     {
         _mainWindow.panelEncounter.BackgroundImage = GetImagePath("act4background.png");
@@ -106,6 +107,11 @@ public class ImageSetter
     {
         _mainWindow.panelTown.BackgroundImage = GetImagePath("act4town.png");
     }
+    public void SetAct4HealerImage()
+    {
+        _mainWindow.pictureBoxHealer.Image = GetImagePath("act4healer.png");
+    }
+
 
 
 }
