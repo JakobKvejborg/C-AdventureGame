@@ -28,6 +28,7 @@ public partial class MainWindow : Form
     bool OneTimeBool2;
     bool OneTimeBool3;
     public bool IsReturnToTownEnabled = true;
+    public bool IsButtonContinueEnabled = true;
     private QuestManager quests;
     private Controller _controller;
 
@@ -145,9 +146,12 @@ public partial class MainWindow : Form
         buttonRoarAttack.Hide();
         buttonDivine.Hide();
         panelAct1Quest1.Hide();
+        panelAct4Quest1.Hide();
         panelPopupInventoryInfo.Hide();
         pictureBoxDragonEggs.Hide();
         labelDragonEggs.Hide();
+        labelAct4Q1.Hide();
+        buttonTalkMage.Hide();
         #endregion
     }
 
@@ -432,7 +436,7 @@ public partial class MainWindow : Form
                 return true;
             case Keys.B:
                 ReturnToTownClick(); // Returns the player to the town
-                Quest1ReturnToTown();
+                ReturnToTownFromQuests();
                 return true;
             case Keys.U:
                 ButtonUpgradeItem();
@@ -441,7 +445,8 @@ public partial class MainWindow : Form
                 task = LearnTechniqueAsync();
                 return true;
             case Keys.Y:
-                    StartAct1Quest1();
+                StartAct1Quest1();
+                StartAct4Quest1();
                 return true;
             case Keys.Tab:
                 InventoryPanelPopupInfoShow();
@@ -698,7 +703,6 @@ public partial class MainWindow : Form
         panelsList.Add(panelGameOver);
         panelsList.Add(panelTown);
         panelsList[panelsIndex].BringToFront();
-        imageSetter.SetAct1Quest1BackgroundImage();
         labelInventoryItemInfo.Text = null;
     }
 
@@ -795,7 +799,12 @@ public partial class MainWindow : Form
 
     public async Task ButtonContinueAsync()
     {
-        if (!isContinueOnCooldown)
+        //if (quests.isInsideAct1Quest1Panel || quests.isInsideAct1Quest1Panel)
+        //{
+        //    return;
+        //}
+
+        if (!isContinueOnCooldown && IsButtonContinueEnabled)
         {
             isContinueOnCooldown = true;
             storyProgress.ProgressStory();
@@ -916,6 +925,7 @@ public partial class MainWindow : Form
 
     private void Act3BossFight()
     {
+        IsButtonContinueEnabled = false;
         buttonReturnToTown.Hide();
         buttonReturnToTown.Enabled = false;
         IsReturnToTownEnabled = false;
@@ -964,6 +974,7 @@ public partial class MainWindow : Form
         //sounds.StopAct3TownMusic(); // TODO maybe
         buttonReturnToTown.Enabled = false;
         IsReturnToTownEnabled = false;
+        IsButtonContinueEnabled = true;
         buttonReturnToTown.Hide();
         // Unsubscribe from the event to avoid multiple invocations
         Encounter.EncounterCompleted -= OnAct3BossDefeated;
@@ -1340,6 +1351,21 @@ public partial class MainWindow : Form
         }
     }
 
+    public void TalkToMageAct4()
+    {
+        //TODO
+        if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 4)
+        {
+            txtBox_Town.Text = storyProgress.GetMageFirstText();
+        }
+    }
+
+    private void buttonTalkMage_Click(object sender, EventArgs e)
+    {
+        TalkToMageAct4();
+    }
+
+
     public async Task CheckIfPlayerIsDefeated()
     {
         if (playerState.Player.CurrentHealth <= 0)
@@ -1646,15 +1672,22 @@ public partial class MainWindow : Form
         }
     }
 
-
     public void StartAct1Quest1()
     {
         quests.StartAct1Quest1();
+    }
+    public void StartAct4Quest1()
+    {
+        quests.StartAct4Quest1();
     }
 
     private void labelAct1Quest1_Click(object sender, EventArgs e)
     {
         StartAct1Quest1();
+    }
+    private void labelAct4Q1_Click(object sender, EventArgs e)
+    {
+        StartAct4Quest1();
     }
 
     private void buttonAct1Quest1Continue_Click(object sender, EventArgs e)
@@ -1669,12 +1702,16 @@ public partial class MainWindow : Form
 
     private void buttonAct1Q1Town_Click(object sender, EventArgs e)
     {
-        Quest1ReturnToTown();
+        ReturnToTownFromQuests();
+    }
+    private void buttonAct4Q1Town_Click(object sender, EventArgs e)
+    {
+        ReturnToTownFromQuests();
     }
 
-    private void Quest1ReturnToTown()
+    public void ReturnToTownFromQuests()
     {
-        quests.ReturnToTownFromAct1Quest1();
+        quests.ReturnToTownFromQuest();
     }
 
     private void buttonStartModifiers_Click(object sender, EventArgs e)
@@ -1696,6 +1733,7 @@ public partial class MainWindow : Form
             }
         }
     }
+
 
 }
 

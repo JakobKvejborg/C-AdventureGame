@@ -67,10 +67,11 @@ public class ModifierProcessor
                 _playerState.Player.Lifesteal += 50;
                 return "Presentation mode enabled.";
             case "debug":
-                _playerState.Player.Damage += 25;
+                _playerState.Player.Damage += 125;
                 _playerState.Player.DodgeChance += 60;
-                _playerState.Player.GoldInPocket += 5000;
+                _playerState.Player.GoldInPocket += 9999;
                 _playerState.Player.Lifesteal += 50;
+                _playerState.Player.Armor += 15;
                 return "Debugging mode enabled.";
             default:
                 return "Unknown modifier";

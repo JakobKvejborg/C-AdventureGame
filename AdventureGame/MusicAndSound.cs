@@ -140,6 +140,11 @@ public class MusicAndSound
     {
         PlayMusic("act1quest1womancrying.wav", NPCspeechPlayer);
     }
+    public void PlayAct4Q1Voice()
+    {
+        PlayMusic("act4q1voice.wav", NPCspeechPlayer);
+    }
+
 
     public void PlayAct2SmithOffer()
     {

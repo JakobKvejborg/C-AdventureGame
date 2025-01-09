@@ -20,6 +20,7 @@ public class QuestManager
     public bool Act1Quest1EncounterIsActive { get; set; }
     public bool Act1Quest1IsCompleted { get; set; }
     public bool isInsideAct1Quest1Panel { get; set; }
+    public bool isInsideAct4Quest1Panel { get; set; }
 
     public QuestManager(MainWindow mainWindow, ImageSetter imageSetter)
     {
@@ -36,12 +37,23 @@ public class QuestManager
             //currentDialogueIndex++;
         }
     }
+    public void ReturnToTownFromQuest()
+    {
+        _mainWindow.panelAct4Quest1.Hide();
+        _mainWindow.panelAct1Quest1.Hide();
+        _mainWindow.panelTown.Show();
+        isInsideAct1Quest1Panel = false;
+        isInsideAct4Quest1Panel = false;
+        StoryProgress.playerIsInTown = true;
+        _mainWindow.IsButtonContinueEnabled = true;
+    }
 
     // Start Act 1 Quest 1
     public void StartAct1Quest1()
-     {
-        if (StoryProgress.playerIsInTown && !_storyProgress.Act1BossDefeatedFlag && StoryProgress.WhichActIsThePlayerIn == 1)
+    {
+        if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 1)
         {
+            _mainWindow.IsButtonContinueEnabled = false;
             isInsideAct1Quest1Panel = true;
             if (!Act1Quest1BoyFound)
             {
@@ -71,6 +83,7 @@ public class QuestManager
 
     public void CompleteAct1Quest1()
     {
+        _mainWindow.IsButtonContinueEnabled = false;
         _imageSetter.SetAct1Quest1CompletedBackgroundImage();
         _mainWindow.panelAct1Quest1.Show();
         _mainWindow.panelTown.Hide();
@@ -86,14 +99,20 @@ public class QuestManager
         }
     }
 
-    public void ReturnToTownFromAct1Quest1()
+
+    // Start Act 4 Quest 1
+    public void StartAct4Quest1()
     {
-        if (isInsideAct1Quest1Panel)
+        if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 4)
         {
-            _mainWindow.panelAct1Quest1.Hide();
-            _mainWindow.panelTown.Show();
-            isInsideAct1Quest1Panel = false;
-            StoryProgress.playerIsInTown = true;
+
+            isInsideAct4Quest1Panel = true;
+            _imageSetter.SetAct4Quest1BackgroundImage();
+            _mainWindow.panelAct4Quest1.Show();
+            _mainWindow.panelTown.Hide();
+            _mainWindow.textBoxAct4Quest1.Text = "\"You've fought the Dragons bravely, but beyond this valley awaits a darkness that defies comprehension. I can take you there—to face the ultimate Horror.\"";
+            _sounds.PlayAct4Q1Voice();
+            StoryProgress.playerIsInTown = false;
         }
     }
 

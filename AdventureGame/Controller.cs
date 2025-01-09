@@ -243,13 +243,12 @@ public class Controller
                 case 1: // "B" button
                     if (isLeftTriggerPressed)
                     {
-                        Debug.WriteLine("a+b pressed");
-
                     }
                     if (StoryProgress.playerIsInTown)
                     {
                         _mainWindow.LearnTechniqueAsync();
                         _mainWindow.ButtonUpgradeItem();
+                        _mainWindow.TalkToMageAct4();
                     }
                     else if (_mainWindow.IsInventoryOpen) // Discard item
                     {
@@ -283,7 +282,8 @@ public class Controller
                     }
                     else
                     {
-                        _mainWindow.StartAct1Quest1(); // only starts if player is in act1
+                            _mainWindow.StartAct1Quest1(); // only starts if player is in act1
+                            _mainWindow.StartAct4Quest1();
                     }
                     break;
                 case 4: // L1
@@ -337,6 +337,7 @@ public class Controller
                 case 12: // D-pad down
                     _mainWindow.ButtonSouth();
                     _mainWindow.ReturnToTownClick();
+                    _mainWindow.ReturnToTownFromQuests();
                     break;
                 case 13: // D-pad left
                     _mainWindow.ButtonWest();
@@ -423,7 +424,8 @@ public class Controller
         if (_mainWindow.IsInventoryOpen)
         {
             PanelPopupItemsShow(); // Makes left trigger "compare" items in inventory vs. equipped
-        } else
+        }
+        else
         {
             // Highlights the attacks that can be used when left trigger is held
             _mainWindow.btn_attack.Enabled = false;

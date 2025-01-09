@@ -58,6 +58,8 @@ partial class MainWindow
         buttonAct1Q1Town = new Button();
         comboBoxInventory = new ComboBox();
         buttonDivine = new Button();
+        buttonAct4Q1Town = new Button();
+        buttonAct4Quest1Continue = new Button();
         labelInvisibleWeaponRightHandEquipped = new Label();
         textBox1 = new TextBox();
         labelInventory = new Label();
@@ -79,7 +81,7 @@ partial class MainWindow
         labelDragonEggs = new Label();
         pictureBoxDragonEggs = new PictureBox();
         panelEncounter = new Panel();
-        label1 = new Label();
+        labelCritText = new Label();
         labelDodgeText = new Label();
         panelPopupWeaponLeftHand = new Panel();
         pictureBoxIconWeaponLeftHand = new PictureBox();
@@ -142,6 +144,8 @@ partial class MainWindow
         pictureBoxHero = new PictureBox();
         pictureBoxInventory = new PictureBox();
         panelTown = new Panel();
+        buttonTalkMage = new Button();
+        labelAct4Q1 = new Label();
         labelAct1Quest1 = new Label();
         pictureBoxAct1ArtsTeacher = new PictureBox();
         comboBoxUpgradeItems = new ComboBox();
@@ -150,6 +154,7 @@ partial class MainWindow
         pictureBoxTown = new PictureBox();
         pictureBoxHealer = new PictureBox();
         pictureBoxAct2Smith = new PictureBox();
+        pictureBoxAct4Mage = new PictureBox();
         panelStartScreen = new Panel();
         buttonStartModifiers = new Button();
         labelGameAuthorName = new Label();
@@ -159,6 +164,8 @@ partial class MainWindow
         labelGameOverText = new Label();
         panelAct1Quest1 = new Panel();
         textBoxAct1Quest1 = new TextBox();
+        panelAct4Quest1 = new Panel();
+        textBoxAct4Quest1 = new TextBox();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHeroBag).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxLoot).BeginInit();
         panelMonster.SuspendLayout();
@@ -196,9 +203,11 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxTown).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHealer).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxAct2Smith).BeginInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxAct4Mage).BeginInit();
         panelStartScreen.SuspendLayout();
         panelGameOver.SuspendLayout();
         panelAct1Quest1.SuspendLayout();
+        panelAct4Quest1.SuspendLayout();
         SuspendLayout();
         // 
         // btn_continue
@@ -477,6 +486,30 @@ partial class MainWindow
         buttonDivine.UseVisualStyleBackColor = false;
         buttonDivine.Click += buttonDivine_Click;
         // 
+        // buttonAct4Q1Town
+        // 
+        buttonAct4Q1Town.Font = new Font("Segoe UI Semibold", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+        buttonAct4Q1Town.ForeColor = Color.MidnightBlue;
+        buttonAct4Q1Town.Location = new Point(107, 111);
+        buttonAct4Q1Town.Name = "buttonAct4Q1Town";
+        buttonAct4Q1Town.Size = new Size(98, 29);
+        buttonAct4Q1Town.TabIndex = 37;
+        buttonAct4Q1Town.Text = "Town";
+        toolTip.SetToolTip(buttonAct4Q1Town, "\"B\"");
+        buttonAct4Q1Town.UseVisualStyleBackColor = true;
+        buttonAct4Q1Town.Click += buttonAct4Q1Town_Click;
+        // 
+        // buttonAct4Quest1Continue
+        // 
+        buttonAct4Quest1Continue.ForeColor = Color.Black;
+        buttonAct4Quest1Continue.Location = new Point(9, 111);
+        buttonAct4Quest1Continue.Name = "buttonAct4Quest1Continue";
+        buttonAct4Quest1Continue.Size = new Size(94, 29);
+        buttonAct4Quest1Continue.TabIndex = 3;
+        buttonAct4Quest1Continue.Text = "Continue";
+        toolTip.SetToolTip(buttonAct4Quest1Continue, "\"Enter\"");
+        buttonAct4Quest1Continue.UseVisualStyleBackColor = true;
+        // 
         // labelInvisibleWeaponRightHandEquipped
         // 
         labelInvisibleWeaponRightHandEquipped.AutoSize = true;
@@ -713,7 +746,7 @@ partial class MainWindow
         panelEncounter.Controls.Add(labelDragonEggs);
         panelEncounter.Controls.Add(pictureBoxDragonEggs);
         panelEncounter.Controls.Add(buttonDivine);
-        panelEncounter.Controls.Add(label1);
+        panelEncounter.Controls.Add(labelCritText);
         panelEncounter.Controls.Add(labelDodgeText);
         panelEncounter.Controls.Add(panelPopupWeaponLeftHand);
         panelEncounter.Controls.Add(panelPopupShoulders);
@@ -771,17 +804,17 @@ partial class MainWindow
         panelEncounter.Size = new Size(537, 768);
         panelEncounter.TabIndex = 22;
         // 
-        // label1
+        // labelCritText
         // 
-        label1.AutoSize = true;
-        label1.BackColor = Color.Transparent;
-        label1.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
-        label1.ForeColor = Color.White;
-        label1.Location = new Point(13, 383);
-        label1.Name = "label1";
-        label1.Size = new Size(45, 23);
-        label1.TabIndex = 57;
-        label1.Text = "Crit:";
+        labelCritText.AutoSize = true;
+        labelCritText.BackColor = Color.Transparent;
+        labelCritText.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+        labelCritText.ForeColor = Color.White;
+        labelCritText.Location = new Point(13, 383);
+        labelCritText.Name = "labelCritText";
+        labelCritText.Size = new Size(45, 23);
+        labelCritText.TabIndex = 57;
+        labelCritText.Text = "Crit:";
         // 
         // labelDodgeText
         // 
@@ -1472,6 +1505,8 @@ partial class MainWindow
         panelTown.BackColor = Color.Transparent;
         panelTown.BackgroundImage = Properties.Resources.castle;
         panelTown.BackgroundImageLayout = ImageLayout.Stretch;
+        panelTown.Controls.Add(buttonTalkMage);
+        panelTown.Controls.Add(labelAct4Q1);
         panelTown.Controls.Add(labelAct1Quest1);
         panelTown.Controls.Add(buttonLearnTechnique);
         panelTown.Controls.Add(pictureBoxAct1ArtsTeacher);
@@ -1488,11 +1523,32 @@ partial class MainWindow
         panelTown.Controls.Add(pictureBoxTown);
         panelTown.Controls.Add(pictureBoxHealer);
         panelTown.Controls.Add(pictureBoxAct2Smith);
+        panelTown.Controls.Add(pictureBoxAct4Mage);
         panelTown.Dock = DockStyle.Fill;
         panelTown.Location = new Point(0, 0);
         panelTown.Name = "panelTown";
         panelTown.Size = new Size(537, 768);
         panelTown.TabIndex = 0;
+        // 
+        // buttonTalkMage
+        // 
+        buttonTalkMage.Location = new Point(398, 658);
+        buttonTalkMage.Name = "buttonTalkMage";
+        buttonTalkMage.Size = new Size(125, 31);
+        buttonTalkMage.TabIndex = 22;
+        buttonTalkMage.Text = "Talk To Mage";
+        buttonTalkMage.UseVisualStyleBackColor = true;
+        buttonTalkMage.Click += buttonTalkMage_Click;
+        // 
+        // labelAct4Q1
+        // 
+        labelAct4Q1.AutoSize = true;
+        labelAct4Q1.Location = new Point(213, 357);
+        labelAct4Q1.Name = "labelAct4Q1";
+        labelAct4Q1.Size = new Size(93, 120);
+        labelAct4Q1.TabIndex = 20;
+        labelAct4Q1.Text = "                   \r\n                \r\n                     \r\n\r\n\r\n\r\n";
+        labelAct4Q1.Click += labelAct4Q1_Click;
         // 
         // labelAct1Quest1
         // 
@@ -1574,6 +1630,15 @@ partial class MainWindow
         pictureBoxAct2Smith.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxAct2Smith.TabIndex = 14;
         pictureBoxAct2Smith.TabStop = false;
+        // 
+        // pictureBoxAct4Mage
+        // 
+        pictureBoxAct4Mage.Location = new Point(298, 311);
+        pictureBoxAct4Mage.Name = "pictureBoxAct4Mage";
+        pictureBoxAct4Mage.Size = new Size(348, 449);
+        pictureBoxAct4Mage.SizeMode = PictureBoxSizeMode.Zoom;
+        pictureBoxAct4Mage.TabIndex = 21;
+        pictureBoxAct4Mage.TabStop = false;
         // 
         // panelStartScreen
         // 
@@ -1689,6 +1754,31 @@ partial class MainWindow
         textBoxAct1Quest1.Size = new Size(519, 90);
         textBoxAct1Quest1.TabIndex = 2;
         // 
+        // panelAct4Quest1
+        // 
+        panelAct4Quest1.BackColor = Color.Transparent;
+        panelAct4Quest1.Controls.Add(buttonAct4Q1Town);
+        panelAct4Quest1.Controls.Add(buttonAct4Quest1Continue);
+        panelAct4Quest1.Controls.Add(textBoxAct4Quest1);
+        panelAct4Quest1.Dock = DockStyle.Fill;
+        panelAct4Quest1.ForeColor = Color.Transparent;
+        panelAct4Quest1.Location = new Point(0, 0);
+        panelAct4Quest1.Name = "panelAct4Quest1";
+        panelAct4Quest1.Size = new Size(537, 768);
+        panelAct4Quest1.TabIndex = 46;
+        // 
+        // textBoxAct4Quest1
+        // 
+        textBoxAct4Quest1.BackColor = Color.FromArgb(195, 195, 195);
+        textBoxAct4Quest1.Font = new Font("Microsoft Sans Serif", 12F);
+        textBoxAct4Quest1.Location = new Point(11, 15);
+        textBoxAct4Quest1.Multiline = true;
+        textBoxAct4Quest1.Name = "textBoxAct4Quest1";
+        textBoxAct4Quest1.ReadOnly = true;
+        textBoxAct4Quest1.ScrollBars = ScrollBars.Vertical;
+        textBoxAct4Quest1.Size = new Size(519, 90);
+        textBoxAct4Quest1.TabIndex = 2;
+        // 
         // MainWindow
         // 
         AutoScaleDimensions = new SizeF(8F, 20F);
@@ -1696,11 +1786,12 @@ partial class MainWindow
         BackColor = SystemColors.ActiveCaptionText;
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(537, 768);
-        Controls.Add(panelEncounter);
         Controls.Add(panelTown);
+        Controls.Add(panelEncounter);
         Controls.Add(panelGameOver);
         Controls.Add(panelStartScreen);
         Controls.Add(panelAct1Quest1);
+        Controls.Add(panelAct4Quest1);
         DoubleBuffered = true;
         Icon = (Icon)resources.GetObject("$this.Icon");
         Name = "MainWindow";
@@ -1757,12 +1848,15 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxTown).EndInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHealer).EndInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxAct2Smith).EndInit();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxAct4Mage).EndInit();
         panelStartScreen.ResumeLayout(false);
         panelStartScreen.PerformLayout();
         panelGameOver.ResumeLayout(false);
         panelGameOver.PerformLayout();
         panelAct1Quest1.ResumeLayout(false);
         panelAct1Quest1.PerformLayout();
+        panelAct4Quest1.ResumeLayout(false);
+        panelAct4Quest1.PerformLayout();
         ResumeLayout(false);
     }
 
@@ -1893,9 +1987,16 @@ partial class MainWindow
     public Label labelInfoWeaponLeftHandEquipped;
     private Label labelShouldersName;
     public Button buttonStartModifiers;
-    public Label label1;
+    public Label labelCritText;
     public Label labelDodgeText;
     public Button buttonDivine;
     public PictureBox pictureBoxDragonEggs;
     public Label labelDragonEggs;
+    public Panel panelAct4Quest1;
+    public Button buttonAct4Q1Town;
+    private Button buttonAct4Quest1Continue;
+    public TextBox textBoxAct4Quest1;
+    public PictureBox pictureBoxAct4Mage;
+    public Label labelAct4Q1;
+    public Button buttonTalkMage;
 }

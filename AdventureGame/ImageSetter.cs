@@ -48,6 +48,7 @@ public class ImageSetter
     public void SetAct1Quest1BackgroundImage()
     {
         _mainWindow.panelAct1Quest1.BackgroundImage = GetImagePath("act1quest1background.png");
+        _mainWindow.panelAct1Quest1.BackgroundImageLayout = ImageLayout.Stretch;
     }
     public void SetAct1Quest1CompletedBackgroundImage()
     {
@@ -111,7 +112,16 @@ public class ImageSetter
     {
         _mainWindow.pictureBoxHealer.Image = GetImagePath("act4healer.png");
     }
-
+    public void SetAct4Quest1BackgroundImage()
+    {
+        _mainWindow.panelAct4Quest1.BackgroundImage = GetImagePath("act4q1background.png");
+        _mainWindow.panelAct4Quest1.BackgroundImageLayout = ImageLayout.Stretch;
+    }
+    public void SetAct4MageImage()
+    {
+        // No need to hide the picturebox (smith & mage) on mainwindow load because this image is not yet set
+        _mainWindow.pictureBoxAct4Mage.Image = GetImagePath("act4mage.png"); 
+    }
 
 
 }

@@ -208,7 +208,8 @@ internal class MonsterContainer
         ListOfDragonEggAct4North.Add(dragonNestWatcher);
         ListOfDragonEggAct4North.Add(dragonNestWatcher);
         ListOfDragonEggAct4North.Add(dragonNestWatcher);
-        ListOfDragonEggAct4North.Add(dragonEggWatcher);
+        ListOfDragonEggAct4North.Add(dragonEggWatcher); 
+       
 
     }
 

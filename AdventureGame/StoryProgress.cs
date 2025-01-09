@@ -66,10 +66,16 @@ internal class StoryProgress
     }
 
 
-    public String GetAct4FirstTimeText()
+    public string GetAct4FirstTimeText()
     {
         return "After almost drowning you arrive at the fiery lands of the Dragons. " +
             "As the towering beasts loom in the distance, you wonder if you'll ever see home again.";
+    }
+
+    public string GetMageFirstText()
+    {
+        return "\"Hmmm yesss... You! Collect me three dragon eggs. Yes, three! And then, maybe... " +
+            "just MAYBE, I'll give you something... useful in return. Yesss, heehe...\"";
     }
 
     public void ProgressStory()
@@ -233,7 +239,7 @@ internal class StoryProgress
                 if (progressFlag == true)
                 {
                     PlayerIsInTown();
-                    _mainWindow.txtBox_Town.Text = "The fiery town is burning hot, you can barely breathe. But maybe here you will find what you're searching for. \r\nOr maybe it's here you die trying. ";
+                    _mainWindow.txtBox_Town.Text = "The fiery town is burning hot, you can barely breathe. But surely here you will find what you're searching for. \r\nOr maybe you'll die here trying. ";
                 }
                 break;
 
@@ -306,6 +312,7 @@ internal class StoryProgress
         _mainWindow.pictureBoxAct2Smith.Hide();
         _mainWindow.buttonUpgradeItem.Hide();
         _mainWindow.comboBoxUpgradeItems.Hide();
+        _mainWindow.labelAct1Quest1.Show();
     }
 
     private void EnableReturnToTownFunction()
@@ -323,6 +330,10 @@ internal class StoryProgress
         _mainWindow.pictureBoxHealer.Show();
         _mainWindow.buttonHeal.Show();
         _imageSetter.SetAct4HealerImage();
+        _imageSetter.SetAct4MageImage();
+        _mainWindow.pictureBoxAct4Mage.Show();
+        _mainWindow.labelAct4Q1.Show();
+        _mainWindow.buttonTalkMage.Show();
 
         _sounds.StopAct3Waves();
     }
@@ -338,7 +349,10 @@ internal class StoryProgress
         _mainWindow.pictureBoxHealer.Hide();
         _mainWindow.buttonHeal.Hide();
         _mainWindow.pictureBoxAct1ArtsTeacher.Hide();
+        _mainWindow.pictureBoxAct4Mage.Hide();
         WhichActIsThePlayerIn = 3;
+        _mainWindow.labelAct4Q1.Hide();
+        _mainWindow.buttonTalkMage.Hide();
 
         _sounds.StopAct4Music();
         _sounds.StopAct2WindSound();
