@@ -21,6 +21,7 @@ public class MusicAndSound
     private WindowsMediaPlayer healingMusicPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer NPCspeechPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer act3WavesPlayer = new WindowsMediaPlayer();
+    private WindowsMediaPlayer act3MusicPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer act4MusicPlayer = new WindowsMediaPlayer();
 
     // Helper method to load media "sounds/music" from the "sounds" folder
@@ -102,11 +103,11 @@ public class MusicAndSound
         PlaySound(16);
     }
 
-    public void PlaySwordAttackSound()
+    public void PlayNormalAttackSound()
     {
         try
         {
-            if (random.NextDouble() <= 0.99) // % chance to play a sound
+            if (random.NextDouble() <= 1.00) // % chance to play a sound
             {
                 int soundIndex = random.Next(1, 8);
                 soundPlayers[soundIndex].Play();
@@ -203,15 +204,16 @@ public class MusicAndSound
     public void PlayBloodLustSound()
     {
         PlayMusic("bloodlust.wav", soundEffectPlayer);
+        PlayNormalAttackSound();
     }
 
-    public void PlayDodgeJabSound()
+    public void PlaySwiftAttackSound()
     {
         PlayMusic("dodgejab.wav", soundEffectPlayer);
     }
-    public void PlayRetributionSound()
+    public void PlayGuardSound()
     {
-        PlayMusic("retribution.wav", soundEffectPlayer);
+        PlayMusic("guardattack.wav", soundEffectPlayer);
     }
 
     public void PlayCritSound()
@@ -237,6 +239,10 @@ public class MusicAndSound
     public void PlayAct4Music()
     {
         PlayMusic("act4.wav", act4MusicPlayer);
+    }
+    public void PlayAct3Music()
+    {
+        PlayMusic("act3.wav", act3MusicPlayer);
     }
 
     private void PlayMusic(string fileName, WindowsMediaPlayer player)
@@ -315,6 +321,10 @@ public class MusicAndSound
     public void StopAct4Music()
     {
         act4MusicPlayer.controls.stop();
+    }
+    public void StopAct3Music()
+    {
+        act3MusicPlayer.controls.stop();
     }
 
     public void MuteAllMusic()

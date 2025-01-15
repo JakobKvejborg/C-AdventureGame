@@ -1,5 +1,8 @@
+using OpenTK.Windowing.Common.Input;
 using System.Diagnostics;
 using System.Media;
+using System.Reflection.PortableExecutable;
+using System.Security.Cryptography;
 using Color = System.Drawing.Color;
 
 namespace AdventureGame;
@@ -12,6 +15,8 @@ public partial class MainWindow : Form
     private MonsterContainer monsterContainer = new MonsterContainer();
     private ItemContainer itemContainer = new ItemContainer();
     private StoryProgress storyProgress;
+    private TechniquesTrainer _techniquesTrainer;
+    private AttackMoves _attacks;
     PopupWindowModifier _windowModifier;
 
     private bool cooldownOnSound;
@@ -27,6 +32,7 @@ public partial class MainWindow : Form
     bool OneTimeBool;
     bool OneTimeBool2;
     bool OneTimeBool3;
+    bool OneTimeBool4;
     public bool IsReturnToTownEnabled = true;
     public bool IsButtonContinueEnabled = true;
     private QuestManager quests;
@@ -42,8 +48,10 @@ public partial class MainWindow : Form
         _windowModifier = new PopupWindowModifier(_modifierProcessor, this);
         HidePanelsEtc();
         storyProgress = new StoryProgress(this, sounds);
+        _techniquesTrainer = new TechniquesTrainer(playerState, storyProgress, this, sounds);
+        _attacks = new AttackMoves(playerState, this, sounds);
         imageSetter = new ImageSetter(this);
-        _controller = new Controller(playerState, this); // Initialize controller
+        _controller = new Controller(playerState, this, _techniquesTrainer); // Initialize controller
         quests = new QuestManager(this, imageSetter);
         UpdatePlayerLabels();
         panelTown.Location = new Point(0, 0); // Example: position it at the top-left corner
@@ -142,9 +150,10 @@ public partial class MainWindow : Form
         buttonReturnToTown.Hide();
         btn_attack.Hide();
         buttonBloodLust.Hide();
-        buttonDodgeJab.Hide();
+        buttonSwiftAttack.Hide();
         buttonRoarAttack.Hide();
         buttonDivine.Hide();
+        buttonGuard.Hide();
         panelAct1Quest1.Hide();
         panelAct4Quest1.Hide();
         panelPopupInventoryInfo.Hide();
@@ -152,6 +161,7 @@ public partial class MainWindow : Form
         labelDragonEggs.Hide();
         labelAct4Q1.Hide();
         buttonTalkMage.Hide();
+        panelXboxControlsLayout.Hide();
         #endregion
     }
 
@@ -184,7 +194,6 @@ public partial class MainWindow : Form
     // Preloads images (doesn't do much yet)
     private void PreloadResources()
     {
-        Image image = Properties.Resources.healer; // Preload images
         Font font = new Font("Arial", 12); // Preload fonts
     }
 
@@ -367,15 +376,6 @@ public partial class MainWindow : Form
 
     }
 
-    private async void btn_attack_Click(object sender, EventArgs e)
-    {
-        await NormalAttack();
-    }
-    private async void buttonBloodLust_Click(object sender, EventArgs e)
-    {
-        await BloodLustAttack();
-    }
-
     // This method lets the player use the buttons by pressing a key instead of clicking
     protected override bool ProcessCmdKey(ref Message msg, Keys keyData)
     {
@@ -390,13 +390,16 @@ public partial class MainWindow : Form
                 task = BloodLustAttack();
                 return true;
             case Keys.D3:
-                task = DodgeJabAttack();
+                task = SwiftAttack();
                 return true;
             case Keys.D4:
                 task = RoarAttack();
                 return true;
             case Keys.D5:
                 task = DivineAttack();
+                return true;
+            case Keys.D6:
+                GuardAttack();
                 return true;
             case Keys.Enter:
                 EnterKeyPressed();
@@ -442,7 +445,7 @@ public partial class MainWindow : Form
                 ButtonUpgradeItem();
                 return true;
             case Keys.L:
-                task = LearnTechniqueAsync();
+                task = _techniquesTrainer.LearnTechniqueAsync();
                 return true;
             case Keys.Y:
                 StartAct1Quest1();
@@ -543,7 +546,7 @@ public partial class MainWindow : Form
         {
             ButtonPlayGame();
         }
-        ButtonContinueAsync();
+        ButtonContinue();
         HideInventory();
         Quest1ContinueDialog();
     }
@@ -704,6 +707,8 @@ public partial class MainWindow : Form
         panelsList.Add(panelTown);
         panelsList[panelsIndex].BringToFront();
         labelInventoryItemInfo.Text = null;
+
+        imageSetter.SetAct2SmithPictureBoxImage();
     }
 
     private void label2_Click_1(object sender, EventArgs e)
@@ -794,22 +799,15 @@ public partial class MainWindow : Form
 
     private void button1_Click_1(object sender, EventArgs e)
     {
-        ButtonContinueAsync();
+        ButtonContinue();
     }
 
-    public async Task ButtonContinueAsync()
+    public void ButtonContinue()
     {
-        //if (quests.isInsideAct1Quest1Panel || quests.isInsideAct1Quest1Panel)
-        //{
-        //    return;
-        //}
-
         if (!isContinueOnCooldown && IsButtonContinueEnabled)
         {
             isContinueOnCooldown = true;
             storyProgress.ProgressStory();
-
-            await Task.Delay(280);
             isContinueOnCooldown = false;
 
         }
@@ -856,8 +854,9 @@ public partial class MainWindow : Form
                     else
                     {
                         storyProgress.StoryState = 14;
-                        ButtonContinueAsync();
+                        ButtonContinue();
                         sounds.PlayAct3Waves();
+                        sounds.PlayAct3Music();
                     }
                     break;
 
@@ -870,13 +869,13 @@ public partial class MainWindow : Form
                     else
                     {
                         storyProgress.StoryState = 18;
-                        ButtonContinueAsync();
+                        ButtonContinue();
                         sounds.PlayAct4Music();
                     }
                     break;
                 case 4: // Player is in act 4
                     storyProgress.StoryState = 107; // repeated Dragon Egg encounters North
-                    ButtonContinueAsync();
+                    ButtonContinue();
                     break;
 
                 default:
@@ -1017,9 +1016,10 @@ public partial class MainWindow : Form
             storyProgress.ProgressStory();
             sounds.PlayAct2TownMusic();
         }
-        if (storyProgress.Act2BossDefeatedFlag && StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 4) // if the player is in act4, return to act3
+        if (storyProgress.Act3BossDefeatedFlag && StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 4) // if the player is in act4, return to act3
         {
             sounds.PlayAct3Waves();
+            sounds.PlayAct3Music();
             storyProgress.StoryState = 16;
             storyProgress.ProgressStory();
         }
@@ -1067,10 +1067,9 @@ public partial class MainWindow : Form
         }
     }
 
-
     private void btn_Continuetown_Click(object sender, EventArgs e)
     {
-        ButtonContinueAsync();
+        ButtonContinue();
     }
 
     private void buttonEquipUnequip_Click(object sender, EventArgs e)
@@ -1319,6 +1318,15 @@ public partial class MainWindow : Form
     {
         if (StoryProgress.playerIsInTown && storyProgress.Act1BossDefeatedFlag && StoryProgress.WhichActIsThePlayerIn == 2)
         {
+            if (playerState.Player.HasDragonMageUpgradeForSmith && !OneTimeBool4) // Special onetime-dialog when the player has DragonMageUpgrade
+            {
+                txtBox_Town.Text = "\"What is this now? Where did you find this?! I can sense powerful magic surrounding this item. Perhaps I can make some use of it...\"";
+                OneTimeBool4 = true;
+                imageSetter.SetAct2SmithUpgradedImage();
+                storyProgress.Act1ArtsTeacherIsAvailable = true;
+                return;
+            }
+
             if (comboBoxUpgradeItems.SelectedItem != null && playerState.Player.GoldInPocket >= Item.CostToUpgrade)
             {
                 Item item = (Item)comboBoxUpgradeItems.SelectedItem;
@@ -1345,7 +1353,7 @@ public partial class MainWindow : Form
             }
             else
             {
-                txtBox_Town.Text = $"\"Sorry, the best I can do is {Item.CostToUpgrade}G. No discounts.\"";
+                txtBox_Town.Text = $"\"Sorry, the best I can do is {Item.CostToUpgrade} gold. No discounts.\"";
                 sounds.PlayAct2SmithNo();
             }
         }
@@ -1353,11 +1361,32 @@ public partial class MainWindow : Form
 
     public void TalkToMageAct4()
     {
-        //TODO
         if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 4)
         {
-            txtBox_Town.Text = storyProgress.GetMageFirstText();
+            if (playerState.Player.NumberOfDragonEggsInInventory > 2 && !playerState.Player.HasDragonMageUpgradeForSmith)
+            {
+                playerState.Player.NumberOfDragonEggsInInventory -= 3;
+                UpdateDragonEggsLabels();
+                txtBox_Town.Text = storyProgress.GetMageText(playerHasDragonEggs: true);
+                playerState.Player.HasDragonMageUpgradeForSmith = true;
+                Item.SmithUpgradeMultiplication++;
+            }
+            else
+            {
+                txtBox_Town.Text = storyProgress.GetMageText(playerHasDragonEggs: false);
+            }
         }
+    }
+
+    public void UpdateDragonEggsLabels()
+    {
+        if (playerState.Player.NumberOfDragonEggsInInventory < 1)
+        {
+            labelDragonEggs.Text = "";
+            pictureBoxDragonEggs.Hide();
+            labelDragonEggs.Hide();
+        }
+        labelDragonEggs.Text = $"{playerState.Player.NumberOfDragonEggsInInventory}x";
     }
 
     private void buttonTalkMage_Click(object sender, EventArgs e)
@@ -1482,7 +1511,7 @@ public partial class MainWindow : Form
             {
                 storyProgress.StoryState = 18; // act 4 town
             }
-            ButtonContinueAsync();
+            ButtonContinue();
         }
     }
 
@@ -1528,6 +1557,7 @@ public partial class MainWindow : Form
         labelLevel.Text = $"Level: {playerState.Player.Level}";
         labelExperience.Text = $"Exp: {playerState.Player.Experience}/{playerState.Player.XpNeededToLevelUp}";
         labelCritChance.Text = $"{playerState.Player.CritChance}%";
+        labelPlayerCritDmg.Text = $"CritDmg: {playerState.Player.CritDamage}%";
         labelRegeneration.Text = $"Regen: {playerState.Player.Regeneration}";
     }
 
@@ -1544,70 +1574,65 @@ public partial class MainWindow : Form
     }
 
     // This is a method that plays the sounds for the attack, calls the attack methods from Encounter, and handles attack controls
-    private async Task PerformAttack(Action attackAction, Action primarySoundAction, Action? secondarySoundAction = null)
+    private async Task PerformAttack(Action attackAction, bool shakeControl = true)
     {
         if (!IsAttackOnCooldown && Encounter.Monster != null)
         {
             IsAttackOnCooldown = true;
 
-            // Play primary sound (and secondary if provided)
-            primarySoundAction();
-            secondarySoundAction?.Invoke();
-
             textBox1.Clear();
             attackAction(); // Executes the specific attack
 
             // Check if the monster is defeated after the attack
-            Encounter.MonsterIsDefeated(playerState, this);
+            Encounter.CheckIfMonsterIsDefeated(playerState, this);
 
-            await ShakeMonsterPicturebox(pictureBoxMonster1);
+            if (shakeControl)
+            {
+                await ShakeMonsterPicturebox(pictureBoxMonster1);
+            }
 
-            // Handle attack cooldown
-            //buttonDodgeJab.Enabled = false;
-            //buttonRoarAttack.Enabled = false;
-            //buttonDivine.Enabled = false;
-            //btn_attack.Enabled = false;
-            //buttonBloodLust.Enabled = false;
             await Task.Delay(180); // Increase this delay for a slower attack rate
-            //buttonBloodLust.Enabled = true;
-            //buttonDivine.Enabled = true;
-            //buttonRoarAttack.Enabled = true;
-            //buttonDodgeJab.Enabled = true;
-            //btn_attack.Enabled = true;
             IsAttackOnCooldown = false;
         }
     }
 
     public async Task NormalAttack()
     {
-        await PerformAttack(() => Encounter.NormalAttack(playerState, this), sounds.PlaySwordAttackSound);
+        await PerformAttack(() => _attacks.NormalAttack(), shakeControl: true);
     }
 
     public async Task BloodLustAttack()
     {
         if (playerState.Player.techniqueBloodLustIsLearned)
-            await PerformAttack(() => Encounter.BloodLustAttack(playerState, this), sounds.PlayBloodLustSound, sounds.PlaySwordAttackSound);
+            await PerformAttack(() => _attacks.BloodLustAttack(), shakeControl: true);
     }
-    public async Task DodgeJabAttack()
+    public async Task SwiftAttack()
     {
-        if (playerState.Player.techniqueDodgeJabIsLearned)
-            await PerformAttack(() => Encounter.DodgeJabAttack(playerState, this), sounds.PlayDodgeJabSound);
+        if (playerState.Player.techniqueSwiftIsLearned)
+            await PerformAttack(() => _attacks.SwiftAttack(), shakeControl: true);
     }
     public async Task RoarAttack()
     {
         if (playerState.Player.techniqueRoarIsLearned)
-            await PerformAttack(() => Encounter.RoarAttack(playerState, this), sounds.PlayRoarAttackSound);
+            await PerformAttack(() => _attacks.RoarAttack(), shakeControl: false);
         UpdatePlayerLabels();
     }
     public async Task DivineAttack()
     {
         if (playerState.Player.techniqueDivineIsLearned)
-            await PerformAttack(() => Encounter.DivineAttack(playerState, this), sounds.PlayDivineAttackSound);
+            await PerformAttack(() => _attacks.DivineAttack(), shakeControl: true);
+    }
+    public void GuardAttack()
+    {
+        if (playerState.Player.techniqueGuardIsLearned)
+        {
+            _attacks.GuardAttack();
+        }
     }
 
     private async void buttonDodgeJab_Click(object sender, EventArgs e)
     {
-        await DodgeJabAttack();
+        await SwiftAttack();
     }
     private async void buttonRoarAttack_Click(object sender, EventArgs e)
     {
@@ -1617,59 +1642,23 @@ public partial class MainWindow : Form
     {
         await DivineAttack();
     }
+    private async void btn_attack_Click(object sender, EventArgs e)
+    {
+        await NormalAttack();
+    }
+    private async void buttonBloodLust_Click(object sender, EventArgs e)
+    {
+        await BloodLustAttack();
+    }
+    private void buttonGuard_Click(object sender, EventArgs e)
+    {
+        GuardAttack();
+    }
+
 
     private void buttonLearnTechnique_Click(object sender, EventArgs e)
     {
-        LearnTechniqueAsync();
-    }
-
-    public async Task LearnTechniqueAsync()
-    {
-        if (StoryProgress.playerIsInTown && !storyProgress.Act1BossDefeatedFlag && storyProgress.Act1ArtsTeacherIsAvailable)
-        {
-            if (playerState.Player.GoldInPocket >= Player.PriceToLearnTechnique)
-            {
-                playerState.Player.GoldInPocket -= Player.PriceToLearnTechnique;
-
-                switch (playerState.Player.advanceTechnique)
-                {
-                    case 0:
-                        playerState.Player.techniqueBloodLustIsLearned = true;
-                        txtBox_Town.Text = "After many hours of training you have learned the Bloodlust technique. Use it with care.";
-                        buttonBloodLust.Show();
-                        break;
-                    case 1:
-                        playerState.Player.techniqueDodgeJabIsLearned = true;
-                        txtBox_Town.Text = "After many hours of training you have learned the Dodge Jab technique. A way to angle the sword after dodging an attack.";
-                        buttonDodgeJab.Show();
-                        break;
-                    case 2:
-                        playerState.Player.techniqueRoarIsLearned = true;
-                        txtBox_Town.Text = "After many hours of training you have learned the Roar technique. A battle cry that boosts your stats for a period.";
-                        buttonRoarAttack.Show();
-                        break;
-                    case 3:
-                        playerState.Player.techniqueDivineIsLearned = true;
-                        txtBox_Town.Text = "After many hours of training you have learned the Divine technique - a sacred plea for aid in your most desperate hour.";
-                        buttonDivine.Show();
-                        break;
-                }
-                playerState.Player.advanceTechnique += 1;
-                Player.PriceToLearnTechnique *= 4;
-                buttonLearnTechnique.Text = $"Learn {Player.PriceToLearnTechnique}G";
-                UpdatePlayerLabels();
-                sounds.PlayAct1ArtsTeacher();
-                storyProgress.Act1ArtsTeacherIsAvailable = false;
-                buttonLearnTechnique.Hide();
-
-                await Task.Delay(7280);
-                pictureBoxAct1ArtsTeacher.Hide();
-            }
-            else
-            {
-                sounds.PlayAct1ArtsTeacherNo();
-            }
-        }
+        Task task = _techniquesTrainer.LearnTechniqueAsync();
     }
 
     public void StartAct1Quest1()

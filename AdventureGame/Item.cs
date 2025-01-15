@@ -25,12 +25,14 @@ public class Item
     public int StrengthRequirement { get; set; }
     public int LevelRequirement { get; set; }
     public int CritChance { get; set; }
+    public int CritDamage { get; set; }
     public static int CostToUpgrade { get; set; } = 50;
     public bool IsItemUpgraded { get; set; } = false;
-   
+    public static int SmithUpgradeMultiplication = 1;
+
     // Weapon item types
     public Item(string name, ItemType type, int damage, int strength, int fireDamage, int poisonDamage,
-        int skillLevel, int lifesteal, int strengthRequirement, int levelRequirement)
+        int skillLevel, int lifesteal, int critDamage, int strengthRequirement, int levelRequirement)
     {
         Name = name;
         Type = type;
@@ -40,12 +42,13 @@ public class Item
         PoisonDamage = poisonDamage;
         SkillLevel = skillLevel;
         Lifesteal = lifesteal;
+        CritDamage = critDamage;
         StrengthRequirement = strengthRequirement;
         LevelRequirement = levelRequirement;
     }
 
     // Constructor for armor type items
-    public Item(string name, ItemType type, int health, int regeneration, int critChance, int strength, int dodgeChance, int armor, int skillLevel, int lifesteal, int strengthRequirement, int levelRequirement)
+    public Item(string name, ItemType type, int health, int regeneration, int critChance, int strength, int dodgeChance, int armor, int skillLevel, int lifesteal, int critDamage, int strengthRequirement, int levelRequirement)
     {
         Name = name;
         Type = type;
@@ -57,6 +60,7 @@ public class Item
         Armor = armor;
         SkillLevel = skillLevel;
         Lifesteal = lifesteal;
+        CritDamage = critDamage;
         StrengthRequirement = strengthRequirement;
         LevelRequirement = levelRequirement;
     }
@@ -68,6 +72,12 @@ public class Item
         Type = type;
     }
 
+    // Constructor for ImprovedRandomItem type items
+    public Item(ItemType itemType)
+    {
+        Type = itemType;
+    }
+
     public override string ToString()
     {
         var stats = new Dictionary<string, int>
@@ -76,13 +86,14 @@ public class Item
         { "Health", Health },
         { "Lifesteal", Lifesteal },
         { "Crit chance", CritChance },
+        { "Crit damage", CritDamage },
         { "Armor", Armor },
         { "Dodge", DodgeChance },
         { "Strength", Strength },
         { "Regen", Regeneration },
         { "Skilllevel", SkillLevel },
-        { "Str req", StrengthRequirement }, // Grey text
-        { "Level req", LevelRequirement }  // Grey text
+        { "Str req", StrengthRequirement },
+        { "Level req", LevelRequirement }  
     };
         // Only include stats greater than 0
         return string.Join("\n", stats.Where(stat => stat.Value > 0).Select(stat => $"{stat.Key}: {stat.Value}"));
@@ -107,17 +118,20 @@ public class Item
         {
             case ItemType.WeaponRightHand:
                 // Randomly upgrade a stat for weapons
-                int weaponUpgradeChoice = random.Next(1, 4); // 1 to 4 for three stats
+                int weaponUpgradeChoice = random.Next(1, 5); // 1 to 5 for four stats
                 switch (weaponUpgradeChoice)
                 {
                     case 1: // Damage
-                        Damage += random.Next(1, 3); // Increase Damage by 1 to 2
+                        Damage += random.Next(1, 3) + SmithUpgradeMultiplication; // Increase Damage by 1 to 2
                         break;
                     case 2: // Strength
-                        Strength += random.Next(1, 6); // Increase Strength by 1 to 5
+                        Strength += random.Next(1, 6) * SmithUpgradeMultiplication; // Increase Strength by 1 to 5
                         break;
                     case 3: // Lifesteal
-                        Lifesteal += random.Next(1, 9); // Increase Lifesteal by 1 or 8
+                        Lifesteal += random.Next(1, 9) * SmithUpgradeMultiplication; // Increase Lifesteal by 1 or 8
+                        break;
+                    case 4: // Crit Damage
+                        CritDamage += random.Next(2, 11) * SmithUpgradeMultiplication;
                         break;
                 }
                 break;
@@ -128,85 +142,107 @@ public class Item
                 switch (armorUpgradeChoice)
                 {
                     case 1: // Health
-                        Health += random.Next(5, 24); // Increase Health by 5 to 23
+                        Health += random.Next(5, 24) * SmithUpgradeMultiplication + SmithUpgradeMultiplication; // Increase Health by 5 to 23
                         break;
                     case 2: // Armor
-                        Armor += random.Next(1, 6); // Increase Armor by 1 to 5
+                        Armor += random.Next(1, 5) * SmithUpgradeMultiplication; // Increase Armor by 1 to 5
                         break;
                         // Add more cases if needed
                 }
                 break;
 
             case ItemType.Boots:
-                // Randomly upgrade a stat for armor
+                // Randomly upgrade a stat for boots
                 int bootsUpgradeChoice = random.Next(1, 3); // 1 to 3 for three stats
                 switch (bootsUpgradeChoice)
                 {
                     case 1: // Health
-                        Health += random.Next(1, 14); // Increase Health by 1 to 13
+                        Health += random.Next(1, 14) * SmithUpgradeMultiplication + SmithUpgradeMultiplication; // Increase Health by 1 to 13
                         break;
                     case 2: // Dodge Chance
-                        DodgeChance += random.Next(1, 6); // Increase Dodge Chance by 1 to 5
+                        DodgeChance += random.Next(1, 6) * SmithUpgradeMultiplication; // Increase Dodge Chance by 1 to 5
                         break;
                         // Add more cases if needed
                 }
                 break;
+
             case ItemType.Gloves:
-                // Randomly upgrade a stat for armor
+                // Randomly upgrade a stat for gloves
                 int glovesUpgradeChoice = random.Next(1, 4); // 1 to 4 for three stats
                 switch (glovesUpgradeChoice)
                 {
                     case 1: // Armor
-                        Armor += random.Next(1, 4); // Increase Health by 1 to 3
+                        Armor += random.Next(1, 4) * SmithUpgradeMultiplication; // Increase Health by 1 to 3
                         break;
                     case 2: // Strength
-                        Strength += random.Next(1, 8);
+                        Strength += random.Next(1, 8) * SmithUpgradeMultiplication;
                         break;
                     case 3:
-                        Regeneration += random.Next(1, 5); // increase regen by 1 to 4
+                        Regeneration += random.Next(1, 7) * SmithUpgradeMultiplication * SmithUpgradeMultiplication; // increase regen by 1 to 4
                         break;
                         // Add more cases if needed
                 }
                 break;
+
             case ItemType.Leggings:
-                // Randomly upgrade a stat for armor
                 int leggingsUpgradeChoice = random.Next(1, 5); // 1 to 5 for three stats
                 switch (leggingsUpgradeChoice)
                 {
-                    case 1: // Armor
-                        DodgeChance += random.Next(3, 7); 
+                    case 1:
+                        DodgeChance += random.Next(3, 7) * SmithUpgradeMultiplication;
                         break;
-                    case 2: // Strength
-                        Strength += random.Next(1, 8); 
+                    case 2:
+                        Strength += random.Next(1, 8) * SmithUpgradeMultiplication;
                         break;
                     case 3:
-                        CritChance += random.Next(1, 11); 
+                        CritChance += random.Next(1, 11) * SmithUpgradeMultiplication;
                         break;
                     case 4:
-                        Health += random.Next(1, 26);
+                        Health += random.Next(1, 26) * SmithUpgradeMultiplication + SmithUpgradeMultiplication;
                         break;
                         // Add more cases if needed
                 }
                 break;
+
+            case ItemType.Helmet:
+                // Randomly upgrade a stat for armor
+                int HelmetUpgradeChoice = random.Next(1, 5); // 1 to 5 for three stats
+                switch (HelmetUpgradeChoice)
+                {
+                    case 1: // Armor
+                        Armor += random.Next(1, 2) * SmithUpgradeMultiplication;
+                        break;
+                    case 2: // Strength
+                        Strength += random.Next(1, 3) * SmithUpgradeMultiplication;
+                        break;
+                    case 3:
+                        Health += random.Next(1, 11) * SmithUpgradeMultiplication;
+                        break;
+                    case 4:
+                        Regeneration += random.Next(1, 15) * SmithUpgradeMultiplication * SmithUpgradeMultiplication;
+                        break;
+                }
+                break;
+
             case ItemType.Belt:
                 int beltUpgradeChoice = random.Next(1, 3); // 1 to 3 for two stats
                 switch (beltUpgradeChoice)
                 {
                     case 1: // Armor
-                        Armor += random.Next(1, 4); // Increase Health by 1 to 3
+                        Armor += random.Next(1, 4) * SmithUpgradeMultiplication; // Increase Health by 1 to 3
                         break;
                     case 2:
-                        Health += random.Next(1, 21);
+                        Health += random.Next(1, 21) * SmithUpgradeMultiplication + SmithUpgradeMultiplication;
                         break;
                 }
                 break;
 
-                    default:
+            default:
                 // Handle unspecified ItemTypes here
-                Lifesteal += random.Next(1, 11);
+                Lifesteal += random.Next(1, 10) + SmithUpgradeMultiplication + SmithUpgradeMultiplication;
                 break;
         }
-        
+
     }
 
 

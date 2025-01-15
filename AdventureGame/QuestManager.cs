@@ -19,8 +19,7 @@ public class QuestManager
     private MusicAndSound _sounds = new MusicAndSound();
     public bool Act1Quest1EncounterIsActive { get; set; }
     public bool Act1Quest1IsCompleted { get; set; }
-    public bool isInsideAct1Quest1Panel { get; set; }
-    public bool isInsideAct4Quest1Panel { get; set; }
+    public bool isInsideQuestPanel { get; set; }
 
     public QuestManager(MainWindow mainWindow, ImageSetter imageSetter)
     {
@@ -32,18 +31,21 @@ public class QuestManager
 
     public void ContinueAct1Quest1Dialogue()
     {
-        if (isInsideAct1Quest1Panel)
+        if (isInsideQuestPanel)
         {
             //currentDialogueIndex++;
         }
     }
     public void ReturnToTownFromQuest()
     {
+        if (!isInsideQuestPanel) // The player can only return to town from the quest panel if the player is inside a quest panel
+        {
+            return;
+        }
         _mainWindow.panelAct4Quest1.Hide();
         _mainWindow.panelAct1Quest1.Hide();
         _mainWindow.panelTown.Show();
-        isInsideAct1Quest1Panel = false;
-        isInsideAct4Quest1Panel = false;
+        isInsideQuestPanel = false;
         StoryProgress.playerIsInTown = true;
         _mainWindow.IsButtonContinueEnabled = true;
     }
@@ -54,7 +56,7 @@ public class QuestManager
         if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 1)
         {
             _mainWindow.IsButtonContinueEnabled = false;
-            isInsideAct1Quest1Panel = true;
+            isInsideQuestPanel = true;
             if (!Act1Quest1BoyFound)
             {
                 Act1Quest1EncounterIsActive = true;
@@ -90,7 +92,7 @@ public class QuestManager
         if (!Act1Quest1IsCompleted)
         {
             _mainWindow.textBoxAct1Quest1.Text = "Thank you so much for returning my boy to me! As a token of my gratitude, here, take this. It belonged to my father. Farewell, hero.\r\n[Father's Helmet added to inventory]";
-            _mainWindow.comboBoxInventory.Items.Add(new Item("Father's Helmet", ItemType.Helmet, 0, 0, 1, 1, new Random().Next(1, 6), 1, 0, 0, 4, 5));
+            _mainWindow.comboBoxInventory.Items.Add(new Item("Father's Helmet", ItemType.Helmet, 0, 0, 1, 1, new Random().Next(1, 6), 1, 0, 0, 0, 4, 5));
             Act1Quest1IsCompleted = true;
         }
         else
@@ -106,7 +108,7 @@ public class QuestManager
         if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 4)
         {
 
-            isInsideAct4Quest1Panel = true;
+            isInsideQuestPanel = true;
             _imageSetter.SetAct4Quest1BackgroundImage();
             _mainWindow.panelAct4Quest1.Show();
             _mainWindow.panelTown.Hide();

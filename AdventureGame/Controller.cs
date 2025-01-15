@@ -12,6 +12,7 @@ public class Controller
     private readonly int joystickIndex = 0;
     private bool isControllerConnected;
     private MainWindow _mainWindow;
+    private TechniquesTrainer _techniquesTrainer;
 
     // Specify System.Timers.Timer explicitly to resolve ambiguity
     private System.Timers.Timer buttonCooldownTimer;
@@ -23,10 +24,11 @@ public class Controller
     PlayerState _playerState;
     private readonly Dictionary<ItemType, Panel> _itemTypeToPanel;
 
-    internal Controller(PlayerState playerState, MainWindow mainWindow)
+    internal Controller(PlayerState playerState, MainWindow mainWindow, TechniquesTrainer techniquesTrainer)
     {
         _mainWindow = mainWindow;
         _playerState = playerState;
+        _techniquesTrainer = techniquesTrainer;
         InitializeController();
 
         // Initialize cooldown timer
@@ -49,7 +51,6 @@ public class Controller
         { ItemType.Shoulders, mainWindow.panelPopupShoulders },
     };
     }
-
     private void InitializeController()
     {
         if (!GLFW.Init())
@@ -243,10 +244,11 @@ public class Controller
                 case 1: // "B" button
                     if (isLeftTriggerPressed)
                     {
+                        _mainWindow.GuardAttack();
                     }
                     if (StoryProgress.playerIsInTown)
                     {
-                        _mainWindow.LearnTechniqueAsync();
+                        _techniquesTrainer.LearnTechniqueAsync();
                         _mainWindow.ButtonUpgradeItem();
                         _mainWindow.TalkToMageAct4();
                     }
@@ -282,8 +284,8 @@ public class Controller
                     }
                     else
                     {
-                            _mainWindow.StartAct1Quest1(); // only starts if player is in act1
-                            _mainWindow.StartAct4Quest1();
+                        _mainWindow.StartAct1Quest1(); // only starts if player is in act1
+                        _mainWindow.StartAct4Quest1();
                     }
                     break;
                 case 4: // L1
@@ -310,15 +312,29 @@ public class Controller
                     break;
                 case 6: // Select
                     _mainWindow.OpenModifierPopupWindow();
-
-                    if (_mainWindow.IsInventoryOpen)
+                    if (_mainWindow.panelXboxControlsLayout.Visible == true)
                     {
-                        string filePath = "saveditems.json";
-                        if (File.Exists(filePath))
+                        _mainWindow.panelXboxControlsLayout.Hide();
+                        _mainWindow.panelEncounter.Show();
+                        if (StoryProgress.playerIsInTown)
                         {
-                            _playerState.Player.SaveEquippedItemsToFile(filePath);
+                            _mainWindow.ButtonContinue();
                         }
                     }
+                    else if (_mainWindow.panelEncounter.Visible == true)
+                    {
+                        _mainWindow.panelEncounter.Hide();
+                        _mainWindow.panelXboxControlsLayout.Show();
+                    }
+
+                    //if (_mainWindow.IsInventoryOpen) // unused save feature
+                    //{
+                    //    string filePath = "saveditems.json";
+                    //    if (File.Exists(filePath))
+                    //    {
+                    //        _playerState.Player.SaveEquippedItemsToFile(filePath);
+                    //    }
+                    //}
                     break;
                 case 7: // Start button
                     if (!_mainWindow.PlayGameHasBeenPressed)
@@ -430,9 +446,10 @@ public class Controller
             // Highlights the attacks that can be used when left trigger is held
             _mainWindow.btn_attack.Enabled = false;
             _mainWindow.buttonBloodLust.Enabled = false;
-            _mainWindow.buttonDodgeJab.Enabled = false;
+            _mainWindow.buttonSwiftAttack.Enabled = false;
             _mainWindow.buttonDivine.Enabled = true;
             _mainWindow.buttonRoarAttack.Enabled = true;
+            _mainWindow.buttonGuard.Enabled = true;
         }
     }
 
@@ -441,9 +458,10 @@ public class Controller
         // Highlights the attacks that can be used when left trigger is released
         _mainWindow.btn_attack.Enabled = true;
         _mainWindow.buttonBloodLust.Enabled = true;
-        _mainWindow.buttonDodgeJab.Enabled = true;
+        _mainWindow.buttonSwiftAttack.Enabled = true;
         _mainWindow.buttonDivine.Enabled = false;
         _mainWindow.buttonRoarAttack.Enabled = false;
+        _mainWindow.buttonGuard.Enabled = false;
 
         if (isRightTriggerPressed)
         {
@@ -464,7 +482,7 @@ public class Controller
             }
             else
             {
-                _mainWindow.DodgeJabAttack();
+                _mainWindow.SwiftAttack();
             }
         }
     }
@@ -508,7 +526,6 @@ public class Controller
     }
 
 }
-
 public enum TriggerType
 {
     Left,

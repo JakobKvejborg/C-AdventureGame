@@ -87,6 +87,11 @@ public class ImageSetter
         _mainWindow.pictureBoxAct2Smith.Image = GetImagePath("act2smith.png");
     }
 
+    public void SetAct2SmithUpgradedImage()
+    {
+        _mainWindow.pictureBoxAct2Smith.Image = GetImagePath("act2smithupgraded.png");
+    }
+
     // ACT 3 images
     public void SetAct3Backgroundimage()
     {

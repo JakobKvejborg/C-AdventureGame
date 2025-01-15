@@ -52,7 +52,7 @@ partial class MainWindow
         buttonBloodLust = new Button();
         buttonUpgradeItem = new Button();
         buttonLearnTechnique = new Button();
-        buttonDodgeJab = new Button();
+        buttonSwiftAttack = new Button();
         buttonRoarAttack = new Button();
         buttonAct1Quest1Continue = new Button();
         buttonAct1Q1Town = new Button();
@@ -60,6 +60,7 @@ partial class MainWindow
         buttonDivine = new Button();
         buttonAct4Q1Town = new Button();
         buttonAct4Quest1Continue = new Button();
+        buttonGuard = new Button();
         labelInvisibleWeaponRightHandEquipped = new Label();
         textBox1 = new TextBox();
         labelInventory = new Label();
@@ -143,6 +144,7 @@ partial class MainWindow
         labelInvisibleBelt = new Label();
         pictureBoxHero = new PictureBox();
         pictureBoxInventory = new PictureBox();
+        labelPlayerCritDmg = new Label();
         panelTown = new Panel();
         buttonTalkMage = new Button();
         labelAct4Q1 = new Label();
@@ -156,6 +158,8 @@ partial class MainWindow
         pictureBoxAct2Smith = new PictureBox();
         pictureBoxAct4Mage = new PictureBox();
         panelStartScreen = new Panel();
+        labelXboxRecommended = new Label();
+        pictureBoxXboxLogo = new PictureBox();
         buttonStartModifiers = new Button();
         labelGameAuthorName = new Label();
         buttonPlayGame = new Button();
@@ -166,6 +170,7 @@ partial class MainWindow
         textBoxAct1Quest1 = new TextBox();
         panelAct4Quest1 = new Panel();
         textBoxAct4Quest1 = new TextBox();
+        panelXboxControlsLayout = new Panel();
         ((System.ComponentModel.ISupportInitialize)pictureBoxHeroBag).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxLoot).BeginInit();
         panelMonster.SuspendLayout();
@@ -205,6 +210,7 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxAct2Smith).BeginInit();
         ((System.ComponentModel.ISupportInitialize)pictureBoxAct4Mage).BeginInit();
         panelStartScreen.SuspendLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxXboxLogo).BeginInit();
         panelGameOver.SuspendLayout();
         panelAct1Quest1.SuspendLayout();
         panelAct4Quest1.SuspendLayout();
@@ -412,24 +418,24 @@ partial class MainWindow
         buttonLearnTechnique.UseVisualStyleBackColor = true;
         buttonLearnTechnique.Click += buttonLearnTechnique_Click;
         // 
-        // buttonDodgeJab
+        // buttonSwiftAttack
         // 
-        buttonDodgeJab.BackColor = Color.Gainsboro;
-        buttonDodgeJab.Font = new Font("Cooper Black", 7.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        buttonDodgeJab.Location = new Point(204, 725);
-        buttonDodgeJab.Name = "buttonDodgeJab";
-        buttonDodgeJab.Size = new Size(93, 35);
-        buttonDodgeJab.TabIndex = 7;
-        buttonDodgeJab.Text = "Dodge Jab";
-        toolTip.SetToolTip(buttonDodgeJab, "\"3\"");
-        buttonDodgeJab.UseVisualStyleBackColor = false;
-        buttonDodgeJab.Click += buttonDodgeJab_Click;
+        buttonSwiftAttack.BackColor = Color.Gainsboro;
+        buttonSwiftAttack.Font = new Font("Matura MT Script Capitals", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        buttonSwiftAttack.Location = new Point(204, 725);
+        buttonSwiftAttack.Name = "buttonSwiftAttack";
+        buttonSwiftAttack.Size = new Size(93, 35);
+        buttonSwiftAttack.TabIndex = 7;
+        buttonSwiftAttack.Text = "Swift";
+        toolTip.SetToolTip(buttonSwiftAttack, "\"3\"");
+        buttonSwiftAttack.UseVisualStyleBackColor = false;
+        buttonSwiftAttack.Click += buttonDodgeJab_Click;
         // 
         // buttonRoarAttack
         // 
         buttonRoarAttack.BackColor = Color.Gainsboro;
         buttonRoarAttack.Font = new Font("Matura MT Script Capitals", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        buttonRoarAttack.Location = new Point(158, 699);
+        buttonRoarAttack.Location = new Point(156, 696);
         buttonRoarAttack.Name = "buttonRoarAttack";
         buttonRoarAttack.Size = new Size(93, 35);
         buttonRoarAttack.TabIndex = 44;
@@ -477,7 +483,7 @@ partial class MainWindow
         // 
         buttonDivine.BackColor = Color.Gainsboro;
         buttonDivine.Font = new Font("Matura MT Script Capitals", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
-        buttonDivine.Location = new Point(299, 725);
+        buttonDivine.Location = new Point(298, 725);
         buttonDivine.Name = "buttonDivine";
         buttonDivine.Size = new Size(93, 35);
         buttonDivine.TabIndex = 58;
@@ -509,6 +515,19 @@ partial class MainWindow
         buttonAct4Quest1Continue.Text = "Continue";
         toolTip.SetToolTip(buttonAct4Quest1Continue, "\"Enter\"");
         buttonAct4Quest1Continue.UseVisualStyleBackColor = true;
+        // 
+        // buttonGuard
+        // 
+        buttonGuard.BackColor = Color.Gainsboro;
+        buttonGuard.Font = new Font("Matura MT Script Capitals", 10.8F, FontStyle.Regular, GraphicsUnit.Point, 0);
+        buttonGuard.Location = new Point(251, 696);
+        buttonGuard.Name = "buttonGuard";
+        buttonGuard.Size = new Size(93, 35);
+        buttonGuard.TabIndex = 62;
+        buttonGuard.Text = "Guard";
+        toolTip.SetToolTip(buttonGuard, "\"6\"");
+        buttonGuard.UseVisualStyleBackColor = false;
+        buttonGuard.Click += buttonGuard_Click;
         // 
         // labelInvisibleWeaponRightHandEquipped
         // 
@@ -634,7 +653,7 @@ partial class MainWindow
         labelGoldInPocket.BackColor = Color.Transparent;
         labelGoldInPocket.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelGoldInPocket.ForeColor = Color.Gold;
-        labelGoldInPocket.Location = new Point(186, 320);
+        labelGoldInPocket.Location = new Point(186, 354);
         labelGoldInPocket.Name = "labelGoldInPocket";
         labelGoldInPocket.Size = new Size(47, 23);
         labelGoldInPocket.TabIndex = 17;
@@ -759,8 +778,9 @@ partial class MainWindow
         panelEncounter.Controls.Add(panelPopupHelmet);
         panelEncounter.Controls.Add(panelPopupAmulet);
         panelEncounter.Controls.Add(buttonBloodLust);
-        panelEncounter.Controls.Add(buttonDodgeJab);
+        panelEncounter.Controls.Add(buttonSwiftAttack);
         panelEncounter.Controls.Add(buttonRoarAttack);
+        panelEncounter.Controls.Add(buttonGuard);
         panelEncounter.Controls.Add(btn_attack);
         panelEncounter.Controls.Add(buttonReturnToTown);
         panelEncounter.Controls.Add(pictureBoxLoot);
@@ -798,6 +818,7 @@ partial class MainWindow
         panelEncounter.Controls.Add(pictureBoxHero);
         panelEncounter.Controls.Add(pictureBoxHeroBag);
         panelEncounter.Controls.Add(pictureBoxInventory);
+        panelEncounter.Controls.Add(labelPlayerCritDmg);
         panelEncounter.Dock = DockStyle.Fill;
         panelEncounter.Location = new Point(0, 0);
         panelEncounter.Name = "panelEncounter";
@@ -810,7 +831,7 @@ partial class MainWindow
         labelCritText.BackColor = Color.Transparent;
         labelCritText.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelCritText.ForeColor = Color.White;
-        labelCritText.Location = new Point(13, 383);
+        labelCritText.Location = new Point(12, 383);
         labelCritText.Name = "labelCritText";
         labelCritText.Size = new Size(45, 23);
         labelCritText.TabIndex = 57;
@@ -934,7 +955,7 @@ partial class MainWindow
         labelGold.BackColor = Color.Transparent;
         labelGold.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
         labelGold.ForeColor = Color.White;
-        labelGold.Location = new Point(135, 320);
+        labelGold.Location = new Point(135, 354);
         labelGold.Name = "labelGold";
         labelGold.Size = new Size(53, 23);
         labelGold.TabIndex = 51;
@@ -1333,7 +1354,7 @@ partial class MainWindow
         labelGoldPopup.AutoSize = true;
         labelGoldPopup.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
         labelGoldPopup.ForeColor = Color.Gold;
-        labelGoldPopup.Location = new Point(237, 320);
+        labelGoldPopup.Location = new Point(242, 354);
         labelGoldPopup.Name = "labelGoldPopup";
         labelGoldPopup.Size = new Size(57, 23);
         labelGoldPopup.TabIndex = 35;
@@ -1500,6 +1521,18 @@ partial class MainWindow
         pictureBoxInventory.TabStop = false;
         pictureBoxInventory.Click += pictureBoxInventory_Click;
         // 
+        // labelPlayerCritDmg
+        // 
+        labelPlayerCritDmg.AutoSize = true;
+        labelPlayerCritDmg.BackColor = Color.Transparent;
+        labelPlayerCritDmg.Font = new Font("Segoe UI", 10.2F, FontStyle.Bold);
+        labelPlayerCritDmg.ForeColor = Color.White;
+        labelPlayerCritDmg.Location = new Point(135, 324);
+        labelPlayerCritDmg.Name = "labelPlayerCritDmg";
+        labelPlayerCritDmg.Size = new Size(80, 23);
+        labelPlayerCritDmg.TabIndex = 61;
+        labelPlayerCritDmg.Text = "CritDmg";
+        // 
         // panelTown
         // 
         panelTown.BackColor = Color.Transparent;
@@ -1645,6 +1678,8 @@ partial class MainWindow
         panelStartScreen.BackColor = Color.Transparent;
         panelStartScreen.BackgroundImage = Properties.Resources.castle;
         panelStartScreen.BackgroundImageLayout = ImageLayout.Stretch;
+        panelStartScreen.Controls.Add(labelXboxRecommended);
+        panelStartScreen.Controls.Add(pictureBoxXboxLogo);
         panelStartScreen.Controls.Add(buttonStartModifiers);
         panelStartScreen.Controls.Add(labelGameAuthorName);
         panelStartScreen.Controls.Add(buttonPlayGame);
@@ -1655,6 +1690,27 @@ partial class MainWindow
         panelStartScreen.Size = new Size(537, 768);
         panelStartScreen.TabIndex = 22;
         // 
+        // labelXboxRecommended
+        // 
+        labelXboxRecommended.AutoSize = true;
+        labelXboxRecommended.Font = new Font("Segoe UI", 9F, FontStyle.Bold, GraphicsUnit.Point, 0);
+        labelXboxRecommended.ForeColor = Color.White;
+        labelXboxRecommended.Location = new Point(219, 683);
+        labelXboxRecommended.Name = "labelXboxRecommended";
+        labelXboxRecommended.Size = new Size(114, 20);
+        labelXboxRecommended.TabIndex = 5;
+        labelXboxRecommended.Text = "Recommended";
+        // 
+        // pictureBoxXboxLogo
+        // 
+        pictureBoxXboxLogo.Image = Properties.Resources.xbox;
+        pictureBoxXboxLogo.Location = new Point(230, 629);
+        pictureBoxXboxLogo.Name = "pictureBoxXboxLogo";
+        pictureBoxXboxLogo.Size = new Size(89, 66);
+        pictureBoxXboxLogo.SizeMode = PictureBoxSizeMode.StretchImage;
+        pictureBoxXboxLogo.TabIndex = 4;
+        pictureBoxXboxLogo.TabStop = false;
+        // 
         // buttonStartModifiers
         // 
         buttonStartModifiers.BackColor = Color.DarkRed;
@@ -1662,7 +1718,7 @@ partial class MainWindow
         buttonStartModifiers.FlatStyle = FlatStyle.Flat;
         buttonStartModifiers.Font = new Font("Impact", 16.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
         buttonStartModifiers.ForeColor = Color.White;
-        buttonStartModifiers.Location = new Point(179, 554);
+        buttonStartModifiers.Location = new Point(179, 513);
         buttonStartModifiers.Name = "buttonStartModifiers";
         buttonStartModifiers.Size = new Size(195, 55);
         buttonStartModifiers.TabIndex = 3;
@@ -1688,7 +1744,7 @@ partial class MainWindow
         buttonPlayGame.FlatStyle = FlatStyle.Flat;
         buttonPlayGame.Font = new Font("Impact", 20F, FontStyle.Bold);
         buttonPlayGame.ForeColor = Color.White;
-        buttonPlayGame.Location = new Point(179, 463);
+        buttonPlayGame.Location = new Point(179, 435);
         buttonPlayGame.Name = "buttonPlayGame";
         buttonPlayGame.Size = new Size(195, 55);
         buttonPlayGame.TabIndex = 1;
@@ -1699,11 +1755,11 @@ partial class MainWindow
         // labelGameTitle
         // 
         labelGameTitle.AutoSize = true;
-        labelGameTitle.Font = new Font("Impact", 67F, FontStyle.Bold | FontStyle.Italic);
+        labelGameTitle.Font = new Font("Impact", 67.8F, FontStyle.Bold | FontStyle.Italic, GraphicsUnit.Point, 0);
         labelGameTitle.ForeColor = Color.FromArgb(178, 34, 34);
-        labelGameTitle.Location = new Point(61, 111);
+        labelGameTitle.Location = new Point(52, 88);
         labelGameTitle.Name = "labelGameTitle";
-        labelGameTitle.Size = new Size(435, 274);
+        labelGameTitle.Size = new Size(443, 278);
         labelGameTitle.TabIndex = 0;
         labelGameTitle.Text = "Horrors \n\rAwoken";
         // 
@@ -1779,6 +1835,18 @@ partial class MainWindow
         textBoxAct4Quest1.Size = new Size(519, 90);
         textBoxAct4Quest1.TabIndex = 2;
         // 
+        // panelXboxControlsLayout
+        // 
+        panelXboxControlsLayout.BackColor = Color.Transparent;
+        panelXboxControlsLayout.BackgroundImage = (Image)resources.GetObject("panelXboxControlsLayout.BackgroundImage");
+        panelXboxControlsLayout.BackgroundImageLayout = ImageLayout.Stretch;
+        panelXboxControlsLayout.Dock = DockStyle.Fill;
+        panelXboxControlsLayout.ForeColor = Color.Transparent;
+        panelXboxControlsLayout.Location = new Point(0, 0);
+        panelXboxControlsLayout.Name = "panelXboxControlsLayout";
+        panelXboxControlsLayout.Size = new Size(537, 768);
+        panelXboxControlsLayout.TabIndex = 6;
+        // 
         // MainWindow
         // 
         AutoScaleDimensions = new SizeF(8F, 20F);
@@ -1786,10 +1854,11 @@ partial class MainWindow
         BackColor = SystemColors.ActiveCaptionText;
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(537, 768);
-        Controls.Add(panelTown);
         Controls.Add(panelEncounter);
-        Controls.Add(panelGameOver);
         Controls.Add(panelStartScreen);
+        Controls.Add(panelXboxControlsLayout);
+        Controls.Add(panelTown);
+        Controls.Add(panelGameOver);
         Controls.Add(panelAct1Quest1);
         Controls.Add(panelAct4Quest1);
         DoubleBuffered = true;
@@ -1851,6 +1920,7 @@ partial class MainWindow
         ((System.ComponentModel.ISupportInitialize)pictureBoxAct4Mage).EndInit();
         panelStartScreen.ResumeLayout(false);
         panelStartScreen.PerformLayout();
+        ((System.ComponentModel.ISupportInitialize)pictureBoxXboxLogo).EndInit();
         panelGameOver.ResumeLayout(false);
         panelGameOver.PerformLayout();
         panelAct1Quest1.ResumeLayout(false);
@@ -1934,7 +2004,7 @@ partial class MainWindow
     public PictureBox pictureBoxAct1ArtsTeacher;
     public Button buttonLearnTechnique;
     public Button btn_attack;
-    public Button buttonDodgeJab;
+    public Button buttonSwiftAttack;
     public Button buttonBloodLust;
     private Label labelInvisibleAmulet;
     private Label labelInvisibleBelt;
@@ -1999,4 +2069,9 @@ partial class MainWindow
     public PictureBox pictureBoxAct4Mage;
     public Label labelAct4Q1;
     public Button buttonTalkMage;
+    public Label labelPlayerCritDmg;
+    private PictureBox pictureBoxXboxLogo;
+    private Label labelXboxRecommended;
+    public Panel panelXboxControlsLayout;
+    public Button buttonGuard;
 }

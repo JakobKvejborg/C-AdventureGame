@@ -5,7 +5,6 @@ namespace AdventureGame;
 
 internal class Player
 {
-
     public string Name { get; set; }
     public int MaxHealth { get; set; }
     public int CurrentHealth { get; set; }
@@ -17,24 +16,33 @@ internal class Player
     public int GoldInPocket { get; set; }
     public int Experience { get; set; }
     public int Level { get; set; }
-    public List<Item> Inventory { get; set; }
-    public event Action LevelUpEvent;
-    public static int priceToHeal { get; set; } = 2; // 2 is the default value
-    public static int PriceToLearnTechnique { get; set; } = 10;
-    public Dictionary<ItemType, Item> EquippedItems { get; private set; }
-    public int XpNeededToLevelUp => ((10 * (Level + Level)) + (Level * Level) - 1);
     public int CritChance { get; set; }
     public int Regeneration { get; set; }
+    public int CritDamage { get; set; }
+    public List<Item> Inventory { get; set; }
+    public event Action LevelUpEvent;
+    public static int priceToHeal { get; set; } = 2; 
+    public static int PriceToLearnTechnique { get; set; } = 10; // TODO move this to TechTrainer class
+    public Dictionary<ItemType, Item> EquippedItems { get; private set; }
+    public int XpNeededToLevelUp => ((10 * (Level + Level)) + (Level * Level) - 1);
     public bool techniqueBloodLustIsLearned { get; set; }
-    public bool techniqueDodgeJabIsLearned { get; set; }
+    public bool techniqueSwiftIsLearned { get; set; }
     public bool techniqueRoarIsLearned { get; set; }
     public bool techniqueDivineIsLearned { get; set; }
+    public bool techniqueGuardIsLearned { get; set; }
     public int advanceTechnique = 0;
     public int NumberOfDragonEggsInInventory { get; set; }
+    public bool HasDragonMageUpgradeForSmith { get; set; }
+    public int RoarBuffDodge { get; set; } = 10;
+    public int RoarBuffCrit { get; set; } = 5;
+    public bool IsRoarActive { get; set; } = false;
+    public int RoarBuffCountdown { get; set; }
+    public int GuardBuffArmor { get; set; }
+    public bool GuardBuffIsActive { get; set; }
 
 
     public Player(string name, int maxHealth, int currentHealth, int damage, int strength, int lifesteal,
-        int armor, int dodgeChance, int goldInPocket, int experience, int level, int critChance, int regeneration)
+        int armor, int dodgeChance, int goldInPocket, int experience, int level, int critChance, int regeneration, int critDamage)
     {
         Name = name;
         MaxHealth = maxHealth;
@@ -51,6 +59,7 @@ internal class Player
         EquippedItems = new Dictionary<ItemType, Item>();
         CritChance = critChance;
         Regeneration = regeneration;
+        CritDamage = critDamage;
     }
 
     public void LevelUp(PlayerState playerState)
@@ -83,7 +92,7 @@ internal class Player
         {
             playerState.Player.CurrentHealth = MaxHealth;
             playerState.Player.GoldInPocket -= priceToHeal;
-            priceToHeal *= 2;
+            priceToHeal += (int)(priceToHeal * 0.1) + 9; // Add 10% of the current price + a flat value
         }
     }
     public async Task HandlePlayerDeathAsync(MainWindow mainWindow)
@@ -121,8 +130,8 @@ internal class Player
         Regeneration += item.Regeneration;
         CritChance += item.CritChance;
         Lifesteal += item.Lifesteal;
+        CritDamage += item.CritDamage;
     }
-
     public void UnequipItem(Item item, ComboBox comboboxInventory, ComboBox comboboxUpgradeItem)
     {
         if (EquippedItems.ContainsKey(item.Type))
@@ -138,6 +147,7 @@ internal class Player
             Regeneration -= item.Regeneration;
             CritChance -= item.CritChance;
             Lifesteal -= item.Lifesteal;
+            CritDamage -= item.CritDamage;
 
             EquippedItems.Remove(item.Type);
             comboboxInventory.Items.Add(item);
@@ -151,6 +161,42 @@ internal class Player
         }
     }
 
+    public void TurnOffRoarBuff(MainWindow mainWindow)
+    {
+        DodgeChance -= RoarBuffDodge;
+        CritChance -= RoarBuffCrit;
+        mainWindow.labelCritChance.ForeColor = Color.White;
+        mainWindow.labelPlayerDodge.ForeColor = Color.White;
+        IsRoarActive = false;
+    }
+
+    public void TurnOnRoarBuff(MainWindow mainWindow)
+    {
+        DodgeChance += RoarBuffDodge;
+        CritChance += RoarBuffCrit;
+        mainWindow.labelCritChance.ForeColor = Color.LightBlue;
+        mainWindow.labelPlayerDodge.ForeColor = Color.LightBlue;
+        IsRoarActive = true;
+    }
+
+    public void ResetGuardBuff()
+    {
+        if (GuardBuffIsActive)
+        {
+            Armor -= GuardBuffArmor;
+            GuardBuffIsActive = false;
+            GuardBuffArmor = 0;
+        }
+    }
+
+    public void ResetRoarBuff(MainWindow mainWindow)
+    {
+        RoarBuffCountdown = 0;
+        if (IsRoarActive)
+        {
+            TurnOffRoarBuff(mainWindow);
+        }
+    }
 
     public void SaveEquippedItemsToFile(string filePath)
     {

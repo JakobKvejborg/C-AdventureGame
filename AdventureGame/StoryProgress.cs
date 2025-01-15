@@ -17,6 +17,7 @@ internal class StoryProgress
     private ImageSetter _imageSetter;
     public MusicAndSound _sounds;
     public static bool TutorialIsOver { get; set; }
+    private int MageTalkInteractionCounter = 0;
     public bool Act1ArtsTeacherIsAvailable { get; set; } = true;
     public bool Act1BossDefeatedFlag = false;
     public bool Act2BossDefeatedFlag = false;
@@ -35,14 +36,6 @@ internal class StoryProgress
         return "You have just returned from a long journey to far realms." +
             "\n\r The roads are littered with corpses.\n\r Do you have the will to survive the Horrors of the lands?";
     }
-
-    //private void NextPanel() // Currently unused. Maybe this could've been used to switch between different acts/towns
-    //{
-    //    if (_mainWindow.panelsIndex < _mainWindow.panelsList.Count - 1)
-    //    {
-    //        _mainWindow.panelsList[++_mainWindow.panelsIndex].BringToFront();
-    //    }
-    //}
 
     public string GetSecondText()
     {
@@ -65,17 +58,28 @@ internal class StoryProgress
             "\"You don't have to pay me, I'm just glad to help!\" you pay for her help anyways.";
     }
 
-
     public string GetAct4FirstTimeText()
     {
         return "After almost drowning you arrive at the fiery lands of the Dragons. " +
             "As the towering beasts loom in the distance, you wonder if you'll ever see home again.";
     }
 
-    public string GetMageFirstText()
+    public string GetMageText(bool playerHasDragonEggs)
     {
-        return "\"Hmmm yesss... You! Collect me three dragon eggs. Yes, three! And then, maybe... " +
-            "just MAYBE, I'll give you something... useful in return. Yesss, heehe...\"";
+        if (playerHasDragonEggs)
+        {
+            return "\"Ahhh, the eggs! Magnificent, yesss! Here, take this as your reward... Now go, before I change my mind!";
+        }
+        switch (MageTalkInteractionCounter)
+        {
+            case 0:
+                MageTalkInteractionCounter++;
+                return "\"Hmmm yesss... You! Collect me three dragon eggs. Yes, three! And then, maybe... " +
+                    "just MAYBE, I'll give you something... useful in return. Yesss, heehe...\"";
+            default:
+                return "\"Hmmmm whyyy are you here without the eggs? I need the dragon eggs! Three of them. Romours say there are nests north of here... " +
+                    "Hehehe...";
+        }
     }
 
     public void ProgressStory()
@@ -197,6 +201,7 @@ internal class StoryProgress
             case 14:
                 playerIsInTown = false;
                 SetUpAct3Controls();
+                _sounds.PlayAct3Music();
                 _mainWindow.textBox1.Text = "You feel lost at sea. Get eaten by a seamonster or drown - which is worse? ";
                 StoryState++;
                 break;
@@ -210,7 +215,6 @@ internal class StoryProgress
                 break;
             case 16: // The player enters town act 3
                 SetUpAct3Controls();
-
                 if (progressFlag == true)
                 {
                     if (oneTimeMessage3 == true)
@@ -239,7 +243,7 @@ internal class StoryProgress
                 if (progressFlag == true)
                 {
                     PlayerIsInTown();
-                    _mainWindow.txtBox_Town.Text = "The fiery town is burning hot, you can barely breathe. But surely here you will find what you're searching for. \r\nOr maybe you'll die here trying. ";
+                    _mainWindow.txtBox_Town.Text = "The fiery town is burning hot, you can barely breathe. But surely here you will find what you're searching for. \r\nOr maybe it's here you'll die trying. ";
                 }
                 break;
 
@@ -336,6 +340,7 @@ internal class StoryProgress
         _mainWindow.buttonTalkMage.Show();
 
         _sounds.StopAct3Waves();
+        _sounds.StopAct3Music();
     }
 
     private void SetUpAct3Controls()
@@ -365,7 +370,7 @@ internal class StoryProgress
         _imageSetter.SetAct2Backgroundimage();
         _imageSetter.SetAct2PictureBoxTownImage(); // Sets the town image to Act2Town
         _imageSetter.SetAct2HealerPictureBoxImage();
-        _imageSetter.SetAct2SmithPictureBoxImage();
+        //_imageSetter.SetAct2SmithPictureBoxImage();
         _mainWindow.pictureBoxAct1ArtsTeacher.Hide();
         _mainWindow.buttonLearnTechnique.Hide();
         _mainWindow.pictureBoxHealer.Show();
@@ -380,6 +385,7 @@ internal class StoryProgress
 
         _sounds.StopAct1TownMusic();
         _sounds.StopAct3Waves();
+        _sounds.StopAct3Music();
     }
 
     private void PlayerIsInTown()
