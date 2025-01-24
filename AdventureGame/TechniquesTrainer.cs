@@ -27,37 +27,41 @@ internal class TechniquesTrainer
         {
             if (playerState.Player.GoldInPocket >= Player.PriceToLearnTechnique)
             {
-                playerState.Player.GoldInPocket -= Player.PriceToLearnTechnique;
 
                 switch (playerState.Player.advanceTechnique)
                 {
                     case 0:
                         playerState.Player.techniqueBloodLustIsLearned = true;
-                        _mainWindow.txtBox_Town.Text = "After many hours of training you have learned the Bloodlust technique. Use it with care.";
+                        _mainWindow.txtBox_Town.Text = "After many hours of training you have learned the Bloodlust technique. Use it with care - it deals huge damage, but comes at the cost of blood.";
                         _mainWindow.buttonBloodLust.Show();
                         break;
                     case 1:
                         playerState.Player.techniqueSwiftIsLearned = true;
-                        _mainWindow.txtBox_Town.Text = "After many hours of training you have learned the Swift technique. A way to angle the sword after dodging an attack.";
+                        _mainWindow.txtBox_Town.Text = "After many hours of training you have learned the Swift technique. Unleash a powerful strike after dodging an attack.";
                         _mainWindow.buttonSwiftAttack.Show();
                         break;
                     case 2:
                         playerState.Player.techniqueRoarIsLearned = true;
-                        _mainWindow.txtBox_Town.Text = "After many hours of training you have learned the Roar technique. A battle cry that boosts your stats for a period.";
+                        _mainWindow.txtBox_Town.Text = "After many hours of training you have learned the Roar technique. A battle cry that boosts your reflexes for a period.";
                         _mainWindow.buttonRoarAttack.Show();
                         break;
                     case 3:
                         playerState.Player.techniqueDivineIsLearned = true;
-                        _mainWindow.txtBox_Town.Text = "After many hours of training you have learned the Divine technique - a sacred plea for aid in your most desperate hour.";
+                        _mainWindow.txtBox_Town.Text = "After many hours of training you have learned the Divine technique - a holy attack dealing damage that increases with your missing health.";
                         _mainWindow.buttonDivine.Show();
                         break;
                     case 4:
                         playerState.Player.techniqueGuardIsLearned = true;
-                        _mainWindow.txtBox_Town.Text = "The once mighty warrior teaches you the Guard technique - a way to boost your defenses when time is running out.";
+                        _mainWindow.txtBox_Town.Text = "The once mighty warrior teaches you the Guard technique - a way to boost your defenses. Once per battle, when near death, use this stance to stay alive.";
                         _mainWindow.buttonGuard.Show();
                         break;
+                    default:
+                        _mainWindow.txtBox_Town.Text = "Sorry, I've taught you everything I know.";
+                        _sounds.PlayAct1ArtsTeacherNo();
+                        return;
                 }
 
+                playerState.Player.GoldInPocket -= Player.PriceToLearnTechnique;
                 playerState.Player.advanceTechnique += 1;
                 Player.PriceToLearnTechnique *= 3;
                 _mainWindow.buttonLearnTechnique.Text = $"Learn {Player.PriceToLearnTechnique}G";
@@ -75,4 +79,4 @@ internal class TechniquesTrainer
             }
         }
     }
-        }
+}

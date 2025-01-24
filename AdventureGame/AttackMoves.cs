@@ -1,8 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Numerics;
 using System.Text;
 using System.Threading.Tasks;
+using static System.Runtime.InteropServices.JavaScript.JSType;
+using System.Windows.Forms;
 
 namespace AdventureGame;
 
@@ -87,7 +90,10 @@ internal class AttackMoves
         {
             _sounds.PlayDivineAttackSound();
             double missingHealthPercentage = (double)(_playerState.Player.MaxHealth - _playerState.Player.CurrentHealth) / _playerState.Player.MaxHealth;
-            double damageMultiplier = 0.2 + (2.5 - 0.2) * Math.Pow(missingHealthPercentage, 1.6);
+            double dmgWhenPlayerFullHp = 0.2; // 20% of base damage when the player is at full health.
+            double dmgWhenPlayerLowHp = 2.7; //  250 % of base damage when the player is critically low on health.
+
+            double damageMultiplier = dmgWhenPlayerFullHp + (dmgWhenPlayerLowHp - dmgWhenPlayerFullHp) * Math.Pow(missingHealthPercentage, 1.6); // 1.6 This exponent controls the rate at which the multiplier scales
             int playerAttackDamageTotal = _playerState.Player.CalculateTotalDamage(_playerState);
             playerAttackDamageTotal = (int)(playerAttackDamageTotal * damageMultiplier);
 
@@ -99,10 +105,9 @@ internal class AttackMoves
     {
         if (Encounter.Monster != null && Encounter.Monster.CurrentHealth > 0)
         {
-            double percentPlayerHealth = _playerState.Player.MaxHealth * 0.15;
 
             // Guard clause (the method does nothing if the buff is already active or the player has too much health)
-            if (_playerState.Player.GuardBuffIsActive || _playerState.Player.CurrentHealth > percentPlayerHealth) { return; }
+            if (_playerState.Player.GuardBuffIsActive || _playerState.Player.CurrentHealth > _playerState.Player.PlayerIsOnLowHealth) { return; }
 
             int guardHealPlayer = _playerState.Player.MaxHealth / 10;
             _playerState.Player.GuardBuffArmor = (int)(_playerState.Player.Armor * 0.10); // The buff is % of the players' armor
@@ -111,7 +116,7 @@ internal class AttackMoves
             _playerState.Player.CurrentHealth = Math.Min(_playerState.Player.MaxHealth, _playerState.Player.CurrentHealth + guardHealPlayer); // ensures maxhealth isn't exceeded
             _playerState.Player.Armor += _playerState.Player.GuardBuffArmor;
             _mainWindow.UpdatePlayerLabels(); // updates labels after the buff is given
-            _mainWindow.textBox1.Text = "You stand your ground, boosting your defenses!";
+            _mainWindow.textBoxEncounter.Text = "You stand your ground, boosting your defenses!";
             _playerState.Player.GuardBuffIsActive = true;
         }
     }

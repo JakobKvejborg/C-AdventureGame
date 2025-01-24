@@ -1,4 +1,5 @@
 ﻿
+using System.Reflection.Metadata.Ecma335;
 
 namespace AdventureGame;
 
@@ -22,7 +23,10 @@ internal class StoryProgress
     public bool Act1BossDefeatedFlag = false;
     public bool Act2BossDefeatedFlag = false;
     public bool Act3BossDefeatedFlag = false;
+    public bool Act5BossDefeatedFlag;
+    public bool Act2OptionalBossDefeatedFlag;
     public static int WhichActIsThePlayerIn { get; set; } = 1;
+    public static bool PlayerHasEnteredAct4 { get; set; }
 
     public StoryProgress(MainWindow mainWindow, MusicAndSound sounds)
     {
@@ -34,13 +38,14 @@ internal class StoryProgress
     public string GetFirstText()
     {
         return "You have just returned from a long journey to far realms." +
-            "\n\r The roads are littered with corpses.\n\r Do you have the will to survive the Horrors of the lands?";
+            "\n\r The road home is littered with corpses.\n\r Do you have the will to survive the horrors of the lands?" +
+            "\r\nYour sister is missing - you must find her!";
     }
 
     public string GetSecondText()
     {
-        return "You ride through the thickening fog, the air heavy with dread." +
-            " A chill sweeps over you as a deadly fiend emerges. It blocks your path - deny its life!";
+        return "You ride through the thickening fog, the air heavy with dread. " +
+            "A deadly horror emerges. It blocks your path - deny its life!";
     }
 
     public string GetHealingText()
@@ -54,14 +59,48 @@ internal class StoryProgress
     }
     public string GetAct4HealingText()
     {
-        return "\"Careful, the Dragons may bite,\" the girl says with a hint of a smile on her face. The fire burns hot around her. " +
-            "\"You don't have to pay me, I'm just glad to help!\" you pay for her help anyways.";
+        return "\"Careful, the Dragons may bite,\" the girl says with a hint of a smile on her face. " +
+            "\"You don't have to pay me, I'm just glad to help!\" You pay for her help anyways.";
     }
 
     public string GetAct4FirstTimeText()
     {
         return "After almost drowning you arrive at the fiery lands of the Dragons. " +
-            "As the towering beasts loom in the distance, you wonder if you'll ever see home again.";
+            "As the towering beasts loom in the distance, you begin to worry you'll never find Sophia.";
+    }
+
+    public string GetAct3FrogReforgeText()
+    {
+        return "\"Did it work? Did it work, you ask... I have no idea! Go see for yourself!\" *Ribbit*";
+    }
+
+    public string GetAct3FrogItemAlreadyReforgedText()
+    {
+        return "\"Looks like I've already applied my skills to this item! Hopefully it's what you wanted! And if not... Oh well.\" *Ribbit*";
+    }
+    public string GetAct3FrogNoCoinText()
+    {
+        return "\"You nearly don't have any coins! What are you, some kind of cheap pirate? Aarrrrr, haha!\" *Ribbit*";
+    }
+
+    public string GetAct4PortalText()
+    {
+        return "The burning girl takes you to a portal leading to the skies high above. Did Sophia really come here? Maybe she was taken here - hopefully she's still alive.";
+    }
+
+    public string GetSophiaIsSavedText()
+    {
+        return "Sophia embraces you with tears streaming down her face. You have saved her, and the world seems just a bit brighter. " +
+                        "\"About time! What took you so long?\" she says smiling, with tears coming down her cheeks. Sophia returns with you out of the door behind you." +
+                        " Congratulations Hero, you have finally done it. " +
+                        $"But one last challenge remains - if you dare. MODIFIER: [{ModifierProcessor.GetRandomModifier()}]";
+    }
+
+    public string GetTimeTravelText()
+    {
+        return "The Hero now must journey back through time, wielding the wisdom of past battles to change the fate of Sophia. Use the given Modifier code to gain " +
+            "some small advantage, and be stronger than before. Many Modifier codes can be collected at random, and any number of Modifier codes can be used " +
+            "each run. ";
     }
 
     public string GetMageText(bool playerHasDragonEggs)
@@ -82,33 +121,38 @@ internal class StoryProgress
         }
     }
 
+    public string GetMageDoesntWantAnythingText()
+    {
+        return "\"I don't want anything more from you, so go away! Hmmmmmm...\"";
+    }
+
     public void ProgressStory()
     {
         switch (StoryState)
         {
             case 0:
-                _mainWindow.textBox1.Clear();
-                _mainWindow.textBox1.AppendText(GetFirstText());
+                _mainWindow.textBoxEncounter.Clear();
+                _mainWindow.textBoxEncounter.AppendText(GetFirstText());
                 StoryState++;
                 break;
             case 1:
-                _mainWindow.textBox1.Clear();
-                _mainWindow.textBox1.AppendText(GetSecondText());
+                _mainWindow.textBoxEncounter.Clear();
+                _mainWindow.textBoxEncounter.AppendText(GetSecondText());
                 StoryState++;
                 break;
             case 2:
                 _mainWindow.pictureBoxHero.Show();
                 _mainWindow.btn_attack.Show();
                 _mainWindow.pictureBoxHeroBag.Show();
-                Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, _mainWindow);
-                _mainWindow.textBox1.AppendText("");
+                Encounter.PerformEncounter(monsterContainer.ListOfMonsters1, itemContainer.items1, _mainWindow);
+                _mainWindow.textBoxEncounter.AppendText("");
                 StoryState++;
                 break;
             case 3:
             case 4:
                 if (progressFlag == true)
                 {
-                    Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.ListOfMonsters1, itemContainer.items1, _mainWindow);
                     StoryState++;
                 }
                 break;
@@ -121,9 +165,9 @@ internal class StoryProgress
                     if (oneTimeMessage == true)
                     {
                         _sounds.PlayAct1TownMusic();
-                        _mainWindow.txtBox_Town.Text = "You come across a small town in the middle of the forest. " +
-                            "While the town isn’t completely deserted, it's dead quiet. " +
-                            "Be vary of the road straight ahead. Choose a path.";
+                        _mainWindow.txtBox_Town.Text = "You finally arrive at your hometown. The many horrors surrounding the town does not bode well for Sophia. " +
+                            "The town is dead quiet. " +
+                            "Be vary of the road straight ahead.";
                         oneTimeMessage = false;
                     }
                     else
@@ -148,15 +192,15 @@ internal class StoryProgress
                 TutorialIsOver = true;
                 break;
             case 8:
-                _mainWindow.textBox1.Text = "After slaying the demon tree, you venture forth, much further to the north. ";
+                _mainWindow.textBoxEncounter.Text = "After slaying the demon tree, you venture forth, much further to the north. ";
                 StoryState++;
                 break;
             case 9:
                 _sounds.StopAct1TownMusic();
                 _sounds.PlayAct2WindMusic();
                 _imageSetter.SetAct2Backgroundimage();
-                _mainWindow.textBox1.Text = "The high mountains are cold, and you are close to freezing to death. " +
-                    "But for some unknown reason you mindlessly continue - to face the horrors ahead.";
+                _mainWindow.textBoxEncounter.Text = "The high mountains are cold, and you are close to freezing to death. " +
+                    "But you must continue and face the horrors ahead. You must find Sophia!";
                 oneTimeMessage = (true); // Reusing the flag for act2
                 StoryState++;
                 break;
@@ -166,7 +210,7 @@ internal class StoryProgress
                 _mainWindow.IsReturnToTownEnabled = true;
                 if (progressFlag == true)
                 {
-                    Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items1, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.ListOfSnowMonsters1, itemContainer.items1, _mainWindow);
                     StoryState++;
                 }
                 break;
@@ -194,22 +238,22 @@ internal class StoryProgress
                 }
                 break;
             case 13: // Act 2 boss is defeated
-                _mainWindow.textBox1.Text = "The colossal snow beast crashes to the ground, dead. " +
-                    "Your quest now leads you beyond the shores and into the vast expanse of the sea. ";
+                _mainWindow.textBoxEncounter.Text = "The colossal snow beast crashes to the ground, dead. " +
+                    "Your quest now leads you beyond the shores and into the vast expanse of the sea.";
                 StoryState++;
                 break;
             case 14:
                 playerIsInTown = false;
                 SetUpAct3Controls();
                 _sounds.PlayAct3Music();
-                _mainWindow.textBox1.Text = "You feel lost at sea. Get eaten by a seamonster or drown - which is worse? ";
+                _mainWindow.textBoxEncounter.Text = "You feel lost at sea. Get eaten by a seamonster or drown - which is worse? ";
                 StoryState++;
                 break;
             case 15:
                 if (progressFlag == true)
                 {
                     EnableReturnToTownFunction();
-                    Encounter.PerformEncounter(monsterContainer.listOfMonstersAct3, itemContainer.items4, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.ListOfMonstersAct3, itemContainer.items4, _mainWindow);
                     StoryState++;
                 }
                 break;
@@ -232,8 +276,12 @@ internal class StoryProgress
                 _sounds.PlayAct4Music();
                 if (oneTimeMessage2)
                 {
-                    _mainWindow.textBox1.Text = GetAct4FirstTimeText();
+                    _mainWindow.textBoxEncounter.Text = GetAct4FirstTimeText();
                     oneTimeMessage2 = false;
+                }
+                else // This message is displayed when coming from act 5
+                {
+                    _mainWindow.txtBox_Town.Text = "The town is still standing, luckily the dragons haven't burned it down just yet. Where to next?";
                 }
                 StoryState++;
                 break;
@@ -243,46 +291,107 @@ internal class StoryProgress
                 if (progressFlag == true)
                 {
                     PlayerIsInTown();
-                    _mainWindow.txtBox_Town.Text = "The fiery town is burning hot, you can barely breathe. But surely here you will find what you're searching for. \r\nOr maybe it's here you'll die trying. ";
+                    _mainWindow.txtBox_Town.Text = "The fiery town is burning hot, you can barely breathe. But surely here you will find what you're searching for. \r\nOr maybe it's here you'll die trying.";
+                    progressFlag = true;
+                    //StoryState++;
                 }
                 break;
+            case 19: // Act 5 start
+                SetupAct5Controls();
+                playerIsInTown = false;
+                _mainWindow.panelTown.Show();
+                _imageSetter.SetAct5IntroImage();
+                _mainWindow.txtBox_Town.Text = GetAct4PortalText();
+                _mainWindow.IsReturnToTownEnabled = false;
+                _mainWindow.pictureBoxCompass.Hide();
+                StoryState++;
+                break;
+            case 20: // Town Act 5
+                SetupAct5Controls();
+                _mainWindow.pictureBoxAct5Hero.Show();
+                EnableReturnToTownFunction();
+                if (progressFlag == true)
+                {
+                    PlayerIsInTown();
+                    _mainWindow.txtBox_Town.Text = "Three doors black as the void. The nightmares on the other side are just waiting for the next victim to enter. Which to choose?";
+                }
+                break;
+            case 21:
+                _mainWindow.textBoxEncounter.Text = "You have slain the Awoken Horror. There's not a sound to be heard. You've almost lost your mind, and all hope with it.";
+                StoryState++;
+                break;
+            case 22:
+                _mainWindow.textBoxEncounter.Text = "You look a little further into the void, hoping to find any signs of life. And then, right in front of you, there she is.";
+                StoryState++;
+                break;
+            case 23: // ENDING
+                _mainWindow.pictureBoxCompass.Hide();
+                _mainWindow.txtBox_Town.Clear();
+                _mainWindow.pictureBoxAct5Hero.Hide();
+                _mainWindow.panelEncounter.Hide();
+                _mainWindow.panelTown.Show();
+
+                if (Encounter.TotalNumberOfMonstersDefeated < 150 && ModifierProcessor.NumberOfModifiersCurrentlyActive >= 4) // If Sophia is alive
+                {
+                    _imageSetter.SetAct5SophiaAlive();
+                    _mainWindow.txtBox_Town.Text = GetSophiaIsSavedText();
+                    StoryState = 20; // Advance the story state
+                }
+                else // If Sophia is not alive
+                {
+                    _mainWindow.txtBox_Town.Text = "You find Sophia's lifeless body in the void. The darkness has consumed her. " +
+                        "Your heart sinks as you realize you've failed to save her.";
+                    _imageSetter.SetAct5SophiaDeath(); // Show an image for Sophia being dead, if applicable
+                    StoryState++; // Advance the story state
+                }
+                break;
+            case 24:
+                _mainWindow.txtBox_Town.Text = GetTimeTravelText();
+                StoryState++;
+                break;
+            case 25: // Player gets the Modifier code
+                _mainWindow.txtBox_Town.Text = $"MODIFIER: [{ModifierProcessor.GetRandomModifier()}] Write this code down, and use it on your next playthrough. Now go and save her, good luck Hero!";
+                StoryState = 20;
+                break;
+
+
 
             // Special cases:
             case 99: // Act 1 Quest 1 Hungry Beast
                 if (progressFlag == true)
                 {
-                    Encounter.PerformEncounter(monsterContainer.listOfMonstersAct1Quest1, itemContainer.noItems, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.ListOfMonstersAct1Quest1, itemContainer.noItems, _mainWindow);
                     StoryState = 7;
                 }
                 break;
             case 100: // Act 1 West repeated
                 if (progressFlag == true)
                 {
-                    Encounter.PerformEncounter(monsterContainer.listOfMonsters1, itemContainer.items1, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.ListOfMonsters1, itemContainer.items1, _mainWindow);
                 }
                 break;
             case 101: // Act 1 East repeated
                 if (progressFlag == true)
                 {
-                    Encounter.PerformEncounter(monsterContainer.listOfMonsters2, itemContainer.items2, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.ListOfMonsters2, itemContainer.items2, _mainWindow);
                 }
                 break;
             case 102: // Act 2 West repeated GOBLINS
                 if (progressFlag == true)
                 {
-                    Encounter.PerformEncounter(monsterContainer.listOfMonstersSnowGoldGoblin, itemContainer.noItems, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.ListOfMonstersSnowGoldGoblin, itemContainer.noItems, _mainWindow);
                 }
                 break;
             case 103: // Act 2 East repeated Snow
                 if (progressFlag == true)
                 {
-                    Encounter.PerformEncounter(monsterContainer.listOfSnowMonsters1, itemContainer.items3, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.ListOfSnowMonsters1, itemContainer.items3, _mainWindow);
                 }
                 break;
             case 104: // Act 3 West & East repeated
                 if (progressFlag == true)
                 {
-                    Encounter.PerformEncounter(monsterContainer.listOfMonstersAct3, itemContainer.items4, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.ListOfMonstersAct3, itemContainer.items4, _mainWindow);
                 }
                 break;
             case 105: // Act 4 East dragons repeated
@@ -294,7 +403,7 @@ internal class StoryProgress
             case 106: // Act 4 West repeated
                 if (progressFlag == true)
                 {
-                    Encounter.PerformEncounter(monsterContainer.listOfMonstersAct4West, itemContainer.items5, _mainWindow);
+                    Encounter.PerformEncounter(monsterContainer.ListOfMonstersAct4West, itemContainer.items5, _mainWindow);
                 }
                 break;
             case 107: // Act 4 Dragon Eggs North
@@ -303,7 +412,46 @@ internal class StoryProgress
                     Encounter.PerformEncounter(monsterContainer.ListOfDragonEggAct4North, itemContainer.noItems, _mainWindow);
                 }
                 break;
+            case 108: // Act 5 West repeated
+                if (progressFlag == true)
+                {
+                    Encounter.PerformEncounter(monsterContainer.ListOfAct5Monsters, itemContainer.items7, _mainWindow);
+                }
+                break;
+            case 109: // Act 5 East
+                if (progressFlag == true)
+                {
+                    Encounter.PerformEncounter(monsterContainer.ListOfAct5Monsters, itemContainer.items8, _mainWindow);
+                }
+                break;
+            case 110: // Act 2 Optional boss The Frostfallen King
+                if (progressFlag == true)
+                {
+                    _imageSetter.SetAct2FrostFallenKingImage();
+                    _sounds.PlayAct2FrostfallenKing();
+                    _mainWindow.buttonReturnToTown.Hide();
+                    Encounter.PerformEncounter(monsterContainer.ListOfOptionalBossAct2, itemContainer.godlyBossItems, _mainWindow);
+                    Act2OptionalBossDefeatedFlag = true;
+                }
+                break;
+
         }
+    }
+
+    private void SetupAct5Controls()
+    {
+        WhichActIsThePlayerIn = 5;
+        _sounds.StopAct4Music();
+
+        _imageSetter.SetAct5EncounterBackground();
+        _mainWindow.pictureBoxCompass.Show();
+        _mainWindow.panelAct4Quest1.Hide();
+        _imageSetter.SetAct5TownBackgroundImage();
+        _mainWindow.buttonHeal.Hide();
+        _mainWindow.pictureBoxAct4Mage.Hide();
+        _mainWindow.labelAct4Q1.Hide();
+        _mainWindow.buttonTalkMage.Hide();
+        _mainWindow.pictureBoxHealer.Hide();
     }
 
     private void SetupAct1Controls()
@@ -317,6 +465,7 @@ internal class StoryProgress
         _mainWindow.buttonUpgradeItem.Hide();
         _mainWindow.comboBoxUpgradeItems.Hide();
         _mainWindow.labelAct1Quest1.Show();
+        _mainWindow.labelAct2Q1.Hide();
     }
 
     private void EnableReturnToTownFunction()
@@ -329,7 +478,8 @@ internal class StoryProgress
     private void SetupAct4Controls()
     {
         WhichActIsThePlayerIn = 4;
-        _imageSetter.SetAct4BackgroundImage();
+        PlayerHasEnteredAct4 = true;
+        _imageSetter.SetAct4EncounterBackgroundImage();
         _imageSetter.SetAct4TownBackgroundImage();
         _mainWindow.pictureBoxHealer.Show();
         _mainWindow.buttonHeal.Show();
@@ -337,7 +487,9 @@ internal class StoryProgress
         _imageSetter.SetAct4MageImage();
         _mainWindow.pictureBoxAct4Mage.Show();
         _mainWindow.labelAct4Q1.Show();
+        _mainWindow.labelAct3Q1.Hide();
         _mainWindow.buttonTalkMage.Show();
+        _mainWindow.pictureBoxAct5Hero.Hide();
 
         _sounds.StopAct3Waves();
         _sounds.StopAct3Music();
@@ -357,7 +509,9 @@ internal class StoryProgress
         _mainWindow.pictureBoxAct4Mage.Hide();
         WhichActIsThePlayerIn = 3;
         _mainWindow.labelAct4Q1.Hide();
+        _mainWindow.labelAct3Q1.Show();
         _mainWindow.buttonTalkMage.Hide();
+        _mainWindow.labelAct2Q1.Hide();
 
         _sounds.StopAct4Music();
         _sounds.StopAct2WindSound();
@@ -367,6 +521,7 @@ internal class StoryProgress
 
     public void SetupAct2controls()
     {
+        _mainWindow.labelAct2Q1.Show();
         _imageSetter.SetAct2Backgroundimage();
         _imageSetter.SetAct2PictureBoxTownImage(); // Sets the town image to Act2Town
         _imageSetter.SetAct2HealerPictureBoxImage();
@@ -375,13 +530,13 @@ internal class StoryProgress
         _mainWindow.buttonLearnTechnique.Hide();
         _mainWindow.pictureBoxHealer.Show();
         _mainWindow.buttonHeal.Show();
-        _mainWindow.pictureBoxHealer.Size = new Size(210, 310);
         _mainWindow.pictureBoxHealer.SizeMode = PictureBoxSizeMode.Zoom;
         _mainWindow.pictureBoxAct2Smith.Show();
         _mainWindow.comboBoxUpgradeItems.Show();
         _mainWindow.buttonUpgradeItem.Show();
         _mainWindow.pictureBoxTown.Show();
         _mainWindow.labelAct1Quest1.Hide();
+        _mainWindow.labelAct3Q1.Hide();
 
         _sounds.StopAct1TownMusic();
         _sounds.StopAct3Waves();
@@ -390,7 +545,7 @@ internal class StoryProgress
 
     private void PlayerIsInTown()
     {
-        _mainWindow.textBox1.Clear();
+        _mainWindow.textBoxEncounter.Clear();
         _mainWindow.panelEncounter.Hide();
         _mainWindow.panelTown.Show();
         _mainWindow.HideInventory();

@@ -27,7 +27,8 @@ public class Item
     public int CritChance { get; set; }
     public int CritDamage { get; set; }
     public static int CostToUpgrade { get; set; } = 50;
-    public bool IsItemUpgraded { get; set; } = false;
+    public bool IsItemUpgraded { get; set; }
+    public bool IsItemReforged { get; set; }
     public static int SmithUpgradeMultiplication = 1;
 
     // Weapon item types
@@ -112,6 +113,7 @@ public class Item
         }
         Random random = new Random();
         Name = "Upg. " + Name;
+        Item.CostToUpgrade += 20;
         LevelRequirement += 1;
         IsItemUpgraded = true;
         switch (Type)
@@ -157,7 +159,7 @@ public class Item
                 switch (bootsUpgradeChoice)
                 {
                     case 1: // Health
-                        Health += random.Next(1, 14) * SmithUpgradeMultiplication + SmithUpgradeMultiplication; // Increase Health by 1 to 13
+                        Health += random.Next(1, 15) * SmithUpgradeMultiplication + SmithUpgradeMultiplication; // Increase Health by 1 to 13
                         break;
                     case 2: // Dodge Chance
                         DodgeChance += random.Next(1, 6) * SmithUpgradeMultiplication; // Increase Dodge Chance by 1 to 5
@@ -172,13 +174,13 @@ public class Item
                 switch (glovesUpgradeChoice)
                 {
                     case 1: // Armor
-                        Armor += random.Next(1, 4) * SmithUpgradeMultiplication; // Increase Health by 1 to 3
+                        Armor += random.Next(1, 3) * SmithUpgradeMultiplication; 
                         break;
                     case 2: // Strength
                         Strength += random.Next(1, 8) * SmithUpgradeMultiplication;
                         break;
                     case 3:
-                        Regeneration += random.Next(1, 7) * SmithUpgradeMultiplication * SmithUpgradeMultiplication; // increase regen by 1 to 4
+                        Regeneration += random.Next(1, 7) * SmithUpgradeMultiplication * SmithUpgradeMultiplication;
                         break;
                         // Add more cases if needed
                 }
@@ -216,7 +218,7 @@ public class Item
                         Strength += random.Next(1, 3) * SmithUpgradeMultiplication;
                         break;
                     case 3:
-                        Health += random.Next(1, 11) * SmithUpgradeMultiplication;
+                        Health += random.Next(1, 14) * SmithUpgradeMultiplication;
                         break;
                     case 4:
                         Regeneration += random.Next(1, 15) * SmithUpgradeMultiplication * SmithUpgradeMultiplication;
@@ -232,7 +234,7 @@ public class Item
                         Armor += random.Next(1, 4) * SmithUpgradeMultiplication; // Increase Health by 1 to 3
                         break;
                     case 2:
-                        Health += random.Next(1, 21) * SmithUpgradeMultiplication + SmithUpgradeMultiplication;
+                        Health += random.Next(1, 23) * SmithUpgradeMultiplication + SmithUpgradeMultiplication;
                         break;
                 }
                 break;
@@ -242,9 +244,7 @@ public class Item
                 Lifesteal += random.Next(1, 10) + SmithUpgradeMultiplication + SmithUpgradeMultiplication;
                 break;
         }
-
     }
-
 
 }
 
@@ -255,13 +255,12 @@ public enum ItemType
     Armor,
     Boots,
     Helmet,
-    Ring,
+    //Ring,
     Amulet,
-    Bracers,
+    //Bracers,
     Leggings,
     Shoulders,
     Gloves,
     Belt
-    // Add more as needed
 }
 

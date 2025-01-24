@@ -22,7 +22,7 @@ internal class Player
     public List<Item> Inventory { get; set; }
     public event Action LevelUpEvent;
     public static int priceToHeal { get; set; } = 2; 
-    public static int PriceToLearnTechnique { get; set; } = 10; // TODO move this to TechTrainer class
+    public static int PriceToLearnTechnique { get; set; } = 10;
     public Dictionary<ItemType, Item> EquippedItems { get; private set; }
     public int XpNeededToLevelUp => ((10 * (Level + Level)) + (Level * Level) - 1);
     public bool techniqueBloodLustIsLearned { get; set; }
@@ -39,7 +39,8 @@ internal class Player
     public int RoarBuffCountdown { get; set; }
     public int GuardBuffArmor { get; set; }
     public bool GuardBuffIsActive { get; set; }
-
+    public double PlayerIsOnLowHealth => MaxHealth * 0.15;
+    public static bool HasFrozenLily;
 
     public Player(string name, int maxHealth, int currentHealth, int damage, int strength, int lifesteal,
         int armor, int dodgeChance, int goldInPocket, int experience, int level, int critChance, int regeneration, int critDamage)
@@ -69,7 +70,7 @@ internal class Player
             Level++;
             playerState.Player.Experience = 0;
 
-            playerState.Player.MaxHealth += playerState.Player.Level;
+            playerState.Player.MaxHealth += playerState.Player.Level + (playerState.Player.Level / 2);
             playerState.Player.CurrentHealth = playerState.Player.MaxHealth; // this heals the player to full hp on level up
 
             LevelUpEvent?.Invoke();
@@ -92,7 +93,7 @@ internal class Player
         {
             playerState.Player.CurrentHealth = MaxHealth;
             playerState.Player.GoldInPocket -= priceToHeal;
-            priceToHeal += (int)(priceToHeal * 0.1) + 9; // Add 10% of the current price + a flat value
+            priceToHeal += (int)((priceToHeal * 0.1) + 7) / ModifierProcessor.HealPriceReducedModifier; // Add 10% of the current price + a flat value
         }
     }
     public async Task HandlePlayerDeathAsync(MainWindow mainWindow)
@@ -108,11 +109,11 @@ internal class Player
         }
     }
 
-    public void EquipItem(Item item, ComboBox comboboxInventory, ComboBox comboboxUpgradeItems)
+    public void EquipItem(Item item, ComboBox comboboxInventory, ComboBox comboboxUpgradeItems, ComboBox comboboxAct3Frog)
     {
         if (EquippedItems.ContainsKey(item.Type)) // Check if the itemtype is already equipped
         {
-            UnequipItem(EquippedItems[item.Type], comboboxInventory, comboboxUpgradeItems);
+            UnequipItem(EquippedItems[item.Type], comboboxInventory, comboboxUpgradeItems, comboboxAct3Frog);
         }
 
         // Equip the item
@@ -132,7 +133,8 @@ internal class Player
         Lifesteal += item.Lifesteal;
         CritDamage += item.CritDamage;
     }
-    public void UnequipItem(Item item, ComboBox comboboxInventory, ComboBox comboboxUpgradeItem)
+
+    public void UnequipItem(Item item, ComboBox comboboxInventory, ComboBox comboboxUpgradeItem, ComboBox comboboxAct3Frog)
     {
         if (EquippedItems.ContainsKey(item.Type))
         {
@@ -152,6 +154,9 @@ internal class Player
             EquippedItems.Remove(item.Type);
             comboboxInventory.Items.Add(item);
             comboboxUpgradeItem.Items.Remove(item);
+            comboboxAct3Frog.Items.Remove(item);
+            comboboxAct3Frog.SelectedIndex = -1;
+            comboboxAct3Frog.Text = string.Empty;
 
             if (CurrentHealth <= 0)
             {

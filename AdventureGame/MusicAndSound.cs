@@ -44,7 +44,7 @@ public class MusicAndSound
         {
             soundPlayers = new SoundPlayer[]
             {
-                GetSoundPath("letmehealyou5db.wav"),  // index 0
+                GetSoundPath("act1healer.wav"),  // index 0
                 GetSoundPath("sword1.wav"),          // index 1
                 GetSoundPath("sword2.wav"),
                 GetSoundPath("sword3.wav"),
@@ -61,6 +61,7 @@ public class MusicAndSound
                 GetSoundPath("roarattack.wav"), // index 14
                 GetSoundPath("divineattack.wav"),
                 GetSoundPath("act4healer.wav"),
+                GetSoundPath("act1healernogold.wav"),
             };
             foreach (var soundPlayer in soundPlayers)
             {
@@ -70,6 +71,50 @@ public class MusicAndSound
         catch
         {
             throw new FileLoadException("The sound file was not found");
+        }
+    }
+
+    private void PlayMusic(string fileName, WindowsMediaPlayer player)
+    {
+        try
+        {
+            // Stop any currently playing music
+            if (player.playState == WMPPlayState.wmppsPlaying)
+            {
+                player.controls.stop();
+            }
+
+            player.URL = MediaSoundPath(fileName);
+            player.controls.play();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error playing music {fileName}: {ex.Message}");
+        }
+    }
+
+    private void PlaySound(int index)
+    {
+        try
+        {
+            soundPlayers[index].Play();
+        }
+        catch
+        {
+            throw new Exception("The sound file was not found");
+        }
+    }
+
+    private void PlaySound(string fileName, WindowsMediaPlayer player)
+    {
+        try
+        {
+            player.URL = MediaSoundPath(fileName);
+            player.controls.play();
+        }
+        catch (Exception ex)
+        {
+            Console.WriteLine($"Error playing sound {fileName}: {ex.Message}");
         }
     }
 
@@ -126,8 +171,13 @@ public class MusicAndSound
 
     public void PlayAct1HealingMusic()
     {
-        PlayMusic("letmehealyou5db.wav", healingMusicPlayer);
+        PlayMusic("act1healer.wav", healingMusicPlayer);
     }
+    public void PlayAct1HealingNoGold()
+    {
+        PlaySound(17);
+    }
+
     public void PlayAct1ArtsTeacher()
     {
         PlayMusic("act1artsteacher.wav", NPCspeechPlayer);
@@ -146,7 +196,6 @@ public class MusicAndSound
         PlayMusic("act4q1voice.wav", NPCspeechPlayer);
     }
 
-
     public void PlayAct2SmithOffer()
     {
         if (random.Next(0, 2) == 0) // chooses 0 or 1, and if 0 then...
@@ -158,6 +207,7 @@ public class MusicAndSound
             PlayMusic("act2smithoffer2.wav", NPCspeechPlayer);
         }
     }
+
     public void PlayAct2SmithNo()
     {
         PlayMusic("act2smithno.wav", NPCspeechPlayer);
@@ -166,6 +216,65 @@ public class MusicAndSound
     public void PlaySmithingSound()
     {
         PlaySound(10);
+    }
+
+    public void PlayAct3Frog()
+    {
+        int choice = random.Next(0, 4);
+
+        switch (choice)
+        {
+            case 0:
+                PlayMusic("frog1.wav", NPCspeechPlayer);
+                break;
+            case 1:
+                PlayMusic("frog1.wav", NPCspeechPlayer);
+                break;
+            case 2:
+                PlayMusic("frog2.wav", NPCspeechPlayer);
+                break;
+            case 3:
+                PlayMusic("frog3.wav", NPCspeechPlayer);
+                break;
+
+        }
+    }
+
+    public void PlayAct3ReforgeFroggy()
+    {
+        int choice = random.Next(0, 3);
+        // 66/33 between either of these two sounds, or no sound
+        switch (choice)
+        {
+            case 0:
+                PlayMusic("frog3.wav", NPCspeechPlayer);
+                break;
+            case 1:
+                PlayMusic("frog4.wav", NPCspeechPlayer);
+                break;
+            default:
+                break;
+
+        }
+    }
+
+    public void PlayAct4MageSound()
+    {
+        int choice = random.Next(0, 3);
+
+        switch (choice)
+        {
+            case 0:
+                PlayMusic("act4mage1.wav", NPCspeechPlayer);
+                break;
+            case 1:
+                PlayMusic("act4mage2.wav", NPCspeechPlayer);
+                break;
+            case 2:
+                PlayMusic("act4mage3.wav", NPCspeechPlayer);
+                break;
+
+        }
     }
 
     public void PlayInventorySound()
@@ -245,50 +354,6 @@ public class MusicAndSound
         PlayMusic("act3.wav", act3MusicPlayer);
     }
 
-    private void PlayMusic(string fileName, WindowsMediaPlayer player)
-    {
-        try
-        {
-            // Stop any currently playing music
-            if (player.playState == WMPPlayState.wmppsPlaying)
-            {
-                player.controls.stop();
-            }
-
-            player.URL = MediaSoundPath(fileName);
-            player.controls.play();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error playing music {fileName}: {ex.Message}");
-        }
-    }
-
-    private void PlaySound(int index)
-    {
-        try
-        {
-            soundPlayers[index].Play();
-        }
-        catch
-        {
-            throw new Exception("The sound file was not found");
-        }
-    }
-
-    private void PlaySound(string fileName, WindowsMediaPlayer player)
-    {
-        try
-        {
-            player.URL = MediaSoundPath(fileName);
-            player.controls.play();
-        }
-        catch (Exception ex)
-        {
-            Console.WriteLine($"Error playing sound {fileName}: {ex.Message}");
-        }
-    }
-
     public void PlayAct3Waves()
     {
         PlayMusic("act3waves.wav", act3WavesPlayer);
@@ -296,6 +361,10 @@ public class MusicAndSound
     public void PlayAct3Boss()
     {
         PlayMusic("act3boss.wav", bossPlayer);
+    }
+    public void PlayAct2FrostfallenKing()
+    {
+        PlayMusic("act2frostfallenking.wav", bossPlayer);
     }
 
     public void StopAct1TownMusic()

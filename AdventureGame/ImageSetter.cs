@@ -34,6 +34,30 @@ public class ImageSetter
         return image;
     }
 
+    public string GetVideoPath(string videoName)
+    {
+        string videoPath = null;
+        try
+        {
+            // Get the base directory of the application
+            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
+
+            // Combine the base directory with the relative path to the video
+            videoPath = Path.Combine(baseDirectory, "Videos", videoName);
+
+            // Check if the file exists
+            if (!File.Exists(videoPath))
+            {
+                throw new FileNotFoundException("The specified video file does not exist.", videoPath);
+            }
+        }
+        catch (Exception ex)
+        {
+            MessageBox.Show($"An error occurred while retrieving the video file: {ex.Message}");
+        }
+        return videoPath;
+    }
+
     // ACT 1 images
     public void SetAct1TownBackgroundimage()
     {
@@ -50,9 +74,11 @@ public class ImageSetter
         _mainWindow.panelAct1Quest1.BackgroundImage = GetImagePath("act1quest1background.png");
         _mainWindow.panelAct1Quest1.BackgroundImageLayout = ImageLayout.Stretch;
     }
+
     public void SetAct1Quest1CompletedBackgroundImage()
     {
         _mainWindow.panelAct1Quest1.BackgroundImage = GetImagePath("act1quest1backgroundboyfound.png");
+        _mainWindow.panelAct1Quest1.BackgroundImageLayout = ImageLayout.Stretch;
     }
 
     public void SetAct1HealerPictureBoxImage()
@@ -92,6 +118,17 @@ public class ImageSetter
         _mainWindow.pictureBoxAct2Smith.Image = GetImagePath("act2smithupgraded.png");
     }
 
+    public void SetAct2FrostFallenKingImage()
+    {
+        _mainWindow.panelEncounter.BackgroundImage = GetImagePath("frostfallenking.png");
+    }
+
+    public void SetAct2IcyCaveImage()
+    {
+        _mainWindow.panelAct2Q1.BackgroundImage = GetImagePath("act2icytomb.png");
+        _mainWindow.panelAct2Q1.BackgroundImageLayout = ImageLayout.Stretch;
+    }
+
     // ACT 3 images
     public void SetAct3Backgroundimage()
     {
@@ -104,8 +141,14 @@ public class ImageSetter
         _mainWindow.panelEncounter.BackgroundImage = GetImagePath("act3boss.png");
     }
 
+    public void SetAct3Q1BackgroundImage()
+    {
+        _mainWindow.panelAct3Q1.BackgroundImage = GetImagePath("act3froggy.png");
+        _mainWindow.panelAct3Q1.BackgroundImageLayout = ImageLayout.Stretch;
+    }
+
     // ACT 4 images
-    public void SetAct4BackgroundImage()
+    public void SetAct4EncounterBackgroundImage()
     {
         _mainWindow.panelEncounter.BackgroundImage = GetImagePath("act4background.png");
     }
@@ -128,5 +171,29 @@ public class ImageSetter
         _mainWindow.pictureBoxAct4Mage.Image = GetImagePath("act4mage.png"); 
     }
 
+    // Act 5
+    public void SetAct5IntroImage()
+    {
+        _mainWindow.panelTown.BackgroundImage = GetImagePath("act5intro.png");
+    }
 
+    public void SetAct5TownBackgroundImage()
+    {
+        _mainWindow.panelTown.BackgroundImage = GetImagePath("act5background.png");
+    }
+
+    public void SetAct5EncounterBackground()
+    {
+        _mainWindow.panelEncounter.BackgroundImage = GetImagePath("act5encounterbackground.png");
+    }
+
+    public void SetAct5SophiaDeath()
+    {
+        _mainWindow.panelTown.BackgroundImage = GetImagePath("sophiadead.png");
+    }
+
+    public void SetAct5SophiaAlive()
+    {
+        _mainWindow.panelTown.BackgroundImage = GetImagePath("sophiaalive.png");
+    }
 }

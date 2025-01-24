@@ -242,6 +242,8 @@ public class Controller
                     break;
 
                 case 1: // "B" button
+                    _mainWindow.ReforgeItemStatFrog();
+
                     if (isLeftTriggerPressed)
                     {
                         _mainWindow.GuardAttack();
@@ -249,7 +251,7 @@ public class Controller
                     if (StoryProgress.playerIsInTown)
                     {
                         _techniquesTrainer.LearnTechniqueAsync();
-                        _mainWindow.ButtonUpgradeItem();
+                        _mainWindow.UpgradeItem();
                         _mainWindow.TalkToMageAct4();
                     }
                     else if (_mainWindow.IsInventoryOpen) // Discard item
@@ -259,6 +261,8 @@ public class Controller
                     break;
 
                 case 2: // "X" button
+                    _mainWindow.ChooseItemToReforge();
+                    
                     if (_mainWindow.IsInventoryOpen)
                     {
                         _mainWindow.ButtonEquipItems();
@@ -272,6 +276,7 @@ public class Controller
                     {
                         _mainWindow.LootIsClicked();
                     }
+
                     break;
 
                 case 3: // "Y" button
@@ -284,8 +289,7 @@ public class Controller
                     }
                     else
                     {
-                        _mainWindow.StartAct1Quest1(); // only starts if player is in act1
-                        _mainWindow.StartAct4Quest1();
+                        _mainWindow.StartQuests(); // only starts if player is in act1
                     }
                     break;
                 case 4: // L1
@@ -337,7 +341,11 @@ public class Controller
                     //}
                     break;
                 case 7: // Start button
-                    if (!_mainWindow.PlayGameHasBeenPressed)
+                    if (_mainWindow.IntroVideoIsPlaying)
+                    {
+                        _mainWindow.SkipIntroVid();
+                    }
+                    else if (!_mainWindow.PlayGameHasBeenPressed)
                     {
                         _mainWindow.ButtonPlayGame();
                     }

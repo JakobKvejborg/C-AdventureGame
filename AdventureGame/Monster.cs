@@ -8,9 +8,8 @@ namespace AdventureGame;
 
 public class Monster
 {
-
     public string Name { get; set; }
-    public int MaxHealth { get; set; }
+    public int MaxHealth { get; set; } 
     public int CurrentHealth { get; set; }
     public int MinDamage { get; set; }
     public int MaxDamage { get; set; }

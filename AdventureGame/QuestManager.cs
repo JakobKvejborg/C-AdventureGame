@@ -1,11 +1,15 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Diagnostics;
+using System.Diagnostics.Eventing.Reader;
 using System.Linq;
 using System.Media;
 using System.Runtime.ExceptionServices;
 using System.Text;
 using System.Threading.Tasks;
+using System.Windows.Forms.Design;
+using static System.Formats.Asn1.AsnWriter;
+using static System.Runtime.InteropServices.JavaScript.JSType;
 
 namespace AdventureGame;
 
@@ -19,7 +23,8 @@ public class QuestManager
     private MusicAndSound _sounds = new MusicAndSound();
     public bool Act1Quest1EncounterIsActive { get; set; }
     public bool Act1Quest1IsCompleted { get; set; }
-    public bool isInsideQuestPanel { get; set; }
+    public bool IsInsideQuestPanel { get; set; }
+    public bool IsAct3Q1Availiable { get; set; }
 
     public QuestManager(MainWindow mainWindow, ImageSetter imageSetter)
     {
@@ -31,21 +36,24 @@ public class QuestManager
 
     public void ContinueAct1Quest1Dialogue()
     {
-        if (isInsideQuestPanel)
+        if (IsInsideQuestPanel)
         {
             //currentDialogueIndex++;
         }
     }
     public void ReturnToTownFromQuest()
     {
-        if (!isInsideQuestPanel) // The player can only return to town from the quest panel if the player is inside a quest panel
+        if (!IsInsideQuestPanel) // The player can only return to town from the quest panel if the player is inside a quest panel
         {
             return;
         }
         _mainWindow.panelAct4Quest1.Hide();
         _mainWindow.panelAct1Quest1.Hide();
+        _mainWindow.panelAct3Q1.Hide();
+        _mainWindow.panelAct2Q1.Hide();
         _mainWindow.panelTown.Show();
-        isInsideQuestPanel = false;
+        _mainWindow.panelReforgeItemFrog.Hide();
+        IsInsideQuestPanel = false;
         StoryProgress.playerIsInTown = true;
         _mainWindow.IsButtonContinueEnabled = true;
     }
@@ -56,18 +64,17 @@ public class QuestManager
         if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 1)
         {
             _mainWindow.IsButtonContinueEnabled = false;
-            isInsideQuestPanel = true;
+            IsInsideQuestPanel = true;
             if (!Act1Quest1BoyFound)
             {
                 Act1Quest1EncounterIsActive = true;
-                _imageSetter.SetAct1Quest1BackgroundImage();
                 _mainWindow.panelAct1Quest1.Show();
                 _mainWindow.panelTown.Hide();
                 _sounds.PlayAct1WomanCrying();
 
                 if (!FirstTimeText)
                 {
-                    _mainWindow.textBoxAct1Quest1.Text = "Hey, you! You must help me! I... I’ve lost my little boy. I turned away for a moment, and now he’s gone. I’m so worried—I can’t bear the thought of him out there alone. Please, if you could help me find him, I’d be forever grateful.";
+                    _mainWindow.textBoxAct1Quest1.Text = "Hey, you! You must help me! I... I’ve lost my little boy. I turned away for a moment, and now he’s gone. I’m so worried — I can’t bear the thought of him being out there alone. Please, if you could help me find him, I’d be forever grateful.";
                     FirstTimeText = true;
                 }
                 else
@@ -87,8 +94,8 @@ public class QuestManager
     {
         _mainWindow.IsButtonContinueEnabled = false;
         _imageSetter.SetAct1Quest1CompletedBackgroundImage();
-        _mainWindow.panelAct1Quest1.Show();
         _mainWindow.panelTown.Hide();
+        _mainWindow.panelAct1Quest1.Show();
         if (!Act1Quest1IsCompleted)
         {
             _mainWindow.textBoxAct1Quest1.Text = "Thank you so much for returning my boy to me! As a token of my gratitude, here, take this. It belonged to my father. Farewell, hero.\r\n[Father's Helmet added to inventory]";
@@ -101,20 +108,82 @@ public class QuestManager
         }
     }
 
-
     // Start Act 4 Quest 1
     public void StartAct4Quest1()
     {
         if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 4)
         {
-
-            isInsideQuestPanel = true;
+            IsInsideQuestPanel = true;
             _imageSetter.SetAct4Quest1BackgroundImage();
-            _mainWindow.panelAct4Quest1.Show();
             _mainWindow.panelTown.Hide();
-            _mainWindow.textBoxAct4Quest1.Text = "\"You've fought the Dragons bravely, but beyond this valley awaits a darkness that defies comprehension. I can take you there—to face the ultimate Horror.\"";
+            _mainWindow.panelAct4Quest1.Show();
+            _mainWindow.textBoxAct4Quest1.Text = "\"You've fought the Dragons bravely, but beyond this valley awaits a darkness that defies comprehension. I can take you there — but please be careful.\"";
             _sounds.PlayAct4Q1Voice();
             StoryProgress.playerIsInTown = false;
+        }
+    }
+
+    // Start Act 3 Quest 1
+    public void StartAct3Quest1()
+    {
+        if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 3 && StoryProgress.PlayerHasEnteredAct4 == true)
+        {
+            _sounds.PlayAct3Frog();
+            IsInsideQuestPanel = true;
+            _mainWindow.panelTown.Hide();
+            _mainWindow.panelAct3Q1.Show();
+            StoryProgress.playerIsInTown = false;
+            if (Player.HasFrozenLily)
+            {
+                _mainWindow.textBoxAct3Q1.Text = "\"What's that I see? You’ve got somethin’ special, don’t ya? A lily, frozen in time. Give it to me, and I promise to make your equipment even stronger, sharper, deadlier.\"";
+                Player.HasFrozenLily = false;
+                ReforgeItemStat.ReforgeModifier = 0.20;
+                _mainWindow.pictureBoxFrozenLily.Hide();
+            }
+            else
+            {
+                _mainWindow.textBoxAct3Q1.Text = "You spot a small island in the distance and steer toward it. Sitting by the shore is a frog-like man. \"I'm pretty good with items, you know,\" he says.";
+            }
+        }
+    }
+
+    public void StartAct5Quest1()
+    {
+        if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 5 && _storyProgress.Act5BossDefeatedFlag)
+        {
+        }
+    }
+
+    public void StartAct2Quest1()
+    {
+        if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 2 && StoryProgress.PlayerHasEnteredAct4 == true)
+        {
+            IsInsideQuestPanel = true;
+            _imageSetter.SetAct2IcyCaveImage();
+            _mainWindow.panelTown.Hide();
+            _mainWindow.panelAct2Q1.Show();
+            StoryProgress.playerIsInTown = false;
+
+            if (!_storyProgress.Act2OptionalBossDefeatedFlag)
+            {
+                _mainWindow.textBoxAct2Q1.Text = "After a long search in the cold mountains, you stand before the frozen cave you have been seeking. The entrance is blocked by a thick layer of ice. Do you truly dare shatter this icy barrier and unleash what lies within?";
+            }
+            else
+            {
+                _mainWindow.textBoxAct2Q1.Text = "The tomb of the King has been magically encased in ice once more. Maybe it's best left this way.";
+            }
+        }
+    }
+
+    public void FrozenKingEncounter()
+    {
+        if (StoryProgress.WhichActIsThePlayerIn == 2 && StoryProgress.PlayerHasEnteredAct4 == true && !_storyProgress.Act2OptionalBossDefeatedFlag)
+        {
+            IsInsideQuestPanel = false;
+            _mainWindow.panelAct2Q1.Hide();
+            _mainWindow.panelEncounter.Show();
+            _storyProgress.StoryState = 110;
+            _storyProgress.ProgressStory();
         }
     }
 

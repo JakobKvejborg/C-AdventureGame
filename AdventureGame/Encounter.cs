@@ -12,7 +12,7 @@ namespace AdventureGame;
 
 internal static class Encounter
 {
-    public static Monster Monster { get; private set; } // Stores the monster encountered
+    public static Monster Monster { get; set; } // Stores the monster encountered
     public static Item ItemDroppedFromMonster { get; set; } // Stores the randomly found item
     private static readonly Random _randomMonster = new Random();
     private static readonly Random _randomItem = new Random();
@@ -22,6 +22,7 @@ internal static class Encounter
     public static event EventHandler? EncounterCompleted;
     public static MusicAndSound sounds = new MusicAndSound();
     public static bool PlayerDodgedFlag;
+    public static int TotalNumberOfMonstersDefeated;
 
     public static void PerformEncounter(List<Monster> listOfMonsters, List<Item> listOfItems, MainWindow mainWindow)
     {
@@ -32,7 +33,7 @@ internal static class Encounter
         StoryProgress.progressFlag = false;
 
         // Prepares the GUI
-        mainWindow.textBox1.Clear();
+        mainWindow.textBoxEncounter.Clear();
         mainWindow.panelMonster.Show();
 
         EncounteredMonsterItems = listOfItems; // saves the list of items from the parameter til at property
@@ -107,18 +108,6 @@ internal static class Encounter
         }
     }
 
-    // Helper method for some UI text, depending on which monster type is encountered
-    private static void AttackText(PlayerState playerState, MainWindow mainWindow, int playerAttackDamageTotal)
-    {
-        if (Monster.Name == "Aldrus Thornfell" || Monster.Name == "Wintermaw" || Monster.Name == "The Devouring Abyss") // add alls boss names
-        {
-            mainWindow.textBox1.AppendText($"You attack {Monster.Name}, and deal {playerAttackDamageTotal} damage. \r\n");
-        }
-        else
-        {
-            mainWindow.textBox1.AppendText($"You attack the {Monster.Name}, and deal {playerAttackDamageTotal} damage. \r\n");
-        }
-    }
 
     // This method is called by MainWindow every time the player attacks
     public static async void MonsterAttacks(PlayerState playerState, MainWindow mainWindow)
@@ -129,7 +118,7 @@ internal static class Encounter
             int dodgeChanceRoll = _randomDodge.Next(1, 101);
             if (dodgeChanceRoll <= playerState.Player.DodgeChance)
             {
-                mainWindow.textBox1.AppendText("\n\rYou dodged the horror's attack!");
+                mainWindow.textBoxEncounter.AppendText("\n\rYou dodged the horror's attack!");
                 PlayerDodgedFlag = true; // This is used for a special Swift attack
                 sounds.PlayDodgeSound();
                 return; // Exit the method if the player dodges
@@ -142,7 +131,7 @@ internal static class Encounter
             playerState.Player.CurrentHealth -= damageTaken;
             playerState.Player.CurrentHealth = Math.Max(playerState.Player.CurrentHealth, 0);
             mainWindow.UpdatePlayerLabels();
-            mainWindow.textBox1.AppendText($"The horror attacks you back and deals {monsterDamageDealt} damage.");
+            mainWindow.textBoxEncounter.AppendText($"The horror attacks you back and deals {monsterDamageDealt} damage.");
         }
         // Check if the player is defeated
         await mainWindow.CheckIfPlayerIsDefeated();
@@ -162,22 +151,21 @@ internal static class Encounter
     // This method is called by MainWindow when the player attacks
     public static void CheckIfMonsterIsDefeated(PlayerState playerState, MainWindow mainWindow)
     {
-        if (Monster == null)
-        {
-            return;
-        }
+        if (Monster == null) { return; }
+
         if (Monster.CurrentHealth <= 0)
         {
             playerState.Player.ResetRoarBuff(mainWindow); // this resets the roar attack, subtracts the roar buff from the player
             playerState.Player.ResetGuardBuff(); // this subtracts the guard armor buff from the player
 
             PlayerDodgedFlag = false;
-            mainWindow.textBox1.AppendText($"\n\rYou have defeated the horror. You gain {Monster.MonsterExperience}xp. ");
+            mainWindow.textBoxEncounter.AppendText($"\n\rYou have defeated the horror. You gain {Monster.MonsterExperience}xp. ");
             mainWindow.pictureBoxMonster1.Image = null;
             mainWindow.panelMonster.Hide(); // Hides the monster once it's defeated
             PlayerGetsExperiencePoints(playerState, mainWindow);
             PlayerGetsGoldFromMonster(playerState, mainWindow);
             GenerateItemFoundOnMonster(playerState, mainWindow); // This creates the item found on the monster
+            TotalNumberOfMonstersDefeated++; // Keeps track of how many monsters the player has slayed
             StoryProgress.progressFlag = true;
 
             if (playerState.Player.Regeneration > 0)
@@ -193,13 +181,13 @@ internal static class Encounter
             Monster = null;
             EncounterCompleted?.Invoke(null, EventArgs.Empty); // this is used for bosses
             mainWindow.UpdatePlayerLabels();
-
         }
     }
 
     public static void GenerateItemFoundOnMonster(PlayerState playerState, MainWindow mainWindow)
     {
         GetDragonEgg(playerState, mainWindow); // Gives the player a dragon egg if a specific dragon was killed.
+        GetFrozenLily(playerState, mainWindow);
 
         //Get a random item from the list
         int randomItemIndex = _randomItem.Next(EncounteredMonsterItems.Count);
@@ -218,13 +206,14 @@ internal static class Encounter
 
     }
 
+
     // This method is called fromm mainWindow when the loot is clicked
     public static void ItemIsLootetFromMonster(PlayerState playerState, MainWindow mainWindow)
     {
         if (ItemDroppedFromMonster != null)
         {
             // Tell the player which item has been found
-            mainWindow.textBox1.AppendText($"\r\nYou find an item on the horror's corpse: {ItemDroppedFromMonster.Name}.");
+            mainWindow.textBoxEncounter.AppendText($"\r\nYou find an item on the horror's corpse: {ItemDroppedFromMonster.Name}.");
             mainWindow.comboBoxInventory.Items.Add(ItemDroppedFromMonster); // the combobox holds the player inventory, not the player
             mainWindow.comboBoxInventory.SelectedItem = ItemDroppedFromMonster;
         }
@@ -256,6 +245,44 @@ internal static class Encounter
     {
         ItemDroppedFromMonster = null;
     }
+
+    // Helper method for some UI text, depending on which monster type is encountered
+    private static void AttackText(PlayerState playerState, MainWindow mainWindow, int playerAttackDamageTotal)
+    {
+        if (Monster.Name == "Aldrus Thornfell" || Monster.Name == "Wintermaw" || Monster.Name == "The Devouring Abyss" || Monster.Name == "The Frostfallen King") // add alls boss names
+        {
+            mainWindow.textBoxEncounter.AppendText($"You attack {Monster.Name}, and deal {playerAttackDamageTotal} damage. \r\n");
+        }
+        else
+        {
+            mainWindow.textBoxEncounter.AppendText($"You attack the {Monster.Name}, and deal {playerAttackDamageTotal} damage. \r\n");
+        }
+    }
+
+    public static void DisplayInitialEncounterText(Monster monster, MainWindow mainWindow)
+    {
+        switch (monster.Name)
+        {
+            case "Aldrus Thornfell":
+            case "Wintermaw":
+            case "The Devouring Abyss":
+                mainWindow.textBoxEncounter.Text = $"You have awakened {monster.Name}! Your end is near.";
+                break;
+            case "The Frostfallen King":
+                mainWindow.textBoxEncounter.Text = $"You have shattered the ice tomb of {monster.Name}! A colossal figure unlike anything you've ever seen before rises from its crystalized prison.";
+                break;
+            case "Ultimate Darkness":
+                mainWindow.textBoxEncounter.Text = $"The Hero now faces the {monster.Name} - a final challenge.";
+                break;
+            case "Awoken Horror":
+                mainWindow.textBoxEncounter.Text = $"You stand before the {monster.Name} itself. This is where you die.";
+                break;
+            default:
+                mainWindow.textBoxEncounter.Text = $"You have encountered a {monster.Name}! Kill it.";
+                break;
+        }
+    }
+
     private static void GetDragonEgg(PlayerState playerState, MainWindow mainWindow)
     {
         if (Monster.Name == "Egg-Watcher Dragon")
@@ -264,6 +291,16 @@ internal static class Encounter
             mainWindow.labelDragonEggs.Text = $"{playerState.Player.NumberOfDragonEggsInInventory}x";
             mainWindow.pictureBoxDragonEggs.Show();
             mainWindow.labelDragonEggs.Show();
+        }
+    }
+
+    private static void GetFrozenLily(PlayerState playerState, MainWindow mainWindow)
+    {
+        if (Monster.Name == "The Frostfallen King")
+        {
+            mainWindow.pictureBoxFrozenLily.Show();
+            Player.HasFrozenLily = true;
+            mainWindow.textBoxEncounter.AppendText(" Inside the Kings Tomb, you find a rare frozen lily.");
         }
     }
 
