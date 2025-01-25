@@ -49,7 +49,8 @@
             // 
             // buttonEnterModifier
             // 
-            buttonEnterModifier.Location = new Point(224, 102);
+            buttonEnterModifier.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
+            buttonEnterModifier.Location = new Point(224, 100);
             buttonEnterModifier.Name = "buttonEnterModifier";
             buttonEnterModifier.Size = new Size(94, 29);
             buttonEnterModifier.TabIndex = 2;
@@ -86,7 +87,7 @@
         #endregion
 
         private Panel panelModifier;
-        private Button buttonEnterModifier;
         public TextBox textBoxModifierInput;
+        public Button buttonEnterModifier;
     }
 }

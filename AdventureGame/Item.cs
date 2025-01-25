@@ -124,10 +124,10 @@ public class Item
                 switch (weaponUpgradeChoice)
                 {
                     case 1: // Damage
-                        Damage += random.Next(1, 3) + SmithUpgradeMultiplication; // Increase Damage by 1 to 2
+                        Damage += random.Next(1, 3) + SmithUpgradeMultiplication - 1;
                         break;
                     case 2: // Strength
-                        Strength += random.Next(1, 6) * SmithUpgradeMultiplication; // Increase Strength by 1 to 5
+                        Strength += random.Next(1, 5) * SmithUpgradeMultiplication; // Increase Strength by 1 to 5
                         break;
                     case 3: // Lifesteal
                         Lifesteal += random.Next(1, 9) * SmithUpgradeMultiplication; // Increase Lifesteal by 1 or 8
@@ -147,7 +147,7 @@ public class Item
                         Health += random.Next(5, 24) * SmithUpgradeMultiplication + SmithUpgradeMultiplication; // Increase Health by 5 to 23
                         break;
                     case 2: // Armor
-                        Armor += random.Next(1, 5) * SmithUpgradeMultiplication; // Increase Armor by 1 to 5
+                        Armor += random.Next(1, 3) * SmithUpgradeMultiplication; // Increase Armor by 1 to 5
                         break;
                         // Add more cases if needed
                 }
@@ -177,7 +177,7 @@ public class Item
                         Armor += random.Next(1, 3) * SmithUpgradeMultiplication; 
                         break;
                     case 2: // Strength
-                        Strength += random.Next(1, 8) * SmithUpgradeMultiplication;
+                        Strength += random.Next(1, 3) * SmithUpgradeMultiplication;
                         break;
                     case 3:
                         Regeneration += random.Next(1, 7) * SmithUpgradeMultiplication * SmithUpgradeMultiplication;
@@ -194,7 +194,7 @@ public class Item
                         DodgeChance += random.Next(3, 7) * SmithUpgradeMultiplication;
                         break;
                     case 2:
-                        Strength += random.Next(1, 8) * SmithUpgradeMultiplication;
+                        Strength += random.Next(1, 4) * SmithUpgradeMultiplication;
                         break;
                     case 3:
                         CritChance += random.Next(1, 11) * SmithUpgradeMultiplication;
@@ -218,7 +218,7 @@ public class Item
                         Strength += random.Next(1, 3) * SmithUpgradeMultiplication;
                         break;
                     case 3:
-                        Health += random.Next(1, 14) * SmithUpgradeMultiplication;
+                        Health += random.Next(1, 18) * SmithUpgradeMultiplication;
                         break;
                     case 4:
                         Regeneration += random.Next(1, 15) * SmithUpgradeMultiplication * SmithUpgradeMultiplication;
@@ -231,7 +231,7 @@ public class Item
                 switch (beltUpgradeChoice)
                 {
                     case 1: // Armor
-                        Armor += random.Next(1, 4) * SmithUpgradeMultiplication; // Increase Health by 1 to 3
+                        Armor += random.Next(1, 3) * SmithUpgradeMultiplication; // Increase Health by 1 to 2
                         break;
                     case 2:
                         Health += random.Next(1, 23) * SmithUpgradeMultiplication + SmithUpgradeMultiplication;

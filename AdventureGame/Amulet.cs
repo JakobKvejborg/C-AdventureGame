@@ -21,7 +21,7 @@ public class Amulet : Item
         switch (Tier)
         {
             case "Normal":
-                Strength = _random.Next(0, 5);           // Strength boost between 0 and 4
+                Strength = _random.Next(0, 2);           // Strength boost between 0 and 4
                 DodgeChance = _random.Next(0, 3);
                 CritChance = _random.Next(0, 5);
                 Regeneration = _random.Next(0, 2);
@@ -29,7 +29,7 @@ public class Amulet : Item
                 break;
 
             case "Magic":
-                Strength = _random.Next(0, 7);       
+                Strength = _random.Next(0, 3);       
                 DodgeChance = _random.Next(1, 4);
                 CritChance = _random.Next(5, 8);
                 Regeneration = _random.Next(0, 2);
@@ -37,7 +37,7 @@ public class Amulet : Item
                 break;
 
             case "Rare":
-                Strength = _random.Next(3, 9);          
+                Strength = _random.Next(3, 5);          
                 DodgeChance = _random.Next(3, 6);
                 CritChance = _random.Next(5, 10);
                 Regeneration = _random.Next(0, 3);
@@ -46,7 +46,7 @@ public class Amulet : Item
                 break;
 
             case "Epic":
-                Strength = _random.Next(10, 16);      
+                Strength = _random.Next(3, 9);      
                 DodgeChance = _random.Next(6, 13);
                 CritChance = _random.Next(10, 15);
                 Regeneration = _random.Next(2, 4);
@@ -55,9 +55,9 @@ public class Amulet : Item
                 break;
 
             case "Legendary":
-                Strength = _random.Next(15, 21);         // Strength boost between 15 and 20
-                DodgeChance = _random.Next(8, 16);
-                CritChance = _random.Next(15, 20);
+                Strength = _random.Next(5, 15);         // Strength boost between 15 and 20
+                DodgeChance = _random.Next(4, 16);
+                CritChance = _random.Next(8, 20);
                 Lifesteal = _random.Next(0, 20);
                 Regeneration = _random.Next(3, 5);
                 LevelRequirement = _random.Next(22, 35);

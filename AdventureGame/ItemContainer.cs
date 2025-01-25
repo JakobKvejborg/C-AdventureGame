@@ -69,6 +69,7 @@ public class ItemContainer
         Item item8a = new("Hammer", ItemType.WeaponRightHand, 5, 0, 0, 0, 0, 0, 0, 8, 6);
         Item item9a = new("Blood Knife", ItemType.WeaponRightHand, 3, 0, 0, 0, 0, 8, 0, 8, 6);
         Item item10a = new("Blood Sword", ItemType.WeaponRightHand, 3, 0, 0, 0, 0, 6, 0, 8, 6);
+        Item item10aa = new("Vampire Slayer", ItemType.WeaponRightHand, 3, 0, 0, 0, 0, 15, 0, 7, 11);
 
         Item item11a = new("Shiny Axe", ItemType.WeaponRightHand, 6, 2, 0, 0, 0, 0, 0, 10, 15);
         RandomItem item12a = new("Bloody Hook", ItemType.WeaponLeftHand);
@@ -95,10 +96,11 @@ public class ItemContainer
         Item item11 = new("Heavy Armor", ItemType.Armor, 15, 0, 0, 1, 0, 1, 0, 0, 0, 0, 2);
         Item item12 = new("Damaged Gloves", ItemType.Gloves, 0, 0, 2, 1, 0, 0, 0, 0, 0, 3, 3);
         Item item13 = new("Damaged Boots", ItemType.Boots, 0, 0, 0, 2, 2, 0, 0, 0, 0, 3, 2);
-        Item item14 = new("Leather Boots", ItemType.Boots, 11, 0, 0, 1, 0, 0, 0, 0, 0, 3, 5);
+        Item item14 = new("Leather Boots", ItemType.Boots, 11, 0, 0, 1, 6, 0, 0, 0, 0, 3, 5);
         Item item15bb = new("Damaged Armor", ItemType.Armor, 10, 0, 0, 0, 2, 0, 0, 0, 0, 0, 4);
         Item item16bb = new("Rusty Mail", ItemType.Armor, 0, 0, 0, 0, 0, 1, 0, 0, 0, 0, 4);
         Item item17bb = new("Leather Armor", ItemType.Armor, 15, 0, 0, 0, 0, 0, 0, 0, 0, 1, 3);
+        Item item18bb = new("Leather Helmet", ItemType.Helmet, 10, 0, 0, 0, 0, 0, 0, 0, 0, 0, 2);
         RandomItem item15 = new("Normal Gloves", ItemType.Gloves);
         RandomItem item16 = new("Normal Boots", ItemType.Boots);
         RandomItem item17 = new("Normal Belt", ItemType.Belt);
@@ -122,15 +124,18 @@ public class ItemContainer
         Item item35 = new("Strong Belt", ItemType.Belt, 2, 0, 0, 1, 0, 0, 0, 0, 0, 0, 4);
         Item item36 = new("Belt", ItemType.Belt, 0, 1, 0, 0, 0, 1, 0, 0, 0, 0, 2);
         RandomItem item37 = new("Normal Shoes", ItemType.Boots);
-        Item item38 = new("Iron Boots", ItemType.Boots, 2, 1, 0, 0, 0, 2, 0, 0, 0, 4, 4);
+        Item item38 = new("Iron Boots", ItemType.Boots, 2, 1, 0, 0, 3, 2, 0, 0, 0, 4, 4);
+        Item item39 = new("Iron Leggings", ItemType.Leggings, 20, 0, 0, 0, 1, 1, 0, 0, 0, 7, 10);
+        Item item40 = new("Iron Shoulders", ItemType.Shoulders, 18, 0, 3, 0, 2, 1, 0, 0, 0, 8, 9);
+        Item item41 = new("Strong Pads", ItemType.Shoulders, 4, 0, 0, 1, 0, 0, 0, 0, 0, 0, 2);
 
         Item item10b = new("Bronze Boots", ItemType.Boots, 0, 2, 0, 3, 4, 3, 0, 0, 0, 7, 2);
         Item item11b = new("Swift Boots", ItemType.Boots, 10, 0, 5, 0, 7, 3, 0, 0, 0, 7, 3);
-        Item item12b = new("Plate", ItemType.Armor, 0, 0, 5, 3, 0, 3, 0, 0, 0, 5, 3);
-        Item item13b = new("Bronze Plate", ItemType.Armor, 20, 0, 2, 3, 2, 3, 0, 0, 0, 5, 6);
+        Item item12b = new("Plate", ItemType.Armor, 0, 0, 5, 3, 0, 2, 0, 0, 0, 5, 3);
+        Item item13b = new("Bronze Plate", ItemType.Armor, 20, 0, 2, 1, 2, 2, 0, 0, 0, 5, 6);
         Item item14b = new("Rusty Plate", ItemType.Armor, 0, 1, 2, 3, 2, 2, 0, 0, 0, 9, 6);
         Item item15b = new("Bronze Gloves", ItemType.Gloves, 0, 0, 8, 2, 0, 2, 0, 0, 0, 5, 6);
-        RandomItem item16c = new("Damaged Shoulders", ItemType.Shoulders);
+        RandomItem item16c = new("Rusty Shoulders", ItemType.Shoulders);
 
         Item item16b = new("Vampire Leggings", ItemType.Leggings, 20, 1, 4, 0, 0, 2, 0, 10, 0, 8, 9);
         Item item17b = new("Vampire Gloves", ItemType.Gloves, 10, 1, 0, 2, 0, 1, 0, 10, 0, 5, 6);
@@ -281,6 +286,7 @@ public class ItemContainer
         ImprovedRandomItem gloves11 = new(ItemType.Gloves);
         ImprovedRandomItem gloves12 = new(ItemType.Gloves);
         ImprovedRandomItem gloves13 = new(ItemType.Gloves);
+        ImprovedRandomItem gloves14 = new(ItemType.Gloves);
         ImprovedRandomItem belt1 = new(ItemType.Belt);
         ImprovedRandomItem belt2 = new(ItemType.Belt);
         ImprovedRandomItem belt3 = new(ItemType.Belt);
@@ -368,6 +374,8 @@ public class ItemContainer
         items1.Add(item17bb);
         items1.Add(weaponright);
         items1.Add(item7aa);
+        items1.Add(item18bb);
+        items1.Add(null);
         items1.Add(null);
         items1.Add(null);
         items1.Add(null);
@@ -451,6 +459,8 @@ public class ItemContainer
         items2.Add(item15bb);
         items2.Add(item38);
         items2.Add(belt13);
+        items2.Add(item41);
+        items2.Add(null);
         items2.Add(null);
         items2.Add(null);
         items2.Add(null);
@@ -571,6 +581,13 @@ public class ItemContainer
         items3.Add(belt11);
         items3.Add(belt12);
         items3.Add(shoulders13);
+        items3.Add(item39);
+        items3.Add(item40);
+        items3.Add(item10aa);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
+        items3.Add(null);
         items3.Add(null);
         items3.Add(null);
         items3.Add(null);
@@ -745,6 +762,7 @@ public class ItemContainer
         items5.Add(magicShoulders3);
         items5.Add(rareShoulders1);
         items5.Add(rareBoots1);
+        items5.Add(gloves14);
         items5.Add(null);
         items5.Add(null);
         items5.Add(null);
@@ -966,7 +984,9 @@ public class ItemContainer
         items7.Add(null);
         items7.Add(null);
         items7.Add(null);
-   
+        items7.Add(null);
+        items7.Add(null);
+
         // Act 5 Helmets, Shoulders, Boots, weaponsLeft
         items8.Add(legendaryHelmet);
         items8.Add(legendaryShoulders);
@@ -1040,6 +1060,8 @@ public class ItemContainer
         items8.Add(null);
         items8.Add(null);
         items8.Add(null);
+        items8.Add(null);
+        items8.Add(null); 
         items8.Add(null);
         items8.Add(null);
         items8.Add(null);

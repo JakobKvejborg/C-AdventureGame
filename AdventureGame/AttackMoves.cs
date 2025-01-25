@@ -68,7 +68,7 @@ internal class AttackMoves
 
     public async Task RoarAttack()
     {
-        _playerState.Player.RoarBuffCountdown = randomRoar.Next(3, 7); // Number of "rounds" the roar buff is active
+        _playerState.Player.RoarBuffCountdown = randomRoar.Next(4, 8); // Number of "rounds" the roar buff is active
         if (Encounter.Monster != null && Encounter.Monster.CurrentHealth > 0)
         {
             _sounds.PlayRoarAttackSound();

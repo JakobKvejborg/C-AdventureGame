@@ -50,7 +50,6 @@ public partial class MainWindow : Form
         playerState = new PlayerState();
         panelsList = new List<Panel>();
         _modifierProcessor = new ModifierProcessor(playerState, this);
-        _windowModifier = new PopupWindowModifier(_modifierProcessor, this);
         _storyProgress = new StoryProgress(this, _sounds);
         _techniquesTrainer = new TechniquesTrainer(playerState, _storyProgress, this, _sounds);
         _attacks = new AttackMoves(playerState, this, _sounds);
@@ -59,6 +58,7 @@ public partial class MainWindow : Form
         _quests = new QuestManager(this, imageSetter);
         _reforge = new ReforgeItemStat();
         _styles = new CustomButtonStyles();
+        _windowModifier = new PopupWindowModifier(_modifierProcessor, this, _styles);
         UpdatePlayerLabels();
         panelTown.Location = new Point(0, 0); // Example: position it at the top-left corner
         panelTown.Size = new Size(400, 300);  // Example: set a proper size to make it visible
@@ -119,8 +119,6 @@ public partial class MainWindow : Form
         _styles.BlackButtonWhiteText(buttonGuard);
 
         _styles.CoolRedShadow(buttonUpgradeItem);
-        _styles.CoolRedShadow(buttonEquipUnequip);
-        _styles.CoolRedShadow(buttonDiscardItem);
         _styles.CoolRedShadow(btn_continue);
         _styles.CoolRedShadow(buttonReturnToTown);
         _styles.CoolRedShadow(btn_Continuetown);
@@ -133,11 +131,14 @@ public partial class MainWindow : Form
         _styles.CoolRedShadow(buttonAct3Q1Town);
         _styles.CoolRedShadow(buttonAct4Q1Town);
         _styles.CoolRedShadow(buttonAct4Quest1Continue);
+      
+        _styles.CoolRedShadow(buttonEquipUnequip);
+        _styles.CoolRedShadow(buttonDiscardItem);
 
-        _styles.CoolRedShadow(buttonReforge);
-        _styles.CoolRedShadow(buttonReforgeStat);
         _styles.CoolRedShadow(buttonHeal);
         _styles.CoolRedShadow(buttonLearnTechnique);
+        _styles.CoolRedShadow(buttonReforge);
+        _styles.CoolRedShadow(buttonReforgeStat);
 
         _styles.CoolRedShadowComboBox(comboBoxInventory);
         _styles.CoolRedShadowComboBox(comboBoxUpgradeItems);
@@ -166,28 +167,6 @@ public partial class MainWindow : Form
             }
         }
     }
-
-
-    #region Cool unused code
-    //private void Form_KeyUp(object? sender, KeyEventArgs e)
-    //{
-    //    if (e.KeyCode == Keys.C)
-    //    {
-    //        panelPopupInventoryInfo.Hide();
-    //    }
-    //}
-
-    //private void Form_KeyDown(object? sender, KeyEventArgs e)
-    //{
-    //    if (e.KeyCode == Keys.C && IsInventoryOpen)
-    //    {
-    //        if (IsInventoryOpen)
-    //        {
-    //            panelPopupInventoryInfo.Show();
-    //        }
-    //    }
-    //} 
-    #endregion
 
     private void HidePanelsEtc()
     {
@@ -573,7 +552,7 @@ public partial class MainWindow : Form
                 InventoryPanelPopupInfoShow();
                 return true; // Indicate that the key was handled
             case Keys.M:
-                //sounds.MuteAllMusic();
+                _sounds.MuteAllMusic();
                 OpenModifierPopupWindow();
                 return true;
             default:
@@ -971,6 +950,7 @@ public partial class MainWindow : Form
         labelInventoryItemInfo.Text = null;
         imageSetter.SetAct1Quest1BackgroundImage();
         imageSetter.SetAct3Q1BackgroundImage();
+        buttonUpgradeItem.Text = $"{Item.CostToUpgrade}G";
 
         imageSetter.SetAct2SmithPictureBoxImage();
 
@@ -1449,6 +1429,7 @@ public partial class MainWindow : Form
             Item item = (Item)comboBoxInventory.SelectedItem;
             if (playerState.Player.Level >= item.LevelRequirement && playerState.Player.Strength >= item.StrengthRequirement)
             {
+                _sounds.PlayEquipSound();
                 playerState.Player.EquipItem(item, comboBoxInventory, comboBoxUpgradeItems, comboBoxAct3Q1Frog);
                 UpdatePlayerLabels();
                 RemoveItemFromComboboxInventory(item); // removes the equipped item from the combobox
@@ -1687,6 +1668,7 @@ public partial class MainWindow : Form
             {
                 txtBox_Town.Text = "\"What is this now? Where did you find this?! I can sense powerful magic surrounding this item. Perhaps I can make some use of it...\"";
                 OneTimeBool4 = true;
+                _sounds.PlaySmithUpgradeRubySound();
                 Item.SmithUpgradeMultiplication++;
                 imageSetter.SetAct2SmithUpgradedImage();
                 pictureBoxRuby.Hide();
@@ -1699,7 +1681,7 @@ public partial class MainWindow : Form
                 Item item = (Item)comboBoxUpgradeItems.SelectedItem;
                 if (item.IsItemUpgraded || item.Type == ItemType.Amulet)
                 {
-                    txtBox_Town.Text = "\"Oooh no, this item has already been upgraded. Give me another one!\"";
+                    txtBox_Town.Text = "\"Sorry but no, I can't upgrade this item. Give me another one!\"";
                     _sounds.PlayAct2SmithNo();
                     return;
                 }
@@ -1804,6 +1786,7 @@ public partial class MainWindow : Form
     public void HideInventory()
     {
         pictureBoxInventory.Hide();
+        comboBoxInventory.DroppedDown = false;
         panelInventory.Hide();
         pictureBoxHeroBag.Show();
         IsInventoryOpen = false;

@@ -62,6 +62,8 @@ public class MusicAndSound
                 GetSoundPath("divineattack.wav"),
                 GetSoundPath("act4healer.wav"),
                 GetSoundPath("act1healernogold.wav"),
+                GetSoundPath("equip.wav"), // index 18
+                GetSoundPath("smithupgrade.wav"),
             };
             foreach (var soundPlayer in soundPlayers)
             {
@@ -282,6 +284,11 @@ public class MusicAndSound
         PlaySound(11);
     }
 
+    public void PlaySmithUpgradeRubySound()
+    {
+        PlaySound(19);
+    }
+
     public void PlayDeathGameOverSound()
     {
         PlaySound(12);
@@ -298,6 +305,11 @@ public class MusicAndSound
     public void PlayDivineAttackSound()
     {
         PlaySound(15);
+    }
+
+    public void PlayEquipSound()
+    {
+        PlaySound(18);
     }
 
     public void PlayCoinSound()
@@ -402,6 +414,9 @@ public class MusicAndSound
         StopAct1ThunderSound();
         StopAct2TownMusic();
         StopAct2WindSound();
+        StopAct4Music();
+        StopAct3Music();
     }
 
+   
 }

@@ -24,7 +24,7 @@ public class ImprovedRandomItem : Item
     private static readonly List<string> SuffixesNormalItems = new() { "of Health", "of Stamina", "of Strength", "of Iron", "of Bronze", "of Leather", "of Defense", "of Protection", "of Stone", "of Power", "of Skill", "of Steel" };
     private static readonly List<string> SuffixesMagicStrong = new() { "of Magic", "of Mysticism", "of Arcana", "of Sorcery", "of Enchantment", "of Mana", "of Illusion", "of Mystic", "of Fury", "of Flames", "of Frost", "of Storms", "of Stars", "of Oracle", "of Hexes" };
     private static readonly List<string> SuffixesRareItems = new() { "of Champions", "of Valor", "of Fortitude", "of Precision", "of Berserk", "of Titans", "of Sentinel", "of Might" };
-    private static readonly List<string> PrefixesEpicUniqueLegendary = new() { "Ancient", "Cursed", "Enchanted", "Fabled", "Mystic", "Worn", "Epic", "Golden", "Strong", "Mythical", "Knight's" };
+    private static readonly List<string> PrefixesEpicUniqueLegendary = new() { "Ancient", "Cursed", "Enchanted", "Fabled", "Mystic", "Worn", "Epic", "Golden", "Strong", "Mythical", "Knight's", "Silver" };
     private static readonly List<string> SuffixesEpicUniqueLegendary = new() { "of Power", "of Glory", "of Shadows", "of Light", "of the Dragon", "of Doom", "of Angels", "of Gold", "of God", "of Chaos" };
 
     public ImprovedItemQuality Quality { get; set; }
@@ -107,8 +107,8 @@ public class ImprovedRandomItem : Item
             ImprovedItemQuality.Rare => 2.6,
             ImprovedItemQuality.Unique => 3.0,
             ImprovedItemQuality.Epic => 4.5,
-            ImprovedItemQuality.Legendary => 7,
-            ImprovedItemQuality.Godly => 8,
+            ImprovedItemQuality.Legendary => 6,
+            ImprovedItemQuality.Godly => 7,
             _ => 1.0
         };
 
@@ -123,27 +123,29 @@ public class ImprovedRandomItem : Item
                 break;
 
             case ItemType.Armor:
-                Strength = (int)(_random.Next(0, 5) * multiplier);
+                Strength = (int)(_random.Next(0, 3) + multiplier + multiplier - 1);
                 Health = (int)(_random.Next(2, 19) * (multiplier * multiplier));
                 Armor = (int)(_random.Next(1, 2) * multiplier);
                 StrengthRequirement = (int)((_random.Next(0, 6) * multiplier) + multiplier - 1);
-                LevelRequirement = (int)(_random.Next(1, 3) + multiplier + multiplier + multiplier - 2);
+                LevelRequirement = (int)(_random.Next(1, 3) + multiplier + multiplier + multiplier + multiplier + multiplier - 3);
                 break;
 
             case ItemType.Gloves:
-                Strength = (int)(_random.Next(0, 3) * multiplier);
-                CritChance = (int)(_random.Next(1, 9) * multiplier);
+                var critDamageValues = new[] { 0, 5 }; // Predefined possible values for CritDamage
+                CritDamage = (int)Math.Round(critDamageValues[_random.Next(critDamageValues.Length)] * multiplier);
+                Strength = (int)(_random.Next(0, 3) + multiplier);
+                CritChance = (int)(_random.Next(1, 9) + multiplier);
                 Armor = (int)(_random.Next(0, 3) * multiplier);
                 StrengthRequirement = (int)((_random.Next(0, 6) * multiplier) + multiplier - 1);
-                LevelRequirement = (int)(_random.Next(1, 4) + multiplier + multiplier - 1);
+                LevelRequirement = (int)((_random.Next(1, 4) * multiplier) + multiplier + multiplier + multiplier - 3);
                 break;
 
             case ItemType.Boots:
                 DodgeChance = (int)(_random.Next(0, 9) + multiplier);
-                Armor = (int)(_random.Next(0, 3) * multiplier + multiplier - 1);
+                Armor = (int)(_random.Next(0, 3) + multiplier + multiplier - 1);
                 Health = (int)(_random.Next(1, 15) * (multiplier + multiplier) + multiplier);
-                StrengthRequirement = (int)((_random.Next(0, 6) * multiplier) + multiplier - 1);
-                LevelRequirement = (int)(_random.Next(1, 5) * multiplier + multiplier - 2);
+                StrengthRequirement = (int)((_random.Next(1, 6) * multiplier) + multiplier + multiplier - 2);
+                LevelRequirement = (int)((_random.Next(1, 5) * multiplier + multiplier - 2) + multiplier + multiplier - 1);
                 break;
 
             case ItemType.Belt:
@@ -165,7 +167,7 @@ public class ImprovedRandomItem : Item
 
             case ItemType.Helmet:
                 Armor = (int)(_random.Next(0, 4) * multiplier);
-                Strength = (int)(_random.Next(0, 3) * multiplier);
+                Strength = (int)(_random.Next(0, 3) + multiplier);
                 Regeneration = (int)(_random.Next(0, 3) * multiplier);
                 CritDamage = (int)(_random.Next(0, 1) + (multiplier - 1) * multiplier);
                 StrengthRequirement = (int)(_random.Next(1, 6) * multiplier);

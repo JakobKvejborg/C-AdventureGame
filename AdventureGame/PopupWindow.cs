@@ -15,15 +15,18 @@ public partial class PopupWindowModifier : Form
 
     ModifierProcessor _modifierProcessor;
     private MainWindow _mainWindow;
+    private CustomButtonStyles _styles;
 
     public string UserInput { get; set; }
 
-    public PopupWindowModifier(ModifierProcessor modifier, MainWindow mainWindow)
+    public PopupWindowModifier(ModifierProcessor modifier, MainWindow mainWindow, CustomButtonStyles styles)
     {
         InitializeComponent();
         _modifierProcessor = modifier; // Stores a reference of the modifierProcessor
         _mainWindow = mainWindow;
+        _styles = styles;
         FormBorderStyle = FormBorderStyle.FixedSingle;
+        _styles.CoolRedShadow(buttonEnterModifier);
     }
 
     private void buttonEnterModifier_Click(object sender, EventArgs e)

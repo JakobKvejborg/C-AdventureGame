@@ -93,7 +93,7 @@ internal class Player
         {
             playerState.Player.CurrentHealth = MaxHealth;
             playerState.Player.GoldInPocket -= priceToHeal;
-            priceToHeal += (int)((priceToHeal * 0.1) + 7) / ModifierProcessor.HealPriceReducedModifier; // Add 10% of the current price + a flat value
+            priceToHeal += (int)((priceToHeal * 0.1) + 8) / ModifierProcessor.HealPriceReducedModifier; // Add 10% of the current price + a flat value
         }
     }
     public async Task HandlePlayerDeathAsync(MainWindow mainWindow)

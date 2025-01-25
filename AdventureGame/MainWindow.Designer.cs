@@ -334,12 +334,12 @@ partial class MainWindow
         // 
         // buttonHeal
         // 
-        buttonHeal.Font = new Font("Imprint MT Shadow", 10.2F, FontStyle.Bold, GraphicsUnit.Point, 0);
+        buttonHeal.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
         buttonHeal.Location = new Point(32, 662);
         buttonHeal.Name = "buttonHeal";
         buttonHeal.Size = new Size(124, 31);
         buttonHeal.TabIndex = 11;
-        buttonHeal.Text = "Get Healed 2G";
+        buttonHeal.Text = "Healing 2G";
         toolTip.SetToolTip(buttonHeal, "\"H\"");
         buttonHeal.UseVisualStyleBackColor = true;
         buttonHeal.Click += buttonHeal_Click;
@@ -429,17 +429,19 @@ partial class MainWindow
         // 
         // buttonUpgradeItem
         // 
+        buttonUpgradeItem.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
         buttonUpgradeItem.Location = new Point(436, 311);
         buttonUpgradeItem.Name = "buttonUpgradeItem";
         buttonUpgradeItem.Size = new Size(81, 28);
         buttonUpgradeItem.TabIndex = 15;
-        buttonUpgradeItem.Text = "Upgrade 50G";
+        buttonUpgradeItem.Text = "Upgrade";
         toolTip.SetToolTip(buttonUpgradeItem, "\"U\"");
         buttonUpgradeItem.UseVisualStyleBackColor = true;
         buttonUpgradeItem.Click += buttonUpgradeItem_Click;
         // 
         // buttonLearnTechnique
         // 
+        buttonLearnTechnique.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
         buttonLearnTechnique.Location = new Point(386, 614);
         buttonLearnTechnique.Name = "buttonLearnTechnique";
         buttonLearnTechnique.Size = new Size(124, 32);
@@ -587,6 +589,7 @@ partial class MainWindow
         // 
         // buttonTalkMage
         // 
+        buttonTalkMage.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
         buttonTalkMage.Location = new Point(398, 658);
         buttonTalkMage.Name = "buttonTalkMage";
         buttonTalkMage.Size = new Size(125, 31);
@@ -598,10 +601,11 @@ partial class MainWindow
         // 
         // buttonReforge
         // 
+        buttonReforge.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
         buttonReforge.ForeColor = Color.Black;
-        buttonReforge.Location = new Point(63, 365);
+        buttonReforge.Location = new Point(54, 367);
         buttonReforge.Name = "buttonReforge";
-        buttonReforge.Size = new Size(81, 28);
+        buttonReforge.Size = new Size(100, 29);
         buttonReforge.TabIndex = 39;
         buttonReforge.Text = "Reforge";
         toolTip.SetToolTip(buttonReforge, "\"H\"");
@@ -610,6 +614,7 @@ partial class MainWindow
         // 
         // buttonReforgeStat
         // 
+        buttonReforgeStat.Font = new Font("Segoe UI", 10.2F, FontStyle.Regular, GraphicsUnit.Point, 0);
         buttonReforgeStat.ForeColor = Color.Black;
         buttonReforgeStat.Location = new Point(42, 173);
         buttonReforgeStat.Name = "buttonReforgeStat";
@@ -946,9 +951,9 @@ partial class MainWindow
         // pictureBoxFrozenLily
         // 
         pictureBoxFrozenLily.Image = (Image)resources.GetObject("pictureBoxFrozenLily.Image");
-        pictureBoxFrozenLily.Location = new Point(482, 741);
+        pictureBoxFrozenLily.Location = new Point(475, 735);
         pictureBoxFrozenLily.Name = "pictureBoxFrozenLily";
-        pictureBoxFrozenLily.Size = new Size(40, 44);
+        pictureBoxFrozenLily.Size = new Size(51, 50);
         pictureBoxFrozenLily.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxFrozenLily.TabIndex = 64;
         pictureBoxFrozenLily.TabStop = false;
@@ -956,9 +961,9 @@ partial class MainWindow
         // pictureBoxRuby
         // 
         pictureBoxRuby.Image = (Image)resources.GetObject("pictureBoxRuby.Image");
-        pictureBoxRuby.Location = new Point(436, 741);
+        pictureBoxRuby.Location = new Point(419, 735);
         pictureBoxRuby.Name = "pictureBoxRuby";
-        pictureBoxRuby.Size = new Size(40, 44);
+        pictureBoxRuby.Size = new Size(49, 50);
         pictureBoxRuby.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxRuby.TabIndex = 63;
         pictureBoxRuby.TabStop = false;
@@ -2138,12 +2143,12 @@ partial class MainWindow
         BackColor = SystemColors.ActiveCaptionText;
         BackgroundImageLayout = ImageLayout.Stretch;
         ClientSize = new Size(537, 797);
-        Controls.Add(panelEncounter);
         Controls.Add(panelTown);
+        Controls.Add(panelAct3Q1);
         Controls.Add(panelStartScreen);
+        Controls.Add(panelEncounter);
         Controls.Add(panelAct4Quest1);
         Controls.Add(panelAct2Q1);
-        Controls.Add(panelAct3Q1);
         Controls.Add(panelAct1Quest1);
         Controls.Add(panelXboxControlsLayout);
         Controls.Add(panelGameOver);
