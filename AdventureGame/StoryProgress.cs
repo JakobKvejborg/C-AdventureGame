@@ -17,28 +17,31 @@ internal class StoryProgress
     bool oneTimeMessage3 = true;
     private ImageSetter _imageSetter;
     public MusicAndSound _sounds;
+    private PlayVideos _videos;
     public static bool TutorialIsOver { get; set; }
     private int MageTalkInteractionCounter = 0;
     public bool Act1ArtsTeacherIsAvailable { get; set; } = true;
     public bool Act1BossDefeatedFlag = false;
     public bool Act2BossDefeatedFlag = false;
     public bool Act3BossDefeatedFlag = false;
-    public bool Act5BossDefeatedFlag;
+    public bool Act5BossDefeatedFlag = false;
     public bool Act2OptionalBossDefeatedFlag;
+    public bool Act5UltimatedarknessBossDefeatedFlag;
+    public bool SophiaIsAlive { get; private set; }
     public static int WhichActIsThePlayerIn { get; set; } = 1;
     public static bool PlayerHasEnteredAct4 { get; set; }
 
-    public StoryProgress(MainWindow mainWindow, MusicAndSound sounds)
+    public StoryProgress(MainWindow mainWindow, MusicAndSound sounds, PlayVideos videos)
     {
         _mainWindow = mainWindow;
         _imageSetter = new ImageSetter(mainWindow);
         _sounds = sounds;
+        _videos = videos;
     }
 
     public string GetFirstText()
     {
-        return "You have just returned from a long journey to far realms." +
-            "\n\r The road home is littered with corpses.\n\r Do you have the will to survive the horrors of the lands?" +
+        return "The road home is littered with corpses.\n\r Do you have the will to survive the horrors of the lands?" +
             "\r\nYour sister is missing - you must find her!";
     }
 
@@ -59,7 +62,7 @@ internal class StoryProgress
     }
     public string GetAct4HealingText()
     {
-        return "\"Careful, the Dragons may bite,\" the girl says with a hint of a smile on her face. " +
+        return "\"Careful, the Dragons may bite,\" the girl says with a hint of a smile on her face. The fire burns hot around her. " +
             "\"You don't have to pay me, I'm just glad to help!\" You pay for her help anyways.";
     }
 
@@ -85,7 +88,7 @@ internal class StoryProgress
 
     public string GetAct4PortalText()
     {
-        return "The burning girl takes you to a portal leading to the skies high above. Did Sophia really come here? Maybe she was taken here - hopefully she's still alive.";
+        return "The molten girl takes you to a portal leading to the skies high above. Did Sophia really come here? Maybe she was taken here - hopefully she's still alive.";
     }
 
     public string GetSophiaIsSavedText()
@@ -198,14 +201,14 @@ internal class StoryProgress
             case 9:
                 _sounds.StopAct1TownMusic();
                 _sounds.PlayAct2WindMusic();
-                _imageSetter.SetAct2Backgroundimage();
+                _imageSetter.SetAct2BackgroundImages();
                 _mainWindow.textBoxEncounter.Text = "The high mountains are cold, and you are close to freezing to death. " +
                     "But you must continue and face the horrors ahead. You must find Sophia!";
                 oneTimeMessage = (true); // Reusing the flag for act2
                 StoryState++;
                 break;
             case 10:
-            case 11:
+            case 11: // The player enters Act2
                 WhichActIsThePlayerIn = 2;
                 _mainWindow.IsReturnToTownEnabled = true;
                 if (progressFlag == true)
@@ -214,7 +217,8 @@ internal class StoryProgress
                     StoryState++;
                 }
                 break;
-            case 12: // The player enters town Act2 
+            case 12: // Town Act 2
+                IfFrostfallenKingIsDefeated();
                 if (progressFlag == true)
                 {
                     if (oneTimeMessage == true)
@@ -298,6 +302,7 @@ internal class StoryProgress
                 break;
             case 19: // Act 5 start
                 SetupAct5Controls();
+                //_sounds. // TODO
                 playerIsInTown = false;
                 _mainWindow.panelTown.Show();
                 _imageSetter.SetAct5IntroImage();
@@ -307,6 +312,7 @@ internal class StoryProgress
                 StoryState++;
                 break;
             case 20: // Town Act 5
+                IfDarknessIsDefeated();
                 SetupAct5Controls();
                 _mainWindow.pictureBoxAct5Hero.Show();
                 EnableReturnToTownFunction();
@@ -331,10 +337,11 @@ internal class StoryProgress
                 _mainWindow.panelEncounter.Hide();
                 _mainWindow.panelTown.Show();
 
-                if (Encounter.TotalNumberOfMonstersDefeated < 150 && ModifierProcessor.NumberOfModifiersCurrentlyActive >= 4) // If Sophia is alive
+                if (Encounter.TotalNumberOfMonstersDefeated < 201 && ModifierProcessor.NumberOfModifiersCurrentlyActive >= 3) // If Sophia is alive
                 {
                     _imageSetter.SetAct5SophiaAlive();
                     _mainWindow.txtBox_Town.Text = GetSophiaIsSavedText();
+                    SophiaIsAlive = true;
                     StoryState = 20; // Advance the story state
                 }
                 else // If Sophia is not alive
@@ -350,7 +357,7 @@ internal class StoryProgress
                 StoryState++;
                 break;
             case 25: // Player gets the Modifier code
-                _mainWindow.txtBox_Town.Text = $"MODIFIER: [{ModifierProcessor.GetRandomModifier()}] Write this code down, and use it on your next playthrough. Now go and save her, good luck Hero!";
+                _mainWindow.txtBox_Town.Text = $"MODIFIER: [{ModifierProcessor.GetRandomModifier()}] Write this code down, and use it on your next playthrough. Now go and save her, and good luck Hero!";
                 StoryState = 20;
                 break;
 
@@ -432,9 +439,40 @@ internal class StoryProgress
                     _mainWindow.buttonReturnToTown.Hide();
                     Encounter.PerformEncounter(monsterContainer.ListOfOptionalBossAct2, itemContainer.godlyBossItems, _mainWindow);
                     Act2OptionalBossDefeatedFlag = true;
+                    StoryState = 12;
+                }
+                break;
+            case 111: // Act 5 Final boss Ultimate Darkness
+                if (progressFlag == true)
+                {
+                    _imageSetter.SetAct5SecretFinalBossImage();
+                    //_sounds. // TODO
+                    _mainWindow.buttonReturnToTown.Hide();
+                    Encounter.PerformEncounter(monsterContainer.ListOfOptionalBossAct5, itemContainer.godlyBossItems, _mainWindow);
+                    Act5UltimatedarknessBossDefeatedFlag = true;
+                    StoryState = 20;
                 }
                 break;
 
+        }
+    }
+
+    private void IfDarknessIsDefeated()
+    {
+        if (Act5UltimatedarknessBossDefeatedFlag == true && !_videos.OneTimeDarknessVideoHasBeenPlayed)
+        {
+            _videos.PlayAnyVideo("darkness.mov");
+            _videos.OneTimeDarknessVideoHasBeenPlayed = true;
+        }
+    }
+
+    private void IfFrostfallenKingIsDefeated()
+    {
+        if (Act2OptionalBossDefeatedFlag == true && !_videos.OneTimeFrostfallenVideoHasBeenPlayed)
+        {
+            _videos.PlayAnyVideo("frostfallenking.mov");
+            _videos.OneTimeFrostfallenVideoHasBeenPlayed = true;
+            Act1ArtsTeacherIsAvailable = true;
         }
     }
 
@@ -452,6 +490,7 @@ internal class StoryProgress
         _mainWindow.labelAct4Q1.Hide();
         _mainWindow.buttonTalkMage.Hide();
         _mainWindow.pictureBoxHealer.Hide();
+        _mainWindow.labelAct5Q1.Show();
     }
 
     private void SetupAct1Controls()
@@ -459,7 +498,6 @@ internal class StoryProgress
         _sounds.StopAct2TownMusic();
         _imageSetter.SetAct1Backgroundimage();
         _imageSetter.SetAct1TownBackgroundimage();
-        _mainWindow.pictureBoxTown.Hide();
         _imageSetter.SetAct1HealerPictureBoxImage();
         _mainWindow.pictureBoxAct2Smith.Hide();
         _mainWindow.buttonUpgradeItem.Hide();
@@ -490,6 +528,7 @@ internal class StoryProgress
         _mainWindow.labelAct3Q1.Hide();
         _mainWindow.buttonTalkMage.Show();
         _mainWindow.pictureBoxAct5Hero.Hide();
+        _mainWindow.labelAct5Q1.Hide();
 
         _sounds.StopAct3Waves();
         _sounds.StopAct3Music();
@@ -501,7 +540,6 @@ internal class StoryProgress
         _imageSetter.SetAct3Backgroundimage();
         _mainWindow.comboBoxUpgradeItems.Hide();
         _mainWindow.buttonUpgradeItem.Hide();
-        _mainWindow.pictureBoxTown.Hide();
         _mainWindow.pictureBoxAct2Smith.Hide();
         _mainWindow.pictureBoxHealer.Hide();
         _mainWindow.buttonHeal.Hide();
@@ -516,16 +554,13 @@ internal class StoryProgress
         _sounds.StopAct4Music();
         _sounds.StopAct2WindSound();
         _sounds.StopAct2TownMusic();
-
     }
 
     public void SetupAct2controls()
     {
         _mainWindow.labelAct2Q1.Show();
-        _imageSetter.SetAct2Backgroundimage();
-        _imageSetter.SetAct2PictureBoxTownImage(); // Sets the town image to Act2Town
+        _imageSetter.SetAct2BackgroundImages();
         _imageSetter.SetAct2HealerPictureBoxImage();
-        //_imageSetter.SetAct2SmithPictureBoxImage();
         _mainWindow.pictureBoxAct1ArtsTeacher.Hide();
         _mainWindow.buttonLearnTechnique.Hide();
         _mainWindow.pictureBoxHealer.Show();
@@ -534,7 +569,6 @@ internal class StoryProgress
         _mainWindow.pictureBoxAct2Smith.Show();
         _mainWindow.comboBoxUpgradeItems.Show();
         _mainWindow.buttonUpgradeItem.Show();
-        _mainWindow.pictureBoxTown.Show();
         _mainWindow.labelAct1Quest1.Hide();
         _mainWindow.labelAct3Q1.Hide();
 

@@ -263,6 +263,9 @@ internal static class Encounter
     {
         switch (monster.Name)
         {
+            case "Watchers":
+                mainWindow.textBoxEncounter.Text = $"You have encountered some {monster.Name}! Kill them.";
+                break;
             case "Aldrus Thornfell":
             case "Wintermaw":
             case "The Devouring Abyss":

@@ -39,7 +39,7 @@ internal class Player
     public int RoarBuffCountdown { get; set; }
     public int GuardBuffArmor { get; set; }
     public bool GuardBuffIsActive { get; set; }
-    public double PlayerIsOnLowHealth => MaxHealth * 0.15;
+    public double PlayerIsOnLowHealth => MaxHealth * 0.18;
     public static bool HasFrozenLily;
 
     public Player(string name, int maxHealth, int currentHealth, int damage, int strength, int lifesteal,
@@ -93,7 +93,7 @@ internal class Player
         {
             playerState.Player.CurrentHealth = MaxHealth;
             playerState.Player.GoldInPocket -= priceToHeal;
-            priceToHeal += (int)((priceToHeal * 0.1) + 8) / ModifierProcessor.HealPriceReducedModifier; // Add 10% of the current price + a flat value
+            priceToHeal += (int)((priceToHeal * 0.1) + 7) / ModifierProcessor.HealPriceReducedModifier; // Add 10% of the current price + a flat value
         }
     }
     public async Task HandlePlayerDeathAsync(MainWindow mainWindow)

@@ -34,30 +34,6 @@ public class ImageSetter
         return image;
     }
 
-    public string GetVideoPath(string videoName)
-    {
-        string videoPath = null;
-        try
-        {
-            // Get the base directory of the application
-            var baseDirectory = AppDomain.CurrentDomain.BaseDirectory;
-
-            // Combine the base directory with the relative path to the video
-            videoPath = Path.Combine(baseDirectory, "Videos", videoName);
-
-            // Check if the file exists
-            if (!File.Exists(videoPath))
-            {
-                throw new FileNotFoundException("The specified video file does not exist.", videoPath);
-            }
-        }
-        catch (Exception ex)
-        {
-            MessageBox.Show($"An error occurred while retrieving the video file: {ex.Message}");
-        }
-        return videoPath;
-    }
-
     // ACT 1 images
     public void SetAct1TownBackgroundimage()
     {
@@ -92,15 +68,10 @@ public class ImageSetter
 
 
     // ACT 2 images
-    public void SetAct2Backgroundimage()
+    public void SetAct2BackgroundImages()
     {
         _mainWindow.panelEncounter.BackgroundImage = GetImagePath("act2background.png");
-        _mainWindow.panelTown.BackgroundImage = GetImagePath("act2background.png");
-    }
-
-    public void SetAct2PictureBoxTownImage()
-    {
-        _mainWindow.pictureBoxTown.Image = GetImagePath("act2town.png");
+        _mainWindow.panelTown.BackgroundImage = GetImagePath("act2town.png");
     }
 
     public void SetAct2HealerPictureBoxImage()
@@ -147,6 +118,12 @@ public class ImageSetter
         _mainWindow.panelAct3Q1.BackgroundImageLayout = ImageLayout.Stretch;
     }
 
+    public void SetAct3Q1FrogGotLilyImage()
+    {
+        _mainWindow.panelAct3Q1.BackgroundImage = GetImagePath("act3frogwithlily.png");
+        _mainWindow.panelAct3Q1.BackgroundImageLayout = ImageLayout.Stretch;
+    }
+
     // ACT 4 images
     public void SetAct4EncounterBackgroundImage()
     {
@@ -168,7 +145,7 @@ public class ImageSetter
     public void SetAct4MageImage()
     {
         // No need to hide the picturebox (smith & mage) on mainwindow load because this image is not yet set
-        _mainWindow.pictureBoxAct4Mage.Image = GetImagePath("act4mage.png"); 
+        _mainWindow.pictureBoxAct4Mage.Image = GetImagePath("act4mage.png");
     }
 
     // Act 5
@@ -195,5 +172,10 @@ public class ImageSetter
     public void SetAct5SophiaAlive()
     {
         _mainWindow.panelTown.BackgroundImage = GetImagePath("sophiaalive.png");
+    }
+
+    public void SetAct5SecretFinalBossImage()
+    {
+        _mainWindow.panelEncounter.BackgroundImage = GetImagePath("ultimatedarkness.png");
     }
 }

@@ -43,7 +43,7 @@ public class RandomItem : Item
                 Strength = _random.Next(0, 2 * multiplier);
                 Health = _random.Next(2, 19) * multiplier;
                 Armor = _random.Next(1, 2 + multiplier);
-                LevelRequirement = _random.Next(1, 3) * multiplier;
+                LevelRequirement = _random.Next(1, 5) + multiplier + multiplier + multiplier + multiplier - 4;
                 break;
 
             case ItemType.Gloves:
@@ -60,7 +60,7 @@ public class RandomItem : Item
                 DodgeChance = _random.Next(0, 6 + multiplier + multiplier);
                 Armor = _random.Next(0, 3) + multiplier - 1;
                 Health = _random.Next(1, 5 + multiplier + multiplier - 1) * (multiplier + multiplier);
-                LevelRequirement = _random.Next(3, 7) * multiplier;
+                LevelRequirement = (_random.Next(3, 7) * multiplier) + multiplier + multiplier + multiplier - 4;
                 break;
 
             case ItemType.Belt:
@@ -69,17 +69,19 @@ public class RandomItem : Item
                 Regeneration = _random.Next(1, 3 * multiplier);
                 Lifesteal = _random.Next(0, 9 * multiplier);
                 StrengthRequirement = _random.Next(1, 6) * multiplier;
-                LevelRequirement = _random.Next(1, 6) * multiplier;
+                LevelRequirement = (_random.Next(1, 6) * multiplier) + multiplier - 1;
                 break;
 
             case ItemType.WeaponRightHand:
                 Damage = _random.Next(1, 3 * multiplier);
                 CritChance = _random.Next(0, 5 * multiplier);
                 Strength = _random.Next(1, 3 * multiplier);
-                LevelRequirement = _random.Next(1, 5) * multiplier;
+                LevelRequirement = (_random.Next(1, 5) * multiplier) + multiplier - 1;
                 break;
 
             case ItemType.Leggings:
+                var lifestealValues = new[] { 0, 3, 7 }; // Predefined possible values for Lifesteal
+                Lifesteal = lifestealValues[_random.Next(lifestealValues.Length)] * multiplier;
                 Armor = _random.Next(0, 3 + multiplier + multiplier - 2);
                 Strength = _random.Next(0, 3 * multiplier);
                 Regeneration = _random.Next(0, 3 * multiplier);
@@ -94,7 +96,7 @@ public class RandomItem : Item
                 Regeneration = _random.Next(0, 3 * multiplier);
                 CritDamage = _random.Next(0, 7 * multiplier);
                 StrengthRequirement = _random.Next(1, 6 * multiplier);
-                LevelRequirement = _random.Next(1, 7) * multiplier;
+                LevelRequirement = (_random.Next(1, 7) * multiplier) + multiplier + multiplier - 2;
                 break;
 
             case ItemType.WeaponLeftHand:
@@ -110,7 +112,8 @@ public class RandomItem : Item
                 Regeneration = _random.Next(0, 2 * multiplier * multiplier);
                 Health = _random.Next(0, 14 * (multiplier + multiplier));
                 Armor = _random.Next(1, 2 + multiplier - 1) + multiplier - 1;
-                LevelRequirement = _random.Next(1, 8) + multiplier - 1;
+                StrengthRequirement = _random.Next(3, 6 * multiplier);
+                LevelRequirement = _random.Next(1, 8 * multiplier) + multiplier + multiplier - 2;
                 break;
 
             default:

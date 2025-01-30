@@ -91,7 +91,7 @@ public class ModifierProcessor
                 return "Critical Damage increased!";
             case "smuggler":
                 NumberOfModifiersCurrentlyActive++;
-                _mainWindow.comboBoxInventory.Items.Add(new Item("Stolen Dagger", ItemType.WeaponRightHand, 1, 1, 0, 0, 0, 0, 0, 1, 1));
+                _mainWindow.comboBoxInventory.Items.Add(new Item("Soldier's Dagger", ItemType.WeaponRightHand, 1, 1, 0, 0, 0, 0, 0, 1, 1));
                 _appliedModifiers.Add(command);
                 return "Dagger aqquired!";
             case "strong":
@@ -136,22 +136,22 @@ public class ModifierProcessor
                 return "Reforging upgraded!";
 
             // Debugging modes TODO scramble these
-            case "presentation":
+            case "presentation32":
                 _playerState.Player.Damage += 15;
                 _playerState.Player.DodgeChance += 60;
                 _playerState.Player.GoldInPocket += 50;
                 _playerState.Player.Lifesteal += 50;
                 _appliedModifiers.Add(command);
                 return "Presentation mode enabled.";
-            case "debug":
+            case "debug32":
                 _playerState.Player.Damage += 100;
-                _playerState.Player.DodgeChance += 50;
+                _playerState.Player.DodgeChance += 150;
                 _playerState.Player.GoldInPocket += 9999;
                 _playerState.Player.Lifesteal += 150;
                 _playerState.Player.Armor += 25;
                 _appliedModifiers.Add(command);
                 return "Debugging mode enabled.";
-            case "guard":
+            case "guard32":
                 _playerState.Player.techniqueGuardIsLearned = true;
                 _mainWindow.buttonGuard.Show();
                 _appliedModifiers.Add(command);

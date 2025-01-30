@@ -26,11 +26,11 @@ public class QuestManager
     public bool IsInsideQuestPanel { get; set; }
     public bool IsAct3Q1Availiable { get; set; }
 
-    public QuestManager(MainWindow mainWindow, ImageSetter imageSetter)
+    internal QuestManager(MainWindow mainWindow, ImageSetter imageSetter, StoryProgress storyProgress)
     {
         _mainWindow = mainWindow;
         _imageSetter = imageSetter;
-        _storyProgress = new StoryProgress(_mainWindow, _sounds);
+        _storyProgress = storyProgress;
 
     }
 
@@ -98,13 +98,13 @@ public class QuestManager
         _mainWindow.panelAct1Quest1.Show();
         if (!Act1Quest1IsCompleted)
         {
-            _mainWindow.textBoxAct1Quest1.Text = "Thank you so much for returning my boy to me! As a token of my gratitude, here, take this. It belonged to my father. Farewell, hero.\r\n[Father's Helmet added to inventory]";
+            _mainWindow.textBoxAct1Quest1.Text = "Thank you so much for returning my boy to me! As a token of my gratitude, here, take this. It belonged to my father. Farewell, Hero.\r\n[Father's Helmet added to inventory]";
             _mainWindow.comboBoxInventory.Items.Add(new Item("Father's Helmet", ItemType.Helmet, 0, 0, 1, 1, new Random().Next(1, 6), 1, 0, 0, 0, 4, 5));
             Act1Quest1IsCompleted = true;
         }
         else
         {
-            _mainWindow.textBoxAct1Quest1.Text = "Thank you again, hero. Maybe you'll save us all some day.";
+            _mainWindow.textBoxAct1Quest1.Text = "Thank you again, Hero. Maybe you'll save us all some day.";
         }
     }
 
@@ -137,7 +137,8 @@ public class QuestManager
             {
                 _mainWindow.textBoxAct3Q1.Text = "\"What's that I see? You’ve got somethin’ special, don’t ya? A lily, frozen in time. Give it to me, and I promise to make your equipment even stronger, sharper, deadlier.\"";
                 Player.HasFrozenLily = false;
-                ReforgeItemStat.ReforgeModifier = 0.20;
+                _imageSetter.SetAct3Q1FrogGotLilyImage();
+                ReforgeItemStat.LilyReforgeModifer = 0.20;
                 _mainWindow.pictureBoxFrozenLily.Hide();
             }
             else
@@ -151,6 +152,7 @@ public class QuestManager
     {
         if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn == 5 && _storyProgress.Act5BossDefeatedFlag)
         {
+            UltimateDarknessFinalBossEncounter();
         }
     }
 
@@ -181,10 +183,39 @@ public class QuestManager
         {
             IsInsideQuestPanel = false;
             _mainWindow.panelAct2Q1.Hide();
+            _mainWindow.IsButtonContinueEnabled = false;
             _mainWindow.panelEncounter.Show();
             _storyProgress.StoryState = 110;
             _storyProgress.ProgressStory();
+            Encounter.EncounterCompleted += OnAct2OptionalBossDefeated;
         }
+    }
+
+    public void UltimateDarknessFinalBossEncounter()
+    {
+        if (StoryProgress.WhichActIsThePlayerIn == 5 && !_storyProgress.Act5UltimatedarknessBossDefeatedFlag && _storyProgress.SophiaIsAlive && _storyProgress.Act2OptionalBossDefeatedFlag && !_storyProgress.Act5UltimatedarknessBossDefeatedFlag)
+        {
+            IsInsideQuestPanel = false;
+            _mainWindow.IsButtonContinueEnabled = false;
+            _mainWindow.panelEncounter.Show();
+            _storyProgress.StoryState = 111;
+            _storyProgress.ProgressStory();
+            Encounter.EncounterCompleted += OnAct5OptionalBossDefeated;
+        }
+    }
+
+    private void OnAct2OptionalBossDefeated(object sender, EventArgs e)
+    {
+        _storyProgress.Act3BossDefeatedFlag = true;
+        _mainWindow.IsButtonContinueEnabled = true;
+        Encounter.EncounterCompleted -= OnAct2OptionalBossDefeated; // Unsubscribe from the event to avoid multiple invocations
+    }
+
+    private void OnAct5OptionalBossDefeated(object sender, EventArgs e)
+    {
+        _storyProgress.Act3BossDefeatedFlag = true;
+        _mainWindow.IsButtonContinueEnabled = true;
+        Encounter.EncounterCompleted -= OnAct5OptionalBossDefeated; // Unsubscribe from the event to avoid multiple invocations
     }
 
 }

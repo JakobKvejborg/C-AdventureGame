@@ -411,9 +411,7 @@ public class MusicAndSound
     public void MuteAllMusic()
     {
         StopAct1TownMusic();
-        StopAct1ThunderSound();
         StopAct2TownMusic();
-        StopAct2WindSound();
         StopAct4Music();
         StopAct3Music();
     }

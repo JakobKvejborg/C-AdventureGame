@@ -169,12 +169,12 @@ public class Controller
                     break;
 
                 case StickDirection.Down:
-                    ShowPanelIfEquipped(ItemType.Leggings);
+                    ShowPanelIfEquipped(ItemType.Boots);
+                    ShowPanelIfEquipped(ItemType.Belt);
                     break;
 
                 case StickDirection.Left:
-                    ShowPanelIfEquipped(ItemType.Amulet);
-                    ShowPanelIfEquipped(ItemType.WeaponLeftHand);
+                    ShowPanelIfEquipped(ItemType.Armor);
                     break;
 
                 case StickDirection.Right:
@@ -182,17 +182,17 @@ public class Controller
                     break;
 
                 case StickDirection.DownLeft:
-                    ShowPanelIfEquipped(ItemType.Belt);
+                    ShowPanelIfEquipped(ItemType.WeaponLeftHand);
                     break;
 
                 case StickDirection.UpRight:
                     ShowPanelIfEquipped(ItemType.Shoulders);
                     break;
                 case StickDirection.UpLeft:
-                    ShowPanelIfEquipped(ItemType.Armor);
+                    ShowPanelIfEquipped(ItemType.Amulet);
                     break;
                 case StickDirection.DownRight:
-                    ShowPanelIfEquipped(ItemType.Boots);
+                    ShowPanelIfEquipped(ItemType.Leggings);
                     ShowPanelIfEquipped(ItemType.WeaponRightHand);
                     break;
 
@@ -341,14 +341,7 @@ public class Controller
                     //}
                     break;
                 case 7: // Start button
-                    if (_mainWindow.IntroVideoIsPlaying)
-                    {
-                        _mainWindow.SkipIntroVid();
-                    }
-                    else if (!_mainWindow.PlayGameHasBeenPressed)
-                    {
-                        _mainWindow.ButtonPlayGame();
-                    }
+                    _mainWindow.EnterKeyPressed();
                     break;
                 case 8: // Left Thumbstick
                     break;
@@ -500,6 +493,7 @@ public class Controller
         _mainWindow.panelPopupInventoryInfo.Hide();
         _mainWindow.HideAllEquipmentPanels();
     }
+
     public StickDirection GetStickDirection(float x, float y)
     {
         // Define thresholds for directional movement

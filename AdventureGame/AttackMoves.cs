@@ -39,7 +39,7 @@ internal class AttackMoves
         {
             _sounds.PlayBloodLustSound();
             int playerAttackDamageTotal = (int)(_playerState.Player.CalculateTotalDamage(_playerState) * 1.6); // 1.6x damage for Blood Lust attack
-            int healthCost = (int)(_playerState.Player.MaxHealth * 0.10); // % cost of health
+            int healthCost = (int)(_playerState.Player.MaxHealth * 0.08); // % cost of health
             _playerState.Player.CurrentHealth -= healthCost;
             _playerState.Player.CurrentHealth = Math.Max(_playerState.Player.CurrentHealth, 0); // Prevent negative health
             _mainWindow.UpdatePlayerLabels(); // Update player health bar

@@ -10,7 +10,7 @@ namespace AdventureGame;
 
 public partial class MainWindow : Form
 {
-    internal PlayerState playerState;
+    internal PlayerState _playerState;
     private bool IsAttackOnCooldown;
     private ModifierProcessor _modifierProcessor;
     private MonsterContainer _monsterContainer = new MonsterContainer();
@@ -24,11 +24,10 @@ public partial class MainWindow : Form
     public List<Panel> panelsList;
     public int PanelsIndex;
     private Random random = new Random();
-    ImageSetter imageSetter;
+    ImageSetter _imageSetter;
     MusicAndSound _sounds = new MusicAndSound();
     bool IsContinueOnCooldown; // Prevents the player from spamming Continue too fast
     public bool IsInventoryOpen { get; set; } = false;
-    public bool IntroVideoIsPlaying { get; private set; }
     public bool PlayGameHasBeenPressed { get; set; } = false;
     bool EnabledAct1TechniqueTeacher;
     bool OneTimeBool;
@@ -40,33 +39,36 @@ public partial class MainWindow : Form
     private QuestManager _quests;
     private Controller _controller;
     private ReforgeItemStat _reforge;
-    private CustomButtonStyles _styles;
-
+    private CustomControlStyles _styles;
+    private DimOverlay _overlay;
+    private PlayVideos _videos;
 
     public MainWindow()
     {
         InitializeComponent();
         this.DoubleBuffered = true; // helps flickering
-        playerState = new PlayerState();
+        _playerState = new PlayerState();
         panelsList = new List<Panel>();
-        _modifierProcessor = new ModifierProcessor(playerState, this);
-        _storyProgress = new StoryProgress(this, _sounds);
-        _techniquesTrainer = new TechniquesTrainer(playerState, _storyProgress, this, _sounds);
-        _attacks = new AttackMoves(playerState, this, _sounds);
-        imageSetter = new ImageSetter(this);
-        _controller = new Controller(playerState, this, _techniquesTrainer); // Initialize controller
-        _quests = new QuestManager(this, imageSetter);
+        _modifierProcessor = new ModifierProcessor(_playerState, this);
+        _videos = new PlayVideos(this);
+        _storyProgress = new StoryProgress(this, _sounds, _videos);
+        _techniquesTrainer = new TechniquesTrainer(_playerState, _storyProgress, this, _sounds);
+        _attacks = new AttackMoves(_playerState, this, _sounds);
+        _imageSetter = new ImageSetter(this);
+        _controller = new Controller(_playerState, this, _techniquesTrainer); // Initialize controller
+        _quests = new QuestManager(this, _imageSetter, _storyProgress);
         _reforge = new ReforgeItemStat();
-        _styles = new CustomButtonStyles();
+        _styles = new CustomControlStyles();
+        _overlay = new DimOverlay();
         _windowModifier = new PopupWindowModifier(_modifierProcessor, this, _styles);
         UpdatePlayerLabels();
         panelTown.Location = new Point(0, 0); // Example: position it at the top-left corner
         panelTown.Size = new Size(400, 300);  // Example: set a proper size to make it visible
         panelTown.BringToFront();
         this.Controls.Add(panelTown);
-       
+
         CustomStylesForControls(); // Custom button looks
-        
+
         //comboBoxInventory.DisplayMember = "Name"; // Makes the comboboxInventory only display the item.Name
         //comboBoxUpgradeItems.DisplayMember = "Name"; // Makes the comboboxInventory only display the item.Name
         //comboBoxAct3Q1Frog.DisplayMember = "Name";
@@ -75,7 +77,7 @@ public partial class MainWindow : Form
         MakeInventoryBackgroundTrulyTransparent();
 
         // Event that listens for player levelup
-        playerState.Player.LevelUpEvent += OnPlayerLevelUp;
+        _playerState.Player.LevelUpEvent += OnPlayerLevelUp;
 
         buttonPlayGame.MouseEnter += buttonPlayGame_MouseEnter; // Button Play Game Color
         buttonPlayGame.MouseLeave += buttonPlayGame_MouseLeave;
@@ -91,16 +93,19 @@ public partial class MainWindow : Form
         this.StartPosition = FormStartPosition.CenterScreen;
 
         // Method to make the Game Title change colors slowly
-        FadeTitle();
+        //FadeTitle();
         this.KeyPreview = true; // prevents the buttons from gaining unwanted focus
 
+        // Subscribe to focus events (used for dimming outside the program)
+        this.Activated += MainWindow_Activated;
+        this.Deactivate += MainWindow_Deactivate;
 
         SetInvisbleCompassLabels();
         SetInisibleEquippedItemsLabels();
 
         comboBoxInventory.SelectedIndexChanged += ComboBoxInventory_SelectedIndexChanged; // event that listens when index is changed
 
-        // Set up a timer to poll controller state every 50ms
+        // Set up a timer to poll controller state every 50ms // TODO TEST if actually needed
         var controllerPollTimer = new System.Windows.Forms.Timer
         {
             Interval = 50 // Poll every 50 ms
@@ -108,6 +113,31 @@ public partial class MainWindow : Form
         controllerPollTimer.Tick += (sender, e) => _controller.UpdateControllerState();
         controllerPollTimer.Start();
     }
+
+    private void MainWindow_Activated(object sender, EventArgs e)
+    {
+        // Ensure the overlay is shown when the main window gains focus
+        if (!_overlay.Visible)
+        {
+            _overlay?.Show();
+        }
+    }
+
+    private void MainWindow_Deactivate(object sender, EventArgs e)
+    {
+        // Hide the overlay when the window loses focus
+        if (_overlay.Visible)
+        {
+            _overlay?.Hide();
+        }
+    }
+
+    private void MainWindow_Click(object sender, EventArgs e)
+    {
+        // Toggle the overlay's visibility on click
+        _overlay.Visible = !_overlay.Visible;
+    }
+
 
     private void CustomStylesForControls()
     {
@@ -131,7 +161,7 @@ public partial class MainWindow : Form
         _styles.CoolRedShadow(buttonAct3Q1Town);
         _styles.CoolRedShadow(buttonAct4Q1Town);
         _styles.CoolRedShadow(buttonAct4Quest1Continue);
-      
+
         _styles.CoolRedShadow(buttonEquipUnequip);
         _styles.CoolRedShadow(buttonDiscardItem);
 
@@ -143,6 +173,8 @@ public partial class MainWindow : Form
         _styles.CoolRedShadowComboBox(comboBoxInventory);
         _styles.CoolRedShadowComboBox(comboBoxUpgradeItems);
         _styles.CoolRedShadowComboBox(comboBoxAct3Q1Frog);
+
+        _styles.CoolRedShadowListView(listViewItemStatsFrog);
     }
 
     private void ComboBoxInventory_SelectedIndexChanged(object sender, EventArgs e)
@@ -156,7 +188,7 @@ public partial class MainWindow : Form
         Button btn = (Button)sender;
 
         // Check if the player's health is low and the GuardBuff is not active
-        if (playerState.Player.CurrentHealth <= playerState.Player.PlayerIsOnLowHealth && !playerState.Player.GuardBuffIsActive)
+        if (_playerState.Player.CurrentHealth <= _playerState.Player.PlayerIsOnLowHealth && !_playerState.Player.GuardBuffIsActive)
         {
             // Create a glow effect around the button
             using (Pen glowPen = new Pen(Color.DeepSkyBlue, 2))
@@ -217,15 +249,18 @@ public partial class MainWindow : Form
         panelAct2Q1.Hide();
         labelAct2Q1.Hide();
         pictureBoxFrozenLily.Hide();
+        labelAct5Q1.Hide();
+        panelAnyVideo.Hide();
         #endregion
     }
 
     private void MakeHeroBagBackgroundTrulyTransparent()
     {
         pictureBoxHero.Controls.Add(pictureBoxHeroBag);
-        pictureBoxHeroBag.Location = new Point(120, 170);
+        pictureBoxHeroBag.Location = new Point(210, 300);
         pictureBoxHeroBag.BackColor = Color.Transparent;
     }
+
 
     private void MakeInventoryBackgroundTrulyTransparent()
     {
@@ -352,28 +387,28 @@ public partial class MainWindow : Form
     }
     #endregion
 
-    async void FadeTitle()
-    {
-        Color startColor = Color.FromArgb(128, 3, 3);
-        Color endColor = Color.Red;
-        int steps = 140;  // Number of steps for the color transition
+    //async void FadeTitle()
+    //{
+    //    Color startColor = Color.FromArgb(128, 3, 3);
+    //    Color endColor = Color.Red;
+    //    int steps = 140;  // Number of steps for the color transition
 
-        for (int i = 0; i < steps; i++)
-        {
-            // Interpolate between startColor and endColor
-            int r = startColor.R + (endColor.R - startColor.R) * i / steps;
-            int g = startColor.G + (endColor.G - startColor.G) * i / steps;
-            int b = startColor.B + (endColor.B - startColor.B) * i / steps;
+    //    for (int i = 0; i < steps; i++)
+    //    {
+    //        // Interpolate between startColor and endColor
+    //        int r = startColor.R + (endColor.R - startColor.R) * i / steps;
+    //        int g = startColor.G + (endColor.G - startColor.G) * i / steps;
+    //        int b = startColor.B + (endColor.B - startColor.B) * i / steps;
 
-            // Apply the interpolated color to the label
-            labelGameTitle.ForeColor = Color.FromArgb(r, g, b);
+    //        // Apply the interpolated color to the label
+    //        labelGameTitle.ForeColor = Color.FromArgb(r, g, b);
 
-            // Delay to make the transition smooth
-            await Task.Delay(40);
-        }
-        // Optionally loop the effect
-        FadeTitle();
-    }
+    //        // Delay to make the transition smooth
+    //        await Task.Delay(40);
+    //    }
+    //    // Optionally loop the effect
+    //    FadeTitle();
+    //}
 
     public static async Task ShakeMonsterPicturebox(Control control, Control progressBarMonsterHP, int duration = 80, int shakeAmount = 5)
     {
@@ -429,10 +464,9 @@ public partial class MainWindow : Form
         }
     }
 
-
     public void OnPlayerLevelUp()
     {
-        textBoxEncounter.AppendText($"\r\nYou have leveled up to level {playerState.Player.Level}!");
+        textBoxEncounter.AppendText($"\r\nYou have leveled up to level {_playerState.Player.Level}!");
         UpdatePlayerLabels();
         UpdatePlayerHealthBar();
         _sounds.PlayLevelUpSound();
@@ -480,22 +514,16 @@ public partial class MainWindow : Form
                 GuardAttack();
                 return true;
             case Keys.Enter:
-                if (IntroVideoIsPlaying)
-                {
-                    SkipIntroVid();
-                }
-                else
-                {
-                    EnterKeyPressed();
-                }
+                EnterKeyPressed();
                 return true;
             case Keys.Escape:
-                if (IntroVideoIsPlaying)
+                if (_videos.IntroVideoIsPlaying)
                 {
-                    SkipIntroVid();
+                    _videos.SkipIntroVid();
                 }
                 else
                 {
+                    _overlay?.Close();
                     Application.Exit();
                 }
                 return true;
@@ -566,6 +594,7 @@ public partial class MainWindow : Form
         StartAct4Quest1();
         StartAct3Quest1();
         StartAct2Quest1();
+        StartAct5Quest1();
     }
 
     public void KeysDown()
@@ -769,7 +798,7 @@ public partial class MainWindow : Form
 
     public void EnterKeyPressed()
     {
-        if (IntroVideoIsPlaying) { return; }
+        if (_videos.IntroVideoIsPlaying) { _videos.SkipIntroVid(); return; }
 
         if (!PlayGameHasBeenPressed)
         {
@@ -788,6 +817,7 @@ public partial class MainWindow : Form
         panelStartScreen.Hide();
         panelEncounter.Show();
         buttonPlayGame.Dispose();
+        _sounds.PlayThunderSound();
     }
 
 
@@ -810,34 +840,34 @@ public partial class MainWindow : Form
             switch (itemType)
             {
                 case ItemType.WeaponRightHand:
-                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("swordicon.ico");
+                    pictureBoxInventoryIcon.Image = _imageSetter.GetImagePath("swordicon.ico");
                     break;
                 case ItemType.Gloves:
-                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("gauntletsicon.ico");
+                    pictureBoxInventoryIcon.Image = _imageSetter.GetImagePath("gauntletsicon.ico");
                     break;
                 case ItemType.Boots:
-                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("bootsicon.png");
+                    pictureBoxInventoryIcon.Image = _imageSetter.GetImagePath("bootsicon.png");
                     break;
                 case ItemType.Armor:
-                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("armoricon.png");
+                    pictureBoxInventoryIcon.Image = _imageSetter.GetImagePath("armoricon.png");
                     break;
                 case ItemType.Belt:
-                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("belticon.png");
+                    pictureBoxInventoryIcon.Image = _imageSetter.GetImagePath("belticon.png");
                     break;
                 case ItemType.Amulet:
-                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("amuleticon.png");
+                    pictureBoxInventoryIcon.Image = _imageSetter.GetImagePath("amuleticon.png");
                     break;
                 case ItemType.Leggings:
-                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("leggingsicon.png");
+                    pictureBoxInventoryIcon.Image = _imageSetter.GetImagePath("leggingsicon.png");
                     break;
                 case ItemType.Helmet:
-                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("helmeticon.png");
+                    pictureBoxInventoryIcon.Image = _imageSetter.GetImagePath("helmeticon.png");
                     break;
                 case ItemType.Shoulders:
-                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("shouldersicon.png");
+                    pictureBoxInventoryIcon.Image = _imageSetter.GetImagePath("shouldersicon.png");
                     break;
                 case ItemType.WeaponLeftHand:
-                    pictureBoxInventoryIcon.Image = imageSetter.GetImagePath("hookicon.png");
+                    pictureBoxInventoryIcon.Image = _imageSetter.GetImagePath("hookicon.png");
                     break;
             }
         }
@@ -851,7 +881,7 @@ public partial class MainWindow : Form
             ItemType itemType = selectedItem.Type;
 
             // Get the item from the EquippedItems collection
-            if (playerState.Player.EquippedItems.TryGetValue(itemType, out var item))
+            if (_playerState.Player.EquippedItems.TryGetValue(itemType, out var item))
             {
                 // If the item exists in the EquippedItems, show the appropriate panel
                 switch (itemType)
@@ -937,6 +967,13 @@ public partial class MainWindow : Form
     // This method runs after the entire layout of WinForms is loaded
     private void MainWindow_Load(object sender, EventArgs e)
     {
+        // Create and show the dim overlay
+        _overlay.Show();
+
+        // Ensure the main window stays on top of the dim overlay
+        //this.TopMost = true;
+        this.BringToFront();
+
         HidePanelsEtc();
 
         // These panelslists decides the order of panels I think
@@ -948,17 +985,19 @@ public partial class MainWindow : Form
 
         panelsList[PanelsIndex].BringToFront();
         labelInventoryItemInfo.Text = null;
-        imageSetter.SetAct1Quest1BackgroundImage();
-        imageSetter.SetAct3Q1BackgroundImage();
+        _imageSetter.SetAct1Quest1BackgroundImage();
+        _imageSetter.SetAct3Q1BackgroundImage();
         buttonUpgradeItem.Text = $"{Item.CostToUpgrade}G";
 
-        imageSetter.SetAct2SmithPictureBoxImage();
+        _imageSetter.SetAct2SmithPictureBoxImage();
+
+        _sounds.SetListOfSounds();
 
         // Play opening intro video movie
         try
         {
-            PlayOpeningIntroVid();
-            IntroVideoIsPlaying = true;
+            _videos.PlayOpeningIntroVid();
+            _videos.IntroVideoIsPlaying = true;
         }
         catch (FileNotFoundException)
         {
@@ -966,36 +1005,11 @@ public partial class MainWindow : Form
         }
     }
 
-    private void PlayOpeningIntroVid()
+    protected override void OnFormClosing(FormClosingEventArgs e)
     {
-        string introVideoPath = imageSetter.GetVideoPath("intromoviehorror.mov");
-        axWMPintroVid.uiMode = "none";
-        axWMPintroVid.URL = introVideoPath;
-        axWMPintroVid.Ctlcontrols.play();
-        axWMPintroVid.PlayStateChange += axWMPintroVid_PlayStateChange;
-    }
-
-    public void SkipIntroVid()
-    {
-        axWMPintroVid.Ctlcontrols.stop();
-        panelIntroVidWMP.Hide();
-
-        // Manually invoke the PlayStateChange event logic with "Media Ended" state (8)
-        axWMPintroVid_PlayStateChange(this, new AxWMPLib._WMPOCXEvents_PlayStateChangeEvent(8));
-    }
-
-    private void axWMPintroVid_PlayStateChange(object sender, AxWMPLib._WMPOCXEvents_PlayStateChangeEvent e)
-    {
-        // 8 corresponds to the "Media Ended" state in Windows Media Player
-        if (e.newState == 8)  // "Media Ended" state
-        {
-            // Hide the media player when the video finishes
-            axWMPintroVid.Visible = false;
-            panelIntroVidWMP.Visible = false;
-            IntroVideoIsPlaying = false;
-            _sounds.SetListOfSounds();
-            _sounds.PlayThunderSound();
-        }
+        // Close the overlay when the main form is closing
+        _overlay?.Close();
+        base.OnFormClosing(e);
     }
 
     private void label2_Click_1(object sender, EventArgs e)
@@ -1227,7 +1241,7 @@ public partial class MainWindow : Form
     {
         IsButtonContinueEnabled = false;
         DisableReturnToTown();
-        imageSetter.SetAct3BossBackgroundimage();
+        _imageSetter.SetAct3BossBackgroundimage();
         Encounter.PerformEncounter(_monsterContainer.ListOfMonstersBossAct3, _itemContainer.rareAmulets, this);
         Encounter.EncounterCompleted += OnAct3BossDefeated;
         _sounds.PlayAct3Boss();
@@ -1363,9 +1377,9 @@ public partial class MainWindow : Form
     {
         if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn != 3 && StoryProgress.WhichActIsThePlayerIn != 5) // We don't want the player to be able to heal in act 3 and 5 because there's no healer
         {
-            if (playerState.Player.GoldInPocket >= Player.priceToHeal) // the players' gold has to be checked here, due to labels being set
+            if (_playerState.Player.GoldInPocket >= Player.priceToHeal) // the players' gold has to be checked here, due to labels being set
             {
-                playerState.Player.HealPlayer(playerState);
+                _playerState.Player.HealPlayer(_playerState);
                 UpdatePlayerLabels();
                 buttonHeal.Text = $"Heal {Player.priceToHeal.ToString()}G";
                 UpdatePlayerHealthBar(); // updates the players health bar after being healed
@@ -1427,10 +1441,10 @@ public partial class MainWindow : Form
         if (comboBoxInventory.SelectedItem != null)
         {
             Item item = (Item)comboBoxInventory.SelectedItem;
-            if (playerState.Player.Level >= item.LevelRequirement && playerState.Player.Strength >= item.StrengthRequirement)
+            if (_playerState.Player.Level >= item.LevelRequirement && _playerState.Player.Strength >= item.StrengthRequirement)
             {
                 _sounds.PlayEquipSound();
-                playerState.Player.EquipItem(item, comboBoxInventory, comboBoxUpgradeItems, comboBoxAct3Q1Frog);
+                _playerState.Player.EquipItem(item, comboBoxInventory, comboBoxUpgradeItems, comboBoxAct3Q1Frog);
                 UpdatePlayerLabels();
                 RemoveItemFromComboboxInventory(item); // removes the equipped item from the combobox
                 SetHiddenPanelLabelsOnly(item.Type);
@@ -1440,7 +1454,7 @@ public partial class MainWindow : Form
 
                 if (item.Type == ItemType.WeaponLeftHand)
                 {
-                    imageSetter.SetHeroLeftWeaponPictureBoxImage();
+                    _imageSetter.SetHeroLeftWeaponPictureBoxImage();
                 }
             }
             else
@@ -1465,7 +1479,7 @@ public partial class MainWindow : Form
     // This method shows the hidden panels when the mouse is over the item on the hero. It also sets the labels info and name of items.
     public void ShowHiddenItemPanelAndSetLabels(ItemType itemType)
     {
-        if (playerState.Player.EquippedItems.TryGetValue(itemType, out var item) && item != null)
+        if (_playerState.Player.EquippedItems.TryGetValue(itemType, out var item) && item != null)
         {
 
             SetHiddenPanelLabelsOnly(item.Type);
@@ -1509,7 +1523,7 @@ public partial class MainWindow : Form
 
     public void SetHiddenPanelLabelsOnly(ItemType itemType)
     {
-        if (playerState.Player.EquippedItems.TryGetValue(itemType, out var item) && item != null)
+        if (_playerState.Player.EquippedItems.TryGetValue(itemType, out var item) && item != null)
 
             // Show the corresponding panel for the itemType 
             switch (itemType)
@@ -1664,19 +1678,19 @@ public partial class MainWindow : Form
     {
         if (StoryProgress.playerIsInTown && _storyProgress.Act1BossDefeatedFlag && StoryProgress.WhichActIsThePlayerIn == 2)
         {
-            if (playerState.Player.HasDragonMageUpgradeForSmith && !OneTimeBool4) // Special onetime-dialog when the player has DragonMageUpgrade
+            if (_playerState.Player.HasDragonMageUpgradeForSmith && !OneTimeBool4) // Special onetime-dialog when the player has DragonMageUpgrade
             {
                 txtBox_Town.Text = "\"What is this now? Where did you find this?! I can sense powerful magic surrounding this item. Perhaps I can make some use of it...\"";
                 OneTimeBool4 = true;
                 _sounds.PlaySmithUpgradeRubySound();
                 Item.SmithUpgradeMultiplication++;
-                imageSetter.SetAct2SmithUpgradedImage();
+                _imageSetter.SetAct2SmithUpgradedImage();
                 pictureBoxRuby.Hide();
                 _storyProgress.Act1ArtsTeacherIsAvailable = true;
                 return;
             }
 
-            if (comboBoxUpgradeItems.SelectedItem != null && playerState.Player.GoldInPocket >= Item.CostToUpgrade)
+            if (comboBoxUpgradeItems.SelectedItem != null && _playerState.Player.GoldInPocket >= Item.CostToUpgrade)
             {
                 Item item = (Item)comboBoxUpgradeItems.SelectedItem;
                 if (item.IsItemUpgraded || item.Type == ItemType.Amulet)
@@ -1686,8 +1700,8 @@ public partial class MainWindow : Form
                     return;
                 }
                 _sounds.PlaySmithingSound();
-                playerState.Player.UnequipItem(item, comboBoxInventory, comboBoxUpgradeItems, comboBoxAct3Q1Frog); // unequips the item to prevent stat bugs
-                playerState.Player.GoldInPocket -= Item.CostToUpgrade;
+                _playerState.Player.UnequipItem(item, comboBoxInventory, comboBoxUpgradeItems, comboBoxAct3Q1Frog); // unequips the item to prevent stat bugs
+                _playerState.Player.GoldInPocket -= Item.CostToUpgrade;
                 item.UpgradeItem();
                 _sounds.PlayAct2SmithOffer();
                 buttonUpgradeItem.Text = $"{Item.CostToUpgrade}G";
@@ -1713,18 +1727,18 @@ public partial class MainWindow : Form
         {
             _sounds.PlayAct4MageSound();
 
-            if (playerState.Player.HasDragonMageUpgradeForSmith)
+            if (_playerState.Player.HasDragonMageUpgradeForSmith)
             {
                 txtBox_Town.Text = _storyProgress.GetMageDoesntWantAnythingText();
                 return;
             }
 
-            if (playerState.Player.NumberOfDragonEggsInInventory > 2 && !playerState.Player.HasDragonMageUpgradeForSmith)
+            if (_playerState.Player.NumberOfDragonEggsInInventory > 2 && !_playerState.Player.HasDragonMageUpgradeForSmith)
             {
-                playerState.Player.NumberOfDragonEggsInInventory -= 3;
+                _playerState.Player.NumberOfDragonEggsInInventory -= 3;
                 UpdateDragonEggsLabels();
                 txtBox_Town.Text = _storyProgress.GetMageText(playerHasDragonEggs: true);
-                playerState.Player.HasDragonMageUpgradeForSmith = true;
+                _playerState.Player.HasDragonMageUpgradeForSmith = true;
                 pictureBoxRuby.Show();
             }
             else
@@ -1736,13 +1750,13 @@ public partial class MainWindow : Form
 
     public void UpdateDragonEggsLabels()
     {
-        if (playerState.Player.NumberOfDragonEggsInInventory < 1)
+        if (_playerState.Player.NumberOfDragonEggsInInventory < 1)
         {
             labelDragonEggs.Text = "";
             pictureBoxDragonEggs.Hide();
             labelDragonEggs.Hide();
         }
-        labelDragonEggs.Text = $"{playerState.Player.NumberOfDragonEggsInInventory}x";
+        labelDragonEggs.Text = $"{_playerState.Player.NumberOfDragonEggsInInventory}x";
     }
 
     private void buttonTalkMage_Click(object sender, EventArgs e)
@@ -1752,7 +1766,7 @@ public partial class MainWindow : Form
 
     public async Task CheckIfPlayerIsDefeated()
     {
-        if (playerState.Player.CurrentHealth <= 0)
+        if (_playerState.Player.CurrentHealth <= 0)
         {
             await Task.Delay(400);
             _sounds.PlayDeathGameOverSound();
@@ -1760,6 +1774,7 @@ public partial class MainWindow : Form
             panelEncounter.Hide();
             panelGameOver.Show();
             await Task.Delay(3500);
+            _overlay?.Close();
             Application.Exit();
         }
     }
@@ -1806,8 +1821,14 @@ public partial class MainWindow : Form
     {
         if (pictureBoxLoot.Visible)
         {
+            if (comboBoxInventory.Items.Count > 29) // How many items the inventory can hold max
+            {
+                textBoxEncounter.Text = "Inventory full.";
+                return;
+            }
+
             pictureBoxLoot.Hide();
-            Encounter.ItemIsLootetFromMonster(playerState, this);
+            Encounter.ItemIsLootetFromMonster(_playerState, this);
             _sounds.PlayLootItemsSound();
         }
     }
@@ -1900,24 +1921,24 @@ public partial class MainWindow : Form
         UpdatePlayerHealthBar();
 
         // Setting the player stats labels
-        labelPlayerDamage.Text = $"Damage: {playerState.Player.Damage}";
-        labelPlayerStrength.Text = $"Strength: {playerState.Player.Strength}";
-        labelPlayerLifeSteal.Text = $"Lifesteal: {playerState.Player.Lifesteal}%";
-        labelPlayerArmor.Text = $"Armor: {playerState.Player.Armor}";
-        labelPlayerDodge.Text = $"{playerState.Player.DodgeChance}%";
-        labelGoldInPocket.Text = $"{playerState.Player.GoldInPocket}";
-        labelLevel.Text = $"Level: {playerState.Player.Level}";
-        labelExperience.Text = $"Exp: {playerState.Player.Experience}/{playerState.Player.XpNeededToLevelUp}";
-        labelCritChance.Text = $"{playerState.Player.CritChance}%";
-        labelPlayerCritDmg.Text = $"CritDmg: {playerState.Player.CritDamage}%";
-        labelRegeneration.Text = $"Regen: {playerState.Player.Regeneration}";
+        labelPlayerDamage.Text = $"Damage: {_playerState.Player.Damage}";
+        labelPlayerStrength.Text = $"Strength: {_playerState.Player.Strength}";
+        labelPlayerLifeSteal.Text = $"Lifesteal: {_playerState.Player.Lifesteal}%";
+        labelPlayerArmor.Text = $"Armor: {_playerState.Player.Armor}";
+        labelPlayerDodge.Text = $"{_playerState.Player.DodgeChance}%";
+        labelGoldInPocket.Text = $"{_playerState.Player.GoldInPocket}";
+        labelLevel.Text = $"Level: {_playerState.Player.Level}";
+        labelExperience.Text = $"Exp: {_playerState.Player.Experience}/{_playerState.Player.XpNeededToLevelUp}";
+        labelCritChance.Text = $"{_playerState.Player.CritChance}%";
+        labelPlayerCritDmg.Text = $"CritDmg: {_playerState.Player.CritDamage}%";
+        labelRegeneration.Text = $"Regen: {_playerState.Player.Regeneration}";
     }
 
     private void UpdatePlayerHealthBar()
     {
         // Setting the progress bar and label player health
-        int currentHealth = playerState.Player.CurrentHealth;
-        int maxHealth = playerState.Player.MaxHealth;
+        int currentHealth = _playerState.Player.CurrentHealth;
+        int maxHealth = _playerState.Player.MaxHealth;
 
         CheckIfPlayerIsDefeated();
         progressBarPlayerHP.Maximum = maxHealth;
@@ -1937,7 +1958,7 @@ public partial class MainWindow : Form
             attackAction(); // Executes the specific attack
 
             // Check if the monster is defeated after the attack
-            Encounter.CheckIfMonsterIsDefeated(playerState, this);
+            Encounter.CheckIfMonsterIsDefeated(_playerState, this);
 
             if (shakeControl)
             {
@@ -1956,28 +1977,28 @@ public partial class MainWindow : Form
 
     public async Task BloodLustAttack()
     {
-        if (playerState.Player.techniqueBloodLustIsLearned)
+        if (_playerState.Player.techniqueBloodLustIsLearned)
             await PerformAttack(() => _attacks.BloodLustAttack(), shakeControl: true);
     }
     public async Task SwiftAttack()
     {
-        if (playerState.Player.techniqueSwiftIsLearned)
+        if (_playerState.Player.techniqueSwiftIsLearned)
             await PerformAttack(() => _attacks.SwiftAttack(), shakeControl: true);
     }
     public async Task RoarAttack()
     {
-        if (playerState.Player.techniqueRoarIsLearned)
+        if (_playerState.Player.techniqueRoarIsLearned)
             await PerformAttack(() => _attacks.RoarAttack(), shakeControl: false);
         UpdatePlayerLabels();
     }
     public async Task DivineAttack()
     {
-        if (playerState.Player.techniqueDivineIsLearned)
+        if (_playerState.Player.techniqueDivineIsLearned)
             await PerformAttack(() => _attacks.DivineAttack(), shakeControl: true);
     }
     public void GuardAttack()
     {
-        if (playerState.Player.techniqueGuardIsLearned)
+        if (_playerState.Player.techniqueGuardIsLearned)
         {
             _attacks.GuardAttack();
         }
@@ -2085,7 +2106,9 @@ public partial class MainWindow : Form
         {
             if (!_windowModifier.Visible)
             {
-                _windowModifier.ShowDialog(); // Opens the popup
+                _windowModifier.ShowDialog();
+                // Ensure MainWindow has focus after the popup closes
+                this.Focus();
             }
             else
             {
@@ -2153,7 +2176,7 @@ public partial class MainWindow : Form
             _sounds.PlayAct3ReforgeFroggy();
 
             // Player doesn't have enough gold
-            if (playerState.Player.GoldInPocket < ReforgeItemStat.PriceToReforgeFrog)
+            if (_playerState.Player.GoldInPocket < ReforgeItemStat.PriceToReforgeFrog)
             {
                 textBoxAct3Q1.Text = _storyProgress.GetAct3FrogNoCoinText();
                 return;
@@ -2175,8 +2198,8 @@ public partial class MainWindow : Form
             {
                 // Unequip the item before reforging
                 associatedItem.Name = $"|{associatedItem.Name}";
-                playerState.Player.UnequipItem(associatedItem, comboBoxInventory, comboBoxUpgradeItems, comboBoxAct3Q1Frog);
-                playerState.Player.GoldInPocket -= ReforgeItemStat.PriceToReforgeFrog;
+                _playerState.Player.UnequipItem(associatedItem, comboBoxInventory, comboBoxUpgradeItems, comboBoxAct3Q1Frog);
+                _playerState.Player.GoldInPocket -= ReforgeItemStat.PriceToReforgeFrog;
                 _sounds.PlayCoinSound();
                 UpdatePlayerLabels();
 
@@ -2241,6 +2264,13 @@ public partial class MainWindow : Form
     {
         StartAct2Quest1();
     }
+
+    private void labelAct5Q1_Click(object sender, EventArgs e)
+    {
+        StartAct5Quest1();
+    }
+
+
 }
 
 

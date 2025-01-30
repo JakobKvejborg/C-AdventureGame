@@ -15,11 +15,11 @@ public partial class PopupWindowModifier : Form
 
     ModifierProcessor _modifierProcessor;
     private MainWindow _mainWindow;
-    private CustomButtonStyles _styles;
+    private CustomControlStyles _styles;
 
     public string UserInput { get; set; }
 
-    public PopupWindowModifier(ModifierProcessor modifier, MainWindow mainWindow, CustomButtonStyles styles)
+    public PopupWindowModifier(ModifierProcessor modifier, MainWindow mainWindow, CustomControlStyles styles)
     {
         InitializeComponent();
         _modifierProcessor = modifier; // Stores a reference of the modifierProcessor
@@ -72,4 +72,6 @@ public partial class PopupWindowModifier : Form
 
         }
     }
+
+
 }
