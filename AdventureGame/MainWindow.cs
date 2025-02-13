@@ -69,10 +69,6 @@ public partial class MainWindow : Form
 
         CustomStylesForControls(); // Custom button looks
 
-        //comboBoxInventory.DisplayMember = "Name"; // Makes the comboboxInventory only display the item.Name
-        //comboBoxUpgradeItems.DisplayMember = "Name"; // Makes the comboboxInventory only display the item.Name
-        //comboBoxAct3Q1Frog.DisplayMember = "Name";
-
         MakeHeroBagBackgroundTrulyTransparent(); // this method makes the picturebox HeroBag have an truly invisible background
         MakeInventoryBackgroundTrulyTransparent();
 
@@ -86,6 +82,7 @@ public partial class MainWindow : Form
 
         // Makes the GuardAttackButton glow when the player is on low health
         buttonGuard.Paint += GlowingButton_Paint;
+        buttonSwiftAttack.Paint += GlowingDodgeButton_Paint;
 
         // Make the window non-reziable
         this.FormBorderStyle = FormBorderStyle.FixedSingle;
@@ -182,13 +179,31 @@ public partial class MainWindow : Form
         ComboboxInventorySetInfoLabel();
     }
 
-    // A method for making a button glow
+    // A method for making a button glow (when the player is on low health)
     private void GlowingButton_Paint(object sender, PaintEventArgs e)
     {
         Button btn = (Button)sender;
 
         // Check if the player's health is low and the GuardBuff is not active
         if (_playerState.Player.CurrentHealth <= _playerState.Player.PlayerIsOnLowHealth && !_playerState.Player.GuardBuffIsActive)
+        {
+            // Create a glow effect around the button
+            using (Pen glowPen = new Pen(Color.DeepSkyBlue, 2))
+            {
+                glowPen.Alignment = System.Drawing.Drawing2D.PenAlignment.Outset;
+                Rectangle rect = new Rectangle(0, 0, btn.Width - 1, btn.Height - 1);
+                e.Graphics.DrawRectangle(glowPen, rect);
+            }
+        }
+    }
+
+    // A method for making a button glow (when the player dodges)
+    private void GlowingDodgeButton_Paint(object sender, PaintEventArgs e)
+    {
+        Button btn = (Button)sender;
+
+        // Check if the player dodged
+        if (Encounter.PlayerDodgedFlag)
         {
             // Create a glow effect around the button
             using (Pen glowPen = new Pen(Color.DeepSkyBlue, 2))
@@ -1965,7 +1980,7 @@ public partial class MainWindow : Form
                 await ShakeMonsterPicturebox(pictureBoxMonster1, progressBarMonsterHP);
             }
 
-            await Task.Delay(180); // Increase this delay for a slower attack rate
+            await Task.Delay(200); // Increase this delay for a slower attack rate
             IsAttackOnCooldown = false;
         }
     }

@@ -121,7 +121,7 @@ internal class MonsterContainer
         Monster normalDemon = new("Demon", 10, 10, 1, 0, 2, 10, 2, normalDemonImage);
         Monster normalGhost = new("Ghost", 8, 8, 0, 0, 3, 10, 1, normalGhostImage);
         Monster normalWatchers = new("Watchers", 9, 9, 0, 0, 3, 7, 1, normalWatchersImage);
-        Monster normalWeakBandit = new("Weak Bandit", 6, 6, 0, 0, 1, 6, 0, normalWeakBanditImage);
+        Monster normalWeakBandit = new("Weak Bandit", 6, 6, 0, 0, 1, 7, 0, normalWeakBanditImage);
 
         // Act 1 East
         Monster golem = new("Golem", 28, 28, 2, 0, 5, 15, 0, golemImage);
@@ -151,45 +151,45 @@ internal class MonsterContainer
         Monster kraken = new("Kraken", 120, 120, 24, 0, 0, 50, 0, octopusImage);
         Monster lostPirate = new("Lost Pirate", 153, 153, 5, 0, 21, 66, 24, lostPirateImage);
 
-        // Act 4 Monsters west
-        Monster burningSkeleton = new("Burning Skeleton", 220, 210, 34, 0, 0, 70, 30, burningSkeletonImage);
+        // Act 4 Magma monsters west
+        Monster burningSkeleton = new("Burning Skeleton", 220, 210, 35, 0, 0, 70, 30, burningSkeletonImage);
         Monster burningLizard = new("Burning Lizard", 240, 230, 24, 0, 0, 70, 30, burningLizardImage);
-        Monster magmaFrog = new("Magma Frog", 210, 210, 11, 0, 2, 88, 30, magmaFrogImage);
+        Monster magmaFrog = new("Magma Frog", 210, 210, 12, 0, 2, 88, 30, magmaFrogImage);
         Monster magmaHorror = new("Magma Horror", 180, 180, 40, 0, 0, 20, 30, magmaHorrorImage);
         Monster forgottenPrince = new("Forgotten Prince", 195, 195, 20, 0, 12, 77, 30, forgottenPrinceImage);
         Monster fireKnight = new("Fire Knight", 200, 180, 34, 0, 0, 66, 30, fireKnightImage);
 
         // Act 4 Dragons east
-        Monster casterDragon = new("Dragon Mage", 230, 230, 35, 0, 0, 90, 44, casterDragonImage);
-        Monster dragonKing = new("Dragon King", 310, 310, 22, 0, 14, 100, 30, dragonKingImage);
-        Monster dragonHydra = new("Dragon Hydra", 266, 266, 28, 0, 6, 79, 0, dragonHydraImage);
-        Monster silverDragon = new("Silver Dragon", 250, 250, 42, 0, 0, 20, 60, silverDragonImage);
-        Monster goldenDragon = new("Golden Dragon", 340, 340, 23, 0, 4, 20, 60, goldenDragonImage);
+        Monster casterDragon = new("Dragon Mage", 240, 240, 36, 0, 0, 90, 44, casterDragonImage);
+        Monster dragonKing = new("Dragon King", 320, 320, 23, 0, 14, 100, 30, dragonKingImage);
+        Monster dragonHydra = new("Dragon Hydra", 276, 276, 29, 0, 8, 79, 0, dragonHydraImage);
+        Monster silverDragon = new("Silver Dragon", 260, 260, 43, 0, 0, 20, 60, silverDragonImage);
+        Monster goldenDragon = new("Golden Dragon", 350, 350, 24, 0, 5, 20, 60, goldenDragonImage);
 
         // Act 4 Dragon Nest Egg North
         Monster dragonNestWatcher = new("Nest-Watcher Dragon", 310, 310, 15, 0, 50, 60, 0, dragonNestWatcherImage);
         Monster dragonEggWatcher = new("Egg-Watcher Dragon", 310, 310, 15, 0, 50, 60, 0, dragonEggWatcherImage);
 
         // Act 5
-        Monster shadow = new("Shadow", 450, 450, 0, 0, 62, 80, 120, shadowImage);
-        Monster jester = new("Jester", 299, 299, 0, 0, 92, 90, 20, jesterImage);
-        Monster falseLightEntity = new("False Light Entity", 500, 500, 54, 0, 0, 150, 0, falseLightEntityImage);
-        Monster blackAngel = new("Black Angel", 360, 360, 0, 0, 37, 120, 120, blackAngelImage);
-        Monster priest = new("Priest", 405, 405, 0, 0, 65, 50, 180, priestImage);
-        Monster crow = new("Crow", 320, 320, 0, 0, 98, 77, 0, crowImage);
-        Monster voidMonster = new("Void", 460, 460, 30, 0, 38, 99, 160, voidImage);
-        Monster bloodVoid = new("Blood Void", 363, 330, 0, 0, 55, 77, 0, bloodVoidImage);
-        Monster deathAngel = new("Death Angel", 364, 364, 0, 0, 72, 120, 133, deathAngelImage);
-        Monster darkMage = new("Dark Mage", 384, 384, 10, 0, 42, 150, 60, darkMageImage);
-        Monster bloodHorror = new("Blood Horror", 330, 300, 0, 0, 54, 50, 0, bloodHorrorImage);
+        Monster shadow = new("Shadow", 450, 450, 0, 0, 64, 80, 120, shadowImage);
+        Monster jester = new("Jester", 299, 299, 0, 0, 93, 90, 20, jesterImage);
+        Monster falseLightEntity = new("False Light Entity", 500, 500, 53, 0, 0, 150, 0, falseLightEntityImage);
+        Monster blackAngel = new("Black Angel", 360, 360, 0, 0, 38, 120, 120, blackAngelImage);
+        Monster priest = new("Priest", 405, 405, 0, 0, 66, 50, 180, priestImage);
+        Monster crow = new("Crow", 320, 320, 0, 0, 99, 77, 0, crowImage);
+        Monster voidMonster = new("Void", 460, 460, 30, 0, 39, 99, 160, voidImage);
+        Monster bloodVoid = new("Blood Void", 363, 330, 0, 0, 57, 77, 0, bloodVoidImage);
+        Monster deathAngel = new("Death Angel", 364, 364, 0, 0, 73, 120, 133, deathAngelImage);
+        Monster darkMage = new("Dark Mage", 384, 384, 10, 0, 44, 150, 60, darkMageImage);
+        Monster bloodHorror = new("Blood Horror", 330, 300, 0, 0, 56, 50, 0, bloodHorrorImage);
 
         // Special enemies
         Monster act1Boss = new("Aldrus Thornfell", 100, 100, 5, 0, 7, 40, 5, act1BossImage);
         Monster hungryBeast = new("Hungry Beast", 42, 42, 3, 0, 11, 30, 0, hungryBeastImage);
-        Monster act2Boss = new("Wintermaw", 270, 270, 8, 0, 18, 50, 0, act2BossImage);
+        Monster act2Boss = new("Wintermaw", 270, 270, 8, 0, 17, 50, 0, act2BossImage);
         Monster act3Boss = new("The Devouring Abyss", 400, 400, 15, 0, 30, 100, 30, null);
         Monster act5Boss = new("Awoken Horror", 1346, 1346, 40, 0, 80, 1000, 500, awokenHorrorImage);
-        Monster act2OptionalBoss = new("The Frostfallen King", 1000, 1000, 49, 0, 23, 500, 0, null);
+        Monster act2OptionalBoss = new("The Frostfallen King", 1100, 1100, 48, 0, 25, 500, 0, null);
         Monster act5OptionalBoss = new("Ultimate Darkness", 9999, 9999, 77, 0, 77, 9999, 999, null);
 
         // Special enemies

@@ -23,6 +23,7 @@ public class MusicAndSound
     private WindowsMediaPlayer act3WavesPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer act3MusicPlayer = new WindowsMediaPlayer();
     private WindowsMediaPlayer act4MusicPlayer = new WindowsMediaPlayer();
+    private WindowsMediaPlayer act5MusicPlayer = new WindowsMediaPlayer();
 
     // Helper method to load media "sounds/music" from the "sounds" folder
     public string MediaSoundPath(string soundName)
@@ -357,13 +358,19 @@ public class MusicAndSound
         PlayMusic("act2town.wav", act2TownPlayer);
     }
 
+    public void PlayAct3Music()
+    {
+        PlayMusic("act3.wav", act3MusicPlayer);
+    }
+
     public void PlayAct4Music()
     {
         PlayMusic("act4.wav", act4MusicPlayer);
     }
-    public void PlayAct3Music()
+
+    public void PlayAct5Music()
     {
-        PlayMusic("act3.wav", act3MusicPlayer);
+        PlayMusic("act5.wav", act5MusicPlayer);
     }
 
     public void PlayAct3Waves()
@@ -383,37 +390,49 @@ public class MusicAndSound
     {
         act1TownPlayer.controls.stop();
     }
+
     public void StopAct2TownMusic()
     {
         act2TownPlayer.controls.stop();
     }
+
     public void StopAct2WindSound()
     {
         act2WindPlayer.controls.stop();
     }
+
     public void StopAct1ThunderSound()
     {
         act1ThunderPlayer.controls.stop();
     }
+
     public void StopAct3Waves()
     {
         act3WavesPlayer.controls.stop();
     }
-    public void StopAct4Music()
-    {
-        act4MusicPlayer.controls.stop();
-    }
+
     public void StopAct3Music()
     {
         act3MusicPlayer.controls.stop();
     }
 
+    public void StopAct4Music()
+    {
+        act4MusicPlayer.controls.stop();
+    }
+
+    public void StopAct5Music()
+    {
+        act5MusicPlayer.controls.stop();
+    }
+    
     public void MuteAllMusic()
     {
         StopAct1TownMusic();
         StopAct2TownMusic();
         StopAct4Music();
         StopAct3Music();
+        StopAct5Music();
     }
 
    

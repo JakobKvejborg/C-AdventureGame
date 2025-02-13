@@ -55,11 +55,13 @@ internal class StoryProgress
     {
         return "The old man lays his hands on your wounds and whisper magic words. You feel refreshed.";
     }
+
     public string GetAct2HealingText()
     {
         return "The girl’s white eyes hints her blindness, but as you approach she seems to see you coming. " +
             "She takes care of your wounds and you hand her some coins as thanks.";
     }
+
     public string GetAct4HealingText()
     {
         return "\"Careful, the Dragons may bite,\" the girl says with a hint of a smile on her face. The fire burns hot around her. " +
@@ -81,6 +83,7 @@ internal class StoryProgress
     {
         return "\"Looks like I've already applied my skills to this item! Hopefully it's what you wanted! And if not... Oh well.\" *Ribbit*";
     }
+
     public string GetAct3FrogNoCoinText()
     {
         return "\"You nearly don't have any coins! What are you, some kind of cheap pirate? Aarrrrr, haha!\" *Ribbit*";
@@ -302,7 +305,7 @@ internal class StoryProgress
                 break;
             case 19: // Act 5 start
                 SetupAct5Controls();
-                //_sounds. // TODO
+                _sounds.PlayAct5Music();
                 playerIsInTown = false;
                 _mainWindow.panelTown.Show();
                 _imageSetter.SetAct5IntroImage();
@@ -529,6 +532,7 @@ internal class StoryProgress
         _mainWindow.buttonTalkMage.Show();
         _mainWindow.pictureBoxAct5Hero.Hide();
         _mainWindow.labelAct5Q1.Hide();
+        _sounds.StopAct5Music();
 
         _sounds.StopAct3Waves();
         _sounds.StopAct3Music();

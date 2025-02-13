@@ -29,7 +29,7 @@ public class ImprovedRandomItem : Item
     // Suffixes for all items
     private static readonly List<string> SuffixesNormalItems = new() { "of Health", "of Stamina", "of Iron", "of Bronze", "of Leather", "of Defense", "of Protection", "of Stone", "of Steel" };
     private static readonly List<string> SuffixesMagic = new() { "of Magic", "of Mysticism", "of Arcana", "of Sorcery", "of Enchantment", "of Mana", "of Illusion", "of Mystic", "of Hexes" };
-    private static readonly List<string> SuffixesStrong = new() { "of Fury", "of Skill", "of Flames", "of Frost", "of Storms", "of Stars", "of Oracle", "of Strength" };
+    private static readonly List<string> SuffixesStrong = new() { "of Fury", "of Skill", "of Flames", "of Frost", "of Storms", "of the Stars", "of Oracle", "of Strength" };
     private static readonly List<string> SuffixesRareItems = new() { "of Champions", "of Valor", "of Fortitude", "of Precision", "of Berserk", "of Titans", "of Might" };
     private static readonly List<string> SuffixesUnique = new() { "of Gold", "of Power", "of Glory", "of Wisdom" };
     private static readonly List<string> SuffixesEpicItems = new() { "of Shadows", "of Light", "of the Void", "of Eternity", "of Oblivion" };
@@ -51,8 +51,8 @@ public class ImprovedRandomItem : Item
         // Define probabilities explicitly for each quality
         var probabilities = new List<(ImprovedItemQuality Quality, double Chance)>
     {
-        (ImprovedItemQuality.Damaged, 25),    // the number represents % chance droprate
-        (ImprovedItemQuality.Normal, 50),
+        (ImprovedItemQuality.Damaged, 24),    // the number represents % chance droprate
+        (ImprovedItemQuality.Normal, 51),
         (ImprovedItemQuality.Magic, 8),
         (ImprovedItemQuality.Strong, 6),
         (ImprovedItemQuality.Rare, 5),
@@ -118,15 +118,15 @@ public class ImprovedRandomItem : Item
             ImprovedItemQuality.Rare => 2.6,
             ImprovedItemQuality.Unique => 3.0,
             ImprovedItemQuality.Epic => 4.5,
-            ImprovedItemQuality.Legendary => 6,
-            ImprovedItemQuality.Godly => 7,
+            ImprovedItemQuality.Legendary => 5,
+            ImprovedItemQuality.Godly => 6,
             _ => 1.0
         };
 
         switch (itemType)
         {
             case ItemType.WeaponRightHand:
-                Damage = (int)(_random.Next(1, 3) * multiplier);
+                Damage = (int)(_random.Next(1, 4) * multiplier);
                 CritChance = (int)(_random.Next(0, 5) * multiplier);
                 Strength = (int)(_random.Next(1, 3) * multiplier);
                 StrengthRequirement = (int)((_random.Next(0, 6) * multiplier) + multiplier - 1);
@@ -134,8 +134,8 @@ public class ImprovedRandomItem : Item
                 break;
 
             case ItemType.Armor:
-                Strength = (int)(_random.Next(0, 3) + multiplier + multiplier - 1);
-                Health = (int)(_random.Next(2, 19) * (multiplier * multiplier));
+                Strength = (int)(_random.Next(0, 3) + multiplier - 1);
+                Health = (int)(_random.Next(2, 29) * (multiplier + multiplier));
                 Armor = (int)(_random.Next(1, 2) * multiplier);
                 StrengthRequirement = (int)((_random.Next(0, 6) * multiplier) + multiplier - 1);
                 LevelRequirement = (int)(_random.Next(1, 4) + multiplier + multiplier + multiplier + multiplier + multiplier - 3);
@@ -148,20 +148,21 @@ public class ImprovedRandomItem : Item
                 CritChance = (int)(_random.Next(1, 9) + multiplier);
                 Armor = (int)((_random.Next(0, 3) + multiplier - 1) + multiplier - 1);
                 StrengthRequirement = (int)((_random.Next(0, 6) * multiplier) + multiplier + multiplier - 1);
-                LevelRequirement = (int)((_random.Next(1, 4) * multiplier) + multiplier + multiplier + multiplier - 3);
+                LevelRequirement = (int)((_random.Next(1, 5) * multiplier) + multiplier + multiplier + multiplier - 3);
                 break;
 
             case ItemType.Boots:
                 DodgeChance = (int)(_random.Next(0, 9) + multiplier);
                 Armor = (int)(_random.Next(0, 3) + multiplier + multiplier - 2);
-                Health = (int)(_random.Next(1, 15) * (multiplier + multiplier) + multiplier);
+                Health = (int)(_random.Next(1, 19) * (multiplier) + multiplier);
                 StrengthRequirement = (int)((_random.Next(1, 6) * multiplier) + multiplier + multiplier + multiplier - 2);
                 LevelRequirement = (int)((_random.Next(1, 5) * multiplier + multiplier - 2) + multiplier + multiplier + multiplier - 1);
                 break;
 
             case ItemType.Belt:
+                Armor = (int)_random.Next(0, 3);
                 Strength = (int)(_random.Next(0, 2) * multiplier);
-                Regeneration = (int)(_random.Next(1, 3) * multiplier);
+                Regeneration = (int)(_random.Next(1, 4) * multiplier);
                 Lifesteal = (int)(_random.Next(0, 9) * multiplier);
                 StrengthRequirement = (int)((_random.Next(0, 6) * multiplier) + multiplier + multiplier - 1);
                 LevelRequirement = (int)(_random.Next(1, 6) + multiplier + multiplier - 1);
@@ -171,16 +172,16 @@ public class ImprovedRandomItem : Item
                 Armor = (int)(_random.Next(0, 3) + multiplier + multiplier - 2);
                 Strength = (int)(_random.Next(0, 3) * multiplier + multiplier - 1);
                 Regeneration = (int)(_random.Next(0, 3) * multiplier + multiplier - 1);
-                Health = (int)((_random.Next(0, 35) * multiplier) + multiplier + multiplier - 1);
+                Health = (int)((_random.Next(0, 45) * multiplier) + multiplier - 1);
                 StrengthRequirement = (int)(_random.Next(1, 6) * multiplier);
-                LevelRequirement = (int)(_random.Next(1, 5) + multiplier + multiplier);
+                LevelRequirement = (int)(_random.Next(1, 6) + multiplier + multiplier);
                 break;
 
             case ItemType.Helmet:
                 Armor = (int)(_random.Next(0, 4) + multiplier - 1);
                 Strength = (int)(_random.Next(0, 3) + multiplier);
                 Regeneration = (int)(_random.Next(0, 4) * multiplier);
-                CritDamage = (int)(_random.Next(0, 1) + (multiplier - 1) * multiplier);
+                CritDamage = (int)(_random.Next(0, 10) + (multiplier - 1) * multiplier);
                 StrengthRequirement = (int)(_random.Next(1, 6) * multiplier);
                 LevelRequirement = (int)(_random.Next(3, 10) + multiplier + multiplier - 2);
                 break;
@@ -189,23 +190,23 @@ public class ImprovedRandomItem : Item
                 Strength = (int)(_random.Next(0, 2) * multiplier);
                 Regeneration = (int)(_random.Next(0, 4) * multiplier * multiplier);
                 Lifesteal = (int)(_random.Next(0, 5) * multiplier);
-                CritDamage = (int)(_random.Next(0, 1) + (multiplier - 1) * multiplier);
+                CritDamage = (int)(_random.Next(0, 9) + (multiplier - 1) * multiplier - 1);
                 StrengthRequirement = (int)(_random.Next(1, 4) * multiplier);
                 LevelRequirement = (int)(_random.Next(4, 16) + multiplier + multiplier - 1);
                 break;
 
             case ItemType.Shoulders:
                 Regeneration = (int)(_random.Next(0, 2) * multiplier * multiplier);
-                Health = (int)(_random.Next(0, 26) * (multiplier + multiplier));
-                Armor = (int)(_random.Next(1, 3) * multiplier);
+                Health = (int)(_random.Next(0, 46) * multiplier);
+                Armor = (int)(_random.Next(0, 3) + multiplier - 1);
                 LevelRequirement = (int)(_random.Next(2, 8) + multiplier + multiplier);
                 break;
 
             case ItemType.Amulet:
                 Regeneration = (int)(_random.Next(0, 6) * multiplier * multiplier);
-                Health = (int)(_random.Next(0, 11) * (multiplier + multiplier));
-                CritChance = (int)(_random.Next(1, 3) * multiplier);
-                DodgeChance = (int)(_random.Next(1, 3) + multiplier);
+                Health = (int)(_random.Next(0, 16) * (multiplier + multiplier));
+                CritChance = (int)(_random.Next(0, 3) * multiplier);
+                DodgeChance = (int)(_random.Next(1, 6) + multiplier - 1);
                 LevelRequirement = (int)(_random.Next(10, 16) + multiplier + multiplier + multiplier - 2);
                 break;
 

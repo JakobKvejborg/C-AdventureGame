@@ -57,6 +57,8 @@ internal static class Encounter
     // Helper method for all attack methods
     public static async Task ExecuteAttack(PlayerState playerState, MainWindow mainWindow, int playerAttackDamageTotal, bool noLifeSteal, bool noCrit)
     {
+        PlayerDodgedFlag = false;
+        mainWindow.buttonSwiftAttack.Invalidate(); // This is to prevent dodge button to continously be lit up even when the player haven't dodged
         playerState.Player.RoarBuffCountdown -= 1;
         if (playerState.Player.IsRoarActive && playerState.Player.RoarBuffCountdown == 0) // this resets the roar attack when the RoarBuffCountdown is 0, subtracts the roar buff from the player
         {
@@ -120,6 +122,7 @@ internal static class Encounter
             {
                 mainWindow.textBoxEncounter.AppendText("\n\rYou dodged the horror's attack!");
                 PlayerDodgedFlag = true; // This is used for a special Swift attack
+                mainWindow.buttonSwiftAttack.Invalidate(); // Repaints the button to show the player dodged
                 sounds.PlayDodgeSound();
                 return; // Exit the method if the player dodges
             }
@@ -159,6 +162,7 @@ internal static class Encounter
             playerState.Player.ResetGuardBuff(); // this subtracts the guard armor buff from the player
 
             PlayerDodgedFlag = false;
+            mainWindow.buttonSwiftAttack.Invalidate();
             mainWindow.textBoxEncounter.AppendText($"\n\rYou have defeated the horror. You gain {Monster.MonsterExperience}xp. ");
             mainWindow.pictureBoxMonster1.Image = null;
             mainWindow.panelMonster.Hide(); // Hides the monster once it's defeated

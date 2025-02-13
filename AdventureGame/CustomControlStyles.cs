@@ -841,6 +841,7 @@ public class CustomControlStyles
         comboBox.DropDown += (s, e) => isDroppedDown = true;
         comboBox.DropDownClosed += (s, e) => isDroppedDown = false;
     }
+
     public void CoolRedShadowListView(ListView listView)
     {
         listView.OwnerDraw = true; // Enable custom drawing

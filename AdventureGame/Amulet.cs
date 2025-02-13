@@ -22,7 +22,7 @@ public class Amulet : Item
         {
             case "Normal":
                 Strength = _random.Next(0, 2);           // Strength boost between 0 and 4
-                DodgeChance = _random.Next(0, 3);
+                DodgeChance = _random.Next(0, 5);
                 CritChance = _random.Next(0, 5);
                 Regeneration = _random.Next(0, 5);
                 LevelRequirement = _random.Next(4, 9);   // Level 4-8
@@ -30,7 +30,7 @@ public class Amulet : Item
 
             case "Magic":
                 Strength = _random.Next(0, 3);       
-                DodgeChance = _random.Next(1, 4);
+                DodgeChance = _random.Next(1, 7);
                 CritChance = _random.Next(5, 8);
                 Regeneration = _random.Next(2, 6);
                 LevelRequirement = _random.Next(4, 13); 
@@ -38,7 +38,7 @@ public class Amulet : Item
 
             case "Rare":
                 Strength = _random.Next(2, 5);          
-                DodgeChance = _random.Next(3, 6);
+                DodgeChance = _random.Next(3, 8);
                 CritChance = _random.Next(3, 8);
                 Regeneration = _random.Next(4, 8);
                 Lifesteal = _random.Next(0, 8);

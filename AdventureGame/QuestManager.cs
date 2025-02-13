@@ -135,7 +135,7 @@ public class QuestManager
             StoryProgress.playerIsInTown = false;
             if (Player.HasFrozenLily)
             {
-                _mainWindow.textBoxAct3Q1.Text = "\"What's that I see? You’ve got somethin’ special, don’t ya? A lily, frozen in time. Give it to me, and I promise to make your equipment even stronger, sharper, deadlier.\"";
+                _mainWindow.textBoxAct3Q1.Text = "\"What's that I see? You’ve got somethin’ special there, don’t ya? A lily, frozen in time. Give it to me, and I promise to make your equipment even stronger, sharper, deadlier.\"";
                 Player.HasFrozenLily = false;
                 _imageSetter.SetAct3Q1FrogGotLilyImage();
                 ReforgeItemStat.LilyReforgeModifer = 0.20;

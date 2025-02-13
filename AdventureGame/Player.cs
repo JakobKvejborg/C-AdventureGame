@@ -39,7 +39,7 @@ internal class Player
     public int RoarBuffCountdown { get; set; }
     public int GuardBuffArmor { get; set; }
     public bool GuardBuffIsActive { get; set; }
-    public double PlayerIsOnLowHealth => MaxHealth * 0.18;
+    public double PlayerIsOnLowHealth => MaxHealth * 0.27;
     public static bool HasFrozenLily;
 
     public Player(string name, int maxHealth, int currentHealth, int damage, int strength, int lifesteal,

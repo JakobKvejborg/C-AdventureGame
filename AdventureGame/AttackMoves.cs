@@ -91,9 +91,9 @@ internal class AttackMoves
             _sounds.PlayDivineAttackSound();
             double missingHealthPercentage = (double)(_playerState.Player.MaxHealth - _playerState.Player.CurrentHealth) / _playerState.Player.MaxHealth;
             double dmgWhenPlayerFullHp = 0.2; // 20% of base damage when the player is at full health.
-            double dmgWhenPlayerLowHp = 2.7; //  250 % of base damage when the player is critically low on health.
+            double dmgWhenPlayerLowHp = 2.8; //  280 % of base damage when the player is critically low on health.
 
-            double damageMultiplier = dmgWhenPlayerFullHp + (dmgWhenPlayerLowHp - dmgWhenPlayerFullHp) * Math.Pow(missingHealthPercentage, 1.6); // 1.6 This exponent controls the rate at which the multiplier scales
+            double damageMultiplier = dmgWhenPlayerFullHp + (dmgWhenPlayerLowHp - dmgWhenPlayerFullHp) * Math.Pow(missingHealthPercentage, 2); // This exponent controls the rate at which the multiplier scales
             int playerAttackDamageTotal = _playerState.Player.CalculateTotalDamage(_playerState);
             playerAttackDamageTotal = (int)(playerAttackDamageTotal * damageMultiplier);
 
@@ -105,7 +105,6 @@ internal class AttackMoves
     {
         if (Encounter.Monster != null && Encounter.Monster.CurrentHealth > 0)
         {
-
             // Guard clause (the method does nothing if the buff is already active or the player has too much health)
             if (_playerState.Player.GuardBuffIsActive || _playerState.Player.CurrentHealth > _playerState.Player.PlayerIsOnLowHealth) { return; }
 

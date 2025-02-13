@@ -144,18 +144,21 @@ public class ModifierProcessor
                 _appliedModifiers.Add(command);
                 return "Presentation mode enabled.";
             case "debug32":
-                _playerState.Player.Damage += 100;
-                _playerState.Player.DodgeChance += 150;
+                _playerState.Player.Damage += 10;
+                _playerState.Player.DodgeChance += 10;
                 _playerState.Player.GoldInPocket += 9999;
                 _playerState.Player.Lifesteal += 150;
                 _playerState.Player.Armor += 25;
                 _appliedModifiers.Add(command);
                 return "Debugging mode enabled.";
-            case "guard32":
-                _playerState.Player.techniqueGuardIsLearned = true;
-                _mainWindow.buttonGuard.Show();
-                _appliedModifiers.Add(command);
-                return "Guard attack enabled.";
+            //case "guard32":
+            //    _playerState.Player.techniqueGuardIsLearned = true;
+            //    _mainWindow.buttonGuard.Show();
+            //    _appliedModifiers.Add(command);
+            //    return "Guard attack enabled.";
+            //case "delete32":
+            //    _playerState.Player.Armor += 100;
+            //    return "armor armor enabled.";
 
             default:
                 return "Unknown modifier";
