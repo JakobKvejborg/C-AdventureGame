@@ -116,6 +116,8 @@ internal class Player
             UnequipItem(EquippedItems[item.Type], comboboxInventory, comboboxUpgradeItems, comboboxAct3Frog);
         }
 
+        bool wasAtOneHealth = CurrentHealth < 2; // Check if the player was at 1 health before equipping the item
+
         // Equip the item
         //EquippedItems.Add(item.Type, item);
         EquippedItems[item.Type] = item; // This replaces any existing item of the same type
@@ -132,6 +134,11 @@ internal class Player
         CritChance += item.CritChance;
         Lifesteal += item.Lifesteal;
         CritDamage += item.CritDamage;
+
+        if (wasAtOneHealth)
+        {
+            CurrentHealth = 1; // Restore player to 1 hp if the player was on no health - this is due to the way equipping/unequipping items add/subtracks health
+        }
     }
 
     public void UnequipItem(Item item, ComboBox comboboxInventory, ComboBox comboboxUpgradeItem, ComboBox comboboxAct3Frog)
@@ -160,7 +167,7 @@ internal class Player
 
             if (CurrentHealth <= 0)
             {
-                CurrentHealth = 0;
+                CurrentHealth = 1;
             }
 
         }

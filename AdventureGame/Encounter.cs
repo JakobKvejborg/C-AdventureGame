@@ -307,7 +307,7 @@ internal static class Encounter
         {
             mainWindow.pictureBoxFrozenLily.Show();
             Player.HasFrozenLily = true;
-            mainWindow.textBoxEncounter.AppendText(" Inside the Kings Tomb, you find a rare frozen lily.");
+            mainWindow.textBoxEncounter.AppendText("\n Inside the Kings Tomb, you find a rare frozen lily.");
         }
     }
 

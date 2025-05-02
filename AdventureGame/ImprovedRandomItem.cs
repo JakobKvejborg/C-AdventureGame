@@ -130,7 +130,7 @@ public class ImprovedRandomItem : Item
                 CritChance = (int)(_random.Next(0, 5) * multiplier);
                 Strength = (int)(_random.Next(1, 3) * multiplier);
                 StrengthRequirement = (int)((_random.Next(0, 6) * multiplier) + multiplier - 1);
-                LevelRequirement = (int)(_random.Next(2, 9) + multiplier + multiplier - 1);
+                LevelRequirement = (int)(_random.Next(2, 9) + multiplier + multiplier + multiplier + multiplier - 3);
                 break;
 
             case ItemType.Armor:

@@ -2212,7 +2212,7 @@ public partial class MainWindow : Form
             if (associatedItem != null)
             {
                 // Unequip the item before reforging
-                associatedItem.Name = $"|{associatedItem.Name}";
+                associatedItem.Name = $"*{associatedItem.Name}"; // Setting a * to the name of the item after reforging
                 _playerState.Player.UnequipItem(associatedItem, comboBoxInventory, comboBoxUpgradeItems, comboBoxAct3Q1Frog);
                 _playerState.Player.GoldInPocket -= ReforgeItemStat.PriceToReforgeFrog;
                 _sounds.PlayCoinSound();

@@ -112,7 +112,7 @@ public class Item
             return;
         }
         Random random = new Random();
-        Name = "Upg." + Name;
+        Name = "Upg. " + Name;
         Item.CostToUpgrade += 20;
         LevelRequirement += 1;
         IsItemUpgraded = true;

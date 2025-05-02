@@ -181,6 +181,8 @@ public class ItemContainer
         RandomItem magicBoots1 = new("Magic Boots", ItemType.Boots, ItemQuality.Magic);
         RandomItem magicBoots2 = new("Magic Boots", ItemType.Boots, ItemQuality.Magic);
         RandomItem magicBoots3 = new("Magic Toes", ItemType.Boots, ItemQuality.Magic);
+        RandomItem magicBoots4 = new("Magic Sandals", ItemType.Boots, ItemQuality.Magic);
+        RandomItem magicBoots5 = new("Magic Sandals", ItemType.Boots, ItemQuality.Magic);
         RandomItem magicLeggings1 = new("Mystic Leggings", ItemType.Leggings, ItemQuality.Magic);
         RandomItem magicLeggings2 = new("Mystic Pants", ItemType.Leggings, ItemQuality.Magic);
         RandomItem magicArmor1 = new("Mystic Armor", ItemType.Armor, ItemQuality.Magic);
@@ -205,7 +207,7 @@ public class ItemContainer
         RandomItem item37b = new("Rare Plate", ItemType.Armor, ItemQuality.Rare);
         RandomItem item38b = new("Rare Ribbon", ItemType.Belt, ItemQuality.Rare);
         RandomItem item39b = new("Rare Gloves", ItemType.Gloves, ItemQuality.Rare);
-        RandomItem item40b = new("Rare Dagger", ItemType.Gloves, ItemQuality.Rare);
+        RandomItem item40b = new("Rare Dagger", ItemType.WeaponRightHand, ItemQuality.Rare);
         RandomItem item47 = new("Iron Jacket", ItemType.Armor, ItemQuality.Rare);
         // Epic items
         RandomItem epicSword1 = new("Epic Sword", ItemType.WeaponRightHand, ItemQuality.Epic);
@@ -386,7 +388,7 @@ public class ItemContainer
 
         noItems.Add(null);
 
-        // List of items 1
+        // List of items 1 (Act 1 West)
         items1.Add(boots1);
         items1.Add(boots2);
         items1.Add(boots3);
@@ -465,7 +467,7 @@ public class ItemContainer
         items1.Add(null);
         items1.Add(null);
 
-        // List of items 2
+        // List of items 2 (Act 1 East)
         items2.Add(weaponright1);
         items2.Add(weaponright2);
         items2.Add(gloves2);
@@ -749,6 +751,8 @@ public class ItemContainer
         items4.Add(magicWeapon3);
         items4.Add(item40b);
         items4.Add(magicItem46);
+        items4.Add(magicBoots4);
+        items4.Add(null);
         items4.Add(null);
         items4.Add(null);
         items4.Add(null);
@@ -839,6 +843,8 @@ public class ItemContainer
         items5.Add(item29aa);
         items5.Add(rareShoulders2);
         items5.Add(item47);
+        items5.Add(magicBoots5);
+        items5.Add(null);
         items5.Add(null);
         items5.Add(null);
         items5.Add(null);

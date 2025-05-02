@@ -171,16 +171,16 @@ internal class MonsterContainer
         Monster dragonEggWatcher = new("Egg-Watcher Dragon", 310, 310, 15, 0, 50, 60, 0, dragonEggWatcherImage);
 
         // Act 5
-        Monster shadow = new("Shadow", 450, 450, 0, 0, 64, 80, 120, shadowImage);
+        Monster shadow = new("Shadow", 450, 450, 0, 0, 66, 80, 120, shadowImage);
         Monster jester = new("Jester", 299, 299, 0, 0, 93, 90, 20, jesterImage);
         Monster falseLightEntity = new("False Light Entity", 500, 500, 53, 0, 0, 150, 0, falseLightEntityImage);
-        Monster blackAngel = new("Black Angel", 360, 360, 0, 0, 38, 120, 120, blackAngelImage);
-        Monster priest = new("Priest", 405, 405, 0, 0, 66, 50, 180, priestImage);
+        Monster blackAngel = new("Black Angel", 360, 360, 0, 0, 39, 120, 120, blackAngelImage);
+        Monster priest = new("Priest", 405, 405, 0, 0, 67, 50, 180, priestImage);
         Monster crow = new("Crow", 320, 320, 0, 0, 99, 77, 0, crowImage);
-        Monster voidMonster = new("Void", 460, 460, 30, 0, 39, 99, 160, voidImage);
-        Monster bloodVoid = new("Blood Void", 363, 330, 0, 0, 57, 77, 0, bloodVoidImage);
-        Monster deathAngel = new("Death Angel", 364, 364, 0, 0, 73, 120, 133, deathAngelImage);
-        Monster darkMage = new("Dark Mage", 384, 384, 10, 0, 44, 150, 60, darkMageImage);
+        Monster voidMonster = new("Void", 460, 460, 30, 0, 40, 99, 160, voidImage);
+        Monster bloodVoid = new("Blood Void", 363, 330, 0, 0, 58, 77, 0, bloodVoidImage);
+        Monster deathAngel = new("Death Angel", 364, 364, 0, 0, 74, 120, 133, deathAngelImage);
+        Monster darkMage = new("Dark Mage", 384, 384, 10, 0, 45, 150, 60, darkMageImage);
         Monster bloodHorror = new("Blood Horror", 330, 300, 0, 0, 56, 50, 0, bloodHorrorImage);
 
         // Special enemies
