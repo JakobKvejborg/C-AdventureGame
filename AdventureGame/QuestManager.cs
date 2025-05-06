@@ -133,19 +133,17 @@ public class QuestManager
             _mainWindow.panelTown.Hide();
             _mainWindow.panelAct3Q1.Show();
             StoryProgress.playerIsInTown = false;
-            if (Player.HasFrozenLily)
-            {
-                _mainWindow.textBoxAct3Q1.Text = "\"What's that I see? You’ve got somethin’ special there, don’t ya? A lily, frozen in time. Give it to me, and I promise to make your equipment even stronger, sharper, deadlier.\"";
-                Player.HasFrozenLily = false;
-                _imageSetter.SetAct3Q1FrogGotLilyImage();
-                ReforgeItemStat.LilyReforgeModifer = 0.20;
-                _mainWindow.pictureBoxFrozenLily.Hide();
-            }
-            else
-            {
-                _mainWindow.textBoxAct3Q1.Text = "You spot a small island in the distance and steer toward it. Sitting by the shore is a frog-like man. \"I'm pretty good with items, you know,\" he says.";
-            }
+            _mainWindow.textBoxAct3Q1.Text = "You spot a small island in the distance and steer toward it. Sitting by the shore is a frog-like man. \"I'm pretty good with items, you know,\" he says.";
         }
+    }
+
+    public void PlayerGivesFrozenLilyToFrog()
+    {
+        _mainWindow.textBoxAct3Q1.Text = "\"What's that I see? You’ve got somethin’ special there, don’t ya? A lily, frozen in time. Give it to me, and I promise to make your equipment even stronger, sharper, deadlier.\"";
+        Player.HasFrozenLily = false;
+        _imageSetter.SetAct3Q1FrogGotLilyImage();
+        ReforgeItemStat.LilyReforgeModifer = 0.20;
+        _mainWindow.pictureBoxFrozenLily.Hide();
     }
 
     public void StartAct5Quest1()

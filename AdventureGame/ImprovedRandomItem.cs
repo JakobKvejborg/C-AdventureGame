@@ -77,7 +77,7 @@ public class ImprovedRandomItem : Item
 
     public string GenerateRandomName(ItemType itemType, ImprovedItemQuality quality)
     {
-        // Normal items doesn't have prefixes
+        // Normal items doesn't have prefixes(names)
         string prefix = Quality switch
         {
             ImprovedItemQuality.Damaged => "Damaged",
@@ -120,7 +120,7 @@ public class ImprovedRandomItem : Item
             ImprovedItemQuality.Epic => 4.5,
             ImprovedItemQuality.Legendary => 5,
             ImprovedItemQuality.Godly => 6,
-            _ => 1.0
+            _ => 1.0 // fallback on 1, in case something goes wrong and the item doesn't have a quality assigned to it
         };
 
         switch (itemType)
@@ -142,7 +142,7 @@ public class ImprovedRandomItem : Item
                 break;
 
             case ItemType.Gloves:
-                var critDamageValues = new[] { 0, 5 }; // Predefined possible values for CritDamage
+                var critDamageValues = new[] { 0, 3, 6 }; // Predefined possible values for CritDamage
                 CritDamage = (int)Math.Round(critDamageValues[_random.Next(critDamageValues.Length)] * multiplier);
                 Strength = (int)(_random.Next(0, 3) + multiplier);
                 CritChance = (int)(_random.Next(1, 9) + multiplier);
@@ -199,7 +199,8 @@ public class ImprovedRandomItem : Item
                 Regeneration = (int)(_random.Next(0, 2) * multiplier * multiplier);
                 Health = (int)(_random.Next(0, 46) * multiplier);
                 Armor = (int)(_random.Next(0, 3) + multiplier - 1);
-                LevelRequirement = (int)(_random.Next(2, 8) + multiplier + multiplier);
+                StrengthRequirement = (int)(_random.Next(0, 4) + multiplier + multiplier + multiplier -1);
+                LevelRequirement = (int)(_random.Next(2, 8) + multiplier + multiplier + multiplier - 1);
                 break;
 
             case ItemType.Amulet:

@@ -2148,6 +2148,14 @@ public partial class MainWindow : Form
 
         if (_quests.IsInsideQuestPanel && StoryProgress.WhichActIsThePlayerIn == 3 && comboBoxAct3Q1Frog.SelectedItem != null)
         {
+
+            if (Player.HasFrozenLily)
+            {
+                _quests.PlayerGivesFrozenLilyToFrog();
+                _sounds.PlayAct3FrozenLilyFrogSound();
+                return;
+            }
+
             panelReforgeItemFrog.Show();
             listViewItemStatsFrog.Items.Clear();
             if (comboBoxAct3Q1Frog.SelectedItem is Item selectedItem)
@@ -2219,7 +2227,7 @@ public partial class MainWindow : Form
                 UpdatePlayerLabels();
 
                 string statName = selectedItem.SubItems[0].Text; // Stat name (e.g., "Damage", "Health")
-                _reforge.ReforgeItemProperty(associatedItem, statName); // Reforging the item stat
+                _reforge.ReforgeItemProperty(associatedItem, statName); // Here the actual reforging happens of the item stat
 
                 var property = associatedItem.GetType().GetProperty(statName); // Update the ListView to reflect the new value
                 if (property != null)

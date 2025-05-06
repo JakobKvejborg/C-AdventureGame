@@ -261,6 +261,11 @@ public class MusicAndSound
         }
     }
 
+    public void PlayAct3FrozenLilyFrogSound()
+    {
+        PlayMusic("act3frozenlilyfrogsound.wav", NPCspeechPlayer);
+    }
+
     public void PlayAct4MageSound()
     {
         int choice = random.Next(0, 3);
@@ -435,5 +440,5 @@ public class MusicAndSound
         StopAct5Music();
     }
 
-   
+    
 }
