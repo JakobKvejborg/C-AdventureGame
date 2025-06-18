@@ -1601,7 +1601,7 @@ partial class MainWindow
         panelInventory.Controls.Add(buttonDiscardItem);
         panelInventory.Controls.Add(comboBoxInventory);
         panelInventory.Controls.Add(buttonEquipUnequip);
-        panelInventory.Location = new Point(541, 852);
+        panelInventory.Location = new Point(540, 852);
         panelInventory.Margin = new Padding(3, 2, 3, 2);
         panelInventory.Name = "panelInventory";
         panelInventory.Size = new Size(180, 142);
@@ -1951,7 +1951,7 @@ partial class MainWindow
         labelVersionNumber.Name = "labelVersionNumber";
         labelVersionNumber.Size = new Size(37, 15);
         labelVersionNumber.TabIndex = 6;
-        labelVersionNumber.Text = "v0.84";
+        labelVersionNumber.Text = "v0.85";
         // 
         // labelXboxRecommended
         // 

@@ -47,7 +47,7 @@ public class RandomItem : Item
                 break;
 
             case ItemType.Gloves:
-                var critDamageValues = new[] { 0, 5 }; // Predefined possible values for CritDamage
+                var critDamageValues = new[] { 0, 3, 6 }; // Predefined possible values for CritDamage
                 CritDamage = critDamageValues[_random.Next(critDamageValues.Length)] * multiplier;
                 Strength = _random.Next(0, 3 * multiplier);
                 CritChance = _random.Next(1, 9 + multiplier);
@@ -73,7 +73,7 @@ public class RandomItem : Item
                 break;
 
             case ItemType.WeaponRightHand:
-                Damage = _random.Next(1, 4 + multiplier - 1);
+                Damage = _random.Next(1, 5 + multiplier + (multiplier / 4) - 1);
                 CritChance = _random.Next(0, 4 + multiplier - 1);
                 Strength = _random.Next(1, 3 * multiplier);
                 LevelRequirement = (_random.Next(1, 5) * multiplier) + multiplier - 1;
@@ -105,8 +105,8 @@ public class RandomItem : Item
                     2 => 0,
                     3 => 1,
                     4 => 3,
-                    5 => 4,
-                    6 => 5,
+                    5 => 5,
+                    6 => 6,
                     _ => 0 // Default case, in case multiplier is out of expected range
                 };
                 Strength = _random.Next(0, 2 * multiplier);

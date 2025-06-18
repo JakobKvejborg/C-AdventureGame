@@ -79,7 +79,7 @@ internal class Player
 
     public int CalculateTotalDamage(PlayerState playerState)
     {
-        return playerState.Player.Damage + ((playerState.Player.Strength / 6) * (playerState.Player.Level / 3));
+        return 1 + (playerState.Player.Damage / 2) + ((playerState.Player.Strength / 6) * (playerState.Player.Level / 3));
     }
 
     public void AddItemToInventory(Item foundItem)

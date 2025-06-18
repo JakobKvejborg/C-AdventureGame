@@ -30,7 +30,7 @@ public class ImprovedRandomItem : Item
     private static readonly List<string> SuffixesNormalItems = new() { "of Health", "of Stamina", "of Iron", "of Bronze", "of Leather", "of Defense", "of Protection", "of Stone", "of Steel" };
     private static readonly List<string> SuffixesMagic = new() { "of Magic", "of Mysticism", "of Arcana", "of Sorcery", "of Enchantment", "of Mana", "of Illusion", "of Mystic", "of Hexes" };
     private static readonly List<string> SuffixesStrong = new() { "of Fury", "of Skill", "of Flames", "of Frost", "of Storms", "of the Stars", "of Oracle", "of Strength" };
-    private static readonly List<string> SuffixesRareItems = new() { "of Champions", "of Valor", "of Fortitude", "of Precision", "of Berserk", "of Titans", "of Might" };
+    private static readonly List<string> SuffixesRareItems = new() { "of Champions", "of Valor", "of Fortitude", "of Precision", "of Berserk", "of Titans", "of Might", "of Blood" };
     private static readonly List<string> SuffixesUnique = new() { "of Gold", "of Power", "of Glory", "of Wisdom" };
     private static readonly List<string> SuffixesEpicItems = new() { "of Shadows", "of Light", "of the Void", "of Eternity", "of Oblivion" };
     private static readonly List<string> SuffixesLegendary = new() { "of Dragons", "of Angels", "of Chaos", "of Demons", "of Doom" };
@@ -126,7 +126,7 @@ public class ImprovedRandomItem : Item
         switch (itemType)
         {
             case ItemType.WeaponRightHand:
-                Damage = (int)(_random.Next(1, 4) * multiplier);
+                Damage = (int)(_random.Next(1, 5) * multiplier);
                 CritChance = (int)(_random.Next(0, 5) * multiplier);
                 Strength = (int)(_random.Next(1, 3) * multiplier);
                 StrengthRequirement = (int)((_random.Next(0, 6) * multiplier) + multiplier - 1);
@@ -142,7 +142,7 @@ public class ImprovedRandomItem : Item
                 break;
 
             case ItemType.Gloves:
-                var critDamageValues = new[] { 0, 3, 6 }; // Predefined possible values for CritDamage
+                var critDamageValues = new[] { 0, 3, 8 }; // Predefined possible values for CritDamage
                 CritDamage = (int)Math.Round(critDamageValues[_random.Next(critDamageValues.Length)] * multiplier);
                 Strength = (int)(_random.Next(0, 3) + multiplier);
                 CritChance = (int)(_random.Next(1, 9) + multiplier);
@@ -178,6 +178,8 @@ public class ImprovedRandomItem : Item
                 break;
 
             case ItemType.Helmet:
+                var healthValues = new[] { 0, 15, 40 }; // Predefined possible values for Health
+                Health = healthValues[_random.Next(healthValues.Length)];
                 Armor = (int)(_random.Next(0, 4) + multiplier - 1);
                 Strength = (int)(_random.Next(0, 3) + multiplier);
                 Regeneration = (int)(_random.Next(0, 4) * multiplier);
@@ -187,6 +189,7 @@ public class ImprovedRandomItem : Item
                 break;
 
             case ItemType.WeaponLeftHand:
+                Damage = (int)(_random.Next(0, 5));
                 Strength = (int)(_random.Next(0, 2) * multiplier);
                 Regeneration = (int)(_random.Next(0, 4) * multiplier * multiplier);
                 Lifesteal = (int)(_random.Next(0, 5) * multiplier);
