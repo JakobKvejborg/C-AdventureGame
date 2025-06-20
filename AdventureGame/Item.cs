@@ -26,7 +26,7 @@ public class Item
     public int LevelRequirement { get; set; }
     public int CritChance { get; set; }
     public int CritDamage { get; set; }
-    public static int CostToUpgrade { get; set; } = 50;
+    public static int CostToUpgrade { get; set; } = 40;
     public bool IsItemUpgraded { get; set; }
     public bool IsItemReforged { get; set; }
     public static int SmithUpgradeMultiplication = 1;
@@ -113,7 +113,7 @@ public class Item
         }
         Random random = new Random();
         Name = "Upg. " + Name;
-        Item.CostToUpgrade += 20;
+        Item.CostToUpgrade += 25;
         LevelRequirement += 1;
         IsItemUpgraded = true;
         switch (Type)
@@ -130,7 +130,7 @@ public class Item
                         Strength += random.Next(1, 4) * SmithUpgradeMultiplication; // Increase Strength by 1 to 3
                         break;
                     case 3: // Lifesteal
-                        Lifesteal += random.Next(1, 10) * SmithUpgradeMultiplication; // Increase Lifesteal by 1 or 8
+                        Lifesteal += random.Next(1, 10) * SmithUpgradeMultiplication; // Increase Lifesteal by 1 to 9
                         break;
                     case 4: // Crit Damage
                         CritDamage += random.Next(3, 16) * SmithUpgradeMultiplication;
@@ -144,10 +144,10 @@ public class Item
                 switch (armorUpgradeChoice)
                 {
                     case 1: // Health
-                        Health += random.Next(5, 31) * SmithUpgradeMultiplication + SmithUpgradeMultiplication; // Increase Health by 5 to 23
+                        Health += random.Next(5, 51) * SmithUpgradeMultiplication + SmithUpgradeMultiplication; // Increase Health by 5 to 50
                         break;
                     case 2: // Armor
-                        Armor += random.Next(1, 3) * SmithUpgradeMultiplication; // Increase Armor by 1 to 5
+                        Armor += random.Next(1, 3) * SmithUpgradeMultiplication; // Increase Armor by 1 to 2
                         break;
                         // Add more cases if needed
                 }
@@ -180,7 +180,7 @@ public class Item
                         Strength += random.Next(1, 3) * SmithUpgradeMultiplication;
                         break;
                     case 3:
-                        Regeneration += random.Next(1, 7) * SmithUpgradeMultiplication * SmithUpgradeMultiplication;
+                        Regeneration += random.Next(1, 8) * SmithUpgradeMultiplication * SmithUpgradeMultiplication;
                         break;
                     case 4:
                         CritDamage += random.Next(3, 20) + SmithUpgradeMultiplication + SmithUpgradeMultiplication + SmithUpgradeMultiplication;
@@ -194,7 +194,7 @@ public class Item
                 switch (leggingsUpgradeChoice)
                 {
                     case 1:
-                        DodgeChance += random.Next(3, 7) * SmithUpgradeMultiplication;
+                        DodgeChance += random.Next(2, 7) * SmithUpgradeMultiplication;
                         break;
                     case 2:
                         Strength += random.Next(1, 4) * SmithUpgradeMultiplication;
@@ -214,10 +214,10 @@ public class Item
                 int HelmetUpgradeChoice = random.Next(1, 5); // 1 to 5 for three stats
                 switch (HelmetUpgradeChoice)
                 {
-                    case 1: // Armor
+                    case 1:
                         Armor += random.Next(1, 2) * SmithUpgradeMultiplication;
                         break;
-                    case 2: // Strength
+                    case 2:
                         Strength += random.Next(1, 3) * SmithUpgradeMultiplication;
                         break;
                     case 3:

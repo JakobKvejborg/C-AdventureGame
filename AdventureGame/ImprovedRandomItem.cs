@@ -126,7 +126,7 @@ public class ImprovedRandomItem : Item
         switch (itemType)
         {
             case ItemType.WeaponRightHand:
-                Damage = (int)(_random.Next(1, 5) * multiplier);
+                Damage = (int)(_random.Next(1, 7) * multiplier);
                 CritChance = (int)(_random.Next(0, 5) * multiplier);
                 Strength = (int)(_random.Next(1, 3) * multiplier);
                 StrengthRequirement = (int)((_random.Next(0, 6) * multiplier) + multiplier - 1);
@@ -146,7 +146,7 @@ public class ImprovedRandomItem : Item
                 CritDamage = (int)Math.Round(critDamageValues[_random.Next(critDamageValues.Length)] * multiplier);
                 Strength = (int)(_random.Next(0, 3) + multiplier);
                 CritChance = (int)(_random.Next(1, 9) + multiplier);
-                Armor = (int)((_random.Next(0, 3) + multiplier - 1) + multiplier - 1);
+                Armor = (int)((_random.Next(0, 4) + multiplier - 1) + multiplier - 1);
                 StrengthRequirement = (int)((_random.Next(0, 6) * multiplier) + multiplier + multiplier - 1);
                 LevelRequirement = (int)((_random.Next(1, 5) * multiplier) + multiplier + multiplier + multiplier - 3);
                 break;

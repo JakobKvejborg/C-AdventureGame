@@ -59,7 +59,7 @@ public class RandomItem : Item
             case ItemType.Boots:
                 DodgeChance = _random.Next(0, 6 + multiplier + multiplier);
                 Armor = _random.Next(0, 3) + multiplier - 1;
-                Health = _random.Next(1, 9 + multiplier + multiplier - 1) * multiplier;
+                Health = _random.Next(1, 11 + multiplier + multiplier - 1) * multiplier;
                 LevelRequirement = (_random.Next(3, 7) * multiplier) + multiplier + multiplier + multiplier - 4;
                 break;
 
@@ -73,7 +73,7 @@ public class RandomItem : Item
                 break;
 
             case ItemType.WeaponRightHand:
-                Damage = _random.Next(1, 5 + multiplier + (multiplier / 4) - 1);
+                Damage = _random.Next(1, 7 + multiplier + (multiplier / 4) - 1);
                 CritChance = _random.Next(0, 4 + multiplier - 1);
                 Strength = _random.Next(1, 3 * multiplier);
                 LevelRequirement = (_random.Next(1, 5) * multiplier) + multiplier - 1;

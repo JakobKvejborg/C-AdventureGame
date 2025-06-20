@@ -1945,7 +1945,7 @@ public partial class MainWindow : Form
         labelLevel.Text = $"Level: {_playerState.Player.Level}";
         labelExperience.Text = $"Exp: {_playerState.Player.Experience}/{_playerState.Player.XpNeededToLevelUp}";
         labelCritChance.Text = $"{_playerState.Player.CritChance}%";
-        labelPlayerCritDmg.Text = $"CritDmg: {_playerState.Player.CritDamage}%";
+        labelPlayerCritDmg.Text = $"CritDmg: +{_playerState.Player.CritDamage - 100}%";
         labelRegeneration.Text = $"Regen: {_playerState.Player.Regeneration}";
     }
 

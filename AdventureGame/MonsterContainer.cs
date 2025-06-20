@@ -176,11 +176,11 @@ internal class MonsterContainer
         Monster falseLightEntity = new("False Light Entity", 510, 510, 53, 0, 0, 150, 0, falseLightEntityImage);
         Monster blackAngel = new("Black Angel", 360, 360, 0, 0, 39, 120, 120, blackAngelImage);
         Monster priest = new("Priest", 415, 415, 0, 0, 67, 50, 180, priestImage);
-        Monster crow = new("Crow", 320, 320, 0, 0, 99, 77, 0, crowImage);
-        Monster voidMonster = new("Void", 470, 470, 30, 0, 40, 99, 160, voidImage);
+        Monster crow = new("Crow", 320, 320, 0, 0, 89, 77, 0, crowImage);
+        Monster voidMonster = new("Void", 470, 470, 32, 0, 40, 99, 160, voidImage);
         Monster bloodVoid = new("Blood Void", 373, 340, 0, 0, 58, 77, 0, bloodVoidImage);
         Monster deathAngel = new("Death Angel", 364, 364, 0, 0, 74, 120, 133, deathAngelImage);
-        Monster darkMage = new("Dark Mage", 394, 394, 10, 0, 45, 150, 60, darkMageImage);
+        Monster darkMage = new("Dark Mage", 394, 394, 15, 0, 45, 150, 60, darkMageImage);
         Monster bloodHorror = new("Blood Horror", 340, 310, 0, 0, 56, 50, 0, bloodHorrorImage);
 
         // Special enemies
