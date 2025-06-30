@@ -8,50 +8,50 @@ namespace AdventureGame;
 
 internal class TechniquesTrainer
 {
-    public PlayerState playerState;
-    public StoryProgress storyProgress;
+    public PlayerState _playerState;
+    public StoryProgress _storyProgress;
     private MainWindow _mainWindow;
     public MusicAndSound _sounds;
 
     internal TechniquesTrainer(PlayerState playerState, StoryProgress storyProgress, MainWindow mainWindow, MusicAndSound sounds)
     {
-        this.playerState = playerState;
-        this.storyProgress = storyProgress;
+        this._playerState = playerState;
+        this._storyProgress = storyProgress;
         _mainWindow = mainWindow;
         _sounds = sounds;
     }
 
     public async Task LearnTechniqueAsync()
     {
-        if (StoryProgress.playerIsInTown && !storyProgress.Act1BossDefeatedFlag && storyProgress.Act1ArtsTeacherIsAvailable)
+        if (StoryProgress.playerIsInTown && !_storyProgress.Act1BossDefeatedFlag && _storyProgress.Act1ArtsTeacherIsAvailable)
         {
-            if (playerState.Player.GoldInPocket >= Player.PriceToLearnTechnique)
+            if (_playerState.Player.GoldInPocket >= Player.PriceToLearnTechnique)
             {
 
-                switch (playerState.Player.advanceTechnique)
+                switch (_playerState.Player.AdvanceTechnique)
                 {
                     case 0:
-                        playerState.Player.techniqueBloodLustIsLearned = true;
+                        _playerState.Player.TechniqueBloodLustIsLearned = true;
                         _mainWindow.txtBox_Town.Text = "After many hours of training you have learned the Bloodlust technique. Use it with care - it deals huge damage, but comes at the cost of blood.";
                         _mainWindow.buttonBloodLust.Show();
                         break;
                     case 1:
-                        playerState.Player.techniqueSwiftIsLearned = true;
+                        _playerState.Player.TechniqueSwiftIsLearned = true;
                         _mainWindow.txtBox_Town.Text = "After many hours of training you have learned the Swift technique. Unleash a powerful strike after dodging an attack.";
                         _mainWindow.buttonSwiftAttack.Show();
                         break;
                     case 2:
-                        playerState.Player.techniqueRoarIsLearned = true;
+                        _playerState.Player.TechniqueRoarIsLearned = true;
                         _mainWindow.txtBox_Town.Text = "After many hours of training you have learned the Roar technique. A battle cry that boosts your reflexes for a period.";
                         _mainWindow.buttonRoarAttack.Show();
                         break;
                     case 3:
-                        playerState.Player.techniqueDivineIsLearned = true;
+                        _playerState.Player.TechniqueDivineIsLearned = true;
                         _mainWindow.txtBox_Town.Text = "After many hours of training you have learned the Divine technique - a holy attack dealing damage that increases with your missing health.";
                         _mainWindow.buttonDivine.Show();
                         break;
                     case 4:
-                        playerState.Player.techniqueGuardIsLearned = true;
+                        _playerState.Player.TechniqueGuardIsLearned = true;
                         _mainWindow.txtBox_Town.Text = "The once mighty warrior teaches you the Guard technique - a way to boost your defenses. Once per battle, when near death, use this stance to stay alive.";
                         _mainWindow.buttonGuard.Show();
                         break;
@@ -61,13 +61,13 @@ internal class TechniquesTrainer
                         return;
                 }
 
-                playerState.Player.GoldInPocket -= Player.PriceToLearnTechnique;
-                playerState.Player.advanceTechnique += 1;
+                _playerState.Player.GoldInPocket -= Player.PriceToLearnTechnique;
+                _playerState.Player.AdvanceTechnique += 1;
                 Player.PriceToLearnTechnique *= 3;
                 _mainWindow.buttonLearnTechnique.Text = $"Learn {Player.PriceToLearnTechnique}G";
                 _mainWindow.UpdatePlayerLabels();
                 _sounds.PlayAct1ArtsTeacher();
-                storyProgress.Act1ArtsTeacherIsAvailable = false;
+                _storyProgress.Act1ArtsTeacherIsAvailable = false;
                 _mainWindow.buttonLearnTechnique.Hide();
 
                 await Task.Delay(7280);

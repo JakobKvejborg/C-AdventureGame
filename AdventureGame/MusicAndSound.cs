@@ -176,6 +176,12 @@ public class MusicAndSound
     {
         PlayMusic("act1healer.wav", healingMusicPlayer);
     }
+
+    public void PlayResurrectionMusic()
+    {
+        PlayMusic("resurrection.wav", healingMusicPlayer);
+    }
+
     public void PlayAct1HealingNoGold()
     {
         PlaySound(17);
@@ -355,7 +361,7 @@ public class MusicAndSound
 
     public void PlayAct2BossSound()
     {
-        PlayMusic("act2boss.wav", soundEffectPlayer);
+        PlayMusic("act2boss.wav", bossPlayer);
     }
 
     public void PlayAct2TownMusic()
@@ -382,10 +388,12 @@ public class MusicAndSound
     {
         PlayMusic("act3waves.wav", act3WavesPlayer);
     }
+
     public void PlayAct3Boss()
     {
         PlayMusic("act3boss.wav", bossPlayer);
     }
+
     public void PlayAct2FrostfallenKing()
     {
         PlayMusic("act2frostfallenking.wav", bossPlayer);

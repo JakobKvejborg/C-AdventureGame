@@ -126,16 +126,18 @@ public class ImprovedRandomItem : Item
         switch (itemType)
         {
             case ItemType.WeaponRightHand:
-                Damage = (int)(_random.Next(1, 7) * multiplier);
+                int min = (int)((multiplier + 0.25) * 2.5); 
+                int max = (int)((multiplier + 0.25) * 4);
+                Damage = _random.Next(min, max);
                 CritChance = (int)(_random.Next(0, 5) * multiplier);
                 Strength = (int)(_random.Next(1, 3) * multiplier);
-                StrengthRequirement = (int)((_random.Next(0, 6) * multiplier) + multiplier - 1);
-                LevelRequirement = (int)(_random.Next(2, 9) + multiplier + multiplier + multiplier + multiplier - 3);
+                StrengthRequirement = (int)((_random.Next(1, 6) * multiplier) + multiplier + multiplier - 2);
+                LevelRequirement = (int)(_random.Next(3, 9) + multiplier + multiplier + multiplier + multiplier - 3);
                 break;
 
             case ItemType.Armor:
                 Strength = (int)(_random.Next(0, 3) + multiplier - 1);
-                Health = (int)(_random.Next(2, 29) * (multiplier + multiplier));
+                Health = (int)((_random.Next(2, 29) + multiplier) * (multiplier + multiplier));
                 Armor = (int)(_random.Next(1, 2) * multiplier);
                 StrengthRequirement = (int)((_random.Next(0, 6) * multiplier) + multiplier - 1);
                 LevelRequirement = (int)(_random.Next(1, 4) + multiplier + multiplier + multiplier + multiplier + multiplier - 3);
@@ -152,7 +154,7 @@ public class ImprovedRandomItem : Item
                 break;
 
             case ItemType.Boots:
-                DodgeChance = (int)(_random.Next(0, 9) + multiplier);
+                DodgeChance = (int)(_random.Next(0, 8) + multiplier);
                 Armor = (int)(_random.Next(0, 3) + multiplier + multiplier - 2);
                 Health = (int)(_random.Next(1, 19) * (multiplier) + multiplier);
                 StrengthRequirement = (int)((_random.Next(1, 6) * multiplier) + multiplier + multiplier + multiplier - 2);

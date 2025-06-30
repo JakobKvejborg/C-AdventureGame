@@ -1951,7 +1951,7 @@ partial class MainWindow
         labelVersionNumber.Name = "labelVersionNumber";
         labelVersionNumber.Size = new Size(37, 15);
         labelVersionNumber.TabIndex = 6;
-        labelVersionNumber.Text = "v0.85";
+        labelVersionNumber.Text = "v0.86";
         // 
         // labelXboxRecommended
         // 

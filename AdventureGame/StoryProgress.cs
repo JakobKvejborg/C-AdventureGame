@@ -26,7 +26,7 @@ internal class StoryProgress
     public bool Act3BossDefeatedFlag = false;
     public bool Act5BossDefeatedFlag = false;
     public bool Act2OptionalBossDefeatedFlag;
-    public bool Act5UltimatedarknessBossDefeatedFlag;
+    public bool Act5UltimatedarknessBossDefeatedFlag { get; set; }
     public bool SophiaIsAlive { get; private set; }
     public static int WhichActIsThePlayerIn { get; set; } = 1;
     public static bool PlayerHasEnteredAct4 { get; set; }
@@ -148,7 +148,7 @@ internal class StoryProgress
                 break;
             case 2:
                 _mainWindow.pictureBoxHero.Show();
-                _mainWindow.btn_attack.Show();
+                _mainWindow.ShowAttackButtons();
                 _mainWindow.pictureBoxHeroBag.Show();
                 Encounter.PerformEncounter(monsterContainer.ListOfMonsters1, itemContainer.items1, _mainWindow);
                 _mainWindow.textBoxEncounter.AppendText("");
@@ -340,7 +340,7 @@ internal class StoryProgress
                 _mainWindow.panelEncounter.Hide();
                 _mainWindow.panelTown.Show();
 
-                if (Encounter.TotalNumberOfMonstersDefeated < 201 && ModifierProcessor.NumberOfModifiersCurrentlyActive >= 3) // If Sophia is alive
+                if (Encounter.TotalNumberOfMonstersDefeated < 401 && ModifierProcessor.NumberOfModifiersCurrentlyActive >= 3) // Sophia is alive if these criteria are met
                 {
                     _imageSetter.SetAct5SophiaAlive();
                     _mainWindow.txtBox_Town.Text = GetSophiaIsSavedText();

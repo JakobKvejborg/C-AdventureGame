@@ -135,7 +135,6 @@ public partial class MainWindow : Form
         _overlay.Visible = !_overlay.Visible;
     }
 
-
     private void CustomStylesForControls()
     {
         _styles.BlackButtonWhiteText(btn_attack);
@@ -269,7 +268,16 @@ public partial class MainWindow : Form
         #endregion
     }
 
-    private void MakeHeroBagBackgroundTrulyTransparent()
+    public void ShowAttackButtons() // This method is used because of a Modifier that allows the player to already have learned some attacks before the game begins
+    {
+        btn_attack.Show();
+        if (_playerState.Player.TechniqueBloodLustIsLearned)
+        {
+            buttonBloodLust.Show();
+        }
+    }
+
+        private void MakeHeroBagBackgroundTrulyTransparent()
     {
         pictureBoxHero.Controls.Add(pictureBoxHeroBag);
         pictureBoxHeroBag.Location = new Point(210, 300);
@@ -1392,11 +1400,11 @@ public partial class MainWindow : Form
     {
         if (StoryProgress.playerIsInTown && StoryProgress.WhichActIsThePlayerIn != 3 && StoryProgress.WhichActIsThePlayerIn != 5) // We don't want the player to be able to heal in act 3 and 5 because there's no healer
         {
-            if (_playerState.Player.GoldInPocket >= Player.priceToHeal) // the players' gold has to be checked here, due to labels being set
+            if (_playerState.Player.GoldInPocket >= Player.PriceToHeal) // the players' gold has to be checked here, due to labels being set
             {
                 _playerState.Player.HealPlayer(_playerState);
                 UpdatePlayerLabels();
-                buttonHeal.Text = $"Heal {Player.priceToHeal.ToString()}G";
+                buttonHeal.Text = $"Heal {Player.PriceToHeal.ToString()}G";
                 UpdatePlayerHealthBar(); // updates the players health bar after being healed
                 if (!CooldownOnSound)
                 {
@@ -1432,8 +1440,10 @@ public partial class MainWindow : Form
                             txtBox_Town.Text = "\"Is a single coin too much to ask?\"";
                             break;
                         case 2:
+                            txtBox_Town.Text = "The blind girl remains silent.";
                             break;
                         case 4:
+                            txtBox_Town.Text = "You don't have any gold to give to the girl, so you're not going to ask for her help.";
                             break;
                     }
                 }
@@ -1781,8 +1791,20 @@ public partial class MainWindow : Form
 
     public async Task CheckIfPlayerIsDefeated()
     {
+
         if (_playerState.Player.CurrentHealth <= 0)
         {
+            if (_playerState.Player.ResurrectionBuff)
+            {
+                _sounds.PlayResurrectionMusic();
+                _playerState.Player.CurrentHealth = _playerState.Player.MaxHealth / 4; // Resets the players health to 25% of max health
+                UpdatePlayerLabels();
+                _playerState.Player.ResurrectionBuff = false; // Resets the buff so it can't be used again
+                textBoxEncounter.Clear();
+                await Task.Delay(100);
+                textBoxEncounter.Text = "You died, but have been resurrected by an unknown power. You feel a surge of energy as you rise from the grave.";
+                return;
+            }
             await Task.Delay(400);
             _sounds.PlayDeathGameOverSound();
             await Task.Delay(500);
@@ -1955,11 +1977,11 @@ public partial class MainWindow : Form
         int currentHealth = _playerState.Player.CurrentHealth;
         int maxHealth = _playerState.Player.MaxHealth;
 
-        CheckIfPlayerIsDefeated();
         progressBarPlayerHP.Maximum = maxHealth;
         progressBarPlayerHP.Value = currentHealth;
         labelPlayerHP.Text = $"HP: {currentHealth}/{maxHealth}";
         buttonGuard.Invalidate();
+        CheckIfPlayerIsDefeated();
     }
 
     // This is a method that plays the sounds for the attack, calls the attack methods from Encounter, and handles attack controls
@@ -1992,28 +2014,28 @@ public partial class MainWindow : Form
 
     public async Task BloodLustAttack()
     {
-        if (_playerState.Player.techniqueBloodLustIsLearned)
+        if (_playerState.Player.TechniqueBloodLustIsLearned)
             await PerformAttack(() => _attacks.BloodLustAttack(), shakeControl: true);
     }
     public async Task SwiftAttack()
     {
-        if (_playerState.Player.techniqueSwiftIsLearned)
+        if (_playerState.Player.TechniqueSwiftIsLearned)
             await PerformAttack(() => _attacks.SwiftAttack(), shakeControl: true);
     }
     public async Task RoarAttack()
     {
-        if (_playerState.Player.techniqueRoarIsLearned)
+        if (_playerState.Player.TechniqueRoarIsLearned)
             await PerformAttack(() => _attacks.RoarAttack(), shakeControl: false);
         UpdatePlayerLabels();
     }
     public async Task DivineAttack()
     {
-        if (_playerState.Player.techniqueDivineIsLearned)
+        if (_playerState.Player.TechniqueDivineIsLearned)
             await PerformAttack(() => _attacks.DivineAttack(), shakeControl: true);
     }
     public void GuardAttack()
     {
-        if (_playerState.Player.techniqueGuardIsLearned)
+        if (_playerState.Player.TechniqueGuardIsLearned)
         {
             _attacks.GuardAttack();
         }

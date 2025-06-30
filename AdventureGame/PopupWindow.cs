@@ -43,7 +43,7 @@ public partial class PopupWindowModifier : Form
         textBoxModifierInput.SelectAll();
 
         // Update UI after the modifiers have been applied
-        _mainWindow.buttonHeal.Text = $"Heal {Player.priceToHeal.ToString()}G";
+        _mainWindow.buttonHeal.Text = $"Heal {Player.PriceToHeal.ToString()}G";
         _mainWindow.buttonLearnTechnique.Text = $"Learn {Player.PriceToLearnTechnique}G";
         _mainWindow.buttonReforgeStat.Text = $"{ReforgeItemStat.PriceToReforgeFrog}G";
         _mainWindow.buttonUpgradeItem.Text = $"{Item.CostToUpgrade}G";

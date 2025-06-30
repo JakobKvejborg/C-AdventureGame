@@ -228,7 +228,7 @@ internal static class Encounter
         int goldDropped = Monster.MonsterGold;
         if (goldDropped > 0)
         {
-            playerState.Player.GoldInPocket += goldDropped;
+            playerState.Player.GoldInPocket += goldDropped * playerState.Player.GoldFind;
             mainWindow.labelGoldInPocket.Text = $"{playerState.Player.GoldInPocket.ToString()}";
             mainWindow.PopupFadeLabel(mainWindow.labelGoldPopup);
             mainWindow.labelGoldPopup.Text = $"+{goldDropped}G";
@@ -307,7 +307,7 @@ internal static class Encounter
         {
             mainWindow.pictureBoxFrozenLily.Show();
             Player.HasFrozenLily = true;
-            mainWindow.textBoxEncounter.AppendText("\n Inside the King's Tomb, you find a rare frozen lily.");
+            mainWindow.textBoxEncounter.AppendText("\r\nInside the King's Tomb, you find a rare frozen lily.");
         }
     }
 

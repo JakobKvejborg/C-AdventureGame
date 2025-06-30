@@ -21,16 +21,16 @@ internal class Player
     public int CritDamage { get; set; }
     public List<Item> Inventory { get; set; }
     public event Action LevelUpEvent;
-    public static int priceToHeal { get; set; } = 2; 
+    public static int PriceToHeal { get; set; } = 2; 
     public static int PriceToLearnTechnique { get; set; } = 10;
     public Dictionary<ItemType, Item> EquippedItems { get; private set; }
     public int XpNeededToLevelUp => ((10 * (Level + Level)) + (Level * Level) - 1);
-    public bool techniqueBloodLustIsLearned { get; set; }
-    public bool techniqueSwiftIsLearned { get; set; }
-    public bool techniqueRoarIsLearned { get; set; }
-    public bool techniqueDivineIsLearned { get; set; }
-    public bool techniqueGuardIsLearned { get; set; }
-    public int advanceTechnique = 0;
+    public bool TechniqueBloodLustIsLearned { get; set; }
+    public bool TechniqueSwiftIsLearned { get; set; }
+    public bool TechniqueRoarIsLearned { get; set; }
+    public bool TechniqueDivineIsLearned { get; set; }
+    public bool TechniqueGuardIsLearned { get; set; }
+    public int AdvanceTechnique { get; set; } = 0;
     public int NumberOfDragonEggsInInventory { get; set; }
     public bool HasDragonMageUpgradeForSmith { get; set; }
     public int RoarBuffDodge { get; set; } = 10;
@@ -40,6 +40,9 @@ internal class Player
     public int GuardBuffArmor { get; set; }
     public bool GuardBuffIsActive { get; set; }
     public double PlayerIsOnLowHealth => MaxHealth * 0.27;
+    public int GoldFind { get; set; } = 1;
+    public bool ResurrectionBuff { get; set; }
+
     public static bool HasFrozenLily;
 
     public Player(string name, int maxHealth, int currentHealth, int damage, int strength, int lifesteal,
@@ -89,11 +92,11 @@ internal class Player
 
     public void HealPlayer(PlayerState playerState)
     {
-        if (playerState.Player.GoldInPocket >= priceToHeal)
+        if (playerState.Player.GoldInPocket >= PriceToHeal)
         {
             playerState.Player.CurrentHealth = MaxHealth;
-            playerState.Player.GoldInPocket -= priceToHeal;
-            priceToHeal += (int)((priceToHeal * 0.1) + 7) / ModifierProcessor.HealPriceReducedModifier; // Add 10% of the current price + a flat value
+            playerState.Player.GoldInPocket -= PriceToHeal;
+            PriceToHeal += (int)((PriceToHeal * 0.1) + 7) / ModifierProcessor.HealPriceReducedModifier; // Add 10% of the current price + a flat value
         }
     }
     public async Task HandlePlayerDeathAsync(MainWindow mainWindow)

@@ -41,7 +41,7 @@ public class ModifierProcessor
                 return "Crit chance increased!";
             case "hpup":
                 NumberOfModifiersCurrentlyActive++;
-                _playerState.Player.MaxHealth += 10;
+                _playerState.Player.MaxHealth += 15;
                 _appliedModifiers.Add(command);
                 return "Health increased!";
             case "juggernaut":
@@ -134,8 +134,24 @@ public class ModifierProcessor
                 ReforgeItemStat.ReforgeModifier += 0.15;
                 _appliedModifiers.Add(command);
                 return "Reforging upgraded!";
+            case "looter":
+                NumberOfModifiersCurrentlyActive++;
+                _playerState.Player.GoldFind++;
+                _appliedModifiers.Add(command);
+                return "Gold find increased!";
+            case "phoenix":
+                NumberOfModifiersCurrentlyActive++;
+                _playerState.Player.ResurrectionBuff = true;
+                _appliedModifiers.Add(command);
+                return "Death can wait...";
+            case "skilled":
+                NumberOfModifiersCurrentlyActive++;
+                _playerState.Player.AdvanceTechnique++;
+                _playerState.Player.TechniqueBloodLustIsLearned = true;
+                _appliedModifiers.Add(command);
+                return "Bloodlust technique learned!";
 
-            // Debugging modes TODO scramble these
+            // Debugging modes
             case "presentation32":
                 _playerState.Player.Damage += 15;
                 _playerState.Player.DodgeChance += 60;
@@ -144,7 +160,7 @@ public class ModifierProcessor
                 _appliedModifiers.Add(command);
                 return "Presentation mode enabled.";
             case "debug32":
-                _playerState.Player.Damage += 10;
+                _playerState.Player.Damage += 30;
                 _playerState.Player.DodgeChance += 10;
                 _playerState.Player.GoldInPocket += 9999;
                 _playerState.Player.Lifesteal += 150;
