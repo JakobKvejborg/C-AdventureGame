@@ -85,7 +85,7 @@ public class RandomItem : Item
             case ItemType.Leggings:
                 var lifestealValues = new[] { 0, 3, 6 }; // Predefined possible values for Lifesteal
                 Lifesteal = lifestealValues[_random.Next(lifestealValues.Length)] * multiplier;
-                Armor = _random.Next(0, 3 + multiplier + multiplier - 2);
+                Armor = _random.Next(0, 3 + multiplier + multiplier - 2 + (multiplier / 3));
                 Strength = _random.Next(0, 3 * multiplier);
                 Regeneration = _random.Next(0, 3 * multiplier);
                 Health = _random.Next(0, 10 * (multiplier + multiplier));
@@ -123,7 +123,7 @@ public class RandomItem : Item
             case ItemType.Shoulders:
                 Regeneration = _random.Next(0, 2 * multiplier * multiplier);
                 Health = _random.Next(0, 14 * (multiplier + multiplier));
-                Armor = _random.Next(1, 2 + multiplier - 1) + multiplier - 1;
+                Armor = _random.Next(1, 2 + multiplier - 1) + multiplier - 1 + (multiplier / 3);
                 StrengthRequirement = _random.Next(3, 6 * multiplier);
                 LevelRequirement = _random.Next(1, 8 * multiplier) + multiplier + multiplier - 2;
                 break;
