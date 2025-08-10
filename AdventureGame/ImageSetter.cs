@@ -178,4 +178,9 @@ public class ImageSetter
     {
         _mainWindow.panelEncounter.BackgroundImage = GetImagePath("ultimatedarkness.png");
     }
+
+    public void SetXboxControlsLayoutImage()
+    {
+        _mainWindow.panelXboxControlsLayout.BackgroundImage = GetImagePath("xboxlayout.png");
+    }
 }

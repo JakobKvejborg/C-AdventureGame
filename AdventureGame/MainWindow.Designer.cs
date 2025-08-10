@@ -1915,10 +1915,10 @@ partial class MainWindow
         // 
         // pictureBoxAct4Mage
         // 
-        pictureBoxAct4Mage.Location = new Point(431, 432);
+        pictureBoxAct4Mage.Location = new Point(413, 351);
         pictureBoxAct4Mage.Margin = new Padding(3, 2, 3, 2);
         pictureBoxAct4Mage.Name = "pictureBoxAct4Mage";
-        pictureBoxAct4Mage.Size = new Size(436, 756);
+        pictureBoxAct4Mage.Size = new Size(493, 837);
         pictureBoxAct4Mage.SizeMode = PictureBoxSizeMode.Zoom;
         pictureBoxAct4Mage.TabIndex = 21;
         pictureBoxAct4Mage.TabStop = false;
@@ -1949,9 +1949,9 @@ partial class MainWindow
         labelVersionNumber.ForeColor = Color.White;
         labelVersionNumber.Location = new Point(12, 1175);
         labelVersionNumber.Name = "labelVersionNumber";
-        labelVersionNumber.Size = new Size(37, 15);
+        labelVersionNumber.Size = new Size(36, 15);
         labelVersionNumber.TabIndex = 6;
-        labelVersionNumber.Text = "v0.86";
+        labelVersionNumber.Text = "v0.87";
         // 
         // labelXboxRecommended
         // 

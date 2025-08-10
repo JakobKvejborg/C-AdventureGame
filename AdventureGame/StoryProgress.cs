@@ -340,7 +340,7 @@ internal class StoryProgress
                 _mainWindow.panelEncounter.Hide();
                 _mainWindow.panelTown.Show();
 
-                if (Encounter.TotalNumberOfMonstersDefeated < 401 && ModifierProcessor.NumberOfModifiersCurrentlyActive >= 3) // Sophia is alive if these criteria are met
+                if (Encounter.TotalNumberOfMonstersDefeated < 451 && ModifierProcessor.NumberOfModifiersCurrentlyActive >= 3) // Sophia is alive if these criteria are met
                 {
                     _imageSetter.SetAct5SophiaAlive();
                     _mainWindow.txtBox_Town.Text = GetSophiaIsSavedText();
@@ -351,7 +351,7 @@ internal class StoryProgress
                 {
                     _mainWindow.txtBox_Town.Text = "You find Sophia's lifeless body in the void. The darkness has consumed her. " +
                         "Your heart sinks as you realize you've failed to save her.";
-                    _imageSetter.SetAct5SophiaDeath(); // Show an image for Sophia being dead, if applicable
+                    _imageSetter.SetAct5SophiaDeath(); // Show an image for Sophia being dead
                     StoryState++; // Advance the story state
                 }
                 break;

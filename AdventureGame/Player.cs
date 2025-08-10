@@ -39,7 +39,7 @@ internal class Player
     public int RoarBuffCountdown { get; set; }
     public int GuardBuffArmor { get; set; }
     public bool GuardBuffIsActive { get; set; }
-    public double PlayerIsOnLowHealth => MaxHealth * 0.27;
+    public double PlayerIsOnLowHealth => MaxHealth * 0.35;
     public int GoldFind { get; set; } = 1;
     public bool ResurrectionBuff { get; set; }
 

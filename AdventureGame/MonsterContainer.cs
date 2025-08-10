@@ -167,8 +167,8 @@ internal class MonsterContainer
         Monster goldenDragon = new("Golden Dragon", 350, 350, 24, 0, 5, 20, 60, goldenDragonImage);
 
         // Act 4 Dragon Nest Egg North
-        Monster dragonNestWatcher = new("Nest-Watcher Dragon", 310, 310, 15, 0, 50, 60, 0, dragonNestWatcherImage);
-        Monster dragonEggWatcher = new("Egg-Watcher Dragon", 310, 310, 15, 0, 50, 60, 0, dragonEggWatcherImage);
+        Monster dragonNestWatcher = new("Nest-Watcher Dragon", 310, 310, 13, 0, 50, 60, 0, dragonNestWatcherImage);
+        Monster dragonEggWatcher = new("Egg-Watcher Dragon", 310, 310, 14, 0, 50, 60, 0, dragonEggWatcherImage);
 
         // Act 5
         Monster shadow = new("Shadow", 470, 470, 0, 0, 66, 80, 120, shadowImage);

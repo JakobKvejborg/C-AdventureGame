@@ -1013,6 +1013,7 @@ public partial class MainWindow : Form
         buttonUpgradeItem.Text = $"{Item.CostToUpgrade}G";
 
         _imageSetter.SetAct2SmithPictureBoxImage();
+        _imageSetter.SetXboxControlsLayoutImage();
 
         _sounds.SetListOfSounds();
 
@@ -1794,7 +1795,7 @@ public partial class MainWindow : Form
 
         if (_playerState.Player.CurrentHealth <= 0)
         {
-            if (_playerState.Player.ResurrectionBuff)
+            if (_playerState.Player.ResurrectionBuff) // If the player has the ResurrectionBuff active, the player will be resurrected instead of dying
             {
                 _sounds.PlayResurrectionMusic();
                 _playerState.Player.CurrentHealth = _playerState.Player.MaxHealth / 4; // Resets the players health to 25% of max health

@@ -108,8 +108,8 @@ internal class AttackMoves
             // Guard clause (the method does nothing if the buff is already active or the player has too much health)
             if (_playerState.Player.GuardBuffIsActive || _playerState.Player.CurrentHealth > _playerState.Player.PlayerIsOnLowHealth) { return; }
 
-            int guardHealAmount = _playerState.Player.MaxHealth / 10;
-            _playerState.Player.GuardBuffArmor = (int)(_playerState.Player.Armor * 0.10); // The buff is % of the players' armor
+            int guardHealAmount = _playerState.Player.MaxHealth / 15;
+            _playerState.Player.GuardBuffArmor = (int)(_playerState.Player.Armor * 0.15); // The buff is % of the players' armor
 
             _sounds.PlayGuardSound();
             _playerState.Player.CurrentHealth = Math.Min(_playerState.Player.MaxHealth, _playerState.Player.CurrentHealth + guardHealAmount); // ensures maxhealth isn't exceeded
