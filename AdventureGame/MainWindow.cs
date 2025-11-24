@@ -589,9 +589,9 @@ public partial class MainWindow : Form
                 ReturnToTownFromQuests();
                 return true;
             case Keys.U:
+                UpgradeItem();
                 return true;
             case Keys.L:
-                UpgradeItem();
                 task = _techniquesTrainer.LearnTechniqueAsync();
                 TalkToMageAct4();
                 ReforgeItemStatFrog();
