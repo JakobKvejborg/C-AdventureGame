@@ -1949,9 +1949,9 @@ partial class MainWindow
         labelVersionNumber.ForeColor = Color.White;
         labelVersionNumber.Location = new Point(12, 1175);
         labelVersionNumber.Name = "labelVersionNumber";
-        labelVersionNumber.Size = new Size(36, 15);
+        labelVersionNumber.Size = new Size(37, 15);
         labelVersionNumber.TabIndex = 6;
-        labelVersionNumber.Text = "v0.87";
+        labelVersionNumber.Text = "v0.88";
         // 
         // labelXboxRecommended
         // 

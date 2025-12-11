@@ -7,6 +7,7 @@
 		<UseWindowsForms>true</UseWindowsForms>
 		<ImplicitUsings>enable</ImplicitUsings>
 		<AllowUnsafeBlocks>true</AllowUnsafeBlocks>
+		<ApplicationIcon>bin\Debug\net8.0-windows\Images\castleicon.ico</ApplicationIcon>
 	</PropertyGroup>
 
 	<!-- Exclude all files in the Images folder from Compile, EmbeddedResource, and None items -->
@@ -35,6 +36,9 @@
 		  <Lcid>0</Lcid>
 		  <Isolated>false</Isolated>
 		</COMReference>
+	</ItemGroup>
+	<ItemGroup>
+	  <Content Include="bin\Debug\net8.0-windows\Images\castleicon.ico" />
 	</ItemGroup>
 	<ItemGroup>
 	  <PackageReference Include="OpenTK" Version="4.8.2" />

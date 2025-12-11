@@ -340,14 +340,14 @@ internal class StoryProgress
                 _mainWindow.panelEncounter.Hide();
                 _mainWindow.panelTown.Show();
 
-                if (Encounter.TotalNumberOfMonstersDefeated < 451 && ModifierProcessor.NumberOfModifiersCurrentlyActive >= 3) // Sophia is alive if these criteria are met
+                if (Encounter.TotalNumberOfMonstersDefeated < 500 && ModifierProcessor.NumberOfModifiersCurrentlyActive >= 3 || SophiaIsAlive == true) // Sophia is alive if these criteria are met
                 {
                     _imageSetter.SetAct5SophiaAlive();
                     _mainWindow.txtBox_Town.Text = GetSophiaIsSavedText();
                     SophiaIsAlive = true;
                     StoryState = 20; // Advance the story state
                 }
-                else // If Sophia is not alive
+                else // If criteria for Sophia is alive is not met, she is dead:
                 {
                     _mainWindow.txtBox_Town.Text = "You find Sophia's lifeless body in the void. The darkness has consumed her. " +
                         "Your heart sinks as you realize you've failed to save her.";

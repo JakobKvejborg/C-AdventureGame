@@ -190,7 +190,7 @@ internal class MonsterContainer
         Monster act3Boss = new("The Devouring Abyss", 400, 400, 15, 0, 30, 100, 30, null);
         Monster act5Boss = new("Awoken Horror", 1346, 1346, 40, 0, 80, 1000, 500, awokenHorrorImage);
         Monster act2OptionalBoss = new("The Frostfallen King", 1100, 1100, 48, 0, 25, 500, 0, null);
-        Monster act5OptionalBoss = new("Ultimate Darkness", 9999, 9999, 77, 0, 77, 9999, 999, null);
+        Monster act5OptionalBoss = new("Ultimate Darkness", 9999, 9999, 80, 0, 85, 9999, 999, null);
 
         // Special enemies
         ListOfMonstersBossAct1.Add(act1Boss);
